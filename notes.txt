@@ -1,0 +1,80 @@
+1st Monolith in Secret 1:
+1:
+Mettaur3, Mettaur3, Mettaur3
+03 04 02 01 03 05 03 01 03 06 01 01  <-- @ 0001AAB8, start @ 0001AAB0
+
+2:
+Poofball
+2E 05 02 01 <-- start @ 0001AAA4
+
+3:
+0001AA94
+
+
+battles are stored in reverse ascending order, which sucks
+
+
+pointer to gauntlet -> possibly 00423558? <-- NOPE
+
+
+10:
+0001AA10
+
+TEST: change locations of 0001AA10 to 0001A970
+
+000199BF: nope
+002A754E: nope
+00446C1B: nope
+0049F725: nope
+004A1D9B: nope
+004BC06A: nope
+004C9486: nope
+004F8691: nope
+00501025: nope
+005169DB: nope
+00522C8F: nope
+005237E6: nope
+005946FE: nope
+
+so it doesn't seem to be absolutely adressed.
+
+Just adding more viruses doesn't work, need to find the pointer table for the battle.
+
+CMP r0, 0xFF in 08002906 seems to be the check for battle boundaries
+r7 contains the current offset when there (0801AABC) -> check when r7 changes to find out!
+first r0 contains the address, 0801AAB4
+
+battle subroutine starts at 080028F0
+it is called at 08006666
+
+first, r0 gets value of ldr 02006CA0 + 6C = 02006D0C
+r0 = 0200F8C8
+
+then, r0 is offset by 0x04
+this is where our address is stored. 0200F8CC
+
+080146B2: r0 contains our address (0801AAB4), stores it into wram @ 0200F8CC
+0801469E: start of subroutine, where r0 contains address
+0812E606: function called
+0812E600: r0 is read from r7, r7 contains 0812DD0C. THIS CONTAINS (FFFF)[AAB40801]!
+
+I found the pointer table!
+0812DD0C
+
+
+
+the first offset is @ 0812DC7C, then it is always 0x10 bytes offset (= 16 bytes aligned)
+
+let's find out how it manages the gauntlet?
+
+0812F18C calls something with updated r0 after the fight.
+
+there seems to be another copy of the pointer table? weird
+0812E830
+
+in the routine at 0812F176, the number of fights left is loaded from 02008F38
+
+0812E630 is the base pointer table offset I think
+0812F180 contains the instruction to skip over 0x10 bytes every time
+
+
