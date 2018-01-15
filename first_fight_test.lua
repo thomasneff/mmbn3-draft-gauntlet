@@ -74,16 +74,18 @@ function patch_battle(start_address, battle_data)
     return working_address
 end
 
+--B4 AA 01 08 00 00 00 00 16 05 01 01 00 00
+-- UNID_
 
 local example_fight_pointer_entry = {
   -- Important - this address starts at the first entity (Megaman, typically)
   ADDRESS = 0x0801AA60,
 
-  UNID_BYTE_1 = 0x00,
-  UNID_BYTE_2 = 0x00,
-  UNID_BYTE_3 = 0x00,
-  UNID_BYTE_4 = 0x00,
-  UNID_BYTE_5 = 0x16,
+  UNID_BYTE_1 = 0x00, -- freezes game if != 0
+  UNID_BYTE_2 = 0x00, -- freezes game if != 0
+  UNID_BYTE_3 = 0x00, -- freezes game if != 0
+  UNID_BYTE_4 = 0x00, -- freezes game if != 0
+  UNID_BYTE_5 = 0x16, -- Changes Background
   UNID_BYTE_6 = 0x05,
   UNID_BYTE_7 = 0x01,
   UNID_BYTE_8 = 0x01,
@@ -139,10 +141,6 @@ function change_battle_pointer_data(pointer_table_address, new_data)
 
     patch_battle_pointer(pointer_table_address, new_data)
     patch_battle_pointer(pointer_table_address + offset_between_tables, new_data)
-
-
-
-
 end
 
 

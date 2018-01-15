@@ -1,0 +1,13 @@
+local GAUNTLET_DEFS = {
+
+    NUMBER_OF_ROUNDS = 3,
+    NUMBER_OF_BATTLES = 10,
+    CURRENT_DIFFICULTY = 0,
+
+}
+
+
+
+
+
+return GAUNTLET_DEFS

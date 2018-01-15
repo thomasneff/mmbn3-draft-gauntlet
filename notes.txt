@@ -78,3 +78,19 @@ in the routine at 0812F176, the number of fights left is loaded from 02008F38
 0812F180 contains the instruction to skip over 0x10 bytes every time
 
 
+RAM values for enemy HP (3 mettaur fight)
+0200F8B2
+02037368
+
+@ 08005AFC, both r1 and r2 contain enemy HP
+
+r0 contains 08019630, might by enemy data for Mettaur3.
+yep.
+
+seems to be 8 bytes per virus
+
+Mettaur1 virus data address (HP) starts at 08019620
+
+Mettaur1 name address: 087114EC, seems to be until E7 (end of string) is encountered
+
+

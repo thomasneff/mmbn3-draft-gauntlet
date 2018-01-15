@@ -1,35 +1,16 @@
-local defs = {
+
 -- Taken from http://forums.therockmanexezone.com/topic/746085/1/
 
-
-BATTLE_LIMITER = 0xFF,
-
-ENTITY_KIND = {
-    Megaman = 0x00,
-    Virus = 0x01,
-    Rock = 0x02,
-    RockCube = 0x03,
-    MetalCube = 0x04,
-    IceCube = 0x05,
-    Guardian = 0x06,
-    BlackBomb = 0x07,
-    NOTHING = 0x08,
-    Flag = 0x09,
-    NOTHING = 0x0A,
-    MetalGear = 0x0B
-},
-
-
-ENTITY_TYPE = {
+local ENTITY_TYPE = {
     Megaman	=	0x0	,
 Mettaur	=	0x1	,
 Mettaur2	=	0x2	,
 Mettaur3	=	0x3	,
 MettaurOmega	=	0x4	,
-Cannodumb	=	0x5	,
-Cannodumb2	=	0x6	,
-Cannodumb3	=	0x7	,
-CannodumbOmega	=	0x8	,
+Canodumb	=	0x5	,
+Canodumb2	=	0x6	,
+Canodumb3	=	0x7	,
+CanodumbOmega	=	0x8	,
 Fishy	=	0x9	,
 Fishy2	=	0xA	,
 Fishy3	=	0xB	,
@@ -88,7 +69,7 @@ BlueDemon	=	0x3F	,
 ShadowOmega	=	0x40	,
 Brushman	=	0x41	,
 Brushman2	=	0x42	,
-Brushman4	=	0x43	,
+Brushman3	=	0x43	,
 BrushmanOmega	=	0x44	,
 Scutz	=	0x45	,
 Scuttle	=	0x46	,
@@ -261,8 +242,8 @@ Serenade	=	0xEC	,
 SerenadeAlpha	=	0xED	,
 SerenadeBeta	=	0xEE	,
 SerenadeOmega	=	0xEF	,
-BassUnkillable1	=	0xF0	,
-BassUnkillable2	=	0xF1	,
+BassUnkillable	=	0xF0	,
+Bass	=	0xF1	,
 BassGS	=	0xF2	,
 BassOmega	=	0xF3	,
 TrumpySP1k	=	0xF4	,
@@ -278,10 +259,7 @@ MegaFreeze1k2	=	0xFD	,
 Dot1025	=	0xFE	,
 DIVIDER	=	0xFF	,
 
-},
-
-
-
 }
 
-return defs
+
+return ENTITY_TYPE
