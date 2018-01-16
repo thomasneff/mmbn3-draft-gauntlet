@@ -63,23 +63,14 @@ function battle_data_generator.new_from_template()
 
 end
 
-function deepcopy(orig)
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in next, orig, nil do
-            copy[deepcopy(orig_key)] = deepcopy(orig_value)
-        end
-        setmetatable(copy, deepcopy(getmetatable(orig)))
-    else -- number, string, boolean, etc
-        copy = orig
-    end
-    return copy
-end
 
+function tablelength(T)
+  local count = 0
+  for _ in pairs(T) do count = count + 1 end
+  return count
+end
 -- This creates new battle data for a given round and battle.
-function battle_data_generator.random_from_round(current_round, current_battle)
+function battle_data_generator.random_from_battle(current_battle)
 
     -- Goals: Create a rising difficulty from battle 1 to 10, with a sub-boss at round 5, main boss at round 10.
     --        For that, we need to define virus groups and when they can appear, respectively.
@@ -89,7 +80,9 @@ function battle_data_generator.random_from_round(current_round, current_battle)
     local number_of_entities = math.random(1, 3)
     --print("NUM: ", number_of_entities)
     local battle_entities = {}
-    local entity_group = deepcopy(ENTITY_GROUPS[current_round])
+    --print(current_battle)
+    --print(ENTITY_GROUPS[current_battle])
+    local entity_group = deepcopy(ENTITY_GROUPS[current_battle])
     
     battle_entities[0] = ENTITIES.Megaman
     

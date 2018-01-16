@@ -19,8 +19,8 @@ local ptr_table_last_entry = GENERIC_DEFS.LAST_GAUNTLET_BATTLE_POINTER_ADDRESS
 local ptr_table_working_address = ptr_table_last_entry
 local offset_between_ptr_table_entries = GENERIC_DEFS.OFFSET_BETWEEN_POINTER_TABLE_ENTRIES
 local current_round = 0
-local current_battle = 0
-
+local current_battle = 1
+local current_battle_generate = 1
 
 local all_battles = {}
 
@@ -35,31 +35,100 @@ for battle_idx = 1,num_battles do
 
     --Generate new battle for this address
 
-    local new_battle_data = battle_data_generator.random_from_round(current_round, 0)
+    local new_battle_data = battle_data_generator.random_from_battle(current_battle_generate)
     all_battles[battle_idx] = deepcopy(new_battle_data)
     --print(new_battle_data)
     --new_battle_data = battle_data_generator.random_from_round(current_round, 0)
     --Write last battle
     working_address = mmbn3_utils.patch_battle(working_address, new_battle_data)
 
-    current_round = math.random(0, 1)
-
+    
+    current_battle_generate = current_battle_generate + 1
 
     print("Patched ", battle_idx)
 
 end
 
 -- Setup Callbacks for battle start to patch viruses
-
+local enable_rendering = 0 -- TODO: replace with draft states and stuff
+local gui_frame_counter = 0
+local entered_battle = 0
+local paused = 0
 function on_enter_battle()
-    current_battle = current_battle + 1
+    
+    print("Battle ", current_battle, " start - patching viruses!")
     mmbn3_utils.patch_entity_data(all_battles[current_battle].ENTITIES)
     print("Battle ", current_battle, " start - patched viruses!")
+    current_battle = current_battle + 1
+    entered_battle = 1
+end
+
+
+function on_render_frame()
+
+    if enable_rendering == 0 then
+        return
+    end
+    
+    gui.text(0, 0, "Frame " .. tostring(gui_frame_counter) .. " Mouse X: " .. tostring(input.get().xmouse) .. " Mouse Y: " .. tostring(input.get().ymouse))
+
+    local num_folder_chips = 30
+    local num_chips_per_col = 10
+    local num_cols = num_folder_chips / num_chips_per_col
+    local base_offset_y = 20
+    local base_offset_x = 4
+    local offset_per_col = 40
+    local offset_per_row = 10
+    local x_offset = base_offset_x
+    local y_offset = base_offset_y
+
+    for col_idx = 1, num_cols do
+        y_offset = base_offset_y
+        for chip_idx = 1,num_chips_per_col do
+            gui.text(x_offset, y_offset, "Cannon *")
+            y_offset = y_offset + offset_per_row
+        end
+        x_offset = x_offset + offset_per_col
+    end
+    gui_frame_counter = gui_frame_counter + 1
+
+    --print(input.get())
+    if input.get().leftclick == true then
+        print("LEFT CLICK!")
+        enable_rendering = 0
+        paused = 0
+        emu.unpause()
+    end
 
 end
 
 
+print("EXEC ADDRESS: ", GENERIC_DEFS.BATTLE_START_ADDRESS )
 memory.registerexec(GENERIC_DEFS.BATTLE_START_ADDRESS, on_enter_battle)
+
+--memory.registerread(0x0200F520, on_enter_battle)
+gui.register(on_render_frame)
 
 --Write the final limiter character
 memory.writebyte(working_address, GENERIC_DEFS.BATTLE_LIMITER)
+--emu.pause()
+--emu.unpause()
+--Main loop to control draft and stuff.
+
+
+while 1 do
+
+    if entered_battle == 1 then
+        entered_battle = 0
+        enable_rendering = 1
+        paused = 1
+    end
+    
+    --print("Frame " .. tostring(gui_frame_counter))
+    
+    if paused == 0 then
+        emu.frameadvance()
+    else
+        emu.pause()
+    end
+end

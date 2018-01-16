@@ -94,3 +94,37 @@ Mettaur1 virus data address (HP) starts at 08019620
 Mettaur1 name address: 087114EC, seems to be until E7 (end of string) is encountered
 
 
+TODO:
+Chip Data defs, index to Name, Chip Icon, Chip Image, address for codes, damage
+we automatically patch over it at the start with those values
+
+
+entity groups with customization:
+We need a rising difficulty curve inside each gauntlet as well. 
+Therefore we either need to bind the battle count min and max as well as the round to the virus, or create more complex entity groups ourselves
+maybe we should just get rid of the "round" and do entity groups for each fight, automatically assembled?
+
+
+Entities will contain flags for regular, miniboss, boss
+contain ranges for when they can appear (battle, no need for rounds)
+
+contain drop tables for chips, 
+map from chance to list of chips with codes?
+
+60 =  ChipGenerator.GetChipListNonAsterisk(CHIPS.ShockWav) -- this returns copies of the shockwav chip with all non-asterisk codes, which contains address, index, etc., to put into folder
+
+80 =  ChipGenerator.GetChipAsterisk(CHIPS.Guard)
+
+95 = ChipGenerator.GetChipAsterisk(CHIPS.ShockWav)
+
+100 = ChipGenerator.GetChipListNonAsterisk(CHIPS.SonicWav)
+
+
+For drafting, we need to have state - during "DRAFT-STATE", we need to wait for and validate user-input (user needs to click on a chip, then replace one from the folder)
+For easier implementation, the replace screen contains a "throw away" button.
+
+Same system for choosing roguelike bonuses.
+Upon choosing a chip and the folder index to replace it with, we mod it into the folder and unpause until the next battle.
+
+
+

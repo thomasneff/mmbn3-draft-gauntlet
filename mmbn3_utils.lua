@@ -1,5 +1,6 @@
 local defs = require "defs.generic_defs"
 local ENTITY_KIND = require "defs.entity_kind_defs"
+local TEXT_TABLE = require "defs.text_table_defs"
 local mmbn3_utils = {}
 
 
@@ -37,6 +38,28 @@ function mmbn3_utils.patch_battle(start_address, battle_data)
     return working_address
 end
 
+-- This function writes a given standard string to mmbn3, using text tables
+-- defined in text_table_defs
+function write_mmbn3_string(start_address, string_arg)
+
+    local current_address = start_address
+    for i = 1, #string_arg do
+
+        --Cut off more than 10 chars, as mmbn3 can't display that anyways
+        if i > 9 then
+            break
+        end
+
+        local c = string_arg:sub(i,i)
+        memory.writebyte(current_address, TEXT_TABLE[c])
+        current_address = current_address + 1
+    end
+
+    memory.writebyte(current_address, TEXT_TABLE.End_Of_String)
+
+
+end
+
 
 function mmbn3_utils.patch_entity_data(entities)
 
@@ -48,12 +71,17 @@ function mmbn3_utils.patch_entity_data(entities)
 
         -- Patch entity Damage
         if new_entity.DAMAGE_ADDRESS ~= nil then
-            memory.writebyte(new_entity.DAMAGE_ADDRESS, new_entity.BASE_DAMAGE)
+            memory.writebyte(new_entity.DAMAGE_ADDRESS, new_entity.DAMAGE_BASE)
         end
 
         -- Patch entity HP
         if new_entity.HP_ADDRESS ~= nil then
-            memory.writeword(new_entity.HP_ADDRESS, new_entity.BASE_HP)
+            memory.writeword(new_entity.HP_ADDRESS, new_entity.HP_BASE)
+        end
+
+        -- Patch entity HP
+        if new_entity.NAME_ADDRESS ~= nil then
+            write_mmbn3_string(new_entity.NAME_ADDRESS, new_entity.NAME)
         end
 
     end
