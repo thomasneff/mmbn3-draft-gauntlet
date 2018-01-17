@@ -1,6 +1,6 @@
 --This is the struct for enemy data, bytes need to be written in order.
 local ENEMY_DATA = {
-    HP = 0x0028, -- 2 bytes for HP
+    HP = 0x0028, -- 3 bytes for HP, one byte for element!
     HP_NUMBER_Y_OFFSET = 0x31,
     AI = 0x01, -- 0x01 seems to be for mettaur AI, 0x0F for cannon, ... must match Sprite otherwise it's just a dot
     UNID_BYTE = 0x04, -- Seems to always be 0x04, weird stuff happens otherwise

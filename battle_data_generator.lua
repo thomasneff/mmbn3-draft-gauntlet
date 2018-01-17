@@ -81,7 +81,7 @@ function battle_data_generator.random_from_battle(current_battle)
     --print("NUM: ", number_of_entities)
     local battle_entities = {}
     --print(current_battle)
-    --print(ENTITY_GROUPS[current_battle])
+    print(ENTITY_GROUPS[current_battle])
     local entity_group = deepcopy(ENTITY_GROUPS[current_battle])
     battle_entities[0] = ENTITIES.Megaman
     

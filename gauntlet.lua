@@ -45,6 +45,11 @@ function patch_next_battle()
     -- the fight loads.
     print("Battle ", current_battle, " start")
 
+    -- When we finished all gauntlet battles, enter the next round.
+    if battle_pointer_index > GAUNTLET_DEFS.BATTLES_PER_ROUND then
+        next_round()
+    end
+
     local new_battle_data = battle_data_generator.random_from_battle(current_battle)
 
     mmbn3_utils.patch_battle(GAUNTLET_BATTLE_POINTERS[battle_pointer_index], new_battle_data)
@@ -55,10 +60,8 @@ function patch_next_battle()
     current_battle = current_battle + 1
     battle_pointer_index = battle_pointer_index + 1
 
-    -- When we finished all gauntlet battles, enter the next round.
-    if current_battle > GAUNTLET_DEFS.BATTLES_PER_ROUND then
-        next_round()
-    end
+    
+    
 
 end
 
@@ -128,7 +131,7 @@ memory.registerexec(GENERIC_DEFS.BATTLE_START_ADDRESS, on_enter_battle)
 gui.register(on_render_frame)
 
 --Write the final limiter character
-memory.writebyte(working_address, GENERIC_DEFS.BATTLE_LIMITER)
+--memory.writebyte(working_address, GENERIC_DEFS.BATTLE_LIMITER)
 --emu.pause()
 --emu.unpause()
 --Main loop to control draft and stuff.

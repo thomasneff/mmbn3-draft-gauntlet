@@ -1,5 +1,5 @@
 
--- Taken from http://forums.therockmanexezone.com/topic/8907775/1/
+-- Taken from http://forums.therockmanexezone.com/topic/8907775/1/ , with some corrections (e.g. Canodumb)
 
 
 local ENTITY_AI_ADDRESS = {
@@ -9,8 +9,8 @@ Mettaur3 = 0x80AE716,
 MettaurOmega = 0x80AE719,
 Canodumb = 0x80AE850,
 Canodumb2 = 0x80AE852,
-Canodumb3 = 0x80AE853,
-CanodumbOmega = 0x80AE854,
+Canodumb3 = 0x80AE854,
+CanodumbOmega = 0x80AE856,
 Fishy = 0x80AE900,
 Fishy2 = 0x80AE908,
 Fishy3 = 0x80AE910,

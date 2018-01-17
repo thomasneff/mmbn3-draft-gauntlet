@@ -1,6 +1,7 @@
 local defs = require "defs.generic_defs"
 local ENTITY_KIND = require "defs.entity_kind_defs"
 local TEXT_TABLE = require "defs.text_table_defs"
+local ENTITY_PALETTE_DEFS = require "defs.entity_palette_defs"
 local mmbn3_utils = {}
 
 
@@ -53,6 +54,8 @@ function write_mmbn3_string(start_address, string_arg)
         end
 
         local c = string_arg:sub(i,i)
+        --print("Char: " .. c)
+        --print("TEXT_TABLE translate: " .. TEXT_TABLE[c])
         memory.writebyte(current_address, TEXT_TABLE[c])
         current_address = current_address + 1
     end
@@ -63,6 +66,8 @@ function write_mmbn3_string(start_address, string_arg)
 end
 
 
+
+
 function mmbn3_utils.patch_entity_data(entities)
 
     for key, new_entity in pairs(entities) do
@@ -71,17 +76,33 @@ function mmbn3_utils.patch_entity_data(entities)
             break
         end
 
-        -- Patch entity Damage
-        if new_entity.DAMAGE_ADDRESS ~= nil then
-            memory.writebyte(new_entity.DAMAGE_ADDRESS, new_entity.DAMAGE_BASE)
-        end
+        -- Patch entity Damage <-- We do this in AI_BYTES now, as entities have multiple sources of damage, and it's just a headache to 
+        -- change this.
+        --if new_entity.DAMAGE_ADDRESS ~= nil then
+        --    memory.writebyte(new_entity.DAMAGE_ADDRESS, new_entity.DAMAGE_BASE)
+        --end
 
-        -- Patch entity HP
+        -- Patch entity HP and Element, since they both use the same word.
         if new_entity.HP_ADDRESS ~= nil then
-            memory.writeword(new_entity.HP_ADDRESS, new_entity.HP_BASE)
+
+            -- We don't need bitwise ops here if we just do an if.
+            local masked_hp = new_entity.HP_BASE
+
+            if masked_hp > 0x0FFF then
+                masked_hp = 0x0FFF
+            end
+ 
+            local shifted_element = new_entity.ELEMENT * 0x1000
+            local masked_hp_and_element = masked_hp + shifted_element
+            memory.writeword(new_entity.HP_ADDRESS, masked_hp_and_element)
         end
 
-        -- Patch entity HP
+        -- Patch entity palette level (V1, V2, V3, Omega)
+        if new_entity.PALETTE_LEVEL ~= nil then
+            memory.writeword(new_entity.HP_ADDRESS + ENTITY_PALETTE_DEFS.HP_ADDRESS_PALETTE_OFFSET, new_entity.PALETTE_LEVEL)
+        end
+
+        -- Patch entity Name
         if new_entity.NAME_ADDRESS ~= nil then
             write_mmbn3_string(new_entity.NAME_ADDRESS, new_entity.NAME)
         end

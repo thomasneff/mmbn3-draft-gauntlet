@@ -1,5 +1,11 @@
 
+Entities. Add all the info from TREZ.
 
+Check if entity group with multiple entities (e.g. Mettaur, Canodumb) can choose only one.
+
+Implement a system that forces battles 5 and 10 to be single-enemy. (probably some flag in GAUNTLET_DEFS)
+
+Possibly implement a system to create fixed fights the game can choose from. Should contain ENTITIES, BACKGROUND, STAGE.
 
 
 
