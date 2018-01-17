@@ -428,6 +428,125 @@ ENTITIES.JellyOmega.AI_BYTES[0x00]          = 0x02                              
 ENTITIES.JellyOmega.AI_BYTES[0x01]          = 0xC8                              -- Damage by wave.
 ENTITIES.JellyOmega.BATTLE_NUMBERS          = {31, 32, 33, 34, 36, 37, 38, 39}  -- Battles in which this entity can appear.
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Shrimpy                            = new_base_entity(ENTITY_KIND.Virus, "Shrimpy")
+ENTITIES.Shrimpy.NAME                       = "Shrimpy"
+ENTITIES.Shrimpy.HP_BASE                    = 100
+ENTITIES.Shrimpy.PALETTE_LEVEL              = ENTITY_PALETTE_DEFS.PALETTE_V1
+ENTITIES.Shrimpy.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Shrimpy.AI_BYTES                   = {}
+ENTITIES.Shrimpy.AI_BYTES[0x00]             = 0x1E                              -- Vertical speed.
+ENTITIES.Shrimpy.AI_BYTES[0x01]             = 0x00                              -- Frequency of attacks (higher value == more frequent).
+ENTITIES.Shrimpy.AI_BYTES[0x02]             = 0x1E                              -- Damage by bubble.
+ENTITIES.Shrimpy.AI_BYTES[0xA20E]           = 0x10                              -- Delay after attack. This is shared with all other Shrimpy viruses in the same battle.
+ENTITIES.Shrimpy.BATTLE_NUMBERS             = {1, 2, 3, 4, 6, 7, 8, 9}          -- Battles in which this entity can appear.
+
+ENTITIES.Shrimpy2                           = new_base_entity(ENTITY_KIND.Virus, "Shrimpy2")
+ENTITIES.Shrimpy2.NAME                      = "Shrimpy2"
+ENTITIES.Shrimpy2.HP_BASE                   = 130
+ENTITIES.Shrimpy2.PALETTE_LEVEL             = ENTITY_PALETTE_DEFS.PALETTE_V2
+ENTITIES.Shrimpy2.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Shrimpy2.AI_BYTES                  = {}
+ENTITIES.Shrimpy2.AI_BYTES[0x00]            = 0x18                              -- Vertical speed.
+ENTITIES.Shrimpy2.AI_BYTES[0x01]            = 0x01                              -- Frequency of attacks (higher value == more frequent).
+ENTITIES.Shrimpy2.AI_BYTES[0x02]            = 0x3C                              -- Damage by bubble.
+ENTITIES.Shrimpy2.AI_BYTES[0xA20E]          = 0x10                              -- Delay after attack. This is shared with all other Shrimpy viruses in the same battle.
+ENTITIES.Shrimpy2.BATTLE_NUMBERS            = {11, 12, 13, 14, 16, 17, 18, 19}  -- Battles in which this entity can appear.
+
+ENTITIES.Shrimpy3                           = new_base_entity(ENTITY_KIND.Virus, "Shrimpy3")
+ENTITIES.Shrimpy3.NAME                      = "Shrimpy3"
+ENTITIES.Shrimpy3.HP_BASE                   = 160
+ENTITIES.Shrimpy3.PALETTE_LEVEL             = ENTITY_PALETTE_DEFS.PALETTE_V3
+ENTITIES.Shrimpy3.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Shrimpy3.AI_BYTES                  = {}
+ENTITIES.Shrimpy3.AI_BYTES[0x00]            = 0x14                              -- Vertical speed.
+ENTITIES.Shrimpy3.AI_BYTES[0x01]            = 0x02                              -- Frequency of attacks (higher value == more frequent).
+ENTITIES.Shrimpy3.AI_BYTES[0x02]            = 0x5A                              -- Damage by bubble.
+ENTITIES.Shrimpy3.AI_BYTES[0xA20E]          = 0x10                              -- Delay after attack. This is shared with all other Shrimpy viruses in the same battle.
+ENTITIES.Shrimpy3.BATTLE_NUMBERS            = {21, 22, 23, 24, 26, 27, 28, 29}  -- Battles in which this entity can appear.
+
+ENTITIES.ShrimpyOmega                       = new_base_entity(ENTITY_KIND.Virus, "ShrimpyOmega")
+ENTITIES.ShrimpyOmega.NAME                  = "Shrimpy\003"
+ENTITIES.ShrimpyOmega.HP_BASE               = 200
+ENTITIES.ShrimpyOmega.PALETTE_LEVEL         = ENTITY_PALETTE_DEFS.PALETTE_Omega
+ENTITIES.ShrimpyOmega.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.ShrimpyOmega.AI_BYTES              = {}
+ENTITIES.ShrimpyOmega.AI_BYTES[0x00]        = 0x0F                              -- Vertical speed.
+ENTITIES.ShrimpyOmega.AI_BYTES[0x01]        = 0x03                              -- Frequency of attacks (higher value == more frequent).
+ENTITIES.ShrimpyOmega.AI_BYTES[0x02]        = 0x96                              -- Damage by bubble.
+ENTITIES.ShrimpyOmega.AI_BYTES[0xA20E]      = 0x10                              -- Delay after attack. This is shared with all other Shrimpy viruses in the same battle.
+ENTITIES.ShrimpyOmega.BATTLE_NUMBERS        = {31, 32, 33, 34, 36, 37, 38, 39}  -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Spikey                             = new_base_entity(ENTITY_KIND.Virus, "Spikey")
+ENTITIES.Spikey.NAME                        = "Spikey"
+ENTITIES.Spikey.HP_BASE                     = 90
+ENTITIES.Spikey.PALETTE_LEVEL               = ENTITY_PALETTE_DEFS.PALETTE_V1
+ENTITIES.Spikey.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Spikey.AI_BYTES                    = {}
+ENTITIES.Spikey.AI_BYTES[0x00]              = 0x3C                              -- Movement delay 1
+ENTITIES.Spikey.AI_BYTES[0x01]              = 0x32                              -- Movement delay 2
+ENTITIES.Spikey.AI_BYTES[0x02]              = 0x28                              -- Movement delay 3
+ENTITIES.Spikey.AI_BYTES[0x03]              = 0x1E                              -- Movement delay 4
+ENTITIES.Spikey.AI_BYTES[0x04]              = 0x3C                              -- Delay after attack
+ENTITIES.Spikey.AI_BYTES[0x05]              = 0x1E                              -- Damage fire
+ENTITIES.Spikey.AI_BYTES[0x06]              = 0x05                              -- Movements before attack
+ENTITIES.Spikey.AI_BYTES[0x07]              = 0x10                              -- Fireball speed delay
+ENTITIES.Spikey.BATTLE_NUMBERS              = {1, 2, 3, 4, 6, 7, 8, 9}          -- Battles in which this entity can appear.
+
+ENTITIES.Spikey2                            = new_base_entity(ENTITY_KIND.Virus, "Spikey2")
+ENTITIES.Spikey2.NAME                       = "Spikey2"
+ENTITIES.Spikey2.HP_BASE                    = 140
+ENTITIES.Spikey2.PALETTE_LEVEL              = ENTITY_PALETTE_DEFS.PALETTE_V2
+ENTITIES.Spikey2.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Spikey2.AI_BYTES                   = {}
+ENTITIES.Spikey2.AI_BYTES[0x00]             = 0x32                              -- Movement delay 1
+ENTITIES.Spikey2.AI_BYTES[0x01]             = 0x28                              -- Movement delay 2
+ENTITIES.Spikey2.AI_BYTES[0x02]             = 0x1E                              -- Movement delay 3
+ENTITIES.Spikey2.AI_BYTES[0x03]             = 0x14                              -- Movement delay 4
+ENTITIES.Spikey2.AI_BYTES[0x04]             = 0x3C                              -- Delay after attack
+ENTITIES.Spikey2.AI_BYTES[0x05]             = 0x3C                              -- Damage fire
+ENTITIES.Spikey2.AI_BYTES[0x06]             = 0x04                              -- Movements before attack
+ENTITIES.Spikey2.AI_BYTES[0x07]             = 0x0A                              -- Fireball speed delay
+ENTITIES.Spikey2.BATTLE_NUMBERS             = {11, 12, 13, 14, 16, 17, 18, 19}  -- Battles in which this entity can appear.
+
+ENTITIES.Spikey3                            = new_base_entity(ENTITY_KIND.Virus, "Spikey3")
+ENTITIES.Spikey3.NAME                       = "Spikey3"
+ENTITIES.Spikey3.HP_BASE                    = 190
+ENTITIES.Spikey3.PALETTE_LEVEL              = ENTITY_PALETTE_DEFS.PALETTE_V3
+ENTITIES.Spikey3.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Spikey3.AI_BYTES                   = {}
+ENTITIES.Spikey3.AI_BYTES[0x00]             = 0x2D                              -- Movement delay 1
+ENTITIES.Spikey3.AI_BYTES[0x01]             = 0x1E                              -- Movement delay 2
+ENTITIES.Spikey3.AI_BYTES[0x02]             = 0x14                              -- Movement delay 3
+ENTITIES.Spikey3.AI_BYTES[0x03]             = 0x0F                              -- Movement delay 4
+ENTITIES.Spikey3.AI_BYTES[0x04]             = 0x3C                              -- Delay after attack
+ENTITIES.Spikey3.AI_BYTES[0x05]             = 0x5A                              -- Damage fire
+ENTITIES.Spikey3.AI_BYTES[0x06]             = 0x03                              -- Movements before attack
+ENTITIES.Spikey3.AI_BYTES[0x07]             = 0x05                              -- Fireball speed delay
+ENTITIES.Spikey3.BATTLE_NUMBERS             = {21, 22, 23, 24, 26, 27, 28, 29}  -- Battles in which this entity can appear.
+
+ENTITIES.SpikeyOmega                        = new_base_entity(ENTITY_KIND.Virus, "SpikeyOmega")
+ENTITIES.SpikeyOmega.NAME                   = "Spikey\003"
+ENTITIES.SpikeyOmega.HP_BASE                = 260
+ENTITIES.SpikeyOmega.PALETTE_LEVEL          = ENTITY_PALETTE_DEFS.PALETTE_Omega
+ENTITIES.SpikeyOmega.ELEMENT                = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.SpikeyOmega.AI_BYTES               = {}
+ENTITIES.SpikeyOmega.AI_BYTES[0x00]         = 0x1E                              -- Movement delay 1
+ENTITIES.SpikeyOmega.AI_BYTES[0x01]         = 0x12                              -- Movement delay 2
+ENTITIES.SpikeyOmega.AI_BYTES[0x02]         = 0x0D                              -- Movement delay 3
+ENTITIES.SpikeyOmega.AI_BYTES[0x03]         = 0x0A                              -- Movement delay 4
+ENTITIES.SpikeyOmega.AI_BYTES[0x04]         = 0x3C                              -- Delay after attack
+ENTITIES.SpikeyOmega.AI_BYTES[0x05]         = 0x96                              -- Damage fire
+ENTITIES.SpikeyOmega.AI_BYTES[0x06]         = 0x03                              -- Movements before attack
+ENTITIES.SpikeyOmega.AI_BYTES[0x07]         = 0x03                              -- Fireball speed delay
+ENTITIES.SpikeyOmega.BATTLE_NUMBERS         = {31, 32, 33, 34, 36, 37, 38, 39}  -- Battles in which this entity can appear.
+
+
+
+
 
 ENTITIES.LolMettaur = deepcopy(ENTITIES.Mettaur)
 ENTITIES.LolMettaur.HP_BASE = 42
