@@ -273,7 +273,7 @@ function dump_entity_name_addresses()
     
     ENTITY_NAME_ADDRESS_TRANSLATOR.Megaman = 0x087114E4
 
-    for _, key in ipairs(sorted_entity_keys) do
+    for _, key in pairs(sorted_entity_keys) do
         
         entity = ENTITY_TYPE[key]
         print(entity, ENTITY_TYPE.Megaman)
@@ -300,7 +300,7 @@ function dump_entity_name_addresses()
     end
 
     print("NAMES:")
-    for _, key in ipairs(sorted_entity_keys) do
+    for _, key in pairs(sorted_entity_keys) do
         print(key, "=", string.format("0x%x", ENTITY_NAME_ADDRESS_TRANSLATOR[key]), ",")
     end
     

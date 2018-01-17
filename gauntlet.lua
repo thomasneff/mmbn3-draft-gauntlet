@@ -3,67 +3,85 @@ local pointer_entry_generator = require "pointer_entry_generator"
 local BACKGROUND_TYPE = require "defs.battle_background_defs"
 local BATTLE_STAGE = require "defs.battle_stage_defs"
 local GAUNTLET_DEFS = require "defs.gauntlet_defs"
+local GAUNTLET_BATTLE_POINTERS = require "defs.gauntlet_battle_pointer_defs"
 local GENERIC_DEFS = require "defs.generic_defs"
 local mmbn3_utils = require "mmbn3_utils"
 math.randomseed(os.time())
 
-
-
--- The Gauntlet Battles are ordered in reverse - the first fight is at the lowest address. We will simply overwrite all other fights and see what happens.
-
-local num_battles = GAUNTLET_DEFS.NUMBER_OF_BATTLES
-local last_fight_address = GENERIC_DEFS.LAST_GAUNTLET_BATTLE_ADDRESS
-local working_address = last_fight_address
-
-local ptr_table_last_entry = GENERIC_DEFS.LAST_GAUNTLET_BATTLE_POINTER_ADDRESS
-local ptr_table_working_address = ptr_table_last_entry
-local offset_between_ptr_table_entries = GENERIC_DEFS.OFFSET_BETWEEN_POINTER_TABLE_ENTRIES
 local current_round = 0
 local current_battle = 1
-local current_battle_generate = 1
+local battle_pointer_index = 1
 
-local all_battles = {}
 
-for battle_idx = 1,num_battles do
-
-    --Change pointer to fight (this breaks other fights, but whatever)
-    
-    local new_pointer_entry = pointer_entry_generator.new_from_template(working_address + 4, BACKGROUND_TYPE.random() , BATTLE_STAGE.random())
-
-    mmbn3_utils.change_battle_pointer_data(ptr_table_working_address, new_pointer_entry)
-    ptr_table_working_address = ptr_table_working_address + offset_between_ptr_table_entries
-
-    --Generate new battle for this address
-
-    local new_battle_data = battle_data_generator.random_from_battle(current_battle_generate)
-    all_battles[battle_idx] = deepcopy(new_battle_data)
-    --print(new_battle_data)
-    --new_battle_data = battle_data_generator.random_from_round(current_round, 0)
-    --Write last battle
-    working_address = mmbn3_utils.patch_battle(working_address, new_battle_data)
+function next_round()
 
     
-    current_battle_generate = current_battle_generate + 1
+    -- We just finished the round. We might want to load a savestate? Or just let the user do that.
+    current_round = current_round + 1
+    print("Starting Round " .. current_round)
+    -- Reset all address variables, as we now start from the beginning again.
+    battle_pointer_index = 1
+    local ptr_table_working_address = GENERIC_DEFS.FIRST_GAUNTLET_BATTLE_POINTER_ADDRESS
 
-    print("Patched ", battle_idx)
+
+    -- Patch all battle stage setups. This needs to be done before engaging the gauntlet.
+    -- The game loads this probably into RAM, so we could only change that later if we found out the 
+    -- respective RAM addresses...
+
+    for battle_idx = 1, GAUNTLET_DEFS.BATTLES_PER_ROUND do
+        local new_pointer_entry = pointer_entry_generator.new_from_template(GAUNTLET_BATTLE_POINTERS[battle_idx] + 4, BACKGROUND_TYPE.random() , BATTLE_STAGE.random())
+        mmbn3_utils.change_battle_pointer_data(ptr_table_working_address, new_pointer_entry)
+        ptr_table_working_address = ptr_table_working_address - GENERIC_DEFS.OFFSET_BETWEEN_POINTER_TABLE_ENTRIES
+    end
+    print("Patched Battle Stage Setups!")
+
+    -- Potentially do other stuff here. For example, we could set the state to a 'choose-reward' state.
 
 end
+
+function patch_next_battle()
+
+    -- This function changes viruses, stage, AI, basically anything related to the fight when
+    -- the fight loads.
+    print("Battle ", current_battle, " start")
+
+    local new_battle_data = battle_data_generator.random_from_battle(current_battle)
+
+    mmbn3_utils.patch_battle(GAUNTLET_BATTLE_POINTERS[battle_pointer_index], new_battle_data)
+    mmbn3_utils.patch_entity_data(new_battle_data.ENTITIES)
+
+    print("Patched Battle ", current_battle)
+
+    current_battle = current_battle + 1
+    battle_pointer_index = battle_pointer_index + 1
+
+    -- When we finished all gauntlet battles, enter the next round.
+    if current_battle > GAUNTLET_DEFS.BATTLES_PER_ROUND then
+        next_round()
+    end
+
+end
+
+
 
 -- Setup Callbacks for battle start to patch viruses
 local enable_rendering = 0 -- TODO: replace with draft states and stuff
 local gui_frame_counter = 0
 local entered_battle = 0
 local paused = 0
+
+-- Upon start, initialize the current round:
+next_round()
+
+-- This gets called whenever a battle is loaded.
 function on_enter_battle()
     
-    print("Battle ", current_battle, " start - patching viruses!")
-    mmbn3_utils.patch_entity_data(all_battles[current_battle].ENTITIES)
-    print("Battle ", current_battle, " start - patched viruses!")
-    current_battle = current_battle + 1
+    patch_next_battle()
     entered_battle = 1
 end
 
-
+-- This gets called every frame by the emulator to render GUI.
+-- This is *also* called when the emulator is paused.
 function on_render_frame()
 
     if enable_rendering == 0 then

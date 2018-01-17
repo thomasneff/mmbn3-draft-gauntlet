@@ -1,0 +1,4 @@
+Implement AI byte patching
+Implement per-battle patching, so we can pre-define all battles and just patch one-by-one
+ - Changed battle patching to now be per-battle. This removes the need of pointer adjustment.
+ - We simply patch each battle as it comes, and use the existing offsets :-)

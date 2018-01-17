@@ -39,12 +39,5 @@ end
 
 assemble_groups_from_entity_defs()
 
---ENTITY_GROUPS[0] = {
---    ENTITIES.Mettaur,
---} 
-
---ENTITY_GROUPS[1] = {
---    ENTITIES.LolMettaur,
---} 
 
 return ENTITY_GROUPS

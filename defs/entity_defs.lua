@@ -55,8 +55,8 @@ ENTITIES.Mettaur.DAMAGE_ADDRESS = ENTITIES.Mettaur.AI_ADDRESS + 0x0
 ENTITIES.Mettaur.DAMAGE_BASE = 10
 --These AI Bytes need to be looked up at http://forums.therockmanexezone.com/topic/8907775/1/
 ENTITIES.Mettaur.AI_BYTES = {}
-ENTITIES.Mettaur.AI_BYTES[1] = 0x28 -- Delay before moving.
-ENTITIES.Mettaur.AI_BYTES[2] = 0x1E -- Delay before attacking.
+ENTITIES.Mettaur.AI_BYTES[0x01] = 0x28 -- Delay before moving.
+ENTITIES.Mettaur.AI_BYTES[0x02] = 0x1E -- Delay before attacking.
 ENTITIES.Mettaur.BATTLE_NUMBERS = {1, 2, 3, 4, 6, 7, 8, 9} -- Battles in which this entity can appear.
 
 ENTITIES.LolMettaur = deepcopy(ENTITIES.Mettaur)
