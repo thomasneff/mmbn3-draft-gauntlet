@@ -546,12 +546,31 @@ ENTITIES.SpikeyOmega.BATTLE_NUMBERS         = {31, 32, 33, 34, 36, 37, 38, 39}  
 
 
 
-
-
-ENTITIES.LolMettaur = deepcopy(ENTITIES.Mettaur)
-ENTITIES.LolMettaur.HP_BASE = 42
+-- Crackin' yar panels and stealing yar stuff!
+ENTITIES.LolMettaur = deepcopy(ENTITIES.MettaurOmega)
+ENTITIES.LolMettaur.HP_BASE = 420
 ENTITIES.LolMettaur.NAME = "LolMettaur"
 ENTITIES.LolMettaur.BATTLE_NUMBERS = {5, 10, 15, 20, 25, 30, 35, 40}
+ENTITIES.LolMettaur.AI_BYTES[0x00]        = 20                                -- Base Damage.
+ENTITIES.LolMettaur.AI_BYTES[0x01]        = 0x01                              -- Delay before moving.
+ENTITIES.LolMettaur.AI_BYTES[0x02]        = 0x01                              -- Delay before attacking.
+ENTITIES.LolMettaur.PALETTE_LEVEL         = ENTITY_PALETTE_DEFS.PALETTE_Omega -- Btw, this also changes the "AI", so for cracking panels, we need MettaurOmega.
+ENTITIES.LolMettaur.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+
+-- Introducing - DodgeDoge!
+ENTITIES.DodgeDoge = deepcopy(ENTITIES.Spikey)
+ENTITIES.DodgeDoge.HP_BASE = 50
+ENTITIES.DodgeDoge.NAME = "DodgeDoge"
+ENTITIES.DodgeDoge.BATTLE_NUMBERS = {5, 10, 15, 20, 25, 30, 35, 40}
+ENTITIES.DodgeDoge.AI_BYTES[0x00]              = 0x01                              -- Movement delay 1
+ENTITIES.DodgeDoge.AI_BYTES[0x01]              = 0x01                              -- Movement delay 2
+ENTITIES.DodgeDoge.AI_BYTES[0x02]              = 0x01                              -- Movement delay 3
+ENTITIES.DodgeDoge.AI_BYTES[0x03]              = 0x01                              -- Movement delay 4
+ENTITIES.DodgeDoge.AI_BYTES[0x04]              = 0x01                              -- Delay after attack
+ENTITIES.DodgeDoge.AI_BYTES[0x05]              = 0x1E                              -- Damage fire
+ENTITIES.DodgeDoge.AI_BYTES[0x06]              = 0x20                              -- Movements before attack
+ENTITIES.DodgeDoge.AI_BYTES[0x07]              = 0x01                              -- Fireball speed delay
+ENTITIES.DodgeDoge.PALETTE_LEVEL               = ENTITY_PALETTE_DEFS.PALETTE_V1
 
 
 

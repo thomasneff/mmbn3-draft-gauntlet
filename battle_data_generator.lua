@@ -3,6 +3,7 @@ local ENTITY_TYPE = require "defs.entity_type_defs"
 local ENTITY_KIND = require "defs.entity_kind_defs"
 local ENTITY_GROUPS = require "defs.entity_groups"
 local ENTITIES = require "defs.entity_defs"
+local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 
 local battle_data_template = {
     LIMITER_START = defs.BATTLE_LIMITER,
@@ -77,7 +78,13 @@ function battle_data_generator.random_from_battle(current_battle)
     local new_battle_data = battle_data_generator.new_from_template()
 
     -- TODO: Improve. For now, get a random entity out of the group of the current difficulty/round
-    local number_of_entities = math.random(1, 3)
+    local number_of_entities = math.random(GAUNTLET_DEFS.MIN_NUMBER_OF_VIRUSES, 3)
+
+    -- For special battles, override number of viruses
+    if GAUNTLET_DEFS.NUMBER_OF_VIRUSES_OVERRIDE[current_battle] ~= nil then
+        number_of_entities = GAUNTLET_DEFS.NUMBER_OF_VIRUSES_OVERRIDE[current_battle]
+    end
+
     --print("NUM: ", number_of_entities)
     local battle_entities = {}
     --print(current_battle)
