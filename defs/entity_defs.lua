@@ -941,9 +941,9 @@ ENTITIES.RedDevil.AI_BYTES                  = {}
 ENTITIES.RedDevil.AI_BYTES[0x00]            = 0x06                              -- Number of attacks.
 ENTITIES.RedDevil.AI_BYTES[0x01]            = 0x5A                              -- Delay between attacks.
 ENTITIES.RedDevil.AI_BYTES[0x02]            = 0x64                              -- Damage.
-ENTITIES.RedDevil.AI_BYTES[0x17DF0]         = 0x28                              -- Delay before sword 1-2. This is shared with other RedDevil viruses in the same battle.
-ENTITIES.RedDevil.AI_BYTES[0x17E1E]         = 0x0C                              -- Vertical attack duration (0x0C == 1 panel, 0x18 == 2 panels). This is shared with other RedDevil viruses in the same battle.
-ENTITIES.RedDevil.AI_BYTES[0x17D24]         = 0x1E                              -- Delay before axe. This is shared with other RedDevil viruses in the same battle.
+ENTITIES.RedDevil.AI_BYTES[0x17DED]         = 0x28                              -- Delay before sword 1-2. This is shared with other RedDevil viruses in the same battle.
+ENTITIES.RedDevil.AI_BYTES[0x17E1B]         = 0x0C                              -- Vertical attack duration (0x0C == 1 panel, 0x18 == 2 panels). This is shared with other RedDevil viruses in the same battle.
+ENTITIES.RedDevil.AI_BYTES[0x17D21]         = 0x1E                              -- Delay before axe. This is shared with other RedDevil viruses in the same battle.
 ENTITIES.RedDevil.BATTLE_NUMBERS            = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.BlueDemon                          = new_base_entity(ENTITY_KIND.Virus, "BlueDemon")
@@ -954,9 +954,9 @@ ENTITIES.BlueDemon.AI_BYTES                 = {}
 ENTITIES.BlueDemon.AI_BYTES[0x00]           = 0x09                              -- Number of attacks.
 ENTITIES.BlueDemon.AI_BYTES[0x01]           = 0x3C                              -- Delay between attacks.
 ENTITIES.BlueDemon.AI_BYTES[0x02]           = 0x96                              -- Damage.
-ENTITIES.BlueDemon.AI_BYTES[0x17DF0]        = 0x28                              -- Delay before sword 1-2. This is shared with other BlueDemon viruses in the same battle.
-ENTITIES.BlueDemon.AI_BYTES[0x17E1E]        = 0x0C                              -- Vertical attack duration (0x0C == 1 panel, 0x18 == 2 panels). This is shared with other BlueDemon viruses in the same battle.
-ENTITIES.BlueDemon.AI_BYTES[0x17D24]        = 0x1E                              -- Delay before axe. This is shared with other BlueDemon viruses in the same battle.
+ENTITIES.BlueDemon.AI_BYTES[0x17DEA]        = 0x28                              -- Delay before sword 1-2. This is shared with other BlueDemon viruses in the same battle.
+ENTITIES.BlueDemon.AI_BYTES[0x17E18]        = 0x0C                              -- Vertical attack duration (0x0C == 1 panel, 0x18 == 2 panels). This is shared with other BlueDemon viruses in the same battle.
+ENTITIES.BlueDemon.AI_BYTES[0x17D1E]        = 0x1E                              -- Delay before axe. This is shared with other BlueDemon viruses in the same battle.
 ENTITIES.BlueDemon.BATTLE_NUMBERS           = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.ShadowOmega                        = new_base_entity(ENTITY_KIND.Virus, "ShadowOmega")
@@ -967,9 +967,9 @@ ENTITIES.ShadowOmega.AI_BYTES               = {}
 ENTITIES.ShadowOmega.AI_BYTES[0x00]         = 0x0C                              -- Number of attacks.
 ENTITIES.ShadowOmega.AI_BYTES[0x01]         = 0x2D                              -- Delay between attacks.
 ENTITIES.ShadowOmega.AI_BYTES[0x02]         = 0xC8                              -- Damage.
-ENTITIES.ShadowOmega.AI_BYTES[0x17DF0]      = 0x28                              -- Delay before sword 1-2. This is shared with other Shadow viruses in the same battle.
-ENTITIES.ShadowOmega.AI_BYTES[0x17E1E]      = 0x0C                              -- Vertical attack duration (0x0C == 1 panel, 0x18 == 2 panels). This is shared with other Shadow viruses in the same battle.
-ENTITIES.ShadowOmega.AI_BYTES[0x17D24]      = 0x1E                              -- Delay before axe. This is shared with other Shadow viruses in the same battle.
+ENTITIES.ShadowOmega.AI_BYTES[0x17DE7]      = 0x28                              -- Delay before sword 1-2. This is shared with other Shadow viruses in the same battle.
+ENTITIES.ShadowOmega.AI_BYTES[0x17E15]      = 0x0C                              -- Vertical attack duration (0x0C == 1 panel, 0x18 == 2 panels). This is shared with other Shadow viruses in the same battle.
+ENTITIES.ShadowOmega.AI_BYTES[0x17D1B]      = 0x1E                              -- Delay before axe. This is shared with other Shadow viruses in the same battle.
 ENTITIES.ShadowOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1037,7 +1037,134 @@ ENTITIES.BrushmanOmega.AI_BYTES[0x03]       = Brushman_PanelType.POISON         
 ENTITIES.BrushmanOmega.AI_BYTES[0x04]       = 0xC8                              -- Contact damage.
 ENTITIES.BrushmanOmega.BATTLE_NUMBERS       = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local Scutz_AuraType = 
+{
+    AURA_100 = 0x00,
+    AURA_200 = 0x01,
+    AURA_300 = 0x02
+}
+
+ENTITIES.Scutz                              = new_base_entity(ENTITY_KIND.Virus, "Scutz")
+ENTITIES.Scutz.NAME                         = "Scutz"
+ENTITIES.Scutz.HP_BASE                      = 300
+ENTITIES.Scutz.ELEMENT                      = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Scutz.AI_BYTES                     = {}
+ENTITIES.Scutz.AI_BYTES[0x00]               = 0x28                              -- Delay after attack.
+ENTITIES.Scutz.AI_BYTES[0x01]               = 0x04                              -- (??), either 0x00 or 0x04.
+ENTITIES.Scutz.AI_BYTES[0x02]               = 0x3C                              -- Delay before attack.
+ENTITIES.Scutz.AI_BYTES[0x03]               = Scutz_AuraType.AURA_100           -- Type of aura.
+ENTITIES.Scutz.AI_BYTES[0x04]               = 0xC8                              -- Damage (Byte 1).
+ENTITIES.Scutz.AI_BYTES[0x05]               = 0x00                              -- Damage (Byte 2).
+ENTITIES.Scutz.AI_BYTES[0x06]               = 0x1E                              -- Vertical boundaries (Byte 1).
+ENTITIES.Scutz.AI_BYTES[0x07]               = 0x00                              -- Vertical boundaries (Byte 2).
+ENTITIES.Scutz.AI_BYTES[0x08]               = 0xCC                              -- Movement variable (Byte 1).
+ENTITIES.Scutz.AI_BYTES[0x09]               = 0xCC                              -- Movement variable (Byte 2).
+ENTITIES.Scutz.AI_BYTES[0x0A]               = 0x00                              -- Movement variable (Byte 3).
+ENTITIES.Scutz.AI_BYTES[0x0B]               = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.Scutz.AI_BYTES[0x336B4]            = 0x21                              -- Vine speed delay.
+ENTITIES.Scutz.BATTLE_NUMBERS               = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Scuttle                            = new_base_entity(ENTITY_KIND.Virus, "Scuttle")
+ENTITIES.Scuttle.NAME                       = "Scuttle"
+ENTITIES.Scuttle.HP_BASE                    = 300
+ENTITIES.Scuttle.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Scuttle.AI_BYTES                   = {}
+ENTITIES.Scuttle.AI_BYTES[0x00]             = 0x28                              -- Delay after attack.
+ENTITIES.Scuttle.AI_BYTES[0x01]             = 0x00                              -- (??), either 0x00 or 0x04.
+ENTITIES.Scuttle.AI_BYTES[0x02]             = 0x5A                              -- Delay before attack.
+ENTITIES.Scuttle.AI_BYTES[0x03]             = Scutz_AuraType.AURA_100           -- Type of aura.
+ENTITIES.Scuttle.AI_BYTES[0x04]             = 0xC8                              -- Damage (Byte 1).
+ENTITIES.Scuttle.AI_BYTES[0x05]             = 0x00                              -- Damage (Byte 2).
+ENTITIES.Scuttle.AI_BYTES[0x06]             = 0x14                              -- Vertical boundaries (Byte 1).
+ENTITIES.Scuttle.AI_BYTES[0x07]             = 0x00                              -- Vertical boundaries (Byte 2).
+ENTITIES.Scuttle.AI_BYTES[0x08]             = 0x33                              -- Movement variable (Byte 1).
+ENTITIES.Scuttle.AI_BYTES[0x09]             = 0x33                              -- Movement variable (Byte 2).
+ENTITIES.Scuttle.AI_BYTES[0x0A]             = 0x01                              -- Movement variable (Byte 3).
+ENTITIES.Scuttle.AI_BYTES[0x0B]             = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.Scuttle.AI_BYTES[0x336A8]          = 0x21                              -- Vine speed delay.
+ENTITIES.Scuttle.BATTLE_NUMBERS             = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Scuttler                           = new_base_entity(ENTITY_KIND.Virus, "Scuttler")
+ENTITIES.Scuttler.NAME                      = "Scuttler"
+ENTITIES.Scuttler.HP_BASE                   = 300
+ENTITIES.Scuttler.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.Scuttler.AI_BYTES                  = {}
+ENTITIES.Scuttler.AI_BYTES[0x00]            = 0x28                              -- Delay after attack.
+ENTITIES.Scuttler.AI_BYTES[0x01]            = 0x04                              -- (??), either 0x00 or 0x04.
+ENTITIES.Scuttler.AI_BYTES[0x02]            = 0x78                              -- Delay before attack.
+ENTITIES.Scuttler.AI_BYTES[0x03]            = Scutz_AuraType.AURA_100           -- Type of aura.
+ENTITIES.Scuttler.AI_BYTES[0x04]            = 0xC8                              -- Damage (Byte 1).
+ENTITIES.Scuttler.AI_BYTES[0x05]            = 0x00                              -- Damage (Byte 2).
+ENTITIES.Scuttler.AI_BYTES[0x06]            = 0x28                              -- Vertical boundaries (Byte 1).
+ENTITIES.Scuttler.AI_BYTES[0x07]            = 0x00                              -- Vertical boundaries (Byte 2).
+ENTITIES.Scuttler.AI_BYTES[0x08]            = 0x99                              -- Movement variable (Byte 1).
+ENTITIES.Scuttler.AI_BYTES[0x09]            = 0x99                              -- Movement variable (Byte 2).
+ENTITIES.Scuttler.AI_BYTES[0x0A]            = 0x00                              -- Movement variable (Byte 3).
+ENTITIES.Scuttler.AI_BYTES[0x0B]            = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.Scuttler.AI_BYTES[0x3369C]         = 0x21                              -- Vine speed delay.
+ENTITIES.Scuttler.BATTLE_NUMBERS            = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Scuttzer                           = new_base_entity(ENTITY_KIND.Virus, "Scuttzer")
+ENTITIES.Scuttzer.NAME                      = "Scuttzer"
+ENTITIES.Scuttzer.HP_BASE                   = 300
+ENTITIES.Scuttzer.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_WOOD
+ENTITIES.Scuttzer.AI_BYTES                  = {}
+ENTITIES.Scuttzer.AI_BYTES[0x00]            = 0x28                              -- Delay after attack.
+ENTITIES.Scuttzer.AI_BYTES[0x01]            = 0x04                              -- (??), either 0x00 or 0x04.
+ENTITIES.Scuttzer.AI_BYTES[0x02]            = 0x3C                              -- Delay before attack.
+ENTITIES.Scuttzer.AI_BYTES[0x03]            = Scutz_AuraType.AURA_100           -- Type of aura.
+ENTITIES.Scuttzer.AI_BYTES[0x04]            = 0xC8                              -- Damage (Byte 1).
+ENTITIES.Scuttzer.AI_BYTES[0x05]            = 0x00                              -- Damage (Byte 2).
+ENTITIES.Scuttzer.AI_BYTES[0x06]            = 0x18                              -- Vertical boundaries (Byte 1).
+ENTITIES.Scuttzer.AI_BYTES[0x07]            = 0x00                              -- Vertical boundaries (Byte 2).
+ENTITIES.Scuttzer.AI_BYTES[0x08]            = 0x00                              -- Movement variable (Byte 1).
+ENTITIES.Scuttzer.AI_BYTES[0x09]            = 0x00                              -- Movement variable (Byte 2).
+ENTITIES.Scuttzer.AI_BYTES[0x0A]            = 0x01                              -- Movement variable (Byte 3).
+ENTITIES.Scuttzer.AI_BYTES[0x0B]            = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.Scuttzer.AI_BYTES[0x33690]         = 0x21                              -- Vine speed delay.
+ENTITIES.Scuttzer.BATTLE_NUMBERS            = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Scuttlest                          = new_base_entity(ENTITY_KIND.Virus, "Scuttlest")
+ENTITIES.Scuttlest.NAME                     = "Scuttlest"
+ENTITIES.Scuttlest.HP_BASE                  = 200
+ENTITIES.Scuttlest.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Scuttlest.AI_BYTES                 = {}
+ENTITIES.Scuttlest.AI_BYTES[0x00]           = 0x28                              -- Delay after attack.
+ENTITIES.Scuttlest.AI_BYTES[0x01]           = 0x00                              -- (??), either 0x00 or 0x04.
+ENTITIES.Scuttlest.AI_BYTES[0x02]           = 0x3C                              -- Delay before attack.
+ENTITIES.Scuttlest.AI_BYTES[0x03]           = Scutz_AuraType.AURA_200           -- Type of aura.
+ENTITIES.Scuttlest.AI_BYTES[0x04]           = 0xC8                              -- Damage (Byte 1).
+ENTITIES.Scuttlest.AI_BYTES[0x05]           = 0x00                              -- Damage (Byte 2).
+ENTITIES.Scuttlest.AI_BYTES[0x06]           = 0x0F                              -- Vertical boundaries (Byte 1).
+ENTITIES.Scuttlest.AI_BYTES[0x07]           = 0x00                              -- Vertical boundaries (Byte 2).
+ENTITIES.Scuttlest.AI_BYTES[0x08]           = 0x99                              -- Movement variable (Byte 1).
+ENTITIES.Scuttlest.AI_BYTES[0x09]           = 0x99                              -- Movement variable (Byte 2).
+ENTITIES.Scuttlest.AI_BYTES[0x0A]           = 0x01                              -- Movement variable (Byte 3).
+ENTITIES.Scuttlest.AI_BYTES[0x0B]           = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.Scuttlest.AI_BYTES[0x33684]        = 0x21                              -- Vine speed delay.
+ENTITIES.Scuttlest.BATTLE_NUMBERS           = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.ScuttleOmega                       = new_base_entity(ENTITY_KIND.Virus, "ScuttleOmega")
+ENTITIES.ScuttleOmega.NAME                  = "Scuttle\003"
+ENTITIES.ScuttleOmega.HP_BASE               = 400
+ENTITIES.ScuttleOmega.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.ScuttleOmega.AI_BYTES              = {}
+ENTITIES.ScuttleOmega.AI_BYTES[0x00]        = 0x28                              -- Delay after attack.
+ENTITIES.ScuttleOmega.AI_BYTES[0x01]        = 0x00                              -- (??), either 0x00 or 0x04.
+ENTITIES.ScuttleOmega.AI_BYTES[0x02]        = 0x3C                              -- Delay before attack.
+ENTITIES.ScuttleOmega.AI_BYTES[0x03]        = Scutz_AuraType.AURA_200           -- Type of aura.
+ENTITIES.ScuttleOmega.AI_BYTES[0x04]        = 0x2C                              -- Damage (Byte 1).
+ENTITIES.ScuttleOmega.AI_BYTES[0x05]        = 0x01                              -- Damage (Byte 2).
+ENTITIES.ScuttleOmega.AI_BYTES[0x06]        = 0x0F                              -- Vertical boundaries (Byte 1).
+ENTITIES.ScuttleOmega.AI_BYTES[0x07]        = 0x00                              -- Vertical boundaries (Byte 2).
+ENTITIES.ScuttleOmega.AI_BYTES[0x08]        = 0x99                              -- Movement variable (Byte 1).
+ENTITIES.ScuttleOmega.AI_BYTES[0x09]        = 0x99                              -- Movement variable (Byte 2).
+ENTITIES.ScuttleOmega.AI_BYTES[0x0A]        = 0x01                              -- Movement variable (Byte 3).
+ENTITIES.ScuttleOmega.AI_BYTES[0x0B]        = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.ScuttleOmega.AI_BYTES[0x33678]     = 0x21                              -- Vine speed delay.
+ENTITIES.ScuttleOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 
 
