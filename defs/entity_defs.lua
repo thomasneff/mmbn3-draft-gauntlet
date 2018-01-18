@@ -393,6 +393,14 @@ ENTITIES.RattyOmega.BATTLE_NUMBERS          = TIER_4_BATTLES_WITHOUT_BOSSES     
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local HardHead_BallType = 
+{
+    BREAK_BALL = 0x00,
+    ICE_BALL = 0x01,
+    LAVA_BALL = 0x02,
+}
+
+
 ENTITIES.HardHead                           = new_base_entity(ENTITY_KIND.Virus, "HardHead")
 ENTITIES.HardHead.NAME                      = "HardHead"
 ENTITIES.HardHead.HP_BASE                   = 80
@@ -400,7 +408,7 @@ ENTITIES.HardHead.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.HardHead.AI_BYTES                  = {}
 ENTITIES.HardHead.AI_BYTES[0x00]            = 0xF0                              -- Delay before shooting.
 ENTITIES.HardHead.AI_BYTES[0x01]            = 0x3C                              -- Damage hardball.
-ENTITIES.HardHead.AI_BYTES[0x02]            = 0x00                              -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
+ENTITIES.HardHead.AI_BYTES[0x02]            = HardHead_BallType.BREAK_BALL      -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
 ENTITIES.HardHead.AI_BYTES[0x14576]         = 0x32                              -- Delay before shooting (animation). Shared with other HardHead viruses in the same battle.
 ENTITIES.HardHead.AI_BYTES[0x14614]         = 0x1E                              -- Delay after attack. Shared with other HardHead viruses in the same battle.
 ENTITIES.HardHead.BATTLE_NUMBERS            = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
@@ -412,7 +420,7 @@ ENTITIES.ColdHead.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
 ENTITIES.ColdHead.AI_BYTES                  = {}
 ENTITIES.ColdHead.AI_BYTES[0x00]            = 0x96                              -- Delay before shooting.
 ENTITIES.ColdHead.AI_BYTES[0x01]            = 0x64                              -- Damage hardball.
-ENTITIES.ColdHead.AI_BYTES[0x02]            = 0x01                              -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
+ENTITIES.ColdHead.AI_BYTES[0x02]            = HardHead_BallType.ICE_BALL        -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
 ENTITIES.ColdHead.AI_BYTES[0x14576]         = 0x32                              -- Delay before shooting (animation). Shared with other HardHead viruses in the same battle.
 ENTITIES.ColdHead.AI_BYTES[0x14614]         = 0x1E                              -- Delay after attack. Shared with other HardHead viruses in the same battle.
 ENTITIES.ColdHead.BATTLE_NUMBERS            = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
@@ -424,7 +432,7 @@ ENTITIES.HotHead.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
 ENTITIES.HotHead.AI_BYTES                   = {}
 ENTITIES.HotHead.AI_BYTES[0x00]             = 0x5A                              -- Delay before shooting.
 ENTITIES.HotHead.AI_BYTES[0x01]             = 0x64                              -- Damage hardball.
-ENTITIES.HotHead.AI_BYTES[0x02]             = 0x02                              -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
+ENTITIES.HotHead.AI_BYTES[0x02]             = HardHead_BallType.LAVA_BALL       -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
 ENTITIES.HotHead.AI_BYTES[0x14576]          = 0x32                              -- Delay before shooting (animation). Shared with other HardHead viruses in the same battle.
 ENTITIES.HotHead.AI_BYTES[0x14614]          = 0x1E                              -- Delay after attack. Shared with other HardHead viruses in the same battle.
 ENTITIES.HotHead.BATTLE_NUMBERS             = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
@@ -436,7 +444,7 @@ ENTITIES.HardHeadOmega.ELEMENT              = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.HardHeadOmega.AI_BYTES             = {}
 ENTITIES.HardHeadOmega.AI_BYTES[0x00]       = 0xF0                              -- Delay before shooting.
 ENTITIES.HardHeadOmega.AI_BYTES[0x01]       = 0xC8                              -- Damage hardball.
-ENTITIES.HardHeadOmega.AI_BYTES[0x02]       = 0x00                              -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
+ENTITIES.HardHeadOmega.AI_BYTES[0x02]       = HardHead_BallType.BREAK_BALL      -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
 ENTITIES.HardHeadOmega.AI_BYTES[0x14576]    = 0x32                              -- Delay before shooting (animation). Shared with other HardHead viruses in the same battle.
 ENTITIES.HardHeadOmega.AI_BYTES[0x14614]    = 0x1E                              -- Delay after attack. Shared with other HardHead viruses in the same battle.
 ENTITIES.HardHeadOmega.BATTLE_NUMBERS       = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
@@ -619,7 +627,7 @@ ENTITIES.MegaBunny.AI_BYTES[0x01]           = 0x1E                              
 ENTITIES.MegaBunny.AI_BYTES[0x02]           = 0x5A                              -- Damage ElecRing.
 ENTITIES.MegaBunny.BATTLE_NUMBERS           = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.BunnyOmega                         = new_base_entity(ENTITY_KIND.Virus, "BunnyOmega") -- This was originally called BunnySP, I like BunnyOmega better ;-)
+ENTITIES.BunnyOmega                         = new_base_entity(ENTITY_KIND.Virus, "BunnyOmega") 
 ENTITIES.BunnyOmega.NAME                    = "Bunny\003"
 ENTITIES.BunnyOmega.HP_BASE                 = 220
 ENTITIES.BunnyOmega.ELEMENT                 = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
@@ -631,13 +639,20 @@ ENTITIES.BunnyOmega.BATTLE_NUMBERS          = TIER_4_BATTLES_WITHOUT_BOSSES     
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+local WindBox_WindType = 
+{
+    WIND = 0x00,
+    FAN = 0x01,
+}
+
+
 ENTITIES.WindBox                            = new_base_entity(ENTITY_KIND.Virus, "WindBox")
 ENTITIES.WindBox.NAME                       = "WindBox"
 ENTITIES.WindBox.HP_BASE                    = 100
 ENTITIES.WindBox.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.WindBox.AI_BYTES                   = {}
 ENTITIES.WindBox.AI_BYTES[0x00]             = 0x01                              -- (??) Always 0x01.
-ENTITIES.WindBox.AI_BYTES[0x01]             = 0x00                              -- Wind Type (0x00 == Wind, 0x01 == Fan).
+ENTITIES.WindBox.AI_BYTES[0x01]             = WindBox_WindType.WIND             -- Wind Type (0x00 == Wind, 0x01 == Fan).
 ENTITIES.WindBox.AI_BYTES[0x02]             = 0x0A                              -- (??) Always 0x0A.
 ENTITIES.WindBox.BATTLE_NUMBERS             = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
@@ -647,7 +662,7 @@ ENTITIES.VacuumFan.HP_BASE                  = 100
 ENTITIES.VacuumFan.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.VacuumFan.AI_BYTES                 = {}
 ENTITIES.VacuumFan.AI_BYTES[0x00]           = 0x01                              -- (??) Always 0x01.
-ENTITIES.VacuumFan.AI_BYTES[0x01]           = 0x01                              -- Wind Type (0x00 == Wind, 0x01 == Fan).
+ENTITIES.VacuumFan.AI_BYTES[0x01]           = WindBox_WindType.FAN              -- Wind Type (0x00 == Wind, 0x01 == Fan).
 ENTITIES.VacuumFan.AI_BYTES[0x02]           = 0x0A                              -- (??) Always 0x0A.
 ENTITIES.VacuumFan.BATTLE_NUMBERS           = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
@@ -657,7 +672,7 @@ ENTITIES.StormBox.HP_BASE                   = 300
 ENTITIES.StormBox.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.StormBox.AI_BYTES                  = {}
 ENTITIES.StormBox.AI_BYTES[0x00]            = 0x01                              -- (??) Always 0x01.
-ENTITIES.StormBox.AI_BYTES[0x01]            = 0x00                              -- Wind Type (0x00 == Wind, 0x01 == Fan).
+ENTITIES.StormBox.AI_BYTES[0x01]            = WindBox_WindType.WIND             -- Wind Type (0x00 == Wind, 0x01 == Fan).
 ENTITIES.StormBox.AI_BYTES[0x02]            = 0x0A                              -- (??) Always 0x0A.
 ENTITIES.StormBox.BATTLE_NUMBERS            = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
@@ -667,7 +682,7 @@ ENTITIES.WindBoxOmega.HP_BASE               = 500
 ENTITIES.WindBoxOmega.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.WindBoxOmega.AI_BYTES              = {}
 ENTITIES.WindBoxOmega.AI_BYTES[0x00]        = 0x01                              -- (??) Always 0x01.
-ENTITIES.WindBoxOmega.AI_BYTES[0x01]        = 0x01                              -- Wind Type (0x00 == Wind, 0x01 == Fan).
+ENTITIES.WindBoxOmega.AI_BYTES[0x01]        = WindBox_WindType.FAN             -- Wind Type (0x00 == Wind, 0x01 == Fan).
 ENTITIES.WindBoxOmega.AI_BYTES[0x02]        = 0x0A                              -- (??) Always 0x0A.
 ENTITIES.WindBoxOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
@@ -706,7 +721,7 @@ ENTITIES.GoofBall.AI_BYTES[0x02]            = 0x78                              
 ENTITIES.GoofBall.AI_BYTES[0x03]            = 0x96                              -- Duration of poison mask.
 ENTITIES.GoofBall.BATTLE_NUMBERS            = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.PuffBallOmega                      = new_base_entity(ENTITY_KIND.Virus, "PuffBallOmega") -- This was originally called BunnySP, I like BunnyOmega better ;-)
+ENTITIES.PuffBallOmega                      = new_base_entity(ENTITY_KIND.Virus, "PuffBallOmega")
 ENTITIES.PuffBallOmega.NAME                 = "PuffBall\003"
 ENTITIES.PuffBallOmega.HP_BASE              = 400
 ENTITIES.PuffBallOmega.ELEMENT              = ENTITY_ELEMENT_DEFS.ELEMENT_WOOD
@@ -752,7 +767,7 @@ ENTITIES.Moshy.AI_BYTES[0x02]               = 0x78                              
 ENTITIES.Moshy.AI_BYTES[0x03]               = 0x01                              -- (??).
 ENTITIES.Moshy.BATTLE_NUMBERS               = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.MushyOmega                         = new_base_entity(ENTITY_KIND.Virus, "MushyOmega") -- This was originally called BunnySP, I like BunnyOmega better ;-)
+ENTITIES.MushyOmega                         = new_base_entity(ENTITY_KIND.Virus, "MushyOmega") 
 ENTITIES.MushyOmega.NAME                    = "Mushy\003"
 ENTITIES.MushyOmega.HP_BASE                 = 200
 ENTITIES.MushyOmega.ELEMENT                 = ENTITY_ELEMENT_DEFS.ELEMENT_WOOD
@@ -840,6 +855,186 @@ ENTITIES.DominerdOmega.AI_BYTES[0x16018]    = TIME_FREEZE_CHIP_DEFS.Geddon.FAMIL
 ENTITIES.DominerdOmega.AI_BYTES[0x1601A]    = TIME_FREEZE_CHIP_DEFS.Geddon.SUBFAMILY   -- Chip Subfamily. This is shared between other Dominerd viruses in the same battle.
 ENTITIES.DominerdOmega.AI_BYTES[0x1601E]    = 0x00                              -- Chip Damage. This is shared between other Dominerd viruses in the same battle.
 ENTITIES.DominerdOmega.BATTLE_NUMBERS       = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Yort                               = new_base_entity(ENTITY_KIND.Virus, "Yort")
+ENTITIES.Yort.NAME                          = "Yort"
+ENTITIES.Yort.HP_BASE                       = 120
+ENTITIES.Yort.ELEMENT                       = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Yort.AI_BYTES                      = {}
+ENTITIES.Yort.AI_BYTES[0x00]                = 0x1E                              -- Movement variable 1.
+ENTITIES.Yort.AI_BYTES[0x01]                = 0x01                              -- Delay after attack.
+ENTITIES.Yort.AI_BYTES[0x02]                = 0x14                              -- Damage by single hit (Byte 1).
+ENTITIES.Yort.AI_BYTES[0x03]                = 0x00                              -- Damage by single hit (Byte 2).
+ENTITIES.Yort.AI_BYTES[0x04]                = 0xCC                              -- Movement variable 2  (Byte 1).
+ENTITIES.Yort.AI_BYTES[0x05]                = 0xCC                              -- Movement variable 2  (Byte 2).
+ENTITIES.Yort.AI_BYTES[0x06]                = 0x00                              -- Movement variable 2  (Byte 3).
+ENTITIES.Yort.AI_BYTES[0x07]                = 0x00                              -- Movement variable 2  (Byte 4).
+ENTITIES.Yort.BATTLE_NUMBERS                = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Yurt                               = new_base_entity(ENTITY_KIND.Virus, "Yurt")
+ENTITIES.Yurt.NAME                          = "Yurt"
+ENTITIES.Yurt.HP_BASE                       = 160
+ENTITIES.Yurt.ELEMENT                       = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Yurt.AI_BYTES                      = {}
+ENTITIES.Yurt.AI_BYTES[0x00]                = 0x14                              -- Movement variable 1.
+ENTITIES.Yurt.AI_BYTES[0x01]                = 0x01                              -- Delay after attack.
+ENTITIES.Yurt.AI_BYTES[0x02]                = 0x28                              -- Damage by single hit (Byte 1).
+ENTITIES.Yurt.AI_BYTES[0x03]                = 0x00                              -- Damage by single hit (Byte 2).
+ENTITIES.Yurt.AI_BYTES[0x04]                = 0x33                              -- Movement variable 2  (Byte 1).
+ENTITIES.Yurt.AI_BYTES[0x05]                = 0x33                              -- Movement variable 2  (Byte 2).
+ENTITIES.Yurt.AI_BYTES[0x06]                = 0x01                              -- Movement variable 2  (Byte 3).
+ENTITIES.Yurt.AI_BYTES[0x07]                = 0x00                              -- Movement variable 2  (Byte 4).
+ENTITIES.Yurt.BATTLE_NUMBERS                = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Yart                               = new_base_entity(ENTITY_KIND.Virus, "Yart")
+ENTITIES.Yart.NAME                          = "Yart"
+ENTITIES.Yart.HP_BASE                       = 210
+ENTITIES.Yart.ELEMENT                       = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Yart.AI_BYTES                      = {}
+ENTITIES.Yart.AI_BYTES[0x00]                = 0x0F                              -- Movement variable 1.
+ENTITIES.Yart.AI_BYTES[0x01]                = 0x01                              -- Delay after attack.
+ENTITIES.Yart.AI_BYTES[0x02]                = 0x3C                              -- Damage by single hit (Byte 1).
+ENTITIES.Yart.AI_BYTES[0x03]                = 0x00                              -- Damage by single hit (Byte 2).
+ENTITIES.Yart.AI_BYTES[0x04]                = 0x99                              -- Movement variable 2  (Byte 1).
+ENTITIES.Yart.AI_BYTES[0x05]                = 0x99                              -- Movement variable 2  (Byte 2).
+ENTITIES.Yart.AI_BYTES[0x06]                = 0x01                              -- Movement variable 2  (Byte 3).
+ENTITIES.Yart.AI_BYTES[0x07]                = 0x00                              -- Movement variable 2  (Byte 4).
+ENTITIES.Yart.BATTLE_NUMBERS                = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.YortOmega                          = new_base_entity(ENTITY_KIND.Virus, "YortOmega")
+ENTITIES.YortOmega.NAME                     = "Yort\003"
+ENTITIES.YortOmega.HP_BASE                  = 320
+ENTITIES.YortOmega.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.YortOmega.AI_BYTES                 = {}
+ENTITIES.YortOmega.AI_BYTES[0x00]           = 0x0C                              -- Movement variable 1.
+ENTITIES.YortOmega.AI_BYTES[0x01]           = 0x01                              -- Delay after attack.
+ENTITIES.YortOmega.AI_BYTES[0x02]           = 0x50                              -- Damage by single hit (Byte 1).
+ENTITIES.YortOmega.AI_BYTES[0x03]           = 0x00                              -- Damage by single hit (Byte 2).
+ENTITIES.YortOmega.AI_BYTES[0x04]           = 0x00                              -- Movement variable 2  (Byte 1).
+ENTITIES.YortOmega.AI_BYTES[0x05]           = 0x00                              -- Movement variable 2  (Byte 2).
+ENTITIES.YortOmega.AI_BYTES[0x06]           = 0x02                              -- Movement variable 2  (Byte 3).
+ENTITIES.YortOmega.AI_BYTES[0x07]           = 0x00                              -- Movement variable 2  (Byte 4).
+ENTITIES.YortOmega.BATTLE_NUMBERS           = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Shadow                             = new_base_entity(ENTITY_KIND.Virus, "Shadow")
+ENTITIES.Shadow.NAME                        = "Shadow"
+ENTITIES.Shadow.HP_BASE                     = 130
+ENTITIES.Shadow.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Shadow.AI_BYTES                    = {}
+ENTITIES.Shadow.AI_BYTES[0x00]              = 0x03                              -- Number of attacks.
+ENTITIES.Shadow.AI_BYTES[0x01]              = 0x78                              -- Delay between attacks.
+ENTITIES.Shadow.AI_BYTES[0x02]              = 0x32                              -- Damage.
+ENTITIES.Shadow.AI_BYTES[0x17DF0]           = 0x28                              -- Delay before sword 1-2. This is shared with other Shadow viruses in the same battle.
+ENTITIES.Shadow.AI_BYTES[0x17E1E]           = 0x0C                              -- Vertical attack duration (0x0C == 1 panel, 0x18 == 2 panels). This is shared with other Shadow viruses in the same battle.
+ENTITIES.Shadow.AI_BYTES[0x17D24]           = 0x1E                              -- Delay before axe. This is shared with other Shadow viruses in the same battle.
+ENTITIES.Shadow.BATTLE_NUMBERS              = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.RedDevil                           = new_base_entity(ENTITY_KIND.Virus, "RedDevil")
+ENTITIES.RedDevil.NAME                      = "RedDevil"
+ENTITIES.RedDevil.HP_BASE                   = 170
+ENTITIES.RedDevil.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.RedDevil.AI_BYTES                  = {}
+ENTITIES.RedDevil.AI_BYTES[0x00]            = 0x06                              -- Number of attacks.
+ENTITIES.RedDevil.AI_BYTES[0x01]            = 0x5A                              -- Delay between attacks.
+ENTITIES.RedDevil.AI_BYTES[0x02]            = 0x64                              -- Damage.
+ENTITIES.RedDevil.AI_BYTES[0x17DF0]         = 0x28                              -- Delay before sword 1-2. This is shared with other RedDevil viruses in the same battle.
+ENTITIES.RedDevil.AI_BYTES[0x17E1E]         = 0x0C                              -- Vertical attack duration (0x0C == 1 panel, 0x18 == 2 panels). This is shared with other RedDevil viruses in the same battle.
+ENTITIES.RedDevil.AI_BYTES[0x17D24]         = 0x1E                              -- Delay before axe. This is shared with other RedDevil viruses in the same battle.
+ENTITIES.RedDevil.BATTLE_NUMBERS            = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.BlueDemon                          = new_base_entity(ENTITY_KIND.Virus, "BlueDemon")
+ENTITIES.BlueDemon.NAME                     = "BlueDemon"
+ENTITIES.BlueDemon.HP_BASE                  = 210
+ENTITIES.BlueDemon.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.BlueDemon.AI_BYTES                 = {}
+ENTITIES.BlueDemon.AI_BYTES[0x00]           = 0x09                              -- Number of attacks.
+ENTITIES.BlueDemon.AI_BYTES[0x01]           = 0x3C                              -- Delay between attacks.
+ENTITIES.BlueDemon.AI_BYTES[0x02]           = 0x96                              -- Damage.
+ENTITIES.BlueDemon.AI_BYTES[0x17DF0]        = 0x28                              -- Delay before sword 1-2. This is shared with other BlueDemon viruses in the same battle.
+ENTITIES.BlueDemon.AI_BYTES[0x17E1E]        = 0x0C                              -- Vertical attack duration (0x0C == 1 panel, 0x18 == 2 panels). This is shared with other BlueDemon viruses in the same battle.
+ENTITIES.BlueDemon.AI_BYTES[0x17D24]        = 0x1E                              -- Delay before axe. This is shared with other BlueDemon viruses in the same battle.
+ENTITIES.BlueDemon.BATTLE_NUMBERS           = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.ShadowOmega                        = new_base_entity(ENTITY_KIND.Virus, "ShadowOmega")
+ENTITIES.ShadowOmega.NAME                   = "Shadow\003"
+ENTITIES.ShadowOmega.HP_BASE                = 250
+ENTITIES.ShadowOmega.ELEMENT                = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.ShadowOmega.AI_BYTES               = {}
+ENTITIES.ShadowOmega.AI_BYTES[0x00]         = 0x0C                              -- Number of attacks.
+ENTITIES.ShadowOmega.AI_BYTES[0x01]         = 0x2D                              -- Delay between attacks.
+ENTITIES.ShadowOmega.AI_BYTES[0x02]         = 0xC8                              -- Damage.
+ENTITIES.ShadowOmega.AI_BYTES[0x17DF0]      = 0x28                              -- Delay before sword 1-2. This is shared with other Shadow viruses in the same battle.
+ENTITIES.ShadowOmega.AI_BYTES[0x17E1E]      = 0x0C                              -- Vertical attack duration (0x0C == 1 panel, 0x18 == 2 panels). This is shared with other Shadow viruses in the same battle.
+ENTITIES.ShadowOmega.AI_BYTES[0x17D24]      = 0x1E                              -- Delay before axe. This is shared with other Shadow viruses in the same battle.
+ENTITIES.ShadowOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local Brushman_PanelType = 
+{
+    NONE = 0x00,
+    BROKEN = 0x01,
+    NORMAL = 0x02,
+    CRACKED = 0x03,
+    POISON = 0x04,
+    METAL = 0x05,
+    GRASS = 0x06,
+    ICE = 0x07,
+    LAVA = 0x08,
+    HOLY = 0x09,
+    SAND = 0x0A
+}
+
+ENTITIES.Brushman                           = new_base_entity(ENTITY_KIND.Virus, "Brushman")
+ENTITIES.Brushman.NAME                      = "Brushman"
+ENTITIES.Brushman.HP_BASE                   = 120
+ENTITIES.Brushman.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Brushman.AI_BYTES                  = {}
+ENTITIES.Brushman.AI_BYTES[0x00]            = 0x78                              -- Delay before attack / movement.
+ENTITIES.Brushman.AI_BYTES[0x01]            = 0x01                              -- Number of holy panels in a row (own field).
+ENTITIES.Brushman.AI_BYTES[0x02]            = Brushman_PanelType.POISON         -- Type of panel 1 (enemy field).
+ENTITIES.Brushman.AI_BYTES[0x03]            = Brushman_PanelType.SAND           -- Type of panel 2 (enemy field).
+ENTITIES.Brushman.AI_BYTES[0x04]            = 0x32                              -- Contact damage.
+ENTITIES.Brushman.BATTLE_NUMBERS            = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Brushman2                          = new_base_entity(ENTITY_KIND.Virus, "Brushman2")
+ENTITIES.Brushman2.NAME                     = "Brushman2"
+ENTITIES.Brushman2.HP_BASE                  = 170
+ENTITIES.Brushman2.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Brushman2.AI_BYTES                 = {}
+ENTITIES.Brushman2.AI_BYTES[0x00]           = 0x5A                              -- Delay before attack / movement.
+ENTITIES.Brushman2.AI_BYTES[0x01]           = 0x01                              -- Number of holy panels in a row (own field).
+ENTITIES.Brushman2.AI_BYTES[0x02]           = Brushman_PanelType.LAVA           -- Type of panel 1 (enemy field).
+ENTITIES.Brushman2.AI_BYTES[0x03]           = Brushman_PanelType.ICE            -- Type of panel 2 (enemy field).
+ENTITIES.Brushman2.AI_BYTES[0x04]           = 0x64                              -- Contact damage.
+ENTITIES.Brushman2.BATTLE_NUMBERS           = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Brushman3                          = new_base_entity(ENTITY_KIND.Virus, "Brushman3")
+ENTITIES.Brushman3.NAME                     = "Brushman3"
+ENTITIES.Brushman3.HP_BASE                  = 220
+ENTITIES.Brushman3.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Brushman3.AI_BYTES[0x00]           = 0x3C                              -- Delay before attack / movement.
+ENTITIES.Brushman3.AI_BYTES[0x01]           = 0x02                              -- Number of holy panels in a row (own field).
+ENTITIES.Brushman3.AI_BYTES[0x02]           = Brushman_PanelType.POISON         -- Type of panel 1 (enemy field).
+ENTITIES.Brushman3.AI_BYTES[0x03]           = Brushman_PanelType.LAVA           -- Type of panel 2 (enemy field).
+ENTITIES.Brushman3.AI_BYTES[0x04]           = 0x96                              -- Contact damage.
+ENTITIES.Brushman3.BATTLE_NUMBERS           = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.BrushmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "BrushmanOmega")
+ENTITIES.BrushmanOmega.NAME                 = "Brushman\003"
+ENTITIES.BrushmanOmega.HP_BASE              = 300
+ENTITIES.BrushmanOmega.ELEMENT              = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.BrushmanOmega.AI_BYTES             = {}
+ENTITIES.BrushmanOmega.AI_BYTES[0x00]       = 0x28                              -- Delay before attack / movement.
+ENTITIES.BrushmanOmega.AI_BYTES[0x01]       = 0x02                              -- Number of holy panels in a row (own field).
+ENTITIES.BrushmanOmega.AI_BYTES[0x02]       = Brushman_PanelType.POISON         -- Type of panel 1 (enemy field).
+ENTITIES.BrushmanOmega.AI_BYTES[0x03]       = Brushman_PanelType.POISON         -- Type of panel 2 (enemy field).
+ENTITIES.BrushmanOmega.AI_BYTES[0x04]       = 0xC8                              -- Contact damage.
+ENTITIES.BrushmanOmega.BATTLE_NUMBERS       = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 
 
