@@ -2,7 +2,7 @@
 Entities. Add all the info from TREZ.
 
 
-
+Find out Swordy AreaGrab offset.
 
 
 Possibly implement a system to create fixed fights the game can choose from. Should contain ENTITIES, BACKGROUND, STAGE.

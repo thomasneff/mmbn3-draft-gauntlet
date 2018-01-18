@@ -7,6 +7,7 @@ local ENTITY_NAME_ADDRESS_TRANSLATOR = require "defs.entity_name_defs"
 local ENTITY_PALETTE_DEFS = require "defs.entity_palette_defs"
 local ENTITY_ELEMENT_DEFS = require "defs.entity_element_defs"
 local GAUNTLET_DEFS = require "defs.gauntlet_defs"
+local TIME_FREEZE_CHIP_DEFS = require "defs.time_freeze_chip_defs"
 local deepcopy = require "deepcopy"
 
 --Here, we define all enemies for the other functions to randomize. Also we can define other combinations later on, e.g. if we want to change attack delay and stuff.
@@ -72,28 +73,28 @@ end
 
 
 local TIER_2_BATTLES_WITHOUT_BOSSES = {}
-for i = 11,20 do
+for i = 1,10 do
 
-    if i ~= 15 and i ~= 20 then
-        TIER_2_BATTLES_WITHOUT_BOSSES[i] = i
+    if i ~= 5 and i ~= 10 then
+        TIER_2_BATTLES_WITHOUT_BOSSES[i] = i + 10
     end
     
 end
 
 local TIER_3_BATTLES_WITHOUT_BOSSES = {}
-for i = 21,30 do
+for i = 1,10 do
 
-    if i ~= 25 and i ~= 30 then
-        TIER_3_BATTLES_WITHOUT_BOSSES[i] = i
+    if i ~= 5 and i ~= 10 then
+        TIER_3_BATTLES_WITHOUT_BOSSES[i] = i + 20
     end
     
 end
 
 local TIER_4_BATTLES_WITHOUT_BOSSES = {}
-for i = 31,40 do
+for i = 1,10 do
 
-    if i ~= 35 and i ~= 40 then
-        TIER_4_BATTLES_WITHOUT_BOSSES[i] = i
+    if i ~= 5 and i ~= 10 then
+        TIER_4_BATTLES_WITHOUT_BOSSES[i] = i + 30
     end
     
 end
@@ -778,9 +779,9 @@ ENTITIES.Dominerd.AI_BYTES[0x05]            = 0x10                              
 ENTITIES.Dominerd.AI_BYTES[0x06]            = 0x06                              -- Delay after attack (enemy field).
 ENTITIES.Dominerd.AI_BYTES[0x07]            = 0x32                              -- Damage.
 ENTITIES.Dominerd.AI_BYTES[0x08]            = 0xCC                              -- Vertical speed.
-ENTITIES.Dominerd.AI_BYTES[0x1603C]         = 0x19                              -- Chip Family
-ENTITIES.Dominerd.AI_BYTES[0x1603E]         = 0x00                              -- Chip Subfamily
-ENTITIES.Dominerd.AI_BYTES[0x16042]         = 0x00                              -- Chip Damage
+ENTITIES.Dominerd.AI_BYTES[0x1603C]         = TIME_FREEZE_CHIP_DEFS.Geddon.FAMILY      -- Chip Family. This is shared between other Dominerd viruses in the same battle.
+ENTITIES.Dominerd.AI_BYTES[0x1603E]         = TIME_FREEZE_CHIP_DEFS.Geddon.SUBFAMILY   -- Chip Subfamily. This is shared between other Dominerd viruses in the same battle.
+ENTITIES.Dominerd.AI_BYTES[0x16042]         = 0x00                              -- Chip Damage. This is shared between other Dominerd viruses in the same battle.
 ENTITIES.Dominerd.BATTLE_NUMBERS            = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.Dominerd2                          = new_base_entity(ENTITY_KIND.Virus, "Dominerd2")
@@ -797,9 +798,9 @@ ENTITIES.Dominerd2.AI_BYTES[0x05]           = 0x0E                              
 ENTITIES.Dominerd2.AI_BYTES[0x06]           = 0x00                              -- Delay after attack (enemy field).
 ENTITIES.Dominerd2.AI_BYTES[0x07]           = 0x64                              -- Damage.
 ENTITIES.Dominerd2.AI_BYTES[0x08]           = 0x00                              -- Vertical speed.
-ENTITIES.Dominerd2.AI_BYTES[0x16030]        = 0x19                              -- Chip Family
-ENTITIES.Dominerd2.AI_BYTES[0x16032]        = 0x00                              -- Chip Subfamily
-ENTITIES.Dominerd2.AI_BYTES[0x16036]        = 0x00                              -- Chip Damage
+ENTITIES.Dominerd2.AI_BYTES[0x16030]        = TIME_FREEZE_CHIP_DEFS.Geddon.FAMILY      -- Chip Family. This is shared between other Dominerd viruses in the same battle.
+ENTITIES.Dominerd2.AI_BYTES[0x16032]        = TIME_FREEZE_CHIP_DEFS.Geddon.SUBFAMILY   -- Chip Subfamily. This is shared between other Dominerd viruses in the same battle.
+ENTITIES.Dominerd2.AI_BYTES[0x16036]        = 0x00                              -- Chip Damage. This is shared between other Dominerd viruses in the same battle.
 ENTITIES.Dominerd2.BATTLE_NUMBERS           = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.Dominerd3                          = new_base_entity(ENTITY_KIND.Virus, "Dominerd3")
@@ -816,9 +817,9 @@ ENTITIES.Dominerd3.AI_BYTES[0x05]           = 0x07                              
 ENTITIES.Dominerd3.AI_BYTES[0x06]           = 0x00                              -- Delay after attack (enemy field).
 ENTITIES.Dominerd3.AI_BYTES[0x07]           = 0x96                              -- Damage.
 ENTITIES.Dominerd3.AI_BYTES[0x08]           = 0x33                              -- Vertical speed.
-ENTITIES.Dominerd3.AI_BYTES[0x16024]        = 0x19                              -- Chip Family
-ENTITIES.Dominerd3.AI_BYTES[0x16026]        = 0x00                              -- Chip Subfamily
-ENTITIES.Dominerd3.AI_BYTES[0x1602A]        = 0x00                              -- Chip Damage
+ENTITIES.Dominerd3.AI_BYTES[0x16024]        = TIME_FREEZE_CHIP_DEFS.Geddon.FAMILY      -- Chip Family. This is shared between other Dominerd viruses in the same battle.
+ENTITIES.Dominerd3.AI_BYTES[0x16026]        = TIME_FREEZE_CHIP_DEFS.Geddon.SUBFAMILY   -- Chip Subfamily. This is shared between other Dominerd viruses in the same battle.
+ENTITIES.Dominerd3.AI_BYTES[0x1602A]        = 0x00                              -- Chip Damage. This is shared between other Dominerd viruses in the same battle.
 ENTITIES.Dominerd3.BATTLE_NUMBERS           = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.DominerdOmega                      = new_base_entity(ENTITY_KIND.Virus, "DominerdOmega")
@@ -835,9 +836,9 @@ ENTITIES.DominerdOmega.AI_BYTES[0x05]       = 0x10                              
 ENTITIES.DominerdOmega.AI_BYTES[0x06]       = 0x03                              -- Delay after attack (enemy field).
 ENTITIES.DominerdOmega.AI_BYTES[0x07]       = 0xC8                              -- Damage.
 ENTITIES.DominerdOmega.AI_BYTES[0x08]       = 0x33                              -- Vertical speed.
-ENTITIES.DominerdOmega.AI_BYTES[0x16018]    = 0x19                              -- Chip Family
-ENTITIES.DominerdOmega.AI_BYTES[0x1601A]    = 0x00                              -- Chip Subfamily
-ENTITIES.DominerdOmega.AI_BYTES[0x1601E]    = 0x00                              -- Chip Damage
+ENTITIES.DominerdOmega.AI_BYTES[0x16018]    = TIME_FREEZE_CHIP_DEFS.Geddon.FAMILY      -- Chip Family. This is shared between other Dominerd viruses in the same battle.
+ENTITIES.DominerdOmega.AI_BYTES[0x1601A]    = TIME_FREEZE_CHIP_DEFS.Geddon.SUBFAMILY   -- Chip Subfamily. This is shared between other Dominerd viruses in the same battle.
+ENTITIES.DominerdOmega.AI_BYTES[0x1601E]    = 0x00                              -- Chip Damage. This is shared between other Dominerd viruses in the same battle.
 ENTITIES.DominerdOmega.BATTLE_NUMBERS       = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 
@@ -848,7 +849,7 @@ ENTITIES.DominerdOmega.BATTLE_NUMBERS       = TIER_4_BATTLES_WITHOUT_BOSSES     
 ENTITIES.LolMettaur = deepcopy(ENTITIES.MettaurOmega)
 ENTITIES.LolMettaur.HP_BASE = 420
 ENTITIES.LolMettaur.NAME = "LolMettaur"
-ENTITIES.LolMettaur.BATTLE_NUMBERS = {5, 10, 15, 20, 25, 30, 35, 40}
+ENTITIES.LolMettaur.BATTLE_NUMBERS = {10, 15, 20, 25, 30, 35, 40}
 ENTITIES.LolMettaur.AI_BYTES[0x00]        = 20                                -- Base Damage.
 ENTITIES.LolMettaur.AI_BYTES[0x01]        = 0x01                              -- Delay before moving.
 ENTITIES.LolMettaur.AI_BYTES[0x02]        = 0x01                              -- Delay before attacking.
@@ -858,7 +859,7 @@ ENTITIES.LolMettaur.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
 ENTITIES.DodgeDoge = deepcopy(ENTITIES.Spikey)
 ENTITIES.DodgeDoge.HP_BASE = 50
 ENTITIES.DodgeDoge.NAME = "DodgeDoge"
-ENTITIES.DodgeDoge.BATTLE_NUMBERS = {5, 10, 15, 20, 25, 30, 35, 40}
+ENTITIES.DodgeDoge.BATTLE_NUMBERS = {10, 15, 20, 25, 30, 35, 40}
 ENTITIES.DodgeDoge.AI_BYTES[0x00]              = 0x01                              -- Movement delay 1.
 ENTITIES.DodgeDoge.AI_BYTES[0x01]              = 0x01                              -- Movement delay 2.
 ENTITIES.DodgeDoge.AI_BYTES[0x02]              = 0x01                              -- Movement delay 3.
@@ -877,15 +878,15 @@ ENTITIES.GEDDONPLZ.NAME = "GeddonPlz"
 ENTITIES.GEDDONPLZ.AI_BYTES[0x00]            = 0x01                              -- Delay before counter.
 ENTITIES.GEDDONPLZ.AI_BYTES[0x01]            = 0x01                              -- Delay before attack without counter.
 ENTITIES.GEDDONPLZ.AI_BYTES[0x02]            = 0x50                              -- Vertical boundaries?
-ENTITIES.GEDDONPLZ.AI_BYTES[0x03]            = 0xFF                              -- Number of Geddon1 chips.
+ENTITIES.GEDDONPLZ.AI_BYTES[0x03]            = 0x01                              -- Number of Geddon1 chips.
 ENTITIES.GEDDONPLZ.AI_BYTES[0x04]            = 0x01                              -- Attacks before using Geddon1.
 ENTITIES.GEDDONPLZ.AI_BYTES[0x05]            = 0x01                              -- Delay after attack (own field).
 ENTITIES.GEDDONPLZ.AI_BYTES[0x06]            = 0x01                              -- Delay after attack (enemy field).
 ENTITIES.GEDDONPLZ.AI_BYTES[0x07]            = 0x32                              -- Damage.
 ENTITIES.GEDDONPLZ.AI_BYTES[0x08]            = 0xCC                              -- Vertical speed.
-ENTITIES.GEDDONPLZ.AI_BYTES[0x1603C]         = 0x21                              -- Chip Family
-ENTITIES.GEDDONPLZ.AI_BYTES[0x1603E]         = 0x01                              -- Chip Subfamily
-ENTITIES.GEDDONPLZ.AI_BYTES[0x16042]         = 0x00                              -- Chip Damage
-ENTITIES.GEDDONPLZ.BATTLE_NUMBERS            = ALL_BATTLES
+ENTITIES.GEDDONPLZ.AI_BYTES[0x1603C]         = TIME_FREEZE_CHIP_DEFS.GelRain.FAMILY                 -- Chip Family. This is shared between other Dominerd viruses in the same battle.
+ENTITIES.GEDDONPLZ.AI_BYTES[0x1603E]         = TIME_FREEZE_CHIP_DEFS.GelRain.SUBFAMILY                             -- Chip Subfamily. This is shared between other Dominerd viruses in the same battle.
+ENTITIES.GEDDONPLZ.AI_BYTES[0x16042]         = 20                              -- Chip Damage. This is shared between other Dominerd viruses in the same battle.
+ENTITIES.GEDDONPLZ.BATTLE_NUMBERS = {5, 10, 15, 20, 25, 30, 35, 40}
 
 return ENTITIES
