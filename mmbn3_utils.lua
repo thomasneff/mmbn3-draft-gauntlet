@@ -22,8 +22,8 @@ function mmbn3_utils.patch_battle(start_address, battle_data)
     --print(battle_data.ENTITIES)
     -- Write all battle entities
     for key, entity in pairs(battle_data.ENTITIES) do
-        print (entity.BATTLE_DATA)
-        print(working_address)
+        --print (entity.BATTLE_DATA)
+        --print(working_address)
         entity_data = entity.BATTLE_DATA
         --print(entity)
         memory.writebyte(working_address, entity_data.TYPE)
@@ -113,7 +113,7 @@ function mmbn3_utils.patch_entity_data(entities)
             if new_entity.AI_BYTES ~= nil then
                 -- Iterate over AI_BYTES, and add the key (which is the offset) to the address for final address
                 for offset, byte in pairs(new_entity.AI_BYTES) do
-                    print("Patching AI: key " .. offset .. " byte " .. byte)
+                    --print("Patching AI: key " .. offset .. " byte " .. byte)
                     memory.writebyte(new_entity.AI_ADDRESS + offset, byte)
                 end
             end      

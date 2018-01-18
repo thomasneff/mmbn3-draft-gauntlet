@@ -16,5 +16,19 @@ local ENTITY_KIND = {
     MetalGear = 0x0B
 }
 
+local NON_VIRUS_ENTITIES = {
+    ENTITY_KIND.RockCube,
+    ENTITY_KIND.MetalCube,
+    ENTITY_KIND.IceCube,
+    ENTITY_KIND.Guardian,
+    ENTITY_KIND.BlackBomb,
+}
+
+function ENTITY_KIND.random_non_virus_entity_kind()
+
+    -- TODO: possibly implement probabilities of each type, as Guardian/BlackBomb can be pretty OP ;-)
+
+    return NON_VIRUS_ENTITIES[math.random(#NON_VIRUS_ENTITIES)]
+end
 
 return ENTITY_KIND

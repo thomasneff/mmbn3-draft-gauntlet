@@ -6,6 +6,7 @@ local ENTITY_HP_TRANSLATOR = require "defs.entity_hp_defs"
 local ENTITY_NAME_ADDRESS_TRANSLATOR = require "defs.entity_name_defs"
 local ENTITY_PALETTE_DEFS = require "defs.entity_palette_defs"
 local ENTITY_ELEMENT_DEFS = require "defs.entity_element_defs"
+local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 local deepcopy = require "deepcopy"
 
 --Here, we define all enemies for the other functions to randomize. Also we can define other combinations later on, e.g. if we want to change attack delay and stuff.
@@ -54,6 +55,47 @@ ENTITIES.Megaman                            = new_base_entity(ENTITY_KIND.Megama
 
 --All AI Bytes need to be looked up at http://forums.therockmanexezone.com/topic/8907775/1/
 
+
+ALL_BATTLES = {}
+
+for i = 1,GAUNTLET_DEFS.NUMBER_OF_BATTLES do
+    ALL_BATTLES[i] = i
+end
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Non-Virus Entities --
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+ENTITIES.RockCube                           = new_base_entity(ENTITY_KIND.RockCube,     "RockCube")
+ENTITIES.RockCube.BATTLE_NUMBERS            = ALL_BATTLES                       -- Battles in which this entity can appear.
+ENTITIES.RockCube.NAME                      = "RockCube"
+ENTITIES.RockCube.BATTLE_DATA.TYPE          = 0x00
+
+ENTITIES.MetalCube                          = new_base_entity(ENTITY_KIND.MetalCube,    "MetalCube")
+ENTITIES.MetalCube.BATTLE_NUMBERS           = ALL_BATTLES                       -- Battles in which this entity can appear.
+ENTITIES.MetalCube.NAME                     = "MetalCube"
+ENTITIES.MetalCube.BATTLE_DATA.TYPE         = 0x00
+
+ENTITIES.IceCube                            = new_base_entity(ENTITY_KIND.IceCube,      "IceCube")
+ENTITIES.IceCube.BATTLE_NUMBERS             = ALL_BATTLES                       -- Battles in which this entity can appear.
+ENTITIES.IceCube.NAME                       = "IceCube"
+ENTITIES.IceCube.BATTLE_DATA.TYPE           = 0x00
+
+ENTITIES.Guardian                           = new_base_entity(ENTITY_KIND.Guardian,     "Guardian")
+ENTITIES.Guardian.BATTLE_NUMBERS            = ALL_BATTLES                       -- Battles in which this entity can appear.
+ENTITIES.Guardian.NAME                      = "Guardian"
+ENTITIES.Guardian.BATTLE_DATA.TYPE          = 0x00
+
+ENTITIES.BlackBomb                          = new_base_entity(ENTITY_KIND.BlackBomb,    "BlackBomb")
+ENTITIES.BlackBomb.BATTLE_NUMBERS           = ALL_BATTLES                       -- Battles in which this entity can appear.
+ENTITIES.BlackBomb.NAME                     = "BlackBomb"
+ENTITIES.BlackBomb.BATTLE_DATA.TYPE         = 0x00
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Viruses --
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ENTITIES.Mettaur                            = new_base_entity(ENTITY_KIND.Virus, "Mettaur")
@@ -61,7 +103,7 @@ ENTITIES.Mettaur.NAME                       = "Mettaur"
 ENTITIES.Mettaur.HP_BASE                    = 40
 ENTITIES.Mettaur.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.Mettaur.AI_BYTES                   = {}
-ENTITIES.Mettaur.AI_BYTES[0x00]             = 10                                -- Base Damage.
+ENTITIES.Mettaur.AI_BYTES[0x00]             = 0x0A                              -- Base Damage.
 ENTITIES.Mettaur.AI_BYTES[0x01]             = 0x28                              -- Delay before moving.
 ENTITIES.Mettaur.AI_BYTES[0x02]             = 0x1E                              -- Delay before attacking.
 ENTITIES.Mettaur.BATTLE_NUMBERS             = {1, 2, 3, 4, 6, 7, 8, 9}          -- Battles in which this entity can appear.
@@ -71,7 +113,7 @@ ENTITIES.Mettaur2.NAME                      = "Mettaur2"
 ENTITIES.Mettaur2.HP_BASE                   = 60
 ENTITIES.Mettaur2.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.Mettaur2.AI_BYTES                  = {}
-ENTITIES.Mettaur2.AI_BYTES[0x00]            = 40                                -- Base Damage.
+ENTITIES.Mettaur2.AI_BYTES[0x00]            = 0x28                              -- Base Damage.
 ENTITIES.Mettaur2.AI_BYTES[0x01]            = 0x0F                              -- Delay before moving.
 ENTITIES.Mettaur2.AI_BYTES[0x02]            = 0x08                              -- Delay before attacking.
 ENTITIES.Mettaur2.BATTLE_NUMBERS            = {11, 12, 13, 14, 16, 17, 18, 19}  -- Battles in which this entity can appear.
@@ -81,7 +123,7 @@ ENTITIES.Mettaur3.NAME                      = "Mettaur3"
 ENTITIES.Mettaur3.HP_BASE                   = 120
 ENTITIES.Mettaur3.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.Mettaur3.AI_BYTES                  = {}
-ENTITIES.Mettaur3.AI_BYTES[0x00]            = 80                                -- Base Damage.
+ENTITIES.Mettaur3.AI_BYTES[0x00]            = 0x50                              -- Base Damage.
 ENTITIES.Mettaur3.AI_BYTES[0x01]            = 0x0A                              -- Delay before moving.
 ENTITIES.Mettaur3.AI_BYTES[0x02]            = 0x05                              -- Delay before attacking.
 ENTITIES.Mettaur3.BATTLE_NUMBERS            = {21, 22, 23, 24, 26, 27, 28, 29}  -- Battles in which this entity can appear.
@@ -91,7 +133,7 @@ ENTITIES.MettaurOmega.NAME                  = "Mettaur\003"
 ENTITIES.MettaurOmega.HP_BASE               = 160
 ENTITIES.MettaurOmega.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.MettaurOmega.AI_BYTES              = {}
-ENTITIES.MettaurOmega.AI_BYTES[0x00]        = 150                               -- Base Damage.
+ENTITIES.MettaurOmega.AI_BYTES[0x00]        = 0x96                              -- Base Damage.
 ENTITIES.MettaurOmega.AI_BYTES[0x01]        = 0x08                              -- Delay before moving.
 ENTITIES.MettaurOmega.AI_BYTES[0x02]        = 0x03                              -- Delay before attacking.
 ENTITIES.MettaurOmega.BATTLE_NUMBERS        = {31, 32, 33, 34, 36, 37, 38, 39}  -- Battles in which this entity can appear.
@@ -104,7 +146,7 @@ ENTITIES.Canodumb.HP_BASE                   = 60
 ENTITIES.Canodumb.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.Canodumb.AI_BYTES                  = {}
 ENTITIES.Canodumb.AI_BYTES[0x00]            = 0x28                              -- Delay before aiming.
-ENTITIES.Canodumb.AI_BYTES[0x01]            = 10                                -- Base Damage.
+ENTITIES.Canodumb.AI_BYTES[0x01]            = 0x0A                              -- Base Damage.
 ENTITIES.Canodumb.AI_BYTES[0x2A5A8]         = 0x0C                              -- Aim speed delay.
 ENTITIES.Canodumb.BATTLE_NUMBERS            = {1, 2, 3, 4, 6, 7, 8, 9}          -- Battles in which this entity can appear.
 
@@ -114,7 +156,7 @@ ENTITIES.Canodumb2.HP_BASE                  = 90
 ENTITIES.Canodumb2.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.Canodumb2.AI_BYTES                 = {}
 ENTITIES.Canodumb2.AI_BYTES[0x00]           = 0x28                              -- Delay before aiming.
-ENTITIES.Canodumb2.AI_BYTES[0x01]           = 50                                -- Base Damage.
+ENTITIES.Canodumb2.AI_BYTES[0x01]           = 0x32                              -- Base Damage.
 ENTITIES.Canodumb2.AI_BYTES[0x2A5A7]        = 0x09                              -- Aim speed delay.
 ENTITIES.Canodumb2.BATTLE_NUMBERS           = {11, 12, 13, 14, 16, 17, 18, 19}  -- Battles in which this entity can appear.
 
@@ -124,7 +166,7 @@ ENTITIES.Canodumb3.HP_BASE                  = 130
 ENTITIES.Canodumb3.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.Canodumb3.AI_BYTES                 = {}
 ENTITIES.Canodumb3.AI_BYTES[0x00]           = 0x28                              -- Delay before aiming.
-ENTITIES.Canodumb3.AI_BYTES[0x01]           = 100                               -- Base Damage.
+ENTITIES.Canodumb3.AI_BYTES[0x01]           = 0x64                              -- Base Damage.
 ENTITIES.Canodumb3.AI_BYTES[0x2A5A6]        = 0x06                              -- Aim speed delay.
 ENTITIES.Canodumb3.BATTLE_NUMBERS           = {21, 22, 23, 24, 26, 27, 28, 29}  -- Battles in which this entity can appear.
 
@@ -134,7 +176,7 @@ ENTITIES.CanodumbOmega.HP_BASE              = 180
 ENTITIES.CanodumbOmega.ELEMENT              = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.CanodumbOmega.AI_BYTES             = {}
 ENTITIES.CanodumbOmega.AI_BYTES[0x00]       = 0x28                              -- Delay before aiming.
-ENTITIES.CanodumbOmega.AI_BYTES[0x01]       = 200                               -- Base Damage.
+ENTITIES.CanodumbOmega.AI_BYTES[0x01]       = 0xC8                              -- Base Damage.
 ENTITIES.CanodumbOmega.AI_BYTES[0x2A5A5]    = 0x03                              -- Aim speed delay.
 ENTITIES.CanodumbOmega.BATTLE_NUMBERS       = {31, 32, 33, 34, 36, 37, 38, 39}  -- Battles in which this entity can appear.
 
@@ -507,6 +549,91 @@ ENTITIES.SpikeyOmega.AI_BYTES[0x05]         = 0x96                              
 ENTITIES.SpikeyOmega.AI_BYTES[0x06]         = 0x03                              -- Movements before attack.
 ENTITIES.SpikeyOmega.AI_BYTES[0x07]         = 0x03                              -- Fireball speed delay.
 ENTITIES.SpikeyOmega.BATTLE_NUMBERS         = {31, 32, 33, 34, 36, 37, 38, 39}  -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Bunny                              = new_base_entity(ENTITY_KIND.Virus, "Bunny")
+ENTITIES.Bunny.NAME                         = "Bunny"
+ENTITIES.Bunny.HP_BASE                      = 40
+ENTITIES.Bunny.ELEMENT                      = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.Bunny.AI_BYTES                     = {}
+ENTITIES.Bunny.AI_BYTES[0x00]               = 0x1E                              -- Delay before movement.
+ENTITIES.Bunny.AI_BYTES[0x01]               = 0x32                              -- Delay after attack.
+ENTITIES.Bunny.AI_BYTES[0x02]               = 0x0F                              -- Damage ElecRing.
+ENTITIES.Bunny.BATTLE_NUMBERS               = {1, 2, 3, 4, 6, 7, 8, 9}          -- Battles in which this entity can appear.
+
+ENTITIES.TuffBunny                          = new_base_entity(ENTITY_KIND.Virus, "TuffBunny")
+ENTITIES.TuffBunny.NAME                     = "TuffBunny"
+ENTITIES.TuffBunny.HP_BASE                  = 60
+ENTITIES.TuffBunny.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.TuffBunny.AI_BYTES                 = {}
+ENTITIES.TuffBunny.AI_BYTES[0x00]           = 0x16                              -- Delay before movement.
+ENTITIES.TuffBunny.AI_BYTES[0x01]           = 0x28                              -- Delay after attack.
+ENTITIES.TuffBunny.AI_BYTES[0x02]           = 0x3C                              -- Damage ElecRing.
+ENTITIES.TuffBunny.BATTLE_NUMBERS           = {11, 12, 13, 14, 16, 17, 18, 19}  -- Battles in which this entity can appear.
+
+ENTITIES.MegaBunny                          = new_base_entity(ENTITY_KIND.Virus, "MegaBunny")
+ENTITIES.MegaBunny.NAME                     = "MegaBunny"
+ENTITIES.MegaBunny.HP_BASE                  = 160
+ENTITIES.MegaBunny.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.MegaBunny.AI_BYTES                 = {}
+ENTITIES.MegaBunny.AI_BYTES[0x00]           = 0x0E                              -- Delay before movement.
+ENTITIES.MegaBunny.AI_BYTES[0x01]           = 0x1E                              -- Delay after attack.
+ENTITIES.MegaBunny.AI_BYTES[0x02]           = 0x5A                              -- Damage ElecRing.
+ENTITIES.MegaBunny.BATTLE_NUMBERS           = {21, 22, 23, 24, 26, 27, 28, 29}  -- Battles in which this entity can appear.
+
+ENTITIES.BunnyOmega                         = new_base_entity(ENTITY_KIND.Virus, "BunnyOmega") -- This was originally called BunnySP, I like BunnyOmega better ;-)
+ENTITIES.BunnyOmega.NAME                    = "Bunny\003"
+ENTITIES.BunnyOmega.HP_BASE                 = 220
+ENTITIES.BunnyOmega.ELEMENT                 = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.BunnyOmega.AI_BYTES                = {}
+ENTITIES.BunnyOmega.AI_BYTES[0x00]          = 0x0A                              -- Delay before movement.
+ENTITIES.BunnyOmega.AI_BYTES[0x01]          = 0x0F                              -- Delay after attack.
+ENTITIES.BunnyOmega.AI_BYTES[0x02]          = 0x96                              -- Damage ElecRing.
+ENTITIES.BunnyOmega.BATTLE_NUMBERS          = {31, 32, 33, 34, 36, 37, 38, 39}  -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.WindBox                            = new_base_entity(ENTITY_KIND.Virus, "WindBox")
+ENTITIES.WindBox.NAME                       = "WindBox"
+ENTITIES.WindBox.HP_BASE                    = 40
+ENTITIES.WindBox.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.WindBox.AI_BYTES                   = {}
+ENTITIES.WindBox.AI_BYTES[0x00]             = 0x1E                              -- Delay before movement.
+ENTITIES.WindBox.AI_BYTES[0x01]             = 0x32                              -- Delay after attack.
+ENTITIES.WindBox.AI_BYTES[0x02]             = 0x0F                              -- Damage ElecRing.
+ENTITIES.WindBox.BATTLE_NUMBERS             = {1, 2, 3, 4, 6, 7, 8, 9}          -- Battles in which this entity can appear.
+
+ENTITIES.TuffBunny                          = new_base_entity(ENTITY_KIND.Virus, "TuffBunny")
+ENTITIES.TuffBunny.NAME                     = "TuffBunny"
+ENTITIES.TuffBunny.HP_BASE                  = 60
+ENTITIES.TuffBunny.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.TuffBunny.AI_BYTES                 = {}
+ENTITIES.TuffBunny.AI_BYTES[0x00]           = 0x16                              -- Delay before movement.
+ENTITIES.TuffBunny.AI_BYTES[0x01]           = 0x28                              -- Delay after attack.
+ENTITIES.TuffBunny.AI_BYTES[0x02]           = 0x3C                              -- Damage ElecRing.
+ENTITIES.TuffBunny.BATTLE_NUMBERS           = {11, 12, 13, 14, 16, 17, 18, 19}  -- Battles in which this entity can appear.
+
+ENTITIES.MegaBunny                          = new_base_entity(ENTITY_KIND.Virus, "MegaBunny")
+ENTITIES.MegaBunny.NAME                     = "MegaBunny"
+ENTITIES.MegaBunny.HP_BASE                  = 160
+ENTITIES.MegaBunny.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.MegaBunny.AI_BYTES                 = {}
+ENTITIES.MegaBunny.AI_BYTES[0x00]           = 0x0E                              -- Delay before movement.
+ENTITIES.MegaBunny.AI_BYTES[0x01]           = 0x1E                              -- Delay after attack.
+ENTITIES.MegaBunny.AI_BYTES[0x02]           = 0x5A                              -- Damage ElecRing.
+ENTITIES.MegaBunny.BATTLE_NUMBERS           = {21, 22, 23, 24, 26, 27, 28, 29}  -- Battles in which this entity can appear.
+
+ENTITIES.BunnyOmega                         = new_base_entity(ENTITY_KIND.Virus, "BunnyOmega") -- This was originally called BunnySP, I like BunnyOmega better ;-)
+ENTITIES.BunnyOmega.NAME                    = "Bunny\003"
+ENTITIES.BunnyOmega.HP_BASE                 = 220
+ENTITIES.BunnyOmega.ELEMENT                 = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.BunnyOmega.AI_BYTES                = {}
+ENTITIES.BunnyOmega.AI_BYTES[0x00]          = 0x0A                              -- Delay before movement.
+ENTITIES.BunnyOmega.AI_BYTES[0x01]          = 0x0F                              -- Delay after attack.
+ENTITIES.BunnyOmega.AI_BYTES[0x02]          = 0x96                              -- Damage ElecRing.
+ENTITIES.BunnyOmega.BATTLE_NUMBERS          = {31, 32, 33, 34, 36, 37, 38, 39}  -- Battles in which this entity can appear.
+
 
 
 

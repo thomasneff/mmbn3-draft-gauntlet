@@ -73,6 +73,8 @@ local gui_frame_counter = 0
 local entered_battle = 0
 local paused = 0
 
+local initial_state = savestate.create(1)
+savestate.load(initial_state)
 -- Upon start, initialize the current round:
 next_round()
 
