@@ -6,3 +6,20 @@ Implement per-battle patching, so we can pre-define all battles and just patch o
 
 Implement a system that forces battles 5 and 10 to be single-enemy. (probably some flag in GAUNTLET_DEFS)
 
+Find the offset for Dominerd's Chip (should be Geddon, probably need to debug with No$GBA to find when he uses geddon.)
+ - The number of Geddon chips is put into 0203735E RAM during battle start.
+ - The number of attacks before Geddon is put into 020373A8 RAM during battle start.
+ - 080C4B58 contains the test for the number of attacks between geddons.
+ - 080C4EBC contains the sub instruction for reducing the number of attacks
+ - after subbing and *not* branching, it loads the content of 020373D0 (= 080AEB30, which is Dominerd AI start) into r1.
+ - at AI + 0x06, load delay into r1.
+ -
+ - After waiting for the delay, it executes the test @ 080C4B58 again. It doesn't branch. r0 == 0
+ - Loads Dominerd AI address into r0
+ - Loads Number of Geddons into r0
+ - Subtracts 1 (080C4B66)
+ - It loads 0x19 into r0, which is the chip family, and 0x00 into r1, which is the sub-family. loads 0x01 into r2, 0x0A into r3. This might be damage?
+ - Actually, 0x01 might be the user... we might be able to hook into this?
+ - Anyways, the Chip Family is at 080C4B6C, the Subfamily is at 080C4B6E. Damage is in r3, which gets set in 080C4B72. User gets pulled from RAM, so bad luck there, unless we 
+   want to hook into it, which we definitely could.
+

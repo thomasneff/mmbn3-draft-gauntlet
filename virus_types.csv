@@ -42,7 +42,7 @@
 29,,WindBox,=,0x29,",",41
 2A,,VacuumFan,=,0x2A,",",42
 2B,,StormBox,=,0x2B,",",43
-2C,,WindOmega,=,0x2C,",",44
+2C,,WindBoxOmega,=,0x2C,",",44
 2D,,PuffBall,=,0x2D,",",45
 2E,,PoofBall,=,0x2E,",",46
 2F,,GoofBall,=,0x2F,",",47
@@ -197,7 +197,7 @@ C3,,DrillmanOmega,=,0xC3,",",195
 C4,,Alpha,=,0xC4,",",196
 C5,,AlphaOmega,=,0xC5,",",197
 C6,,Gutsman_Stormbox,=,0xC6,",",198
-C7,,Gutsman_WindOmega,=,0xC7,",",199
+C7,,Gutsman_WindBoxOmega,=,0xC7,",",199
 C8,,Gutsman,=,0xC8,",",200
 C9,,GutsmanAlpha,=,0xC9,",",201
 CA,,GutmsanBeta,=,0xCA,",",202

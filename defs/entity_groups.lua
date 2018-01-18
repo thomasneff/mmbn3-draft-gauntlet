@@ -20,12 +20,12 @@ function assemble_groups_from_entity_defs()
 
                 local battle_number = battle_numbers[battle_number_idx]
 
-                if ENTITY_GROUPS[battle_number] == nil then
-                    ENTITY_GROUPS[battle_number] = {}
+                if battle_number ~= nil then
+                    if ENTITY_GROUPS[battle_number] == nil then
+                        ENTITY_GROUPS[battle_number] = {}
+                    end  
+                    ENTITY_GROUPS[battle_number][#ENTITY_GROUPS[battle_number]+1] = entity_val
                 end
-
-                
-                ENTITY_GROUPS[battle_number][#ENTITY_GROUPS[battle_number]+1] = entity_val
 
             end
         end

@@ -1,8 +1,8 @@
 
 Entities. Add all the info from TREZ.
 
-Possibly implement a function callback, which gets executed every frame for the given entity, and changes AI values around? Would also need to patch them in again, but that should work, I guess?
- - Note: I don't know how useful that would be. It might be nice if we could change the current HP in RAM... Might be able to do that if we know the order they appear in? Might also be too dangerous to mess around in RAM.
+
+
 
 
 Possibly implement a system to create fixed fights the game can choose from. Should contain ENTITIES, BACKGROUND, STAGE.
