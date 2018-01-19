@@ -1241,7 +1241,7 @@ ENTITIES.BeetleOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     
 ENTITIES.Metrid                             = new_base_entity(ENTITY_KIND.Virus, "Metrid")
 ENTITIES.Metrid.NAME                        = "Metrid"
 ENTITIES.Metrid.HP_BASE                     = 150
-ENTITIES.Metrid.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Metrid.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
 ENTITIES.Metrid.AI_BYTES                    = {}
 ENTITIES.Metrid.AI_BYTES[0x00]              = 0x07                              -- Number of meteors 1.
 ENTITIES.Metrid.AI_BYTES[0x01]              = 0x05                              -- Number of meteors 2.
@@ -1257,7 +1257,7 @@ ENTITIES.Metrid.BATTLE_NUMBERS              = TIER_1_BATTLES_WITHOUT_BOSSES     
 ENTITIES.Metrod                             = new_base_entity(ENTITY_KIND.Virus, "Metrod")
 ENTITIES.Metrod.NAME                        = "Metrod"
 ENTITIES.Metrod.HP_BASE                     = 200
-ENTITIES.Metrod.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Metrod.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
 ENTITIES.Metrod.AI_BYTES                    = {}
 ENTITIES.Metrod.AI_BYTES[0x00]              = 0x05                              -- Number of meteors 1.
 ENTITIES.Metrod.AI_BYTES[0x01]              = 0x06                              -- Number of meteors 2.
@@ -1273,7 +1273,7 @@ ENTITIES.Metrod.BATTLE_NUMBERS              = TIER_2_BATTLES_WITHOUT_BOSSES     
 ENTITIES.Metrodo                            = new_base_entity(ENTITY_KIND.Virus, "Metrodo")
 ENTITIES.Metrodo.NAME                       = "Metrodo"
 ENTITIES.Metrodo.HP_BASE                    = 250
-ENTITIES.Metrodo.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Metrodo.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
 ENTITIES.Metrodo.AI_BYTES                   = {}
 ENTITIES.Metrodo.AI_BYTES[0x00]             = 0x10                              -- Number of meteors 1.
 ENTITIES.Metrodo.AI_BYTES[0x01]             = 0x0A                              -- Number of meteors 2.
@@ -1289,7 +1289,7 @@ ENTITIES.Metrodo.BATTLE_NUMBERS             = TIER_3_BATTLES_WITHOUT_BOSSES     
 ENTITIES.MetridOmega                        = new_base_entity(ENTITY_KIND.Virus, "MetridOmega")
 ENTITIES.MetridOmega.NAME                   = "Metrid\003"
 ENTITIES.MetridOmega.HP_BASE                = 300
-ENTITIES.MetridOmega.ELEMENT                = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.MetridOmega.ELEMENT                = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
 ENTITIES.MetridOmega.AI_BYTES               = {}
 ENTITIES.MetridOmega.AI_BYTES[0x00]         = 0x07                              -- Number of meteors 1.
 ENTITIES.MetridOmega.AI_BYTES[0x01]         = 0x05                              -- Number of meteors 2.
@@ -1302,13 +1302,204 @@ ENTITIES.MetridOmega.AI_BYTES[0x07]         = 0x1E                              
 ENTITIES.MetridOmega.AI_BYTES[0x08]         = 0x01                              -- (??).
 ENTITIES.MetridOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.SnowBlow                           = new_base_entity(ENTITY_KIND.Virus, "SnowBlow")
+ENTITIES.SnowBlow.NAME                      = "SnowBlow"
+ENTITIES.SnowBlow.HP_BASE                   = 100
+ENTITIES.SnowBlow.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.SnowBlow.AI_BYTES                  = {}
+ENTITIES.SnowBlow.AI_BYTES[0x00]            = 0x5A                              -- Delay before attack.
+ENTITIES.SnowBlow.AI_BYTES[0x01]            = 0x96                              -- Duration of blow.
+ENTITIES.SnowBlow.AI_BYTES[0x02]            = 0x1E                              -- Damage tornado (Byte 1).
+ENTITIES.SnowBlow.AI_BYTES[0x03]            = 0x00                              -- Damage tornado (Byte 2).
+ENTITIES.SnowBlow.AI_BYTES[0x04]            = 0x33                              -- Tornado speed (Byte 1).
+ENTITIES.SnowBlow.AI_BYTES[0x05]            = 0x33                              -- Tornado speed (Byte 2).
+ENTITIES.SnowBlow.AI_BYTES[0x06]            = 0x01                              -- Tornado speed (Byte 3).
+ENTITIES.SnowBlow.AI_BYTES[0x07]            = 0x00                              -- Tornado speed (Byte 4).
+ENTITIES.SnowBlow.BATTLE_NUMBERS            = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.LowBlow                            = new_base_entity(ENTITY_KIND.Virus, "LowBlow")
+ENTITIES.LowBlow.NAME                       = "LowBlow"
+ENTITIES.LowBlow.HP_BASE                    = 140
+ENTITIES.LowBlow.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.LowBlow.AI_BYTES                   = {}
+ENTITIES.LowBlow.AI_BYTES[0x00]             = 0x3C                              -- Delay before attack.
+ENTITIES.LowBlow.AI_BYTES[0x01]             = 0x78                              -- Duration of blow.
+ENTITIES.LowBlow.AI_BYTES[0x02]             = 0x3C                              -- Damage tornado (Byte 1).
+ENTITIES.LowBlow.AI_BYTES[0x03]             = 0x00                              -- Damage tornado (Byte 2).
+ENTITIES.LowBlow.AI_BYTES[0x04]             = 0x00                              -- Tornado speed (Byte 1).
+ENTITIES.LowBlow.AI_BYTES[0x05]             = 0x80                              -- Tornado speed (Byte 2).
+ENTITIES.LowBlow.AI_BYTES[0x06]             = 0x01                              -- Tornado speed (Byte 3).
+ENTITIES.LowBlow.AI_BYTES[0x07]             = 0x00                              -- Tornado speed (Byte 4).
+ENTITIES.LowBlow.BATTLE_NUMBERS             = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.MoBlow                             = new_base_entity(ENTITY_KIND.Virus, "MoBlow")
+ENTITIES.MoBlow.NAME                        = "MoBlow"
+ENTITIES.MoBlow.HP_BASE                     = 180
+ENTITIES.MoBlow.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.MoBlow.AI_BYTES                    = {}
+ENTITIES.MoBlow.AI_BYTES[0x00]              = 0x1E                              -- Delay before attack.
+ENTITIES.MoBlow.AI_BYTES[0x01]              = 0x5A                              -- Duration of blow.
+ENTITIES.MoBlow.AI_BYTES[0x02]              = 0x5A                              -- Damage tornado (Byte 1).
+ENTITIES.MoBlow.AI_BYTES[0x03]              = 0x00                              -- Damage tornado (Byte 2).
+ENTITIES.MoBlow.AI_BYTES[0x04]              = 0xCC                              -- Tornado speed (Byte 1).
+ENTITIES.MoBlow.AI_BYTES[0x05]              = 0xCC                              -- Tornado speed (Byte 2).
+ENTITIES.MoBlow.AI_BYTES[0x06]              = 0x01                              -- Tornado speed (Byte 3).
+ENTITIES.MoBlow.AI_BYTES[0x07]              = 0x00                              -- Tornado speed (Byte 4).
+ENTITIES.MoBlow.BATTLE_NUMBERS              = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.SnowBlowOmega                      = new_base_entity(ENTITY_KIND.Virus, "SnowBlowOmega")
+ENTITIES.SnowBlowOmega.NAME                 = "SnowBlow\003"
+ENTITIES.SnowBlowOmega.HP_BASE              = 300
+ENTITIES.SnowBlowOmega.ELEMENT              = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.SnowBlowOmega.AI_BYTES             = {}
+ENTITIES.SnowBlowOmega.AI_BYTES[0x00]       = 0x1E                              -- Delay before attack.
+ENTITIES.SnowBlowOmega.AI_BYTES[0x01]       = 0x3C                              -- Duration of blow.
+ENTITIES.SnowBlowOmega.AI_BYTES[0x02]       = 0x78                              -- Damage tornado (Byte 1).
+ENTITIES.SnowBlowOmega.AI_BYTES[0x03]       = 0x00                              -- Damage tornado (Byte 2).
+ENTITIES.SnowBlowOmega.AI_BYTES[0x04]       = 0x00                              -- Tornado speed (Byte 1).
+ENTITIES.SnowBlowOmega.AI_BYTES[0x05]       = 0x00                              -- Tornado speed (Byte 2).
+ENTITIES.SnowBlowOmega.AI_BYTES[0x06]       = 0x02                              -- Tornado speed (Byte 3).
+ENTITIES.SnowBlowOmega.AI_BYTES[0x07]       = 0x00                              -- Tornado speed (Byte 4).
+ENTITIES.SnowBlowOmega.BATTLE_NUMBERS       = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.KillerEye                          = new_base_entity(ENTITY_KIND.Virus, "KillerEye")
+ENTITIES.KillerEye.NAME                     = "KillrEye"
+ENTITIES.KillerEye.HP_BASE                  = 140
+ENTITIES.KillerEye.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.KillerEye.AI_BYTES                 = {}
+ENTITIES.KillerEye.AI_BYTES[0x00]           = 0x78                              -- Time it aims in 1 direction.
+ENTITIES.KillerEye.AI_BYTES[0x01]           = 0x32                              -- Damage sensor.
+ENTITIES.KillerEye.AI_BYTES[0x1D190]        = 0x1E                              -- Delay before sensor. This is shared with other Sensor viruses in the same battle.
+ENTITIES.KillerEye.AI_BYTES[0x1D3A6]        = 0x3C                              -- Delay after sensor. This is shared with other Sensor viruses in the same battle.
+ENTITIES.KillerEye.BATTLE_NUMBERS           = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.DemonEye                           = new_base_entity(ENTITY_KIND.Virus, "DemonEye")
+ENTITIES.DemonEye.NAME                      = "DemonEye"
+ENTITIES.DemonEye.HP_BASE                   = 190
+ENTITIES.DemonEye.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.DemonEye.AI_BYTES                  = {}
+ENTITIES.DemonEye.AI_BYTES[0x00]            = 0x3C                              -- Time it aims in 1 direction.
+ENTITIES.DemonEye.AI_BYTES[0x01]            = 0x64                              -- Damage sensor.
+ENTITIES.DemonEye.AI_BYTES[0x1D18E]         = 0x1E                              -- Delay before sensor. This is shared with other Sensor viruses in the same battle.
+ENTITIES.DemonEye.AI_BYTES[0x1D3A4]         = 0x3C                              -- Delay after sensor. This is shared with other Sensor viruses in the same battle.
+ENTITIES.DemonEye.BATTLE_NUMBERS            = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.JokerEye                           = new_base_entity(ENTITY_KIND.Virus, "JokerEye")
+ENTITIES.JokerEye.NAME                      = "JokerEye"
+ENTITIES.JokerEye.HP_BASE                   = 240
+ENTITIES.JokerEye.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.JokerEye.AI_BYTES                  = {}
+ENTITIES.JokerEye.AI_BYTES[0x00]            = 0xB4                              -- Time it aims in 1 direction.
+ENTITIES.JokerEye.AI_BYTES[0x01]            = 0x96                              -- Damage sensor.
+ENTITIES.JokerEye.AI_BYTES[0x1D18C]         = 0x1E                              -- Delay before sensor. This is shared with other Sensor viruses in the same battle.
+ENTITIES.JokerEye.AI_BYTES[0x1D3A2]         = 0x3C                              -- Delay after sensor. This is shared with other Sensor viruses in the same battle.
+ENTITIES.JokerEye.BATTLE_NUMBERS            = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.KillerEyeOmega                     = new_base_entity(ENTITY_KIND.Virus, "KillerEyeOmega")
+ENTITIES.KillerEyeOmega.NAME                = "KillrEye\003"
+ENTITIES.KillerEyeOmega.HP_BASE             = 300
+ENTITIES.KillerEyeOmega.ELEMENT             = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.KillerEyeOmega.AI_BYTES            = {}
+ENTITIES.KillerEyeOmega.AI_BYTES[0x00]      = 0x78                              -- Time it aims in 1 direction.
+ENTITIES.KillerEyeOmega.AI_BYTES[0x01]      = 0xC8                              -- Damage sensor.
+ENTITIES.KillerEyeOmega.AI_BYTES[0x1D18A]   = 0x1E                              -- Delay before sensor. This is shared with other Sensor viruses in the same battle.
+ENTITIES.KillerEyeOmega.AI_BYTES[0x1D3A0]   = 0x3C                              -- Delay after sensor. This is shared with other Sensor viruses in the same battle.
+ENTITIES.KillerEyeOmega.BATTLE_NUMBERS      = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Momogra                            = new_base_entity(ENTITY_KIND.Virus, "Momogra")
+ENTITIES.Momogra.NAME                       = "Momogra"
+ENTITIES.Momogra.HP_BASE                    = 60
+ENTITIES.Momogra.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Momogra.AI_BYTES                   = {}
+ENTITIES.Momogra.AI_BYTES[0x00]             = 0x04                              -- Movements before attack.
+ENTITIES.Momogra.AI_BYTES[0x01]             = 0x46                              -- Delay before movement.
+ENTITIES.Momogra.AI_BYTES[0x02]             = 0x28                              -- Damage attack.
+ENTITIES.Momogra.BATTLE_NUMBERS             = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Momogro                            = new_base_entity(ENTITY_KIND.Virus, "Momogro")
+ENTITIES.Momogro.NAME                       = "Momogro"
+ENTITIES.Momogro.HP_BASE                    = 130
+ENTITIES.Momogro.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Momogro.AI_BYTES                   = {}
+ENTITIES.Momogro.AI_BYTES[0x00]             = 0x05                              -- Movements before attack.
+ENTITIES.Momogro.AI_BYTES[0x01]             = 0x3C                              -- Delay before movement.
+ENTITIES.Momogro.AI_BYTES[0x02]             = 0x50                              -- Damage attack.
+ENTITIES.Momogro.BATTLE_NUMBERS             = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Momogre                            = new_base_entity(ENTITY_KIND.Virus, "Momogre")
+ENTITIES.Momogre.NAME                       = "Momogre"
+ENTITIES.Momogre.HP_BASE                    = 180
+ENTITIES.Momogre.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Momogre.AI_BYTES                   = {}
+ENTITIES.Momogre.AI_BYTES[0x00]             = 0x08                              -- Movements before attack.
+ENTITIES.Momogre.AI_BYTES[0x01]             = 0x32                              -- Delay before movement.
+ENTITIES.Momogre.AI_BYTES[0x02]             = 0x78                              -- Damage attack.
+ENTITIES.Momogre.BATTLE_NUMBERS             = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.MomograOmega                       = new_base_entity(ENTITY_KIND.Virus, "MomograOmega")
+ENTITIES.MomograOmega.NAME                  = "Momogra\003"
+ENTITIES.MomograOmega.HP_BASE               = 250
+ENTITIES.MomograOmega.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.MomograOmega.AI_BYTES              = {}
+ENTITIES.MomograOmega.AI_BYTES[0x00]        = 0x0A                              -- Movements before attack.
+ENTITIES.MomograOmega.AI_BYTES[0x01]        = 0x28                              -- Delay before movement.
+ENTITIES.MomograOmega.AI_BYTES[0x02]        = 0xC8                              -- Damage attack.
+ENTITIES.MomograOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Momogra                            = new_base_entity(ENTITY_KIND.Virus, "Momogra")
+ENTITIES.Momogra.NAME                       = "Momogra"
+ENTITIES.Momogra.HP_BASE                    = 60
+ENTITIES.Momogra.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Momogra.AI_BYTES                   = {}
+ENTITIES.Momogra.AI_BYTES[0x00]             = 0x04                              -- Movements before attack.
+ENTITIES.Momogra.AI_BYTES[0x01]             = 0x46                              -- Delay before movement.
+ENTITIES.Momogra.AI_BYTES[0x02]             = 0x28                              -- Damage attack.
+ENTITIES.Momogra.BATTLE_NUMBERS             = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Momogro                            = new_base_entity(ENTITY_KIND.Virus, "Momogro")
+ENTITIES.Momogro.NAME                       = "Momogro"
+ENTITIES.Momogro.HP_BASE                    = 130
+ENTITIES.Momogro.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Momogro.AI_BYTES                   = {}
+ENTITIES.Momogro.AI_BYTES[0x00]             = 0x05                              -- Movements before attack.
+ENTITIES.Momogro.AI_BYTES[0x01]             = 0x3C                              -- Delay before movement.
+ENTITIES.Momogro.AI_BYTES[0x02]             = 0x50                              -- Damage attack.
+ENTITIES.Momogro.BATTLE_NUMBERS             = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Momogre                            = new_base_entity(ENTITY_KIND.Virus, "Momogre")
+ENTITIES.Momogre.NAME                       = "Momogre"
+ENTITIES.Momogre.HP_BASE                    = 180
+ENTITIES.Momogre.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Momogre.AI_BYTES                   = {}
+ENTITIES.Momogre.AI_BYTES[0x00]             = 0x08                              -- Movements before attack.
+ENTITIES.Momogre.AI_BYTES[0x01]             = 0x32                              -- Delay before movement.
+ENTITIES.Momogre.AI_BYTES[0x02]             = 0x78                              -- Damage attack.
+ENTITIES.Momogre.BATTLE_NUMBERS             = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.MomograOmega                       = new_base_entity(ENTITY_KIND.Virus, "MomograOmega")
+ENTITIES.MomograOmega.NAME                  = "Momogra\003"
+ENTITIES.MomograOmega.HP_BASE               = 250
+ENTITIES.MomograOmega.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.MomograOmega.AI_BYTES              = {}
+ENTITIES.MomograOmega.AI_BYTES[0x00]        = 0x0A                              -- Movements before attack.
+ENTITIES.MomograOmega.AI_BYTES[0x01]        = 0x28                              -- Delay before movement.
+ENTITIES.MomograOmega.AI_BYTES[0x02]        = 0xC8                              -- Damage attack.
+ENTITIES.MomograOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 
 
 -- Crackin' yar panels and stealing yar stuff!
 ENTITIES.LolMettaur = deepcopy(ENTITIES.MettaurOmega)
 ENTITIES.LolMettaur.HP_BASE = 420
-ENTITIES.LolMettaur.NAME = "LolMettaur"
+ENTITIES.LolMettaur.NAME = "LolMettr"
 ENTITIES.LolMettaur.BATTLE_NUMBERS = {10, 15, 20, 25, 30, 35, 40}
 ENTITIES.LolMettaur.AI_BYTES[0x00]        = 20                                -- Base Damage.
 ENTITIES.LolMettaur.AI_BYTES[0x01]        = 0x01                              -- Delay before moving.
