@@ -1454,45 +1454,45 @@ ENTITIES.MomograOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Momogra                            = new_base_entity(ENTITY_KIND.Virus, "Momogra")
-ENTITIES.Momogra.NAME                       = "Momogra"
-ENTITIES.Momogra.HP_BASE                    = 60
-ENTITIES.Momogra.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
-ENTITIES.Momogra.AI_BYTES                   = {}
-ENTITIES.Momogra.AI_BYTES[0x00]             = 0x04                              -- Movements before attack.
-ENTITIES.Momogra.AI_BYTES[0x01]             = 0x46                              -- Delay before movement.
-ENTITIES.Momogra.AI_BYTES[0x02]             = 0x28                              -- Damage attack.
-ENTITIES.Momogra.BATTLE_NUMBERS             = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.Basher                             = new_base_entity(ENTITY_KIND.Virus, "Basher")
+ENTITIES.Basher.NAME                        = "Basher"
+ENTITIES.Basher.HP_BASE                     = 150
+ENTITIES.Basher.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Basher.AI_BYTES                    = {}
+ENTITIES.Basher.AI_BYTES[0x00]              = 0x32                              -- Delay before aim.
+ENTITIES.Basher.AI_BYTES[0x01]              = 0x32                              -- Damage attack.
+ENTITIES.Basher.AI_BYTES[0x36FC8]           = 0x14                              -- Frames between aims. This is shared with other Basher viruses in the same battle.
+ENTITIES.Basher.BATTLE_NUMBERS              = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.Momogro                            = new_base_entity(ENTITY_KIND.Virus, "Momogro")
-ENTITIES.Momogro.NAME                       = "Momogro"
-ENTITIES.Momogro.HP_BASE                    = 130
-ENTITIES.Momogro.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
-ENTITIES.Momogro.AI_BYTES                   = {}
-ENTITIES.Momogro.AI_BYTES[0x00]             = 0x05                              -- Movements before attack.
-ENTITIES.Momogro.AI_BYTES[0x01]             = 0x3C                              -- Delay before movement.
-ENTITIES.Momogro.AI_BYTES[0x02]             = 0x50                              -- Damage attack.
-ENTITIES.Momogro.BATTLE_NUMBERS             = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.Smasher                            = new_base_entity(ENTITY_KIND.Virus, "Smasher")
+ENTITIES.Smasher.NAME                       = "Smasher"
+ENTITIES.Smasher.HP_BASE                    = 200
+ENTITIES.Smasher.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Smasher.AI_BYTES                   = {}
+ENTITIES.Smasher.AI_BYTES[0x00]             = 0x32                              -- Delay before aim.
+ENTITIES.Smasher.AI_BYTES[0x01]             = 0x64                              -- Damage attack.
+ENTITIES.Smasher.AI_BYTES[0x36FC6]          = 0x28                              -- Frames between aims. This is shared with other Basher viruses in the same battle.
+ENTITIES.Smasher.BATTLE_NUMBERS             = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.Momogre                            = new_base_entity(ENTITY_KIND.Virus, "Momogre")
-ENTITIES.Momogre.NAME                       = "Momogre"
-ENTITIES.Momogre.HP_BASE                    = 180
-ENTITIES.Momogre.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
-ENTITIES.Momogre.AI_BYTES                   = {}
-ENTITIES.Momogre.AI_BYTES[0x00]             = 0x08                              -- Movements before attack.
-ENTITIES.Momogre.AI_BYTES[0x01]             = 0x32                              -- Delay before movement.
-ENTITIES.Momogre.AI_BYTES[0x02]             = 0x78                              -- Damage attack.
-ENTITIES.Momogre.BATTLE_NUMBERS             = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.Trasher                            = new_base_entity(ENTITY_KIND.Virus, "Trasher")
+ENTITIES.Trasher.NAME                       = "Trasher"
+ENTITIES.Trasher.HP_BASE                    = 250
+ENTITIES.Trasher.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Trasher.AI_BYTES                   = {}
+ENTITIES.Trasher.AI_BYTES[0x00]             = 0x32                              -- Delay before aim.
+ENTITIES.Trasher.AI_BYTES[0x01]             = 0x96                              -- Damage attack.
+ENTITIES.Trasher.AI_BYTES[0x36FC4]          = 0x28                              -- Frames between aims. This is shared with other Basher viruses in the same battle.
+ENTITIES.Trasher.BATTLE_NUMBERS             = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.MomograOmega                       = new_base_entity(ENTITY_KIND.Virus, "MomograOmega")
-ENTITIES.MomograOmega.NAME                  = "Momogra\003"
-ENTITIES.MomograOmega.HP_BASE               = 250
-ENTITIES.MomograOmega.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
-ENTITIES.MomograOmega.AI_BYTES              = {}
-ENTITIES.MomograOmega.AI_BYTES[0x00]        = 0x0A                              -- Movements before attack.
-ENTITIES.MomograOmega.AI_BYTES[0x01]        = 0x28                              -- Delay before movement.
-ENTITIES.MomograOmega.AI_BYTES[0x02]        = 0xC8                              -- Damage attack.
-ENTITIES.MomograOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.BasherOmega                        = new_base_entity(ENTITY_KIND.Virus, "BasherOmega")
+ENTITIES.BasherOmega.NAME                   = "Basher\003"
+ENTITIES.BasherOmega.HP_BASE                = 300
+ENTITIES.BasherOmega.ELEMENT                = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.BasherOmega.AI_BYTES               = {}
+ENTITIES.BasherOmega.AI_BYTES[0x00]         = 0x32                              -- Delay before aim.
+ENTITIES.BasherOmega.AI_BYTES[0x01]         = 0xC8                              -- Damage attack.
+ENTITIES.BasherOmega.AI_BYTES[0x36FC2]      = 0x28                              -- Frames between aims. This is shared with other Basher viruses in the same battle.
+ENTITIES.BasherOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 
 
