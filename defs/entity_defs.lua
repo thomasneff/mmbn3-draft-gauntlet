@@ -1166,6 +1166,143 @@ ENTITIES.ScuttleOmega.AI_BYTES[0x0B]        = 0x00                              
 ENTITIES.ScuttleOmega.AI_BYTES[0x33678]     = 0x21                              -- Vine speed delay.
 ENTITIES.ScuttleOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Beetle                             = new_base_entity(ENTITY_KIND.Virus, "Beetle")
+ENTITIES.Beetle.NAME                        = "Beetle"
+ENTITIES.Beetle.HP_BASE                     = 90
+ENTITIES.Beetle.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Beetle.AI_BYTES                    = {}
+ENTITIES.Beetle.AI_BYTES[0x00]              = 0x0A                              -- (??).
+ENTITIES.Beetle.AI_BYTES[0x01]              = 0x19                              -- Horizontal speed.
+ENTITIES.Beetle.AI_BYTES[0x02]              = 0x0F                              -- Vertical boundaries.
+ENTITIES.Beetle.AI_BYTES[0x03]              = 0x14                              -- Damage bomb.
+ENTITIES.Beetle.AI_BYTES[0x04]              = 0x01                              -- Number of bombs shot.
+ENTITIES.Beetle.AI_BYTES[0x08]              = 0x99                              -- Movement variable (Byte 1).
+ENTITIES.Beetle.AI_BYTES[0x09]              = 0x99                              -- Movement variable (Byte 2).
+ENTITIES.Beetle.AI_BYTES[0x0A]              = 0x01                              -- Movement variable (Byte 3).
+ENTITIES.Beetle.AI_BYTES[0x0B]              = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.Beetle.AI_BYTES[0xBE2A]            = 0x3C                              -- Delay after attack. This is shared with all other Beetle viruses in the same battle.
+ENTITIES.Beetle.BATTLE_NUMBERS              = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Deetle                             = new_base_entity(ENTITY_KIND.Virus, "Deetle")
+ENTITIES.Deetle.NAME                        = "Deetle"
+ENTITIES.Deetle.HP_BASE                     = 130
+ENTITIES.Deetle.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Deetle.AI_BYTES                    = {}
+ENTITIES.Deetle.AI_BYTES[0x00]              = 0x0A                              -- (??).
+ENTITIES.Deetle.AI_BYTES[0x01]              = 0x16                              -- Horizontal speed.
+ENTITIES.Deetle.AI_BYTES[0x02]              = 0x0D                              -- Vertical boundaries.
+ENTITIES.Deetle.AI_BYTES[0x03]              = 0x32                              -- Damage bomb.
+ENTITIES.Deetle.AI_BYTES[0x04]              = 0x02                              -- Number of bombs shot.
+ENTITIES.Deetle.AI_BYTES[0x08]              = 0xCC                              -- Movement variable (Byte 1).
+ENTITIES.Deetle.AI_BYTES[0x09]              = 0xCC                              -- Movement variable (Byte 2).
+ENTITIES.Deetle.AI_BYTES[0x0A]              = 0x01                              -- Movement variable (Byte 3).
+ENTITIES.Deetle.AI_BYTES[0x0B]              = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.Deetle.AI_BYTES[0xBE1E]            = 0x3C                              -- Delay after attack. This is shared with all other Beetle viruses in the same battle.
+ENTITIES.Deetle.BATTLE_NUMBERS              = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Geetle                             = new_base_entity(ENTITY_KIND.Virus, "Geetle")
+ENTITIES.Geetle.NAME                        = "Geetle"
+ENTITIES.Geetle.HP_BASE                     = 170
+ENTITIES.Geetle.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Geetle.AI_BYTES                    = {}
+ENTITIES.Geetle.AI_BYTES[0x00]              = 0x0A                              -- (??).
+ENTITIES.Geetle.AI_BYTES[0x01]              = 0x14                              -- Horizontal speed.
+ENTITIES.Geetle.AI_BYTES[0x02]              = 0x0C                              -- Vertical boundaries.
+ENTITIES.Geetle.AI_BYTES[0x03]              = 0x50                              -- Damage bomb.
+ENTITIES.Geetle.AI_BYTES[0x04]              = 0x03                              -- Number of bombs shot.
+ENTITIES.Geetle.AI_BYTES[0x08]              = 0x00                              -- Movement variable (Byte 1).
+ENTITIES.Geetle.AI_BYTES[0x09]              = 0x00                              -- Movement variable (Byte 2).
+ENTITIES.Geetle.AI_BYTES[0x0A]              = 0x02                              -- Movement variable (Byte 3).
+ENTITIES.Geetle.AI_BYTES[0x0B]              = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.Geetle.AI_BYTES[0xBE12]            = 0x3C                              -- Delay after attack. This is shared with all other Beetle viruses in the same battle.
+ENTITIES.Geetle.BATTLE_NUMBERS              = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.BeetleOmega                        = new_base_entity(ENTITY_KIND.Virus, "BeetleOmega")
+ENTITIES.BeetleOmega.NAME                   = "Beetle\003"
+ENTITIES.BeetleOmega.HP_BASE                = 220
+ENTITIES.BeetleOmega.ELEMENT                = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.BeetleOmega.AI_BYTES               = {}
+ENTITIES.BeetleOmega.AI_BYTES[0x00]         = 0x0A                              -- (??).
+ENTITIES.BeetleOmega.AI_BYTES[0x01]         = 0x10                              -- Horizontal speed.
+ENTITIES.BeetleOmega.AI_BYTES[0x02]         = 0x0A                              -- Vertical boundaries.
+ENTITIES.BeetleOmega.AI_BYTES[0x03]         = 0x8C                              -- Damage bomb.
+ENTITIES.BeetleOmega.AI_BYTES[0x04]         = 0x03                              -- Number of bombs shot.
+ENTITIES.BeetleOmega.AI_BYTES[0x08]         = 0x66                              -- Movement variable (Byte 1).
+ENTITIES.BeetleOmega.AI_BYTES[0x09]         = 0x66                              -- Movement variable (Byte 2).
+ENTITIES.BeetleOmega.AI_BYTES[0x0A]         = 0x02                              -- Movement variable (Byte 3).
+ENTITIES.BeetleOmega.AI_BYTES[0x0B]         = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.BeetleOmega.AI_BYTES[0xBE06]       = 0x3C                              -- Delay after attack. This is shared with all other Beetle viruses in the same battle.
+ENTITIES.BeetleOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Metrid                             = new_base_entity(ENTITY_KIND.Virus, "Metrid")
+ENTITIES.Metrid.NAME                        = "Metrid"
+ENTITIES.Metrid.HP_BASE                     = 150
+ENTITIES.Metrid.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Metrid.AI_BYTES                    = {}
+ENTITIES.Metrid.AI_BYTES[0x00]              = 0x07                              -- Number of meteors 1.
+ENTITIES.Metrid.AI_BYTES[0x01]              = 0x05                              -- Number of meteors 2.
+ENTITIES.Metrid.AI_BYTES[0x02]              = 0x04                              -- Number of meteors 3.
+ENTITIES.Metrid.AI_BYTES[0x03]              = 0x28                              -- Damage meteor.
+ENTITIES.Metrid.AI_BYTES[0x04]              = 0x00                              -- (??).
+ENTITIES.Metrid.AI_BYTES[0x05]              = 0x05                              -- Movements before attack.
+ENTITIES.Metrid.AI_BYTES[0x06]              = 0x1E                              -- Delay before movement.
+ENTITIES.Metrid.AI_BYTES[0x07]              = 0x1E                              -- Delay between meteors.
+ENTITIES.Metrid.AI_BYTES[0x08]              = 0x01                              -- (??).
+ENTITIES.Metrid.BATTLE_NUMBERS              = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Metrod                             = new_base_entity(ENTITY_KIND.Virus, "Metrod")
+ENTITIES.Metrod.NAME                        = "Metrod"
+ENTITIES.Metrod.HP_BASE                     = 200
+ENTITIES.Metrod.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Metrod.AI_BYTES                    = {}
+ENTITIES.Metrod.AI_BYTES[0x00]              = 0x05                              -- Number of meteors 1.
+ENTITIES.Metrod.AI_BYTES[0x01]              = 0x06                              -- Number of meteors 2.
+ENTITIES.Metrod.AI_BYTES[0x02]              = 0x08                              -- Number of meteors 3.
+ENTITIES.Metrod.AI_BYTES[0x03]              = 0x50                              -- Damage meteor.
+ENTITIES.Metrod.AI_BYTES[0x04]              = 0x01                              -- (??).
+ENTITIES.Metrod.AI_BYTES[0x05]              = 0x05                              -- Movements before attack.
+ENTITIES.Metrod.AI_BYTES[0x06]              = 0x18                              -- Delay before movement.
+ENTITIES.Metrod.AI_BYTES[0x07]              = 0x19                              -- Delay between meteors.
+ENTITIES.Metrod.AI_BYTES[0x08]              = 0x03                              -- (??).
+ENTITIES.Metrod.BATTLE_NUMBERS              = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Metrodo                            = new_base_entity(ENTITY_KIND.Virus, "Metrodo")
+ENTITIES.Metrodo.NAME                       = "Metrodo"
+ENTITIES.Metrodo.HP_BASE                    = 250
+ENTITIES.Metrodo.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Metrodo.AI_BYTES                   = {}
+ENTITIES.Metrodo.AI_BYTES[0x00]             = 0x10                              -- Number of meteors 1.
+ENTITIES.Metrodo.AI_BYTES[0x01]             = 0x0A                              -- Number of meteors 2.
+ENTITIES.Metrodo.AI_BYTES[0x02]             = 0x12                              -- Number of meteors 3.
+ENTITIES.Metrodo.AI_BYTES[0x03]             = 0x78                              -- Damage meteor.
+ENTITIES.Metrodo.AI_BYTES[0x04]             = 0x02                              -- (??).
+ENTITIES.Metrodo.AI_BYTES[0x05]             = 0x09                              -- Movements before attack.
+ENTITIES.Metrodo.AI_BYTES[0x06]             = 0x12                              -- Delay before movement.
+ENTITIES.Metrodo.AI_BYTES[0x07]             = 0x14                              -- Delay between meteors.
+ENTITIES.Metrodo.AI_BYTES[0x08]             = 0x02                              -- (??).
+ENTITIES.Metrodo.BATTLE_NUMBERS             = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.MetridOmega                        = new_base_entity(ENTITY_KIND.Virus, "MetridOmega")
+ENTITIES.MetridOmega.NAME                   = "Metrid\003"
+ENTITIES.MetridOmega.HP_BASE                = 300
+ENTITIES.MetridOmega.ELEMENT                = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.MetridOmega.AI_BYTES               = {}
+ENTITIES.MetridOmega.AI_BYTES[0x00]         = 0x07                              -- Number of meteors 1.
+ENTITIES.MetridOmega.AI_BYTES[0x01]         = 0x05                              -- Number of meteors 2.
+ENTITIES.MetridOmega.AI_BYTES[0x02]         = 0x04                              -- Number of meteors 3.
+ENTITIES.MetridOmega.AI_BYTES[0x03]         = 0x28                              -- Damage meteor.
+ENTITIES.MetridOmega.AI_BYTES[0x04]         = 0x00                              -- (??).
+ENTITIES.MetridOmega.AI_BYTES[0x05]         = 0x05                              -- Movements before attack.
+ENTITIES.MetridOmega.AI_BYTES[0x06]         = 0x1E                              -- Delay before movement.
+ENTITIES.MetridOmega.AI_BYTES[0x07]         = 0x1E                              -- Delay between meteors.
+ENTITIES.MetridOmega.AI_BYTES[0x08]         = 0x01                              -- (??).
+ENTITIES.MetridOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+
 
 
 -- Crackin' yar panels and stealing yar stuff!
