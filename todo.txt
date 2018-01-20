@@ -3,6 +3,7 @@ Entities. Add all the info from TREZ.
 
 
 Find out Swordy AreaGrab offset.
+Find out Pengi IceStage offset. <-- this should be easy, as I don't remember any other virus/navi using IceStage.
 
 
 Possibly implement a system to create fixed fights the game can choose from. Should contain ENTITIES, BACKGROUND, STAGE.
@@ -26,9 +27,12 @@ contain ranges for when they can appear (battle, no need for rounds)
 contain drop tables for chips, 
 map from chance to list of chips with codes?
 
+ChipGenerator.GetChipWithSpecificCodeIfExists(CHIPS.ShockWav, CHIP_CODE.A) -- this either returns a chip with code A if it exists, or non-asterisk otherwise.
+
+-- If there are only asterisk (for whatever reason) just return asterisk.
 60 =  ChipGenerator.GetChipListNonAsterisk(CHIPS.ShockWav) -- this returns copies of the shockwav chip with all non-asterisk codes, which contains address, index, etc., to put into folder
 
-80 =  ChipGenerator.GetChipAsterisk(CHIPS.Guard)
+80 =  ChipGenerator.GetChipAsterisk(CHIPS.Guard) -- should also return a list with a single entry.
 
 95 = ChipGenerator.GetChipAsterisk(CHIPS.ShockWav)
 

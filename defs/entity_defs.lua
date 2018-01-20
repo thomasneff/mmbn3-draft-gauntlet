@@ -1541,8 +1541,106 @@ ENTITIES.HeavyOmega.AI_BYTES[0x00]          = 0x0A                              
 ENTITIES.HeavyOmega.AI_BYTES[0x01]          = 0x1E                              -- Vertical speed delay (megaman side).
 ENTITIES.HeavyOmega.AI_BYTES[0x02]          = 0x01                              -- Delay before vertical movement.
 ENTITIES.HeavyOmega.AI_BYTES[0x03]          = 0x01                              -- (??) always 0x01.
-ENTITIES.HeavyOmega.AI_BYTES[0x04]          = 0x96                             -- Damage by contact.
+ENTITIES.HeavyOmega.AI_BYTES[0x04]          = 0x96                              -- Damage by contact.
 ENTITIES.HeavyOmega.BATTLE_NUMBERS          = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Pengi                              = new_base_entity(ENTITY_KIND.Virus, "Pengi")
+ENTITIES.Pengi.NAME                         = "Pengi"
+ENTITIES.Pengi.HP_BASE                      = 80
+ENTITIES.Pengi.ELEMENT                      = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Pengi.AI_BYTES                     = {}
+ENTITIES.Pengi.AI_BYTES[0x00]               = 0x0A                              -- (??).
+ENTITIES.Pengi.AI_BYTES[0x01]               = 0x1E                              -- Horizontal speed delay.
+ENTITIES.Pengi.AI_BYTES[0x02]               = 0x12                              -- Vertical speed delay.
+ENTITIES.Pengi.AI_BYTES[0x03]               = 0x1E                              -- Damage attack.
+ENTITIES.Pengi.AI_BYTES[0x04]               = 0x50                              -- Delay after attack.
+ENTITIES.Pengi.AI_BYTES[0x05]               = 0x19                              -- Delay speed of attack.
+ENTITIES.Pengi.AI_BYTES[0x06]               = 0x00                              -- Number of IceStage chips carrying.
+ENTITIES.Pengi.AI_BYTES[0x07]               = 0x00                              -- (??) always 0x00.
+ENTITIES.Pengi.AI_BYTES[0x08]               = 0x55                              -- Movement variable (Byte 1).
+ENTITIES.Pengi.AI_BYTES[0x09]               = 0x55                              -- Movement variable (Byte 2).
+ENTITIES.Pengi.AI_BYTES[0x0A]               = 0x01                              -- Movement variable (Byte 3).
+ENTITIES.Pengi.AI_BYTES[0x0B]               = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.Pengi.BATTLE_NUMBERS               = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Penga                              = new_base_entity(ENTITY_KIND.Virus, "Penga")
+ENTITIES.Penga.NAME                         = "Penga"
+ENTITIES.Penga.HP_BASE                      = 100
+ENTITIES.Penga.ELEMENT                      = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Penga.AI_BYTES                     = {}
+ENTITIES.Penga.AI_BYTES[0x00]               = 0x0A                              -- (??).
+ENTITIES.Penga.AI_BYTES[0x01]               = 0x18                              -- Horizontal speed delay.
+ENTITIES.Penga.AI_BYTES[0x02]               = 0x0E                              -- Vertical speed delay.
+ENTITIES.Penga.AI_BYTES[0x03]               = 0x3C                              -- Damage attack.
+ENTITIES.Penga.AI_BYTES[0x04]               = 0x3C                              -- Delay after attack.
+ENTITIES.Penga.AI_BYTES[0x05]               = 0x14                              -- Delay speed of attack.
+ENTITIES.Penga.AI_BYTES[0x06]               = 0x00                              -- Number of IceStage chips carrying.
+ENTITIES.Penga.AI_BYTES[0x07]               = 0x00                              -- (??) always 0x00.
+ENTITIES.Penga.AI_BYTES[0x08]               = 0xAA                              -- Movement variable (Byte 1).
+ENTITIES.Penga.AI_BYTES[0x09]               = 0xAA                              -- Movement variable (Byte 2).
+ENTITIES.Penga.AI_BYTES[0x0A]               = 0x01                              -- Movement variable (Byte 3).
+ENTITIES.Penga.AI_BYTES[0x0B]               = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.Penga.BATTLE_NUMBERS               = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Pengon                             = new_base_entity(ENTITY_KIND.Virus, "Pengon")
+ENTITIES.Pengon.NAME                        = "Pengon"
+ENTITIES.Pengon.HP_BASE                     = 130
+ENTITIES.Pengon.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Pengon.AI_BYTES                    = {}
+ENTITIES.Pengon.AI_BYTES[0x00]              = 0x0A                              -- (??).
+ENTITIES.Pengon.AI_BYTES[0x01]              = 0x16                              -- Horizontal speed delay.
+ENTITIES.Pengon.AI_BYTES[0x02]              = 0x0D                              -- Vertical speed delay.
+ENTITIES.Pengon.AI_BYTES[0x03]              = 0x5A                              -- Damage attack.
+ENTITIES.Pengon.AI_BYTES[0x04]              = 0x32                              -- Delay after attack.
+ENTITIES.Pengon.AI_BYTES[0x05]              = 0x0F                              -- Delay speed of attack.
+ENTITIES.Pengon.AI_BYTES[0x06]              = 0x01                              -- Number of IceStage chips carrying.
+ENTITIES.Pengon.AI_BYTES[0x07]              = 0x00                              -- (??) always 0x00.
+ENTITIES.Pengon.AI_BYTES[0x08]              = 0xCC                              -- Movement variable (Byte 1).
+ENTITIES.Pengon.AI_BYTES[0x09]              = 0xCC                              -- Movement variable (Byte 2).
+ENTITIES.Pengon.AI_BYTES[0x0A]              = 0x01                              -- Movement variable (Byte 3).
+ENTITIES.Pengon.AI_BYTES[0x0B]              = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.Pengon.BATTLE_NUMBERS              = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.PengiOmega                         = new_base_entity(ENTITY_KIND.Virus, "PengiOmega")
+ENTITIES.PengiOmega.NAME                    = "Pengi\003"
+ENTITIES.PengiOmega.HP_BASE                 = 260
+ENTITIES.PengiOmega.ELEMENT                 = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.PengiOmega.AI_BYTES                = {}
+ENTITIES.PengiOmega.AI_BYTES[0x00]          = 0x0A                              -- (??).
+ENTITIES.PengiOmega.AI_BYTES[0x01]          = 0x11                              -- Horizontal speed delay.
+ENTITIES.PengiOmega.AI_BYTES[0x02]          = 0x0A                              -- Vertical speed delay.
+ENTITIES.PengiOmega.AI_BYTES[0x03]          = 0x96                              -- Damage attack.
+ENTITIES.PengiOmega.AI_BYTES[0x04]          = 0x28                              -- Delay after attack.
+ENTITIES.PengiOmega.AI_BYTES[0x05]          = 0x0A                              -- Delay speed of attack.
+ENTITIES.PengiOmega.AI_BYTES[0x06]          = 0x02                              -- Number of IceStage chips carrying.
+ENTITIES.PengiOmega.AI_BYTES[0x07]          = 0x00                              -- (??) always 0x00.
+ENTITIES.PengiOmega.AI_BYTES[0x08]          = 0x00                              -- Movement variable (Byte 1).
+ENTITIES.PengiOmega.AI_BYTES[0x09]          = 0x40                              -- Movement variable (Byte 2).
+ENTITIES.PengiOmega.AI_BYTES[0x0A]          = 0x02                              -- Movement variable (Byte 3).
+ENTITIES.PengiOmega.AI_BYTES[0x0B]          = 0x00                              -- Movement variable (Byte 4).
+ENTITIES.PengiOmega.BATTLE_NUMBERS          = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
