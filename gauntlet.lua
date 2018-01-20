@@ -79,7 +79,8 @@ local entered_battle = 0
 local paused = 0
 
 
-savestate.loadslot(1)
+--savestate.loadslot(1)
+savestate.load("initial.State")
 client.unpause()
 -- Upon start, initialize the current round:
 next_round()
