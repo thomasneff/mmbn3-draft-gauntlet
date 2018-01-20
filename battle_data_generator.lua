@@ -117,7 +117,7 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind)
         
 
     end
-
+    
     print(new_entity.NAME)
 
     -- Randomize entity position

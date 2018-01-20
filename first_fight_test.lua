@@ -98,7 +98,7 @@ function patch_battle_pointer(pointer_table_address, new_data)
 
     local working_address = pointer_table_address
 
-    memory.writedword(pointer_table_address, new_data.ADDRESS)
+    memory.write_u32_le(pointer_table_address, new_data.ADDRESS)
 
     working_address = working_address + 4
 
