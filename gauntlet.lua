@@ -6,6 +6,7 @@ local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 local GAUNTLET_BATTLE_POINTERS = require "defs.gauntlet_battle_pointer_defs"
 local GENERIC_DEFS = require "defs.generic_defs"
 local mmbn3_utils = require "mmbn3_utils"
+local state_logic = require "state_logic"
 math.randomseed(os.time())
 
 local current_round = 0
@@ -34,6 +35,8 @@ function next_round()
         ptr_table_working_address = ptr_table_working_address - GENERIC_DEFS.OFFSET_BETWEEN_POINTER_TABLE_ENTRIES
     end
     print("Patched Battle Stage Setups!")
+
+    state_logic.on_next_round()
 
     -- Potentially do other stuff here. For example, we could set the state to a 'choose-reward' state.
 
@@ -70,13 +73,14 @@ end
 
 
 -- Setup Callbacks for battle start to patch viruses
-local enable_rendering = 0 -- TODO: replace with draft states and stuff
+local gui_enabled = 0 -- TODO: replace with draft states and stuff
 local gui_frame_counter = 0
 local entered_battle = 0
 local paused = 0
 
 
 savestate.loadslot(1)
+client.unpause()
 -- Upon start, initialize the current round:
 next_round()
 
@@ -84,138 +88,25 @@ next_round()
 function on_enter_battle()
     print("1")
     patch_next_battle()
+
+    state_logic.on_enter_battle()
     entered_battle = 1
 end
 
-
-function drawTextOutline(x_pos, y_pos, string, outline_color, color)
-
-     -- Draw simple outline
-     --gui.pixelText(x_pos - 1, y_pos, string, outline_color, "transparent")
-     --gui.pixelText(x_pos + 1, y_pos, string, outline_color, "transparent")
-     --gui.pixelText(x_pos, y_pos - 1, string, outline_color, "transparent")
-     --gui.pixelText(x_pos, y_pos + 1, string, outline_color, "transparent")
-
-     -- Draw main text
-     --gui.pixelText(x_pos, y_pos, string, color, "transparent")
-
-
-     -- Draw simple outline
-     gui.drawText(x_pos - 1, y_pos, string, outline_color, "transparent", 11)
-     gui.drawText(x_pos + 1, y_pos, string, outline_color, "transparent", 11)
-     gui.drawText(x_pos, y_pos - 1, string, outline_color, "transparent", 11)
-     gui.drawText(x_pos, y_pos + 1, string, outline_color, "transparent", 11)
-     gui.drawText(x_pos - 1, y_pos - 1, string, outline_color, "transparent", 11)
-     gui.drawText(x_pos + 1, y_pos + 1, string, outline_color, "transparent", 11)
-     gui.drawText(x_pos + 1, y_pos - 1, string, outline_color, "transparent", 11)
-     gui.drawText(x_pos - 1, y_pos + 1, string, outline_color, "transparent", 11)
-
-     -- Draw main text
-     gui.drawText(x_pos, y_pos, string, color, "transparent", 11)
-end
-
--- This function is used to render the current folder for chip replacement.
--- TODO: this currently just renders fixed Cannon *. Should take the folder into account.
-function render_folder()
-    local num_folder_chips = 30
-    local num_chips_per_col = 10
-    local num_cols = num_folder_chips / num_chips_per_col
-    local base_offset_y = 0
-    local base_offset_x = 4
-    local offset_per_col = 60
-    local offset_per_row = 15
-    local x_offset = base_offset_x
-    local y_offset = base_offset_y
-
-    for col_idx = 1, num_cols do
-        y_offset = base_offset_y
-        for chip_idx = 1,num_chips_per_col do
-            --gui.pixelText(x_offset, y_offset, "Cannon *")
-            drawTextOutline(x_offset, y_offset, "Cannon *", "black", "white")
-            y_offset = y_offset + offset_per_row
-        end
-        x_offset = x_offset + offset_per_col
-    end
-end
-
-
-
--- This gets called every frame by the emulator to render GUI.
--- This is *also* called when the emulator is paused.
-function on_render_frame()
-
-    --print("Frame " .. tostring(gui_frame_counter))
-
-    if enable_rendering == 0 then
-        return
-    end
-    --gui.cleartext()
-    --gui.clearGraphics()
-
-    --drawTextOutline(
-    --    0,
-    --    0,
-    --    "Frame " .. tostring(gui_frame_counter) .. " Mouse X: " .. tostring(input.getmouse().X) .. " Mouse Y: " .. tostring(input.getmouse().Y),
-    --    "black",
-    --    "white"
-    -- )
-    
-    
-    render_folder()
-    --print(input.get())
-    
-
-end
-
-
-print("EXEC ADDRESS: ", GENERIC_DEFS.BATTLE_START_ADDRESS )
 
 --For some reason, BizHawk with VBA-Next requires an address that's 4 bytes larger. Whatever.
 event.onmemoryexecute(on_enter_battle, GENERIC_DEFS.BATTLE_START_ADDRESS + 4)
 
 
 
---memory.registerread(0x0200F520, on_enter_battle)
-event.oninputpoll(on_render_frame)
-
---Write the final limiter character
---memory.writebyte(working_address, GENERIC_DEFS.BATTLE_LIMITER)
---emu.pause()
---emu.unpause()
---Main loop to control draft and stuff.
 
 
 while 1 do
 
-    if entered_battle == 1 then
-        entered_battle = 0
-        enable_rendering = 1
-        paused = 1
-    end
-    
-    
-    gui_frame_counter = gui_frame_counter + 1
 
-    if input.getmouse().Left == true and paused == 1 then
-        print("LEFT CLICK!")
-        enable_rendering = 0
-        paused = 0
-        print("CLIENT UNPAUSE")
-        --gui.cleartext()
-        --gui.clearGraphics()
-        client.unpause()
-    end
+    state_logic.main_loop()
 
-
-    on_render_frame()
-
-    if paused == 1 and client.ispaused() == false then
-        print("CLIENT PAUSE")
-        client.pause()
-
-
-    end
     emu.yield()
-    --emu.frameadvance()
+
     
 end
