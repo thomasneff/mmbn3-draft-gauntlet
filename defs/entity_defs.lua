@@ -1494,6 +1494,56 @@ ENTITIES.BasherOmega.AI_BYTES[0x01]         = 0xC8                              
 ENTITIES.BasherOmega.AI_BYTES[0x36FC2]      = 0x28                              -- Frames between aims. This is shared with other Basher viruses in the same battle.
 ENTITIES.BasherOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Heavy                              = new_base_entity(ENTITY_KIND.Virus, "Heavy")
+ENTITIES.Heavy.NAME                         = "Heavy"
+ENTITIES.Heavy.HP_BASE                      = 100
+ENTITIES.Heavy.ELEMENT                      = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Heavy.AI_BYTES                     = {}
+ENTITIES.Heavy.AI_BYTES[0x00]               = 0x19                              -- Vertical speed delay (enemy side).
+ENTITIES.Heavy.AI_BYTES[0x01]               = 0x3C                              -- Vertical speed delay (megaman side).
+ENTITIES.Heavy.AI_BYTES[0x02]               = 0x01                              -- Delay before vertical movement.
+ENTITIES.Heavy.AI_BYTES[0x03]               = 0x01                              -- (??) always 0x01.
+ENTITIES.Heavy.AI_BYTES[0x04]               = 0x1E                              -- Damage by contact.
+ENTITIES.Heavy.BATTLE_NUMBERS               = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Heavier                            = new_base_entity(ENTITY_KIND.Virus, "Heavier")
+ENTITIES.Heavier.NAME                       = "Heavier"
+ENTITIES.Heavier.HP_BASE                    = 150
+ENTITIES.Heavier.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Heavier.AI_BYTES                   = {}
+ENTITIES.Heavier.AI_BYTES[0x00]             = 0x14                              -- Vertical speed delay (enemy side).
+ENTITIES.Heavier.AI_BYTES[0x01]             = 0x32                              -- Vertical speed delay (megaman side).
+ENTITIES.Heavier.AI_BYTES[0x02]             = 0x01                              -- Delay before vertical movement.
+ENTITIES.Heavier.AI_BYTES[0x03]             = 0x01                              -- (??) always 0x01.
+ENTITIES.Heavier.AI_BYTES[0x04]             = 0x3C                              -- Damage by contact.
+ENTITIES.Heavier.BATTLE_NUMBERS             = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Heaviest                           = new_base_entity(ENTITY_KIND.Virus, "Heaviest")
+ENTITIES.Heaviest.NAME                      = "Heaviest"
+ENTITIES.Heaviest.HP_BASE                   = 200
+ENTITIES.Heaviest.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Heaviest.AI_BYTES                  = {}
+ENTITIES.Heaviest.AI_BYTES[0x00]            = 0x0F                              -- Vertical speed delay (enemy side).
+ENTITIES.Heaviest.AI_BYTES[0x01]            = 0x28                              -- Vertical speed delay (megaman side).
+ENTITIES.Heaviest.AI_BYTES[0x02]            = 0x01                              -- Delay before vertical movement.
+ENTITIES.Heaviest.AI_BYTES[0x03]            = 0x01                              -- (??) always 0x01.
+ENTITIES.Heaviest.AI_BYTES[0x04]            = 0x5A                              -- Damage by contact.
+ENTITIES.Heaviest.BATTLE_NUMBERS            = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.HeavyOmega                         = new_base_entity(ENTITY_KIND.Virus, "HeavyOmega")
+ENTITIES.HeavyOmega.NAME                    = "Heavy\003"
+ENTITIES.HeavyOmega.HP_BASE                 = 300
+ENTITIES.HeavyOmega.ELEMENT                 = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.HeavyOmega.AI_BYTES                = {}
+ENTITIES.HeavyOmega.AI_BYTES[0x00]          = 0x0A                              -- Vertical speed delay (enemy side).
+ENTITIES.HeavyOmega.AI_BYTES[0x01]          = 0x1E                              -- Vertical speed delay (megaman side).
+ENTITIES.HeavyOmega.AI_BYTES[0x02]          = 0x01                              -- Delay before vertical movement.
+ENTITIES.HeavyOmega.AI_BYTES[0x03]          = 0x01                              -- (??) always 0x01.
+ENTITIES.HeavyOmega.AI_BYTES[0x04]          = 0x96                             -- Damage by contact.
+ENTITIES.HeavyOmega.BATTLE_NUMBERS          = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
 
 
 -- Crackin' yar panels and stealing yar stuff!
