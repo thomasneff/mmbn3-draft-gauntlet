@@ -105,7 +105,7 @@ function mmbn3_utils.patch_entity_data(entities)
         if new_entity.BATTLE_DATA.KIND == ENTITY_KIND.Megaman then
             break
         end
-
+    
         -- Patch entity Damage <-- We do this in AI_BYTES now, as entities have multiple sources of damage, and it's just a headache to 
         -- change this.
         if new_entity.DAMAGE_ADDRESS ~= nil then

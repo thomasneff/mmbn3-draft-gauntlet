@@ -120,6 +120,7 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind)
     
     print(new_entity.NAME)
 
+
     -- Randomize entity position
     local found_random_pos = 1
     local x_pos = 0
@@ -197,6 +198,7 @@ function battle_data_generator.random_from_battle(current_battle)
         --print(battle_entities[2])
         entity_idx_start = 3
     end
+
 
 
     for entity_idx = entity_idx_start,number_of_entities do
