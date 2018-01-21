@@ -1664,8 +1664,187 @@ ENTITIES.VineyOmega.AI_BYTES[0x01]          = 0xC8                              
 ENTITIES.VineyOmega.AI_BYTES[0x33800]       = 0x05                              -- Vine's speed delay.
 ENTITIES.VineyOmega.BATTLE_NUMBERS          = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+ENTITIES.Slimer                             = new_base_entity(ENTITY_KIND.Virus, "Slimer")
+ENTITIES.Slimer.NAME                        = "Slimer"
+ENTITIES.Slimer.HP_BASE                     = 90
+ENTITIES.Slimer.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Slimer.AI_BYTES                    = {}
+ENTITIES.Slimer.AI_BYTES[0x00]              = 0xB4                              -- Delay before movement.
+ENTITIES.Slimer.AI_BYTES[0x01]              = 0x1E                              -- Damage contact.
+ENTITIES.Slimer.AI_BYTES[0x03]              = 0x78                              -- Delay after contact.
+ENTITIES.Slimer.BATTLE_NUMBERS              = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
+ENTITIES.Slimey                             = new_base_entity(ENTITY_KIND.Virus, "Slimey")
+ENTITIES.Slimey.NAME                        = "Slimey"
+ENTITIES.Slimey.HP_BASE                     = 150
+ENTITIES.Slimey.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Slimey.AI_BYTES                    = {}
+ENTITIES.Slimey.AI_BYTES[0x00]              = 0x8C                              -- Delay before movement.
+ENTITIES.Slimey.AI_BYTES[0x01]              = 0x3C                              -- Damage contact.
+ENTITIES.Slimey.AI_BYTES[0x03]              = 0x64                              -- Delay after contact.
+ENTITIES.Slimey.BATTLE_NUMBERS              = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Slimest                            = new_base_entity(ENTITY_KIND.Virus, "Slimest")
+ENTITIES.Slimest.NAME                       = "Slimest"
+ENTITIES.Slimest.HP_BASE                    = 220
+ENTITIES.Slimest.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.Slimest.AI_BYTES                   = {}
+ENTITIES.Slimest.AI_BYTES[0x00]             = 0x64                              -- Delay before movement.
+ENTITIES.Slimest.AI_BYTES[0x01]             = 0x5A                              -- Damage contact.
+ENTITIES.Slimest.AI_BYTES[0x03]             = 0x50                              -- Delay after contact.
+ENTITIES.Slimest.BATTLE_NUMBERS             = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.SlimerOmega                        = new_base_entity(ENTITY_KIND.Virus, "SlimerOmega")
+ENTITIES.SlimerOmega.NAME                   = "Slimer\003"
+ENTITIES.SlimerOmega.HP_BASE                = 300
+ENTITIES.SlimerOmega.ELEMENT                = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
+ENTITIES.SlimerOmega.AI_BYTES               = {}
+ENTITIES.SlimerOmega.AI_BYTES[0x00]         = 0x3C                              -- Delay before movement.
+ENTITIES.SlimerOmega.AI_BYTES[0x01]         = 0x96                              -- Damage contact.
+ENTITIES.SlimerOmega.AI_BYTES[0x03]         = 0x3C                              -- Delay after contact.
+ENTITIES.SlimerOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.EleBee                             = new_base_entity(ENTITY_KIND.Virus, "EleBee")
+ENTITIES.EleBee.NAME                        = "EleBee"
+ENTITIES.EleBee.HP_BASE                     = 90
+ENTITIES.EleBee.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.EleBee.AI_BYTES                    = {}
+ENTITIES.EleBee.AI_BYTES[0x00]              = 0x1E                              -- Damage charge.
+ENTITIES.EleBee.AI_BYTES[0x01]              = 0x1E                              -- Delay before movement.
+ENTITIES.EleBee.AI_BYTES[0x03]              = 0x14                              -- Delay disappearing between movements.
+ENTITIES.EleBee.AI_BYTES[0x04]              = 0x06                              -- Movements before attack.
+ENTITIES.EleBee.BATTLE_NUMBERS              = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.EleWasp                            = new_base_entity(ENTITY_KIND.Virus, "EleWasp")
+ENTITIES.EleWasp.NAME                       = "EleWasp"
+ENTITIES.EleWasp.HP_BASE                    = 130
+ENTITIES.EleWasp.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.EleWasp.AI_BYTES                   = {}
+ENTITIES.EleWasp.AI_BYTES[0x00]             = 0x3C                              -- Damage charge.
+ENTITIES.EleWasp.AI_BYTES[0x01]             = 0x18                              -- Delay before movement.
+ENTITIES.EleWasp.AI_BYTES[0x03]             = 0x1E                              -- Delay disappearing between movements.
+ENTITIES.EleWasp.AI_BYTES[0x04]             = 0x05                              -- Movements before attack.
+ENTITIES.EleWasp.BATTLE_NUMBERS             = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.EleHornet                          = new_base_entity(ENTITY_KIND.Virus, "EleHornet")
+ENTITIES.EleHornet.NAME                     = "EleHornet"
+ENTITIES.EleHornet.HP_BASE                  = 170
+ENTITIES.EleHornet.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.EleHornet.AI_BYTES                 = {}
+ENTITIES.EleHornet.AI_BYTES[0x00]           = 0x5A                              -- Damage charge.
+ENTITIES.EleHornet.AI_BYTES[0x01]           = 0x12                              -- Delay before movement.
+ENTITIES.EleHornet.AI_BYTES[0x03]           = 0x2D                              -- Delay disappearing between movements.
+ENTITIES.EleHornet.AI_BYTES[0x04]           = 0x04                              -- Movements before attack.
+ENTITIES.EleHornet.BATTLE_NUMBERS           = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.EleBeeOmega                        = new_base_entity(ENTITY_KIND.Virus, "EleBeeOmega")
+ENTITIES.EleBeeOmega.NAME                   = "EleBee\003"
+ENTITIES.EleBeeOmega.HP_BASE                = 230
+ENTITIES.EleBeeOmega.ELEMENT                = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.EleBeeOmega.AI_BYTES               = {}
+ENTITIES.EleBeeOmega.AI_BYTES[0x00]         = 0x96                              -- Damage charge.
+ENTITIES.EleBeeOmega.AI_BYTES[0x01]         = 0x0C                              -- Delay before movement.
+ENTITIES.EleBeeOmega.AI_BYTES[0x03]         = 0x39                              -- Delay disappearing between movements.
+ENTITIES.EleBeeOmega.AI_BYTES[0x04]         = 0x04                              -- Movements before attack.
+ENTITIES.EleBeeOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Needler                            = new_base_entity(ENTITY_KIND.Virus, "Needler")
+ENTITIES.Needler.NAME                       = "Needler"
+ENTITIES.Needler.HP_BASE                    = 90
+ENTITIES.Needler.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Needler.AI_BYTES                   = {}
+ENTITIES.Needler.AI_BYTES[0x00]             = 0x3C                              -- Delay between needles.
+ENTITIES.Needler.AI_BYTES[0x01]             = 0x1E                              -- Damage.
+ENTITIES.Needler.AI_BYTES[0x02]             = 0x0A                              -- Number of needles before charge.
+ENTITIES.Needler.AI_BYTES[0x03]             = 0x00                              -- (??).
+ENTITIES.Needler.AI_BYTES[0x04]             = 0x00                              -- Speed of horizontal needle (Byte 1).
+ENTITIES.Needler.AI_BYTES[0x05]             = 0x00                              -- Speed of horizontal needle (Byte 2).
+ENTITIES.Needler.AI_BYTES[0x06]             = 0x06                              -- Speed of horizontal needle (Byte 3).
+ENTITIES.Needler.AI_BYTES[0x07]             = 0x00                              -- Speed of horizontal needle (Byte 4).
+ENTITIES.Needler.AI_BYTES[0x08]             = 0x00                              -- Speed of vertical needle (Byte 1).
+ENTITIES.Needler.AI_BYTES[0x09]             = 0x00                              -- Speed of vertical needle (Byte 2).
+ENTITIES.Needler.AI_BYTES[0x0A]             = 0x03                              -- Speed of vertical needle (Byte 3).
+ENTITIES.Needler.AI_BYTES[0x0B]             = 0x00                              -- Speed of vertical needle (Byte 4).
+ENTITIES.Needler.AI_BYTES[0x0C]             = 0x00                              -- Speed of charge (Byte 1).
+ENTITIES.Needler.AI_BYTES[0x0D]             = 0x00                              -- Speed of charge (Byte 2).
+ENTITIES.Needler.AI_BYTES[0x0E]             = 0x04                              -- Speed of charge (Byte 3).
+ENTITIES.Needler.AI_BYTES[0x0F]             = 0x00                              -- Speed of charge (Byte 4).
+ENTITIES.Needler.BATTLE_NUMBERS             = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Nailer                             = new_base_entity(ENTITY_KIND.Virus, "Nailer")
+ENTITIES.Nailer.NAME                        = "Nailer"
+ENTITIES.Nailer.HP_BASE                     = 140
+ENTITIES.Nailer.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Nailer.AI_BYTES                    = {}
+ENTITIES.Nailer.AI_BYTES[0x00]              = 0x32                              -- Delay between needles.
+ENTITIES.Nailer.AI_BYTES[0x01]              = 0x3C                              -- Damage.
+ENTITIES.Nailer.AI_BYTES[0x02]              = 0x18                              -- Number of needles before charge.
+ENTITIES.Nailer.AI_BYTES[0x03]              = 0x00                              -- (??).
+ENTITIES.Nailer.AI_BYTES[0x04]              = 0x00                              -- Speed of horizontal needle (Byte 1).
+ENTITIES.Nailer.AI_BYTES[0x05]              = 0x00                              -- Speed of horizontal needle (Byte 2).
+ENTITIES.Nailer.AI_BYTES[0x06]              = 0x07                              -- Speed of horizontal needle (Byte 3).
+ENTITIES.Nailer.AI_BYTES[0x07]              = 0x00                              -- Speed of horizontal needle (Byte 4).
+ENTITIES.Nailer.AI_BYTES[0x08]              = 0x00                              -- Speed of vertical needle (Byte 1).
+ENTITIES.Nailer.AI_BYTES[0x09]              = 0x00                              -- Speed of vertical needle (Byte 2).
+ENTITIES.Nailer.AI_BYTES[0x0A]              = 0x03                              -- Speed of vertical needle (Byte 3).
+ENTITIES.Nailer.AI_BYTES[0x0B]              = 0x00                              -- Speed of vertical needle (Byte 4).
+ENTITIES.Nailer.AI_BYTES[0x0C]              = 0x00                              -- Speed of charge (Byte 1).
+ENTITIES.Nailer.AI_BYTES[0x0D]              = 0x80                              -- Speed of charge (Byte 2).
+ENTITIES.Nailer.AI_BYTES[0x0E]              = 0x04                              -- Speed of charge (Byte 3).
+ENTITIES.Nailer.AI_BYTES[0x0F]              = 0x00                              -- Speed of charge (Byte 4).
+ENTITIES.Nailer.BATTLE_NUMBERS              = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Spiker                             = new_base_entity(ENTITY_KIND.Virus, "Spiker")
+ENTITIES.Spiker.NAME                        = "Spiker"
+ENTITIES.Spiker.HP_BASE                     = 200
+ENTITIES.Spiker.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Spiker.AI_BYTES                    = {}
+ENTITIES.Spiker.AI_BYTES[0x00]              = 0x2C                              -- Delay between needles.
+ENTITIES.Spiker.AI_BYTES[0x01]              = 0x64                              -- Damage.
+ENTITIES.Spiker.AI_BYTES[0x02]              = 0x06                              -- Number of needles before charge.
+ENTITIES.Spiker.AI_BYTES[0x03]              = 0x00                              -- (??).
+ENTITIES.Spiker.AI_BYTES[0x04]              = 0x00                              -- Speed of horizontal needle (Byte 1).
+ENTITIES.Spiker.AI_BYTES[0x05]              = 0x00                              -- Speed of horizontal needle (Byte 2).
+ENTITIES.Spiker.AI_BYTES[0x06]              = 0x08                              -- Speed of horizontal needle (Byte 3).
+ENTITIES.Spiker.AI_BYTES[0x07]              = 0x00                              -- Speed of horizontal needle (Byte 4).
+ENTITIES.Spiker.AI_BYTES[0x08]              = 0x00                              -- Speed of vertical needle (Byte 1).
+ENTITIES.Spiker.AI_BYTES[0x09]              = 0x00                              -- Speed of vertical needle (Byte 2).
+ENTITIES.Spiker.AI_BYTES[0x0A]              = 0x03                              -- Speed of vertical needle (Byte 3).
+ENTITIES.Spiker.AI_BYTES[0x0B]              = 0x00                              -- Speed of vertical needle (Byte 4).
+ENTITIES.Spiker.AI_BYTES[0x0C]              = 0x00                              -- Speed of charge (Byte 1).
+ENTITIES.Spiker.AI_BYTES[0x0D]              = 0x00                              -- Speed of charge (Byte 2).
+ENTITIES.Spiker.AI_BYTES[0x0E]              = 0x05                              -- Speed of charge (Byte 3).
+ENTITIES.Spiker.AI_BYTES[0x0F]              = 0x00                              -- Speed of charge (Byte 4).
+ENTITIES.Spiker.BATTLE_NUMBERS              = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.NeedlerOmega                       = new_base_entity(ENTITY_KIND.Virus, "NeedlerOmega")
+ENTITIES.NeedlerOmega.NAME                  = "Needler\003"
+ENTITIES.NeedlerOmega.HP_BASE               = 400
+ENTITIES.NeedlerOmega.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.NeedlerOmega.AI_BYTES              = {}
+ENTITIES.NeedlerOmega.AI_BYTES[0x00]        = 0x28                              -- Delay between needles.
+ENTITIES.NeedlerOmega.AI_BYTES[0x01]        = 0xC8                              -- Damage.
+ENTITIES.NeedlerOmega.AI_BYTES[0x02]        = 0x04                              -- Number of needles before charge.
+ENTITIES.NeedlerOmega.AI_BYTES[0x03]        = 0x00                              -- (??).
+ENTITIES.NeedlerOmega.AI_BYTES[0x04]        = 0x00                              -- Speed of horizontal needle (Byte 1).
+ENTITIES.NeedlerOmega.AI_BYTES[0x05]        = 0x00                              -- Speed of horizontal needle (Byte 2).
+ENTITIES.NeedlerOmega.AI_BYTES[0x06]        = 0x08                              -- Speed of horizontal needle (Byte 3).
+ENTITIES.NeedlerOmega.AI_BYTES[0x07]        = 0x00                              -- Speed of horizontal needle (Byte 4).
+ENTITIES.NeedlerOmega.AI_BYTES[0x08]        = 0x00                              -- Speed of vertical needle (Byte 1).
+ENTITIES.NeedlerOmega.AI_BYTES[0x09]        = 0x00                              -- Speed of vertical needle (Byte 2).
+ENTITIES.NeedlerOmega.AI_BYTES[0x0A]        = 0x03                              -- Speed of vertical needle (Byte 3).
+ENTITIES.NeedlerOmega.AI_BYTES[0x0B]        = 0x00                              -- Speed of vertical needle (Byte 4).
+ENTITIES.NeedlerOmega.AI_BYTES[0x0C]        = 0x00                              -- Speed of charge (Byte 1).
+ENTITIES.NeedlerOmega.AI_BYTES[0x0D]        = 0x80                              -- Speed of charge (Byte 2).
+ENTITIES.NeedlerOmega.AI_BYTES[0x0E]        = 0x05                              -- Speed of charge (Byte 3).
+ENTITIES.NeedlerOmega.AI_BYTES[0x0F]        = 0x00                              -- Speed of charge (Byte 4).
+ENTITIES.NeedlerOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 
 
