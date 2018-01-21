@@ -181,7 +181,7 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind)
     end
 
     print(new_entity.NAME)
-
+    
     if is_twins_virus(new_entity) then
 
         number_of_twins_viruses = number_of_twins_viruses + 1
@@ -204,7 +204,7 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind)
 
 
     if new_entity.BATTLE_DATA.KIND == ENTITY_KIND.Virus then    
-        contains_virus_table.VALUE = 1
+        contains_virus_table.VALUE = contains_virus_table.VALUE + 1
     end
     --print("X: ", x_pos, "Y: ", y_pos)
     grid[x_pos][y_pos] = 1

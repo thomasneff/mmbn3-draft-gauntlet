@@ -1631,7 +1631,7 @@ ENTITIES.Viney.ELEMENT                      = ENTITY_ELEMENT_DEFS.ELEMENT_WOOD
 ENTITIES.Viney.AI_BYTES                     = {}
 ENTITIES.Viney.AI_BYTES[0x00]               = 0xF0                              -- Delay before attack.
 ENTITIES.Viney.AI_BYTES[0x01]               = 0x3C                              -- Damage by contact with vine.
-ENTITIES.Viney.AI_BYTES[0x33800]            = 0x1E                              -- Vine's speed delay.
+--ENTITIES.Viney.AI_BYTES[0x33800]            = 0x1E                              -- Vine's speed delay.
 ENTITIES.Viney.BATTLE_NUMBERS               = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.Viner                              = new_base_entity(ENTITY_KIND.Virus, "Viner")
@@ -1641,7 +1641,7 @@ ENTITIES.Viner.ELEMENT                      = ENTITY_ELEMENT_DEFS.ELEMENT_WOOD
 ENTITIES.Viner.AI_BYTES                     = {}
 ENTITIES.Viner.AI_BYTES[0x00]               = 0x96                              -- Delay before attack.
 ENTITIES.Viner.AI_BYTES[0x01]               = 0x64                              -- Damage by contact with vine.
-ENTITIES.Viner.AI_BYTES[0x33800]            = 0x14                              -- Vine's speed delay.
+--ENTITIES.Viner.AI_BYTES[0x33800]            = 0x14                              -- Vine's speed delay.
 ENTITIES.Viner.BATTLE_NUMBERS               = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.Vinert                             = new_base_entity(ENTITY_KIND.Virus, "Vinert")
@@ -1651,7 +1651,7 @@ ENTITIES.Vinert.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_WOOD
 ENTITIES.Vinert.AI_BYTES                    = {}
 ENTITIES.Vinert.AI_BYTES[0x00]              = 0x5A                              -- Delay before attack.
 ENTITIES.Vinert.AI_BYTES[0x01]              = 0x78                              -- Damage by contact with vine.
-ENTITIES.Vinert.AI_BYTES[0x33800]           = 0x0A                              -- Vine's speed delay.
+--ENTITIES.Vinert.AI_BYTES[0x33800]           = 0x0A                              -- Vine's speed delay.
 ENTITIES.Vinert.BATTLE_NUMBERS              = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.VineyOmega                         = new_base_entity(ENTITY_KIND.Virus, "VineyOmega")
@@ -1661,7 +1661,7 @@ ENTITIES.VineyOmega.ELEMENT                 = ENTITY_ELEMENT_DEFS.ELEMENT_WOOD
 ENTITIES.VineyOmega.AI_BYTES                = {}
 ENTITIES.VineyOmega.AI_BYTES[0x00]          = 0xF0                              -- Delay before attack.
 ENTITIES.VineyOmega.AI_BYTES[0x01]          = 0xC8                              -- Damage by contact with vine.
-ENTITIES.VineyOmega.AI_BYTES[0x33800]       = 0x05                              -- Vine's speed delay.
+--ENTITIES.VineyOmega.AI_BYTES[0x33800]       = 0x05                              -- Vine's speed delay.
 ENTITIES.VineyOmega.BATTLE_NUMBERS          = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------

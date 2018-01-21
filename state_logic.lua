@@ -8,7 +8,7 @@ local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 local GAUNTLET_BATTLE_POINTERS = require "defs.gauntlet_battle_pointer_defs"
 local GENERIC_DEFS = require "defs.generic_defs"
 local mmbn3_utils = require "mmbn3_utils"
-
+local CHIP = require "defs.chip_defs"
 
 -- TODO: possibly add more states.
 local GAME_STATE = {
@@ -17,8 +17,14 @@ local GAME_STATE = {
     CHIP_SELECT = 0x02,
     TRANSITION_TO_CHIP_REPLACE = 0x03,
     CHIP_REPLACE = 0x04,
-    SELECT_BUFF = 0x05
+    TRANSITION_TO_RUNNING = 0x05,
+    SELECT_BUFF = 0x06
 }
+
+local folder = {}
+
+
+
 
 local state_logic = {}
 local current_state = GAME_STATE.RUNNING
@@ -92,8 +98,11 @@ end
 
 
 function state_logic.on_enter_battle()
+    
     state_logic.patch_next_battle()
+    
     current_state = GAME_STATE.TRANSITION_TO_CHIP_SELECT
+    
 
     should_pause = 1
 
@@ -111,6 +120,17 @@ function state_logic.reset_selected_chips()
 end
 
 
+function state_logic.randomize_folder()
+
+    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
+
+        folder[chip_idx] = CHIP.new_random_chip_with_random_code()
+
+    end
+   
+
+end
+
 function state_logic.initialize()
 
     math.randomseed(os.time())
@@ -123,6 +143,7 @@ function state_logic.initialize()
     state_logic.reset_selected_chips()
     frame_count = 0
 
+    state_logic.randomize_folder()
     current_state = GAME_STATE.RUNNING
 
     client.unpause()
@@ -232,14 +253,14 @@ function state_logic.main_loop()
             print("A pressed")
             print("Removed chip TODO for chip TODO!")
             
-            current_state = GAME_STATE.RUNNING
+            current_state = GAME_STATE.TRANSITION_TO_RUNNING
             client.unpause()
         end
 
         if input_handler.inputs_pressed["B"] == true then
             -- Just skip - we didn't want a chip!
             print("B pressed")
-            current_state = GAME_STATE.RUNNING
+            current_state = GAME_STATE.TRANSITION_TO_RUNNING
             client.unpause()
         end
         --print(selected_chip_folder)
@@ -250,6 +271,14 @@ function state_logic.main_loop()
         
 
     elseif current_state == GAME_STATE.SELECT_BUFF then
+
+    elseif current_state == GAME_STATE.TRANSITION_TO_RUNNING then
+
+        -- Patch folder with all new stuff.
+        state_logic.randomize_folder()
+        mmbn3_utils.patch_folder(folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM)
+        print("Patched folder!")
+        current_state = GAME_STATE.RUNNING
 
     else -- Default state, should never happen
         current_state = GAME_STATE.RUNNING

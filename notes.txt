@@ -94,5 +94,20 @@ Mettaur1 virus data address (HP) starts at 08019620
 Mettaur1 name address: 087114EC, seems to be until E7 (end of string) is encountered
 
 
+Folder Hacking:
+
+02001410 seems to contain the first chip in the first folder.
+
+Structure: 4 bytes:
+Byte 1: Chip-ID lowbyte (some values crash the folder, e.g. 0x39 when lowbyte is set to 0x01)
+Byte 2: Chip-ID highbyte (max 0x01)
+Byte 3: Code (this can be *ANY* code!)
+Byte 4: ?? doesn't seem to do anything
+
+so basically just a 2 byte chip ID, and probably 2 bytes code?
 
 
+At the point I'm doing it, manipulating the folder is already too late.
+At 080114B6, the first chip in the first folder is accessed.
+This is computed every frame during chip select? But that means that changing it should have an effect?
+And indeed, it does. So I'm doing it wrong.
