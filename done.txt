@@ -26,3 +26,8 @@ Find the offset for Dominerd's Chip (should be Geddon, probably need to debug wi
 
 Deetle and HardHead are definitely bugged. Sometimes their shots fly offscreen?
  - This was just an emulator bug with VBA-RR and solved itself when switching to BizHawk.
+
+Add special code for Twins viruses, such that if they spawn, they are the only virus type, otherwise their AI is screwed up and they don't do anything.
+
+Add code to reload the script with a button combination.
+

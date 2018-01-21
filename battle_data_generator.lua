@@ -5,6 +5,8 @@ local ENTITY_GROUPS = require "defs.entity_groups"
 local ENTITIES = require "defs.entity_defs"
 local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 
+local number_of_twins_viruses = 0
+
 local battle_data_template = {
     LIMITER_START = defs.BATTLE_LIMITER,
     UNKNOWN_ZERO_BYTE_1 = 0x00,
@@ -87,6 +89,28 @@ function get_all_entities_with_kind(entity_group, entity_kind)
     return entity_group_of_kind
 end
 
+-- This function returns a list of entities for a given kind.
+function get_all_entities_with_types(entity_group, entity_types)
+
+    local entity_group_of_type = {}
+    local entity_group_of_type_counter = 1
+
+    for key, entity in pairs(entity_group) do
+
+        for i, type in pairs(entity_types) do
+
+            if entity.BATTLE_DATA.TYPE == type then
+                entity_group_of_type[entity_group_of_type_counter] = deepcopy(entity)
+                entity_group_of_type_counter = entity_group_of_type_counter + 1
+            end
+        
+        end
+
+    end
+
+    return entity_group_of_type
+end
+
 
 function is_table_empty(table)
     for _, _ in pairs(table) do
@@ -94,6 +118,14 @@ function is_table_empty(table)
     end
     return true
 end
+
+function is_twins_virus(entity)
+    return entity.BATTLE_DATA.TYPE == ENTITY_TYPE.Twins 
+        or entity.BATTLE_DATA.TYPE == ENTITY_TYPE.Twinner 
+        or entity.BATTLE_DATA.TYPE == ENTITY_TYPE.Twinnest
+        or entity.BATTLE_DATA.TYPE == ENTITY_TYPE.TwinsOmega
+end
+
 
 -- This function takes a game grid, updates it and positions a new entity from a given entity group onto it.
 function roll_entity(grid, entity_group, contains_virus_table, entity_kind)
@@ -118,7 +150,43 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind)
 
     end
     
+
+
+    -- Special code for handling the "Twins" family of viruses.
+    -- There should be at least 2 of them, and they have to be the only virus type.
+    -- Otherwise, their AI screws up and they don't do anything.
+
+    if number_of_twins_viruses >= 1 then
+
+        -- Guarantee a roll of another twins virus from entity group.
+        local twins_types = 
+        {
+            ENTITY_TYPE.Twins, 
+            ENTITY_TYPE.Twinner, 
+            ENTITY_TYPE.Twinnest,
+            ENTITY_TYPE.TwinsOmega
+        }
+
+        local entity_group_of_type = get_all_entities_with_types(entity_group, twins_types)
+
+        if is_table_empty(entity_group_of_type) then
+            -- Just return a Twins.
+            print ("No entity of types ", twins_types, "found in entity group", entity_group, "!")
+            new_entity = deepcopy(ENTITIES.Twins)
+        else
+            new_entity = deepcopy(entity_group_of_type[math.random(#entity_group_of_type)])
+        end
+
+
+    end
+
     print(new_entity.NAME)
+
+    if is_twins_virus(new_entity) then
+
+        number_of_twins_viruses = number_of_twins_viruses + 1
+
+    end 
 
 
     -- Randomize entity position
@@ -154,6 +222,8 @@ function battle_data_generator.random_from_battle(current_battle)
     -- Goals: Create a rising difficulty from battle 1 to 10, with a sub-boss at round 5, main boss at round 10.
     --        For that, we need to define virus groups and when they can appear, respectively.
     local new_battle_data = battle_data_generator.new_from_template()
+
+    number_of_twins_viruses = 0
 
     -- TODO: Improve. For now, get a random entity out of the group of the current difficulty/round
     local number_of_entities = math.random(GAUNTLET_DEFS.MIN_NUMBER_OF_VIRUSES, 4)
@@ -218,6 +288,33 @@ function battle_data_generator.random_from_battle(current_battle)
         --print("Added entity: ", entity_idx, "/", number_of_entities)
         --print(battle_entities[entity_idx].BATTLE_DATA.X_POS)
         --print(battle_entities[entity_idx].BATTLE_DATA.Y_POS)
+    end
+
+
+    if number_of_twins_viruses == 1 and contains_virus_table.VALUE == 1 then
+
+        -- When we have only a single virus (Twins miniboss..?),
+        -- we simply add another virus, which is forced to be a Twins virus
+        battle_entities[#battle_entities + 1] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus)
+
+
+    
+    elseif number_of_twins_viruses >= 1 and contains_virus_table.VALUE >= 1 then
+
+        -- Otherwise, if we have at least 2 viruses, we simply replace all non-Twins viruses with Twins-viruses.
+        -- This can only happen if we roll a non-Twins virus before a Twins-virus.
+        for idx, entity in pairs(battle_entities) do
+
+            if is_twins_virus(entity) == false and entity.BATTLE_DATA.KIND == ENTITY_KIND.Virus then
+
+                -- We replace the virus with a twins virus.
+                battle_entities[idx] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus)
+
+            end
+
+        end
+
+
     end
 
     -- Add a virus if we only rolled non-virus entities!

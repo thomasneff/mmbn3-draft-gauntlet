@@ -1,6 +1,5 @@
 Entities. Add all the info from TREZ.
 
-Add special code for Twins viruses, such that they always spawn *at least* 2, and test what happens with 3.
 
 
 Find out Boomer PanelGrab offset.
