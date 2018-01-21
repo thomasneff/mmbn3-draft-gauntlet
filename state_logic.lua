@@ -37,6 +37,23 @@ function state_logic.on_next_round()
 end
 
 
+function reset_selected_chips()
+    selected_chip_select = 1
+    selected_chip_folder = 1
+end
+
+
+function state_logic.initialize()
+
+    current_state = GAME_STATE.RUNNING
+    should_pause = 0
+    reset_selected_chips()
+    frame_count = 0
+
+
+end
+
+
 
 function state_logic.main_loop()
 
@@ -53,6 +70,7 @@ function state_logic.main_loop()
     elseif current_state == GAME_STATE.TRANSITION_TO_CHIP_SELECT then
         -- We pause here and make a savestate.
         print("Transition to chip select.")
+        reset_selected_chips()
         gui_change_savestate = memorysavestate.savecorestate()
         client.pause()
         current_state = GAME_STATE.CHIP_SELECT

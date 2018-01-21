@@ -81,6 +81,8 @@ local paused = 0
 
 --savestate.loadslot(1)
 savestate.load("initial.State")
+state_logic.initialize()
+
 client.unpause()
 -- Upon start, initialize the current round:
 next_round()
