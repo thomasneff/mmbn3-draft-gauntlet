@@ -1846,7 +1846,110 @@ ENTITIES.NeedlerOmega.AI_BYTES[0x0E]        = 0x05                              
 ENTITIES.NeedlerOmega.AI_BYTES[0x0F]        = 0x00                              -- Speed of charge (Byte 4).
 ENTITIES.NeedlerOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+ENTITIES.Trumpy                             = new_base_entity(ENTITY_KIND.Virus, "Trumpy")
+ENTITIES.Trumpy.NAME                        = "Trumpy"
+ENTITIES.Trumpy.HP_BASE                     = 90
+ENTITIES.Trumpy.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Trumpy.AI_BYTES                    = {}
+ENTITIES.Trumpy.AI_BYTES[0x00]              = 0x14                              -- Delay between movement.
+ENTITIES.Trumpy.AI_BYTES[0x01]              = 0x64                              -- Delay after attack
+ENTITIES.Trumpy.AI_BYTES[0x02]              = 0x55                              -- Duration of fanfare.
+ENTITIES.Trumpy.BATTLE_NUMBERS              = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Tuby                               = new_base_entity(ENTITY_KIND.Virus, "Tuby")
+ENTITIES.Tuby.NAME                          = "Tuby"
+ENTITIES.Tuby.HP_BASE                       = 150
+ENTITIES.Tuby.ELEMENT                       = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Tuby.AI_BYTES                      = {}
+ENTITIES.Tuby.AI_BYTES[0x00]                = 0x14                              -- Delay between movement.
+ENTITIES.Tuby.AI_BYTES[0x01]                = 0x28                              -- Delay after attack
+ENTITIES.Tuby.AI_BYTES[0x02]                = 0x55                              -- Duration of fanfare.
+ENTITIES.Tuby.BATTLE_NUMBERS                = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Tromby                             = new_base_entity(ENTITY_KIND.Virus, "Tromby")
+ENTITIES.Tromby.NAME                        = "Tromby"
+ENTITIES.Tromby.HP_BASE                     = 200
+ENTITIES.Tromby.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Tromby.AI_BYTES                    = {}
+ENTITIES.Tromby.AI_BYTES[0x00]              = 0x14                              -- Delay between movement.
+ENTITIES.Tromby.AI_BYTES[0x01]              = 0x28                              -- Delay after attack
+ENTITIES.Tromby.AI_BYTES[0x02]              = 0x55                              -- Duration of fanfare.
+ENTITIES.Tromby.BATTLE_NUMBERS              = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.TrumpyOmega                        = new_base_entity(ENTITY_KIND.Virus, "TrumpyOmega")
+ENTITIES.TrumpyOmega.NAME                   = "Trumpy\003"
+ENTITIES.TrumpyOmega.HP_BASE                = 300
+ENTITIES.TrumpyOmega.ELEMENT                = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.TrumpyOmega.AI_BYTES               = {}
+ENTITIES.TrumpyOmega.AI_BYTES[0x00]         = 0x02                              -- Delay between movement.
+ENTITIES.TrumpyOmega.AI_BYTES[0x01]         = 0x28                              -- Delay after attack
+ENTITIES.TrumpyOmega.AI_BYTES[0x02]         = 0xAA                              -- Duration of fanfare.
+ENTITIES.TrumpyOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local AlphaBug_Effect = 
+{
+  NOTHING = 0x00,
+  PARALYZE = 0x10,
+  CONFUSE = 0x20,
+  VINE = 0x30,
+}
+
+
+ENTITIES.QuestionMarkRed                    = new_base_entity(ENTITY_KIND.Virus, "QuestionMarkRed")
+ENTITIES.QuestionMarkRed.NAME               = "????"
+ENTITIES.QuestionMarkRed.HP_BASE            = 100
+ENTITIES.QuestionMarkRed.ELEMENT            = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.QuestionMarkRed.AI_BYTES           = {}
+ENTITIES.QuestionMarkRed.AI_BYTES[0x00]     = 0x64                              -- Delay before movement.
+ENTITIES.QuestionMarkRed.AI_BYTES[0x01]     = 0x02                              -- Movements before attack.
+ENTITIES.QuestionMarkRed.AI_BYTES[0x02]     = 0x32                              -- Damage attack.
+ENTITIES.QuestionMarkRed.AI_BYTES[0x03]     = 0x06                              -- Regen delay speed.
+ENTITIES.QuestionMarkRed.AI_BYTES[0x04]     = AlphaBug_Effect.PARALYZE + 0x01   -- Attack effect + duration. Long durations pretty much kill you instantly.
+ENTITIES.QuestionMarkRed.AI_BYTES[0x05]     = 0x02                              -- Sucking HP delay.
+ENTITIES.QuestionMarkRed.BATTLE_NUMBERS     = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.QuestionMarkBlue                   = new_base_entity(ENTITY_KIND.Virus, "QuestionMarkBlue")
+ENTITIES.QuestionMarkBlue.NAME              = "????!"
+ENTITIES.QuestionMarkBlue.HP_BASE           = 140
+ENTITIES.QuestionMarkBlue.ELEMENT           = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.QuestionMarkBlue.AI_BYTES          = {}
+ENTITIES.QuestionMarkBlue.AI_BYTES[0x00]    = 0x50                              -- Delay before movement.
+ENTITIES.QuestionMarkBlue.AI_BYTES[0x01]    = 0x02                              -- Movements before attack.
+ENTITIES.QuestionMarkBlue.AI_BYTES[0x02]    = 0x46                              -- Damage attack.
+ENTITIES.QuestionMarkBlue.AI_BYTES[0x03]    = 0x06                              -- Regen delay speed.
+ENTITIES.QuestionMarkBlue.AI_BYTES[0x04]    = AlphaBug_Effect.PARALYZE + 0x01   -- Attack effect.
+ENTITIES.QuestionMarkBlue.AI_BYTES[0x05]    = 0x01                              -- Sucking HP delay.
+ENTITIES.QuestionMarkBlue.BATTLE_NUMBERS    = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.AlphaBug                           = new_base_entity(ENTITY_KIND.Virus, "AlphaBug")
+ENTITIES.AlphaBug.NAME                      = "AlphaBug"
+ENTITIES.AlphaBug.HP_BASE                   = 180
+ENTITIES.AlphaBug.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.AlphaBug.AI_BYTES                  = {}
+ENTITIES.AlphaBug.AI_BYTES[0x00]            = 0x3C                              -- Delay before movement.
+ENTITIES.AlphaBug.AI_BYTES[0x01]            = 0x02                              -- Movements before attack.
+ENTITIES.AlphaBug.AI_BYTES[0x02]            = 0x5A                              -- Damage attack.
+ENTITIES.AlphaBug.AI_BYTES[0x03]            = 0x05                              -- Regen delay speed.
+ENTITIES.AlphaBug.AI_BYTES[0x04]            = AlphaBug_Effect.PARALYZE + 0x01   -- Attack effect.
+ENTITIES.AlphaBug.AI_BYTES[0x05]            = 0x01                              -- Sucking HP delay.
+ENTITIES.AlphaBug.BATTLE_NUMBERS            = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.AlphaBugOmega                      = new_base_entity(ENTITY_KIND.Virus, "AlphaBugOmega")
+ENTITIES.AlphaBugOmega.NAME                 = "AlphaBug\003"
+ENTITIES.AlphaBugOmega.HP_BASE              = 300
+ENTITIES.AlphaBugOmega.ELEMENT              = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.AlphaBugOmega.AI_BYTES             = {}
+ENTITIES.AlphaBugOmega.AI_BYTES[0x00]       = 0x28                              -- Delay before movement.
+ENTITIES.AlphaBugOmega.AI_BYTES[0x01]       = 0x02                              -- Movements before attack.
+ENTITIES.AlphaBugOmega.AI_BYTES[0x02]       = 0x96                              -- Damage attack.
+ENTITIES.AlphaBugOmega.AI_BYTES[0x03]       = 0x04                              -- Regen delay speed.
+ENTITIES.AlphaBugOmega.AI_BYTES[0x04]       = AlphaBug_Effect.PARALYZE + 0x01   -- Attack effect.
+ENTITIES.AlphaBugOmega.AI_BYTES[0x05]       = 0x01                              -- Sucking HP delay.
+ENTITIES.AlphaBugOmega.BATTLE_NUMBERS       = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 
 
