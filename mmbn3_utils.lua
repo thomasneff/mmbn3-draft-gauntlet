@@ -5,7 +5,7 @@ local ENTITY_PALETTE_DEFS = require "defs.entity_palette_defs"
 local mmbn3_utils = {}
 
 -- This is a wrapper for BizHawk with VBA-Next that automatically selects the correct memory domain.
-function writebyte(address, value)
+function mmbn3_utils.writebyte(address, value)
     --print("DOMAINS")
     --print(memory.getmemorydomainlist())
 
@@ -22,7 +22,7 @@ function writebyte(address, value)
 end
 
 -- This is a wrapper for BizHawk with VBA-Next that automatically selects the correct memory domain.
-function writeword(address, value)
+function mmbn3_utils.writeword(address, value)
     if address >= 0x08000000 then
         address = address - 0x08000000
         memory.write_u16_le(address, value, "ROM")
@@ -35,7 +35,7 @@ function writeword(address, value)
 end
 
 -- This is a wrapper for BizHawk with VBA-Next that automatically selects the correct memory domain.
-function writedword(address, value)
+function mmbn3_utils.writedword(address, value)
 
     if address >= 0x08000000 then
         address = address - 0x08000000
@@ -50,10 +50,10 @@ end
 
 function write_chip_to_address(address, chip)
 
-    writeword(address, chip.ID)
+    mmbn3_utils.writeword(address, chip.ID)
     address = address + 2
 
-    writebyte(address, chip.CODE)
+    mmbn3_utils.writeword(address, chip.CODE)
     address = address + 2
 
     return address
@@ -81,13 +81,13 @@ function mmbn3_utils.patch_battle(start_address, battle_data)
     local working_address = start_address
 
     -- Write Battle preamble
-    writebyte(working_address, battle_data.LIMITER_START)
+    mmbn3_utils.writebyte(working_address, battle_data.LIMITER_START)
     working_address = working_address + 1
-    writebyte(working_address, battle_data.UNKNOWN_ZERO_BYTE_1)
+    mmbn3_utils.writebyte(working_address, battle_data.UNKNOWN_ZERO_BYTE_1)
     working_address = working_address + 1
-    writebyte(working_address, battle_data.UNKNOWN_ZERO_BYTE_2)
+    mmbn3_utils.writebyte(working_address, battle_data.UNKNOWN_ZERO_BYTE_2)
     working_address = working_address + 1
-    writebyte(working_address, battle_data.UNKNOWN_ZERO_BYTE_3)
+    mmbn3_utils.writebyte(working_address, battle_data.UNKNOWN_ZERO_BYTE_3)
     working_address = working_address + 1
 
     --print(battle_data.ENTITIES)
@@ -97,18 +97,18 @@ function mmbn3_utils.patch_battle(start_address, battle_data)
         --print(working_address)
         entity_data = entity.BATTLE_DATA
         --print(entity)
-        writebyte(working_address, entity_data.TYPE)
+        mmbn3_utils.writebyte(working_address, entity_data.TYPE)
         working_address = working_address + 1
-        writebyte(working_address, entity_data.X_POS)
+        mmbn3_utils.writebyte(working_address, entity_data.X_POS)
         --print(entity_data.X_POS)
         working_address = working_address + 1
-        writebyte(working_address, entity_data.Y_POS)
+        mmbn3_utils.writebyte(working_address, entity_data.Y_POS)
         --print(entity_data.Y_POS)
         working_address = working_address + 1
-        writebyte(working_address, entity_data.KIND)
+        mmbn3_utils.writebyte(working_address, entity_data.KIND)
         working_address = working_address + 1
     end
-    writebyte(working_address, battle_data.LIMITER_START)
+    mmbn3_utils.writebyte(working_address, battle_data.LIMITER_START)
     return working_address
 end
 
@@ -127,11 +127,11 @@ function write_mmbn3_string(start_address, string_arg)
         local c = string_arg:sub(i,i)
         --print("Char: " .. c)
         --print("TEXT_TABLE translate: " .. TEXT_TABLE[c])
-        writebyte(current_address, TEXT_TABLE[c])
+        mmbn3_utils.writebyte(current_address, TEXT_TABLE[c])
         current_address = current_address + 1
     end
 
-    writebyte(current_address, TEXT_TABLE.End_Of_String)
+    mmbn3_utils.writebyte(current_address, TEXT_TABLE.End_Of_String)
 
 
 end
@@ -147,12 +147,6 @@ function mmbn3_utils.patch_entity_data(entities)
             break
         end
     
-        -- Patch entity Damage <-- We do this in AI_BYTES now, as entities have multiple sources of damage, and it's just a headache to 
-        -- change this.
-        if new_entity.DAMAGE_ADDRESS ~= nil then
-            writebyte(new_entity.DAMAGE_ADDRESS, new_entity.DAMAGE_BASE)
-        end
-
         -- Patch entity HP and Element, since they both use the same word.
         if new_entity.HP_ADDRESS ~= nil then
 
@@ -165,12 +159,12 @@ function mmbn3_utils.patch_entity_data(entities)
  
             local shifted_element = new_entity.ELEMENT * 0x1000
             local masked_hp_and_element = masked_hp + shifted_element
-            writeword(new_entity.HP_ADDRESS, masked_hp_and_element)
+            mmbn3_utils.writeword(new_entity.HP_ADDRESS, masked_hp_and_element)
         end
 
         -- Patch entity palette level (V1, V2, V3, Omega)
         if new_entity.PALETTE_LEVEL ~= nil then
-            writeword(new_entity.HP_ADDRESS + ENTITY_PALETTE_DEFS.HP_ADDRESS_PALETTE_OFFSET, new_entity.PALETTE_LEVEL)
+            mmbn3_utils.writebyte(new_entity.HP_ADDRESS + ENTITY_PALETTE_DEFS.HP_ADDRESS_PALETTE_OFFSET, new_entity.PALETTE_LEVEL)
         end
 
         -- Patch entity Name
@@ -185,7 +179,7 @@ function mmbn3_utils.patch_entity_data(entities)
                 -- Iterate over AI_BYTES, and add the key (which is the offset) to the address for final address
                 for offset, byte in pairs(new_entity.AI_BYTES) do
                     --print("Patching AI: key " .. offset .. " byte " .. byte)
-                    writebyte(new_entity.AI_ADDRESS + offset, byte)
+                    mmbn3_utils.writebyte(new_entity.AI_ADDRESS + offset, byte)
                 end
             end      
         end
@@ -199,44 +193,44 @@ function patch_battle_pointer(pointer_table_address, new_data)
 
     local working_address = pointer_table_address
 
-    writedword(pointer_table_address, new_data.ADDRESS)
+    mmbn3_utils.writedword(pointer_table_address, new_data.ADDRESS)
 
     working_address = working_address + 4
 
-    writebyte(working_address, new_data.UNID_BYTE_1)
+    mmbn3_utils.writebyte(working_address, new_data.UNID_BYTE_1)
     working_address = working_address + 1
 
-    writebyte(working_address, new_data.UNID_BYTE_2)
+    mmbn3_utils.writebyte(working_address, new_data.UNID_BYTE_2)
     working_address = working_address + 1
 
-    writebyte(working_address, new_data.UNID_BYTE_3)
+    mmbn3_utils.writebyte(working_address, new_data.UNID_BYTE_3)
     working_address = working_address + 1
 
-    writebyte(working_address, new_data.UNID_BYTE_4)
+    mmbn3_utils.writebyte(working_address, new_data.UNID_BYTE_4)
     working_address = working_address + 1
     
-    writebyte(working_address, new_data.BACKGROUND_TYPE)
+    mmbn3_utils.writebyte(working_address, new_data.BACKGROUND_TYPE)
     working_address = working_address + 1
 
-    writebyte(working_address, new_data.BATTLE_MODE)
+    mmbn3_utils.writebyte(working_address, new_data.BATTLE_MODE)
     working_address = working_address + 1
 
-    writebyte(working_address, new_data.FOLDER_SHUFFLE)
+    mmbn3_utils.writebyte(working_address, new_data.FOLDER_SHUFFLE)
     working_address = working_address + 1
 
-    writebyte(working_address, new_data.ALLOW_RUNNING)
+    mmbn3_utils.writebyte(working_address, new_data.ALLOW_RUNNING)
     working_address = working_address + 1
 
-    writebyte(working_address, new_data.BATTLE_STAGE)
+    mmbn3_utils.writebyte(working_address, new_data.BATTLE_STAGE)
     working_address = working_address + 1
 
-    writebyte(working_address, new_data.UNID_BYTE_8)
+    mmbn3_utils.writebyte(working_address, new_data.UNID_BYTE_8)
     working_address = working_address + 1
 
-    writebyte(working_address, new_data.UNID_BYTE_9)
+    mmbn3_utils.writebyte(working_address, new_data.UNID_BYTE_9)
     working_address = working_address + 1
 
-    writebyte(working_address, new_data.UNID_BYTE_10)
+    mmbn3_utils.writebyte(working_address, new_data.UNID_BYTE_10)
     working_address = working_address + 1
 
 

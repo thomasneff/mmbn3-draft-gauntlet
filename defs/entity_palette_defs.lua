@@ -1,6 +1,6 @@
 local ENTITY_PALETTE_DEFS = 
 {
-    HP_ADDRESS_PALETTE_OFFSET = 0x07, -- Offset bettwen the HP Address and the Palette Level Address.
+    HP_ADDRESS_PALETTE_OFFSET = 0x07, -- Offset between the HP Address and the Palette Level Address.
     PALETTE_V1 = 0x00,
     PALETTE_V2 = 0x01,
     PALETTE_V3 = 0x02,

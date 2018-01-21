@@ -1,6 +1,6 @@
 Entities. Add all the info from TREZ.
 
-
+Then just use overrides if necessary, as they are nicely aligned.
 
 Find out Boomer PanelGrab offset.
 Find out Swordy AreaGrab offset.

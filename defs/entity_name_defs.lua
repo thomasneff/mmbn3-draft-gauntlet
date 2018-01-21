@@ -252,18 +252,7 @@ BassOmega = 0x8711ca6 ,
 
 }
 
-function getKeysSortedByValue(tbl, sortFunction)
-  local keys = {}
-  for key in pairs(tbl) do
-    table.insert(keys, key)
-  end
 
-  table.sort(keys, function(a, b)
-    return sortFunction(tbl[a], tbl[b])
-  end)
-
-  return keys
-end
 
 function dump_entity_name_addresses()
     
