@@ -1,7 +1,9 @@
-Deetle and HardHead are definitely bugged. Sometimes their shots fly offscreen?
 Entities. Add all the info from TREZ.
 
+Add special code for Twins viruses, such that they always spawn *at least* 2, and test what happens with 3.
 
+
+Find out Boomer PanelGrab offset.
 Find out Swordy AreaGrab offset.
 Find out Pengi IceStage offset. <-- this should be easy, as I don't remember any other virus/navi using IceStage.
 

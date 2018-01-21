@@ -2055,10 +2055,295 @@ ENTITIES.N_O_Omega.AI_BYTES[0x04]           = 0x02                              
 ENTITIES.N_O_Omega.AI_BYTES[0x05]           = 0x03                              -- Attack speed delay.
 ENTITIES.N_O_Omega.BATTLE_NUMBERS           = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+ENTITIES.Eleball                            = new_base_entity(ENTITY_KIND.Virus, "Eleball")
+ENTITIES.Eleball.NAME                       = "Eleball"
+ENTITIES.Eleball.HP_BASE                    = 80
+ENTITIES.Eleball.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.Eleball.AI_BYTES                   = {}
+ENTITIES.Eleball.AI_BYTES[0x00]             = 0x14                              -- Damage.
+ENTITIES.Eleball.AI_BYTES[0x01]             = 0x10                              -- (??).
+ENTITIES.Eleball.AI_BYTES[0x02]             = 0x18                              -- Delay before attack.
+ENTITIES.Eleball.AI_BYTES[0x03]             = 0x0F                              -- Attack speed delay.
+ENTITIES.Eleball.AI_BYTES[0x04]             = 0x78                              -- Duration of attack.
+ENTITIES.Eleball.AI_BYTES[0x05]             = 0x32                              -- Delay after attack.
+ENTITIES.Eleball.AI_BYTES[0x06]             = 0x32                              -- Delay speed movement.
+ENTITIES.Eleball.BATTLE_NUMBERS             = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
+ENTITIES.Elesphere                          = new_base_entity(ENTITY_KIND.Virus, "Elesphere")
+ENTITIES.Elesphere.NAME                     = "Elesphere"
+ENTITIES.Elesphere.HP_BASE                  = 150
+ENTITIES.Elesphere.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.Elesphere.AI_BYTES                 = {}
+ENTITIES.Elesphere.AI_BYTES[0x00]           = 0x32                              -- Damage.
+ENTITIES.Elesphere.AI_BYTES[0x01]           = 0x11                              -- (??).
+ENTITIES.Elesphere.AI_BYTES[0x02]           = 0x16                              -- Delay before attack.
+ENTITIES.Elesphere.AI_BYTES[0x03]           = 0x0C                              -- Attack speed delay.
+ENTITIES.Elesphere.AI_BYTES[0x04]           = 0x78                              -- Duration of attack.
+ENTITIES.Elesphere.AI_BYTES[0x05]           = 0x32                              -- Delay after attack.
+ENTITIES.Elesphere.AI_BYTES[0x06]           = 0x14                              -- Delay speed movement.
+ENTITIES.Elesphere.BATTLE_NUMBERS           = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
+ENTITIES.Eleglobe                           = new_base_entity(ENTITY_KIND.Virus, "Eleglobe")
+ENTITIES.Eleglobe.NAME                      = "Eleglobe"
+ENTITIES.Eleglobe.HP_BASE                   = 200
+ENTITIES.Eleglobe.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.Eleglobe.AI_BYTES                  = {}
+ENTITIES.Eleglobe.AI_BYTES[0x00]            = 0x50                              -- Damage.
+ENTITIES.Eleglobe.AI_BYTES[0x01]            = 0x12                              -- (??).
+ENTITIES.Eleglobe.AI_BYTES[0x02]            = 0x14                              -- Delay before attack.
+ENTITIES.Eleglobe.AI_BYTES[0x03]            = 0x0A                              -- Attack speed delay.
+ENTITIES.Eleglobe.AI_BYTES[0x04]            = 0x78                              -- Duration of attack.
+ENTITIES.Eleglobe.AI_BYTES[0x05]            = 0x32                              -- Delay after attack.
+ENTITIES.Eleglobe.AI_BYTES[0x06]            = 0x11                              -- Delay speed movement.
+ENTITIES.Eleglobe.BATTLE_NUMBERS            = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
+ENTITIES.EleballOmega                       = new_base_entity(ENTITY_KIND.Virus, "EleballOmega")
+ENTITIES.EleballOmega.NAME                  = "Eleball\003"
+ENTITIES.EleballOmega.HP_BASE               = 200
+ENTITIES.EleballOmega.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.EleballOmega.AI_BYTES              = {}
+ENTITIES.EleballOmega.AI_BYTES[0x00]        = 0xA0                              -- Damage.
+ENTITIES.EleballOmega.AI_BYTES[0x01]        = 0x12                              -- (??).
+ENTITIES.EleballOmega.AI_BYTES[0x02]        = 0x10                              -- Delay before attack.
+ENTITIES.EleballOmega.AI_BYTES[0x03]        = 0x08                              -- Attack speed delay.
+ENTITIES.EleballOmega.AI_BYTES[0x04]        = 0x78                              -- Duration of attack.
+ENTITIES.EleballOmega.AI_BYTES[0x05]        = 0x32                              -- Delay after attack.
+ENTITIES.EleballOmega.AI_BYTES[0x06]        = 0x0D                              -- Delay speed movement.
+ENTITIES.EleballOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Volcano                            = new_base_entity(ENTITY_KIND.Virus, "Volcano")
+ENTITIES.Volcano.NAME                       = "Volcano"
+ENTITIES.Volcano.HP_BASE                    = 130
+ENTITIES.Volcano.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Volcano.AI_BYTES                   = {}
+ENTITIES.Volcano.AI_BYTES[0x00]             = 0x28                              -- Time before attack.
+ENTITIES.Volcano.AI_BYTES[0x01]             = 0x18                              -- Movement variable 1.
+ENTITIES.Volcano.AI_BYTES[0x02]             = 0x28                              -- Damage lavaball.
+ENTITIES.Volcano.AI_BYTES[0x03]             = 0x00                              -- (Number of lavaballs) - 1.
+ENTITIES.Volcano.AI_BYTES[0x04]             = 0x00                              -- Movement variable 2 (Byte 1).
+ENTITIES.Volcano.AI_BYTES[0x05]             = 0x00                              -- Movement variable 2 (Byte 2).
+ENTITIES.Volcano.AI_BYTES[0x06]             = 0x01                              -- Movement variable 2 (Byte 3).
+ENTITIES.Volcano.AI_BYTES[0x07]             = 0x00                              -- Movement variable 2 (Byte 4).
+ENTITIES.Volcano.AI_BYTES[0x16FA6]          = 0x3C                              -- Initial delay. This is shared with all other Volcano viruses in the same battle.
+ENTITIES.Volcano.BATTLE_NUMBERS             = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Volcaner                           = new_base_entity(ENTITY_KIND.Virus, "Volcaner")
+ENTITIES.Volcaner.NAME                      = "Volcaner"
+ENTITIES.Volcaner.HP_BASE                   = 180
+ENTITIES.Volcaner.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Volcaner.AI_BYTES                  = {}
+ENTITIES.Volcaner.AI_BYTES[0x00]            = 0x1E                              -- Time before attack.
+ENTITIES.Volcaner.AI_BYTES[0x01]            = 0x21                              -- Movement variable 1.
+ENTITIES.Volcaner.AI_BYTES[0x02]            = 0x50                              -- Damage lavaball.
+ENTITIES.Volcaner.AI_BYTES[0x03]            = 0x00                              -- (Number of lavaballs) - 1.
+ENTITIES.Volcaner.AI_BYTES[0x04]            = 0x33                              -- Movement variable 2 (Byte 1).
+ENTITIES.Volcaner.AI_BYTES[0x05]            = 0x33                              -- Movement variable 2 (Byte 2).
+ENTITIES.Volcaner.AI_BYTES[0x06]            = 0x01                              -- Movement variable 2 (Byte 3).
+ENTITIES.Volcaner.AI_BYTES[0x07]            = 0x00                              -- Movement variable 2 (Byte 4).
+ENTITIES.Volcaner.AI_BYTES[0x16F9E]         = 0x3C                              -- Initial delay. This is shared with all other Volcano viruses in the same battle.
+ENTITIES.Volcaner.BATTLE_NUMBERS            = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Volcanest                          = new_base_entity(ENTITY_KIND.Virus, "Volcanest")
+ENTITIES.Volcanest.NAME                     = "Volcanest"
+ENTITIES.Volcanest.HP_BASE                  = 230
+ENTITIES.Volcanest.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Volcanest.AI_BYTES                 = {}
+ENTITIES.Volcanest.AI_BYTES[0x00]           = 0x2D                              -- Time before attack.
+ENTITIES.Volcanest.AI_BYTES[0x01]           = 0x10                              -- Movement variable 1.
+ENTITIES.Volcanest.AI_BYTES[0x02]           = 0x78                              -- Damage lavaball.
+ENTITIES.Volcanest.AI_BYTES[0x03]           = 0x01                              -- (Number of lavaballs) - 1.
+ENTITIES.Volcanest.AI_BYTES[0x04]           = 0x00                              -- Movement variable 2 (Byte 1).
+ENTITIES.Volcanest.AI_BYTES[0x05]           = 0x80                              -- Movement variable 2 (Byte 2).
+ENTITIES.Volcanest.AI_BYTES[0x06]           = 0x01                              -- Movement variable 2 (Byte 3).
+ENTITIES.Volcanest.AI_BYTES[0x07]           = 0x00                              -- Movement variable 2 (Byte 4).
+ENTITIES.Volcanest.AI_BYTES[0x16F96]        = 0x3C                              -- Initial delay. This is shared with all other Volcano viruses in the same battle.
+ENTITIES.Volcanest.BATTLE_NUMBERS           = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.VolcanoOmega                       = new_base_entity(ENTITY_KIND.Virus, "VolcanoOmega")
+ENTITIES.VolcanoOmega.NAME                  = "Volcano\003"
+ENTITIES.VolcanoOmega.HP_BASE               = 330
+ENTITIES.VolcanoOmega.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.VolcanoOmega.AI_BYTES              = {}
+ENTITIES.VolcanoOmega.AI_BYTES[0x00]        = 0x2D                              -- Time before attack.
+ENTITIES.VolcanoOmega.AI_BYTES[0x01]        = 0x16                              -- Movement variable 1.
+ENTITIES.VolcanoOmega.AI_BYTES[0x02]        = 0xC8                              -- Damage lavaball.
+ENTITIES.VolcanoOmega.AI_BYTES[0x03]        = 0x01                              -- (Number of lavaballs) - 1.
+ENTITIES.VolcanoOmega.AI_BYTES[0x04]        = 0xCC                              -- Movement variable 2 (Byte 1).
+ENTITIES.VolcanoOmega.AI_BYTES[0x05]        = 0xCC                              -- Movement variable 2 (Byte 2).
+ENTITIES.VolcanoOmega.AI_BYTES[0x06]        = 0x01                              -- Movement variable 2 (Byte 3).
+ENTITIES.VolcanoOmega.AI_BYTES[0x07]        = 0x00                              -- Movement variable 2 (Byte 4).
+ENTITIES.VolcanoOmega.AI_BYTES[0x16F8E]     = 0x3C                              -- Initial delay. This is shared with all other Volcano viruses in the same battle.
+ENTITIES.VolcanoOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Totem                              = new_base_entity(ENTITY_KIND.Virus, "Totem")
+ENTITIES.Totem.NAME                         = "Totem"
+ENTITIES.Totem.HP_BASE                      = 100
+ENTITIES.Totem.ELEMENT                      = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Totem.AI_BYTES                     = {}
+ENTITIES.Totem.AI_BYTES[0x00]               = 0x32                              -- Delay between attacks.
+ENTITIES.Totem.AI_BYTES[0x01]               = 0x32                              -- Damage fire.
+ENTITIES.Totem.AI_BYTES[0x02]               = 0x4B                              -- HP healed.
+ENTITIES.Totem.AI_BYTES[0x03]               = 0x7E                              -- Name of the chip when healing.
+ENTITIES.Totem.AI_BYTES[0x04]               = 0x03                              -- Don't touch (always 0x03).
+ENTITIES.Totem.AI_BYTES[0x05]               = 0x00                              -- Leave at 0x00.
+ENTITIES.Totem.AI_BYTES[0x06]               = 0xB4                              -- Duration of attack.
+ENTITIES.Totem.AI_BYTES[0x07]               = 0x3C                              -- Delay before each flame appears.
+ENTITIES.Totem.BATTLE_NUMBERS               = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Totam                              = new_base_entity(ENTITY_KIND.Virus, "Totam")
+ENTITIES.Totam.NAME                         = "Totam"
+ENTITIES.Totam.HP_BASE                      = 160
+ENTITIES.Totam.ELEMENT                      = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Totam.AI_BYTES                     = {}
+ENTITIES.Totam.AI_BYTES[0x00]               = 0x32                              -- Delay between attacks.
+ENTITIES.Totam.AI_BYTES[0x01]               = 0x64                              -- Damage fire.
+ENTITIES.Totam.AI_BYTES[0x02]               = 0x64                              -- HP healed.
+ENTITIES.Totam.AI_BYTES[0x03]               = 0x7F                              -- Name of the chip when healing.
+ENTITIES.Totam.AI_BYTES[0x04]               = 0x03                              -- Don't touch (always 0x03).
+ENTITIES.Totam.AI_BYTES[0x05]               = 0x00                              -- Leave at 0x00.
+ENTITIES.Totam.AI_BYTES[0x06]               = 0xB4                              -- Duration of attack.
+ENTITIES.Totam.AI_BYTES[0x07]               = 0x3C                              -- Delay before each flame appears.
+ENTITIES.Totam.BATTLE_NUMBERS               = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Totun                              = new_base_entity(ENTITY_KIND.Virus, "Totun")
+ENTITIES.Totun.NAME                         = "Totun"
+ENTITIES.Totun.HP_BASE                      = 250
+ENTITIES.Totun.ELEMENT                      = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.Totun.AI_BYTES                     = {}
+ENTITIES.Totun.AI_BYTES[0x00]               = 0x19                              -- Delay between attacks.
+ENTITIES.Totun.AI_BYTES[0x01]               = 0x96                              -- Damage fire.
+ENTITIES.Totun.AI_BYTES[0x02]               = 0x96                              -- HP healed.
+ENTITIES.Totun.AI_BYTES[0x03]               = 0x80                              -- Name of the chip when healing.
+ENTITIES.Totun.AI_BYTES[0x04]               = 0x03                              -- Don't touch (always 0x03).
+ENTITIES.Totun.AI_BYTES[0x05]               = 0x00                              -- Leave at 0x00.
+ENTITIES.Totun.AI_BYTES[0x06]               = 0x96                              -- Duration of attack.
+ENTITIES.Totun.AI_BYTES[0x07]               = 0x32                              -- Delay before each flame appears.
+ENTITIES.Totun.BATTLE_NUMBERS               = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.TotemOmega                         = new_base_entity(ENTITY_KIND.Virus, "TotemOmega")
+ENTITIES.TotemOmega.NAME                    = "Totem\003"
+ENTITIES.TotemOmega.HP_BASE                 = 300
+ENTITIES.TotemOmega.ELEMENT                 = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
+ENTITIES.TotemOmega.AI_BYTES                = {}
+ENTITIES.TotemOmega.AI_BYTES[0x00]          = 0x19                              -- Delay between attacks.
+ENTITIES.TotemOmega.AI_BYTES[0x01]          = 0xC8                              -- Damage fire.
+ENTITIES.TotemOmega.AI_BYTES[0x02]          = 0x96                              -- HP healed.
+ENTITIES.TotemOmega.AI_BYTES[0x03]          = 0x80                              -- Name of the chip when healing.
+ENTITIES.TotemOmega.AI_BYTES[0x04]          = 0x03                              -- Don't touch (always 0x03).
+ENTITIES.TotemOmega.AI_BYTES[0x05]          = 0x00                              -- Leave at 0x00.
+ENTITIES.TotemOmega.AI_BYTES[0x06]          = 0x96                              -- Duration of attack.
+ENTITIES.TotemOmega.AI_BYTES[0x07]          = 0x32                              -- Delay before each flame appears.
+ENTITIES.TotemOmega.BATTLE_NUMBERS          = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Twins                              = new_base_entity(ENTITY_KIND.Virus, "Twins")
+ENTITIES.Twins.NAME                         = "Twins"
+ENTITIES.Twins.HP_BASE                      = 100
+ENTITIES.Twins.ELEMENT                      = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Twins.AI_BYTES                     = {}
+ENTITIES.Twins.AI_BYTES[0x00]               = 0xB4                              -- (??). Probably some kind of delay.
+ENTITIES.Twins.AI_BYTES[0x01]               = 0x1E                              -- Damage.
+ENTITIES.Twins.AI_BYTES[0x02]               = 0x78                              -- (??). Probably some kind of delay.
+ENTITIES.Twins.BATTLE_NUMBERS               = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Twinner                            = new_base_entity(ENTITY_KIND.Virus, "Twinner")
+ENTITIES.Twinner.NAME                       = "Twinner"
+ENTITIES.Twinner.HP_BASE                    = 150
+ENTITIES.Twinner.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Twinner.AI_BYTES                   = {}
+ENTITIES.Twinner.AI_BYTES[0x00]             = 0x8C                              -- (??). Probably some kind of delay.
+ENTITIES.Twinner.AI_BYTES[0x01]             = 0x3C                              -- Damage.
+ENTITIES.Twinner.AI_BYTES[0x02]             = 0x64                              -- (??). Probably some kind of delay.
+ENTITIES.Twinner.BATTLE_NUMBERS             = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Twinnest                           = new_base_entity(ENTITY_KIND.Virus, "Twinnest")
+ENTITIES.Twinnest.NAME                      = "Twinnest"
+ENTITIES.Twinnest.HP_BASE                   = 200
+ENTITIES.Twinnest.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.Twinnest.AI_BYTES                  = {}
+ENTITIES.Twinnest.AI_BYTES[0x00]            = 0x64                              -- (??). Probably some kind of delay.
+ENTITIES.Twinnest.AI_BYTES[0x01]            = 0x5A                              -- Damage.
+ENTITIES.Twinnest.AI_BYTES[0x02]            = 0x50                              -- (??). Probably some kind of delay.
+ENTITIES.Twinnest.BATTLE_NUMBERS            = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.TwinsOmega                         = new_base_entity(ENTITY_KIND.Virus, "TwinsOmega")
+ENTITIES.TwinsOmega.NAME                    = "Twins\003"
+ENTITIES.TwinsOmega.HP_BASE                 = 300
+ENTITIES.TwinsOmega.ELEMENT                 = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.TwinsOmega.AI_BYTES                = {}
+ENTITIES.TwinsOmega.AI_BYTES[0x00]          = 0x3C                              -- (??). Probably some kind of delay.
+ENTITIES.TwinsOmega.AI_BYTES[0x01]          = 0x96                              -- Damage.
+ENTITIES.TwinsOmega.AI_BYTES[0x02]          = 0x3C                              -- (??). Probably some kind of delay.
+ENTITIES.TwinsOmega.BATTLE_NUMBERS          = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Boomer                             = new_base_entity(ENTITY_KIND.Virus, "Boomer")
+ENTITIES.Boomer.NAME                        = "Boomer"
+ENTITIES.Boomer.HP_BASE                     = 70
+ENTITIES.Boomer.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_WOOD
+ENTITIES.Boomer.AI_BYTES                    = {}
+ENTITIES.Boomer.AI_BYTES[0x00]              = 0x3C                              -- Vertical movement speed delay.
+ENTITIES.Boomer.AI_BYTES[0x01]              = 0x00                              -- Number of PanelGrab chips.
+ENTITIES.Boomer.AI_BYTES[0x02]              = 0x00                              -- Number of attacks before using PanelGrab.
+ENTITIES.Boomer.AI_BYTES[0x03]              = 0x1E                              -- Damage boomerang.
+ENTITIES.Boomer.AI_BYTES[0x04]              = 0x78                              -- Delay after attack.
+ENTITIES.Boomer.AI_BYTES[0x05]              = 0x05                              -- Speed of attack.
+ENTITIES.Boomer.AI_BYTES[0x06]              = 0x00                              -- Not read.
+ENTITIES.Boomer.AI_BYTES[0x07]              = 0x00                              -- Not read.
+ENTITIES.Boomer.BATTLE_NUMBERS              = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Gloomer                            = new_base_entity(ENTITY_KIND.Virus, "Gloomer")
+ENTITIES.Gloomer.NAME                       = "Gloomer"
+ENTITIES.Gloomer.HP_BASE                    = 140
+ENTITIES.Gloomer.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_WOOD
+ENTITIES.Gloomer.AI_BYTES                   = {}
+ENTITIES.Gloomer.AI_BYTES[0x00]             = 0x28                              -- Vertical movement speed delay.
+ENTITIES.Gloomer.AI_BYTES[0x01]             = 0x01                              -- Number of PanelGrab chips.
+ENTITIES.Gloomer.AI_BYTES[0x02]             = 0x03                              -- Number of attacks before using PanelGrab.
+ENTITIES.Gloomer.AI_BYTES[0x03]             = 0x3C                              -- Damage boomerang.
+ENTITIES.Gloomer.AI_BYTES[0x04]             = 0x78                              -- Delay after attack.
+ENTITIES.Gloomer.AI_BYTES[0x05]             = 0x06                              -- Speed of attack.
+ENTITIES.Gloomer.AI_BYTES[0x06]             = 0x00                              -- Not read.
+ENTITIES.Gloomer.AI_BYTES[0x07]             = 0x00                              -- Not read.
+ENTITIES.Gloomer.BATTLE_NUMBERS             = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.Doomer                             = new_base_entity(ENTITY_KIND.Virus, "Doomer")
+ENTITIES.Doomer.NAME                        = "Doomer"
+ENTITIES.Doomer.HP_BASE                     = 180
+ENTITIES.Doomer.ELEMENT                     = ENTITY_ELEMENT_DEFS.ELEMENT_WOOD
+ENTITIES.Doomer.AI_BYTES                    = {}
+ENTITIES.Doomer.AI_BYTES[0x00]              = 0x1E                              -- Vertical movement speed delay.
+ENTITIES.Doomer.AI_BYTES[0x01]              = 0x02                              -- Number of PanelGrab chips.
+ENTITIES.Doomer.AI_BYTES[0x02]              = 0x03                              -- Number of attacks before using PanelGrab.
+ENTITIES.Doomer.AI_BYTES[0x03]              = 0x5A                              -- Damage boomerang.
+ENTITIES.Doomer.AI_BYTES[0x04]              = 0x78                              -- Delay after attack.
+ENTITIES.Doomer.AI_BYTES[0x05]              = 0x07                              -- Speed of attack.
+ENTITIES.Doomer.AI_BYTES[0x06]              = 0x00                              -- Not read.
+ENTITIES.Doomer.AI_BYTES[0x07]              = 0x00                              -- Not read.
+ENTITIES.Doomer.BATTLE_NUMBERS              = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+ENTITIES.BoomerOmega                        = new_base_entity(ENTITY_KIND.Virus, "BoomerOmega")
+ENTITIES.BoomerOmega.NAME                   = "Boomer\003"
+ENTITIES.BoomerOmega.HP_BASE                = 320
+ENTITIES.BoomerOmega.ELEMENT                = ENTITY_ELEMENT_DEFS.ELEMENT_WOOD
+ENTITIES.BoomerOmega.AI_BYTES               = {}
+ENTITIES.BoomerOmega.AI_BYTES[0x00]         = 0x18                              -- Vertical movement speed delay.
+ENTITIES.BoomerOmega.AI_BYTES[0x01]         = 0x02                              -- Number of PanelGrab chips.
+ENTITIES.BoomerOmega.AI_BYTES[0x02]         = 0x02                              -- Number of attacks before using PanelGrab.
+ENTITIES.BoomerOmega.AI_BYTES[0x03]         = 0x96                              -- Damage boomerang.
+ENTITIES.BoomerOmega.AI_BYTES[0x04]         = 0x78                              -- Delay after attack.
+ENTITIES.BoomerOmega.AI_BYTES[0x05]         = 0x08                              -- Speed of attack.
+ENTITIES.BoomerOmega.AI_BYTES[0x06]         = 0x00                              -- Not read.
+ENTITIES.BoomerOmega.AI_BYTES[0x07]         = 0x00                              -- Not read.
+ENTITIES.BoomerOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 
 

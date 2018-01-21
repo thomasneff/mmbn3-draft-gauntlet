@@ -23,3 +23,6 @@ Find the offset for Dominerd's Chip (should be Geddon, probably need to debug wi
  - Anyways, the Chip Family is at 080C4B6C, the Subfamily is at 080C4B6E. Damage is in r3, which gets set in 080C4B72. User gets pulled from RAM, so bad luck there, unless we 
    want to hook into it, which we definitely could.
 
+
+Deetle and HardHead are definitely bugged. Sometimes their shots fly offscreen?
+ - This was just an emulator bug with VBA-RR and solved itself when switching to BizHawk.
