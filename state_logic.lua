@@ -9,6 +9,13 @@ local GAUNTLET_BATTLE_POINTERS = require "defs.gauntlet_battle_pointer_defs"
 local GENERIC_DEFS = require "defs.generic_defs"
 local mmbn3_utils = require "mmbn3_utils"
 local CHIP = require "defs.chip_defs"
+local CHIP_NAME_UTILS = require "defs.chip_name_utils"
+local CHIP_NAME = require "defs.chip_name_defs"
+local CHIP_ID = require "defs.chip_id_defs"
+local CHIP_CODE = require "defs.chip_code_defs"
+local CHIP_CODE_REVERSE = require "defs.chip_code_reverse_defs"
+local CHIP_ICON = require "defs.chip_icon_defs"
+local CHIP_DATA = require "defs.chip_data_defs"
 
 -- TODO: possibly add more states.
 local GAME_STATE = {
@@ -22,8 +29,18 @@ local GAME_STATE = {
 }
 
 local folder = {}
+local dropped_chips = {}
+
+dropped_chips[1] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
+dropped_chips[2] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.B)
+dropped_chips[3] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.C)
+
+local should_redraw = 1
 
 
+local selected_dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
+selected_dropped_chip.ID = -1
+selected_dropped_chip.PRINT_NAME = ""
 
 
 local state_logic = {}
@@ -38,7 +55,7 @@ local gui_change_savestate = nil
 local current_round = 0
 local current_battle = 1
 local battle_pointer_index = 1
-
+local battle_data = {}
 
 function state_logic.next_round()
 
@@ -81,6 +98,10 @@ function state_logic.patch_next_battle()
     end
     -- print("5")
     local new_battle_data = battle_data_generator.random_from_battle(current_battle)
+
+    -- This is used to determine drops.
+    battle_data[current_battle] = new_battle_data
+
     -- print("6")
     mmbn3_utils.patch_battle(GAUNTLET_BATTLE_POINTERS[battle_pointer_index], new_battle_data)
     -- print("7")
@@ -97,8 +118,25 @@ function state_logic.patch_next_battle()
 end
 
 
+function state_logic.determine_drops()
+
+    if battle_data[current_battle] == nil then
+
+        -- First round. Do we do anything here?
+        -- For now, we don't.
+
+    else
+
+        -- TODO: determine drops from battle_data[current_battle].ENTITIES entity droptables.
+
+    end
+
+end
+
 function state_logic.on_enter_battle()
     
+    state_logic.determine_drops()
+
     state_logic.patch_next_battle()
     
     current_state = GAME_STATE.TRANSITION_TO_CHIP_SELECT
@@ -119,6 +157,16 @@ function state_logic.reset_selected_chips()
     selected_chip_folder = 1
 end
 
+function state_logic.randomize_dropped_chips(number_of_dropped_chips)
+    dropped_chips = {}
+    for chip_idx = 1,number_of_dropped_chips do
+
+        dropped_chips[chip_idx] = CHIP.new_random_chip_with_random_code()
+
+    end
+   
+    
+end
 
 function state_logic.randomize_folder()
 
@@ -128,14 +176,65 @@ function state_logic.randomize_folder()
 
     end
    
+    
+end
+
+function state_logic.get_printable_chip_name(chip)
+
+    if chip.ID == -1 then
+        return ""
+    end
+
+    local string_with_special_chars = CHIP_NAME[chip.ID] .. " " .. CHIP_CODE_REVERSE[chip.CODE]
+
+    return CHIP_NAME_UTILS.replace_special_chars(string_with_special_chars)
 
 end
+
+function state_logic.get_argb_icon(chip)
+
+    if chip.ID == -1 then
+        return nil
+    end
+
+    local chip_address = CHIP_DATA[chip.ID].CHIP_ICON_OFFSET
+
+    return CHIP_ICON.get_argb_2d_array_for_icon_address(chip_address)
+
+end
+
+
+
+function state_logic.update_argb_chip_icons_in_folder()
+    
+    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
+        folder[chip_idx].ARGB_ICON = state_logic.get_argb_icon(folder[chip_idx])
+    end
+    
+
+end
+
+
+function state_logic.update_printable_chip_names_in_folder()
+
+    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
+        folder[chip_idx].PRINT_NAME = state_logic.get_printable_chip_name(folder[chip_idx])
+    end
+
+end
+
 
 function state_logic.initialize()
 
     math.randomseed(os.time())
 
     savestate.load("initial.State")
+
+    selected_dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
+    --selected_dropped_chip.ID = -1
+    selected_dropped_chip.PRINT_NAME = state_logic.get_printable_chip_name(selected_dropped_chip)
+    selected_dropped_chip.ARGB_ICON = state_logic.get_argb_icon(selected_dropped_chip)
+    battle_data = {}
     current_round = 0
     current_battle = 1
     battle_pointer_index = 1
@@ -144,6 +243,9 @@ function state_logic.initialize()
     frame_count = 0
 
     state_logic.randomize_folder()
+    state_logic.update_printable_chip_names_in_folder()
+    state_logic.update_argb_chip_icons_in_folder()
+    
     current_state = GAME_STATE.RUNNING
 
     client.unpause()
@@ -188,21 +290,72 @@ function state_logic.main_loop()
         -- We pause here and make a savestate.
         print("Transition to chip select.")
         state_logic.reset_selected_chips()
+
+        -- Drop chips!
+        -- TODO: for now, this just uses randomized chips.
+
+        state_logic.randomize_dropped_chips(3)
+
+        for idx = 1,#dropped_chips do
+            dropped_chips[idx].PRINT_NAME = state_logic.get_printable_chip_name(dropped_chips[idx])
+        end
+
         gui_change_savestate = memorysavestate.savecorestate()
         client.pause()
         current_state = GAME_STATE.CHIP_SELECT
+        should_redraw = 1
 
     elseif current_state == GAME_STATE.CHIP_SELECT then
-        -- render chips, select a chip.
-        -- TODO: for now, this just switches instantly to CHIP_REPLACE
-        current_state = GAME_STATE.TRANSITION_TO_CHIP_REPLACE
+        
+
+         if input_handler.inputs_pressed["Left"] == true then
+            selected_chip_select = (selected_chip_select - 1) % (#dropped_chips)
+            memorysavestate.loadcorestate(gui_change_savestate)
+            if selected_chip_select == 0 then
+                selected_chip_select = (#dropped_chips)
+            end
+            should_redraw = 1
+        end
+
+        if input_handler.inputs_pressed["Right"] == true then
+            selected_chip_select = (selected_chip_select + 1) % (#dropped_chips + 1)
+            memorysavestate.loadcorestate(gui_change_savestate)
+            if selected_chip_select == 0 then
+                selected_chip_select = 1
+            end
+            should_redraw = 1
+        end
+
+
+        if input_handler.inputs_pressed["A"] == true then
+
+            print("Selected a Chip!")
+            
+            selected_dropped_chip = dropped_chips[selected_chip_select]
+
+            selected_dropped_chip.PRINT_NAME = state_logic.get_printable_chip_name(selected_dropped_chip)
+            selected_dropped_chip.ARGB_ICON = state_logic.get_argb_icon(selected_dropped_chip)
+            current_state = GAME_STATE.TRANSITION_TO_CHIP_REPLACE
+            should_redraw = 1
+        end
+
+        if should_redraw == 1 then
+            --print("RENDERRRRRR")
+            --print("DROPPED CHIPS: ", dropped_chips)
+            gui_rendering.render_chip_selection(dropped_chips, selected_chip_select)
+            gui.DrawFinish()
+            should_redraw = 0
+        end
+
+
+
+        
 
     elseif current_state == GAME_STATE.TRANSITION_TO_CHIP_REPLACE then
-        -- We already render the folder here, so we can load the savestate to "refresh" the screen.
-        -- It sucks and is an ugly hack, but it's the only solution I could find.
-        gui_rendering.render_folder(nil, selected_chip_folder)
+
         memorysavestate.loadcorestate(gui_change_savestate)
         current_state = GAME_STATE.CHIP_REPLACE
+        should_redraw = 1
 
     elseif current_state == GAME_STATE.CHIP_REPLACE then
         --print("IN CHIP_REPLACE")
@@ -218,6 +371,7 @@ function state_logic.main_loop()
             if selected_chip_folder == 0 then
                 selected_chip_folder = 30
             end
+            should_redraw = 1
         end
 
         if input_handler.inputs_pressed["Right"] == true then
@@ -226,6 +380,7 @@ function state_logic.main_loop()
             if selected_chip_folder == 0 then
                 selected_chip_folder = 30
             end
+            should_redraw = 1
         end
 
         if input_handler.inputs_pressed["Up"] == true then
@@ -235,6 +390,7 @@ function state_logic.main_loop()
             if selected_chip_folder == 0 then
                 selected_chip_folder = 30
             end
+            should_redraw = 1
         end
 
         if input_handler.inputs_pressed["Down"] == true then
@@ -243,6 +399,7 @@ function state_logic.main_loop()
             if selected_chip_folder == 0 then
                 selected_chip_folder = 1
             end
+            should_redraw = 1
         end
 
         
@@ -251,10 +408,13 @@ function state_logic.main_loop()
         if input_handler.inputs_pressed["A"] == true then
             -- TODO: add chip to folder!
             print("A pressed")
-            print("Removed chip TODO for chip TODO!")
             
+
+            folder[selected_chip_folder] = selected_dropped_chip
+
             current_state = GAME_STATE.TRANSITION_TO_RUNNING
             client.unpause()
+            should_redraw = 1
         end
 
         if input_handler.inputs_pressed["B"] == true then
@@ -262,29 +422,33 @@ function state_logic.main_loop()
             print("B pressed")
             current_state = GAME_STATE.TRANSITION_TO_RUNNING
             client.unpause()
+            should_redraw = 1
         end
         --print(selected_chip_folder)
-        gui_rendering.render_folder(nil, selected_chip_folder)
-        
-        gui.DrawFinish()
+
+        if should_redraw == 1 then
+            gui_rendering.render_folder(folder, selected_chip_folder, selected_dropped_chip)
+            gui.DrawFinish()
+            should_redraw = 0
+        end
 
         
 
     elseif current_state == GAME_STATE.SELECT_BUFF then
-
+        
     elseif current_state == GAME_STATE.TRANSITION_TO_RUNNING then
 
         -- Patch folder with all new stuff.
-        state_logic.randomize_folder()
+        -- state_logic.randomize_folder()
         mmbn3_utils.patch_folder(folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM)
+        state_logic.update_printable_chip_names_in_folder()
+        state_logic.update_argb_chip_icons_in_folder()
         print("Patched folder!")
         current_state = GAME_STATE.RUNNING
 
     else -- Default state, should never happen
         current_state = GAME_STATE.RUNNING
     end
-    
-
 
     emu.yield()
 end

@@ -162,11 +162,6 @@ function mmbn3_utils.patch_entity_data(entities)
             mmbn3_utils.writeword(new_entity.HP_ADDRESS, masked_hp_and_element)
         end
 
-        -- Patch entity palette level (V1, V2, V3, Omega)
-        if new_entity.PALETTE_LEVEL ~= nil then
-            mmbn3_utils.writebyte(new_entity.HP_ADDRESS + ENTITY_PALETTE_DEFS.HP_ADDRESS_PALETTE_OFFSET, new_entity.PALETTE_LEVEL)
-        end
-
         -- Patch entity Name
         if new_entity.NAME_ADDRESS ~= nil then
             write_mmbn3_string(new_entity.NAME_ADDRESS, new_entity.NAME)

@@ -31,3 +31,12 @@ Add special code for Twins viruses, such that if they spawn, they are the only v
 
 Add code to reload the script with a button combination.
 
+Dump Chip names and descriptions. (Dump such that constant strings are defined for easy editing.
+Possibly also dump string length at the same time so we don't overwrite anything.
+    - This is all pretty unnecessary... I dumped chip name addresses, that's enough for now.
+
+Implement rendering of icons in folder.
+
+Implement Chip Patching of folder. Patch every time a chip is replaced.
+
+Implement Chip replacement logic.

@@ -26,9 +26,7 @@ local CHIP_CODE = {
     Y = 24,
     Z = 25,
     Asterisk = 26,
-    Star = 26,
-    ["*"] = 26,
-    
+
 }
 
 

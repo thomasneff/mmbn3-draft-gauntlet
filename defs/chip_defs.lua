@@ -7,7 +7,7 @@ local CHIP = {}
 local CHIP_TEMPLATE = {
 
     ID = CHIP_ID.Cannon, -- this is 2 bytes
-    CODE = CHIP_CODE.Star -- this is as well, but only uses 1 byte.
+    CODE = CHIP_CODE.Asterisk -- this is as well, but only uses 1 byte.
 
 
 }
