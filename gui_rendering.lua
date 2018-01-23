@@ -6,6 +6,7 @@ local CHIP_CODE = require "defs.chip_code_defs"
 
 
 local chip_image_background_path = "chip_image_background.png"
+local buff_image_background_path = "buff_background.png"
 
 function drawTextOutline(x_pos, y_pos, string, outline_color, color, background_color, font_size, font_family)
 
@@ -84,7 +85,7 @@ function gui_rendering.render_chip_selection(chip_list, selected_chip_index)
     local base_offset_y = 20
     local x_offset = base_offset_x
     local y_offset = base_offset_y
-
+    drawTextOutline(50, 0,  "Choose a BattleChip!", "black", "white", "transparent", 14, "Arial")
     for chip_idx = 1,num_chips do
 
 
@@ -92,6 +93,61 @@ function gui_rendering.render_chip_selection(chip_list, selected_chip_index)
         render_chip_with_background(chip_list[chip_idx], x_offset, y_offset, 64, 56, chip_idx == selected_chip_index)
 
         x_offset = x_offset + offset_per_chip_x
+
+    end
+
+
+end
+
+function render_buff(buff, x_offset, y_offset, is_selected)
+
+    -- Render green selection box
+    local bg_size_x = 230
+    local bg_size_y = 50
+
+    if is_selected == true then
+        gui.drawRectangle(x_offset - 5, y_offset - 3, bg_size_x + 9, bg_size_y + 5, nil, "green")
+    end
+
+    gui.drawImage(buff_image_background_path, x_offset, y_offset)
+    local name_offset_x = 14
+    local name_offset_y = 7
+    local desc_offset_x = 14
+    local desc_offset_y = 20
+    --print("BUFF: ", buff)
+    local buff_name = buff.NAME
+    local buff_description = buff.DESCRIPTION
+
+    drawTextOutline(name_offset_x + x_offset, name_offset_y + y_offset,  buff_name, "black", "white", "transparent", 10, "Arial")
+    drawTextOutline(desc_offset_x + x_offset, desc_offset_y + y_offset, buff_description, "black", "lightblue", "transparent", 10, "Arial")
+
+
+
+
+end
+
+
+
+function gui_rendering.render_buff_selection(buff_list, selected_buff_index)
+
+    -- Assume 3 buffs, draw them side by side.
+    local num_buffs = #buff_list
+    --print(buff_list)
+    local offset_per_buff_x = 0
+    local offset_per_buff_y = 53
+    local base_offset_x = 5
+    local base_offset_y = 3
+    local x_offset = base_offset_x
+    local y_offset = base_offset_y
+
+    for buff_idx = 1,num_buffs do
+
+
+        
+        render_buff(buff_list[buff_idx], x_offset, y_offset, buff_idx == selected_buff_index)
+
+        x_offset = x_offset + offset_per_buff_x
+        y_offset = y_offset + offset_per_buff_y
 
     end
 

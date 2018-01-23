@@ -2,6 +2,8 @@ local defs = require "defs.generic_defs"
 local ENTITY_KIND = require "defs.entity_kind_defs"
 local TEXT_TABLE = require "defs.text_table_defs"
 local ENTITY_PALETTE_DEFS = require "defs.entity_palette_defs"
+local CHIP_DATA_ADDRESS = require "defs.chip_data_address_defs"
+local CHIP_DATA = require "defs.chip_data_defs"
 local mmbn3_utils = {}
 
 -- This is a wrapper for BizHawk with VBA-Next that automatically selects the correct memory domain.
@@ -47,8 +49,23 @@ function mmbn3_utils.writedword(address, value)
 
 end
 
+function mmbn3_utils.change_megaman_current_hp(new_value)
+    local megaman_current_hp_address = 0x020018A0 -- This is the address before battle.
+    -- We need the address just before battle.
+    megaman_current_hp_address = 0x02037510
+    mmbn3_utils.writeword(megaman_current_hp_address, new_value)
+end
 
-function write_chip_to_address(address, chip)
+function mmbn3_utils.change_megaman_max_hp(new_value) 
+    local megaman_max_hp_address = 0x020018A2 -- This is the address before battle.
+    -- We need the address IN battle.
+    megaman_max_hp_address = 0x02037512
+    mmbn3_utils.writeword(megaman_max_hp_address, new_value)
+
+end
+
+
+function write_folder_chip_to_address(address, chip)
 
     mmbn3_utils.writeword(address, chip.ID)
     address = address + 2
@@ -60,6 +77,74 @@ function write_chip_to_address(address, chip)
 
 end
 
+function patch_chip_data(chip)
+
+    local chip_id = chip.ID
+    local chip_data_address = CHIP_DATA_ADDRESS.from_id(chip_id)
+    local chip_data = CHIP_DATA[chip_id]
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.CODE_1)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.CODE_2)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.CODE_3)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.CODE_4)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.CODE_5)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.CODE_6)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.ELEMENT)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.FAMILY)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.SUBLEVEL)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.LIBRARY_STARS)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.MB)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.ATTACK_TYPE)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writeword(chip_data_address, chip_data.DAMAGE)
+    chip_data_address = chip_data_address + 2
+
+    mmbn3_utils.writeword(chip_data_address, chip_data.LIBRARY_NUMBER)
+    chip_data_address = chip_data_address + 2
+
+    mmbn3_utils.writeword(chip_data_address, chip_data.UNKNOWN_STUFF)
+    chip_data_address = chip_data_address + 2
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.UNKNOWN_STUFF_2)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writebyte(chip_data_address, chip_data.CHIP_RANKING)
+    chip_data_address = chip_data_address + 1
+
+    mmbn3_utils.writedword(chip_data_address, chip_data.CHIP_ICON_OFFSET)
+    chip_data_address = chip_data_address + 4
+
+    mmbn3_utils.writedword(chip_data_address, chip_data.CHIP_PICTURE_OFFSET)
+    chip_data_address = chip_data_address + 4
+
+    mmbn3_utils.writedword(chip_data_address, chip_data.CHIP_PICTURE_PALETTE_OFFSET)
+    chip_data_address = chip_data_address + 4
+
+
+end
 
 -- This changes all chips for the given folder_address to the chips contained in "folder".
 function mmbn3_utils.patch_folder(folder, folder_address)
@@ -69,11 +154,17 @@ function mmbn3_utils.patch_folder(folder, folder_address)
 
     for chip_index = 1,folder_length do
 
-        working_address = write_chip_to_address(working_address, folder[chip_index])
+        working_address = write_folder_chip_to_address(working_address, folder[chip_index])
+
+        patch_chip_data(folder[chip_index])
 
     end
 
 end
+
+
+
+
 
 
 function mmbn3_utils.patch_battle(start_address, battle_data)
@@ -237,7 +328,6 @@ function mmbn3_utils.change_battle_pointer_data(pointer_table_address, new_data)
     patch_battle_pointer(pointer_table_address, new_data)
     patch_battle_pointer(pointer_table_address + defs.OFFSET_BETWEEN_POINTER_TABLES, new_data)
 end
-
 
 
 

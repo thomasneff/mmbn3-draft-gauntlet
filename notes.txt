@@ -111,3 +111,7 @@ At the point I'm doing it, manipulating the folder is already too late.
 At 080114B6, the first chip in the first folder is accessed.
 This is computed every frame during chip select? But that means that changing it should have an effect?
 And indeed, it does. So I'm doing it wrong.
+
+
+
+For HP changes, the RAM address used for "Current HP" is 0x020018A0, "Max HP" is at 0x020018A2

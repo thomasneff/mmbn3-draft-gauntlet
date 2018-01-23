@@ -1,0 +1,11 @@
+local BASE_OFFSET_FIRST_CHIP = 0x08011530
+local BYTES_PER_CHIP = 32
+
+CHIP_DATA_ADDRESS = {}
+
+function CHIP_DATA_ADDRESS.from_id(id)
+    return BASE_OFFSET_FIRST_CHIP + (id - 1) * BYTES_PER_CHIP
+end
+
+
+return CHIP_DATA_ADDRESS

@@ -40,3 +40,10 @@ Implement rendering of icons in folder.
 Implement Chip Patching of folder. Patch every time a chip is replaced.
 
 Implement Chip replacement logic.
+
+Automatically patch all chip data in folder when something is "upgraded". For now, we can just patch before every battle.
+
+Implement HP scaling over rounds.
+
+Implement Roguelike-style upgrades after each round. For that, make all variables part of state_logic, and each upgrade simply has a name, description and function that gets called upon selection.
+
