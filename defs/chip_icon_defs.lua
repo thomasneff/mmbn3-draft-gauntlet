@@ -50,13 +50,14 @@ CHIP_ICON_DEFS.CHIP_ICON_PIXEL_TO_AARRGGBB =
 
 
 
--- Notes: Each icon is rendered as 4 quadrants of 32 bytes, where each byte describes 2 pixels.
+-- Notes: Each icon is rendered as 4 tiles of 32 bytes, where each byte describes 2 pixels.
 --        The render order is top left, top right, bottom left, bottom right.
---        Each quadrant is stored row-wise.
-CHIP_ICON_DEFS.QUADRANTS_PER_CHIP = 4
-CHIP_ICON_DEFS.BYTES_PER_QUADRANT = 32
-CHIP_ICON_DEFS.BYTES_PER_QUADRANT_LINE = 4
-CHIP_ICON_DEFS.PIXELS_PER_QUADRANT_LINE = 8
+--        Each tile is stored row-wise.
+CHIP_ICON_DEFS.TILES_PER_CHIP = 4
+CHIP_ICON_DEFS.TILES_PER_DIMENSION = 2
+CHIP_ICON_DEFS.BYTES_PER_TILE = 32
+CHIP_ICON_DEFS.BYTES_PER_TILE_LINE = 4
+CHIP_ICON_DEFS.PIXELS_PER_TILE_LINE = 8
 CHIP_ICON_DEFS.WIDTH = 16
 CHIP_ICON_DEFS.HEIGHT = 16
 
@@ -72,131 +73,68 @@ function CHIP_ICON_DEFS.get_argb_2d_array_for_icon_address(icon_address)
         end
     end
 
-    -- Quadrant 1:
+    -- tile 1:
     local working_address = icon_address
     local working_address = working_address - 0x08000000
 
-    local current_x_index = 1
-    local current_y_index = 1
+    local current_x_offset = 0
+    local current_y_offset = 1
+    local byte_counter_per_line = 0
+    local x_index = 1
+    local y_index = 1
 
-    for byte_index = 1, CHIP_ICON_DEFS.BYTES_PER_QUADRANT do
+    for tile_y = 0, CHIP_ICON_DEFS.TILES_PER_DIMENSION - 1 do
 
-        local read_byte = memory.readbyte(working_address, "ROM")
-        working_address = working_address + 1
-        -- Dissect the byte into high/low. Low byte is always the first one, high byte the second one.
-        local color_palette_byte_1 = bit.band(read_byte, 0x0F)
-        local color_palette_byte_2 = bit.rshift(bit.band(read_byte, 0xF0), 4)
+        local tile_y_offset = tile_y * CHIP_ICON_DEFS.PIXELS_PER_TILE_LINE
 
-        argb_array[current_x_index][current_y_index] = CHIP_ICON_DEFS.CHIP_ICON_PIXEL_TO_AARRGGBB[color_palette_byte_1]
+        for tile_x = 0, CHIP_ICON_DEFS.TILES_PER_DIMENSION - 1 do
 
-        current_x_index = current_x_index + 1
+            local tile_x_offset = (tile_x * CHIP_ICON_DEFS.PIXELS_PER_TILE_LINE)
+            current_y_offset = 1
 
-        argb_array[current_x_index][current_y_index] = CHIP_ICON_DEFS.CHIP_ICON_PIXEL_TO_AARRGGBB[color_palette_byte_2]
+            for byte_index = 1, CHIP_ICON_DEFS.BYTES_PER_TILE do
 
-        current_x_index = current_x_index + 1
+                
 
-        if current_x_index > CHIP_ICON_DEFS.PIXELS_PER_QUADRANT_LINE then
-            current_x_index = 1
-            current_y_index = current_y_index + 1
+                local read_byte = memory.readbyte(working_address, "ROM")
+                working_address = working_address + 1
+                -- Dissect the byte into high/low. Low byte is always the first one, high byte the second one.
+                local color_palette_byte_1 = bit.band(read_byte, 0x0F)
+                local color_palette_byte_2 = bit.rshift(bit.band(read_byte, 0xF0), 4)
+                
+                current_x_offset = current_x_offset + 1
 
-        end
+                x_index = tile_x_offset + current_x_offset
+                y_index = tile_y_offset + current_y_offset
 
-    end
+                argb_array[x_index][y_index] = CHIP_ICON_DEFS.CHIP_ICON_PIXEL_TO_AARRGGBB[color_palette_byte_1]
 
-    local current_x_index = CHIP_ICON_DEFS.PIXELS_PER_QUADRANT_LINE + 1
-    local current_y_index = 1
+                current_x_offset = current_x_offset + 1
 
-    for byte_index = 1, CHIP_ICON_DEFS.BYTES_PER_QUADRANT do
-        
-        local read_byte = memory.readbyte(working_address, "ROM")
-        
-        working_address = working_address + 1
-        -- Dissect the byte into high/low. Low byte is always the first one, high byte the second one.
-        local color_palette_byte_1 = bit.band(read_byte, 0x0F)
-        local color_palette_byte_2 = bit.rshift(bit.band(read_byte, 0xF0), 4)
+                x_index = tile_x_offset + current_x_offset
+                y_index = tile_y_offset + current_y_offset
 
-        argb_array[current_x_index][current_y_index] = CHIP_ICON_DEFS.CHIP_ICON_PIXEL_TO_AARRGGBB[color_palette_byte_1]
+                argb_array[x_index][y_index] = CHIP_ICON_DEFS.CHIP_ICON_PIXEL_TO_AARRGGBB[color_palette_byte_2]
 
-        current_x_index = current_x_index + 1
 
-        argb_array[current_x_index][current_y_index] = CHIP_ICON_DEFS.CHIP_ICON_PIXEL_TO_AARRGGBB[color_palette_byte_2]
+                if current_x_offset >= CHIP_ICON_DEFS.PIXELS_PER_TILE_LINE then
 
-        current_x_index = current_x_index + 1
+                    current_x_offset = 0
+                    current_y_offset = current_y_offset + 1
 
-        if current_x_index > CHIP_ICON_DEFS.WIDTH then
-            current_x_index = CHIP_ICON_DEFS.PIXELS_PER_QUADRANT_LINE + 1
-            current_y_index = current_y_index + 1
+                end
 
-        end
 
-    end
+            end
 
-    local current_x_index = 1
-    local current_y_index = CHIP_ICON_DEFS.PIXELS_PER_QUADRANT_LINE + 1
+            
 
-    for byte_index = 1, CHIP_ICON_DEFS.BYTES_PER_QUADRANT do
 
-        local read_byte = memory.readbyte(working_address, "ROM")
-        
-        working_address = working_address + 1
-        -- Dissect the byte into high/low. Low byte is always the first one, high byte the second one.
-        local color_palette_byte_1 = bit.band(read_byte, 0x0F)
-        local color_palette_byte_2 = bit.rshift(bit.band(read_byte, 0xF0), 4)
-
-        argb_array[current_x_index][current_y_index] = CHIP_ICON_DEFS.CHIP_ICON_PIXEL_TO_AARRGGBB[color_palette_byte_1]
-
-        current_x_index = current_x_index + 1
-
-        argb_array[current_x_index][current_y_index] = CHIP_ICON_DEFS.CHIP_ICON_PIXEL_TO_AARRGGBB[color_palette_byte_2]
-
-        current_x_index = current_x_index + 1
-
-        if current_x_index > CHIP_ICON_DEFS.PIXELS_PER_QUADRANT_LINE then
-            current_x_index = 1
-            current_y_index = current_y_index + 1
 
         end
 
     end
 
-    
-    local current_x_index = CHIP_ICON_DEFS.PIXELS_PER_QUADRANT_LINE + 1
-    local current_y_index = CHIP_ICON_DEFS.PIXELS_PER_QUADRANT_LINE + 1
-
-    for byte_index = 1, CHIP_ICON_DEFS.BYTES_PER_QUADRANT do
-
-        local read_byte = memory.readbyte(working_address, "ROM")
-        --print(bizstring.hex(read_byte))
-        working_address = working_address + 1
-        -- Dissect the byte into high/low. Low byte is always the first one, high byte the second one.
-        local color_palette_byte_1 = bit.band(read_byte, 0x0F)
-        local color_palette_byte_2 = bit.rshift(bit.band(read_byte, 0xF0), 4)
-
-        argb_array[current_x_index][current_y_index] = CHIP_ICON_DEFS.CHIP_ICON_PIXEL_TO_AARRGGBB[color_palette_byte_1]
-
-        current_x_index = current_x_index + 1
-
-        argb_array[current_x_index][current_y_index] = CHIP_ICON_DEFS.CHIP_ICON_PIXEL_TO_AARRGGBB[color_palette_byte_2]
-
-        current_x_index = current_x_index + 1
-
-        if current_x_index > CHIP_ICON_DEFS.WIDTH then
-            current_x_index = CHIP_ICON_DEFS.PIXELS_PER_QUADRANT_LINE + 1
-            current_y_index = current_y_index + 1
-
-        end
-
-    end
-
-    for x = 1,16 do
-
-        for y = 1,16 do
-
-    --        print(x, y, " = ", argb_array[x][y])
-
-        end
-
-    end
     return argb_array
 
 end

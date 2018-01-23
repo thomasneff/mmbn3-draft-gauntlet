@@ -47,7 +47,8 @@ function render_chip_with_background(chip, x_offset, y_offset, width, height, is
 
     -- TODO: check if Normal/Mega/GigaChip
     
-    local chip_image = chip.ARGB_IMAGE
+    local chip_image = chip.ARGB_PICTURE
+    --print("CHIP IMAGE: ", chip_image)
     local chip_damage = tostring(CHIP_DATA[chip.ID].DAMAGE)
     local chip_print_name = chip.PRINT_NAME
     local bg_size_x = 80
@@ -58,11 +59,12 @@ function render_chip_with_background(chip, x_offset, y_offset, width, height, is
     end
     
     gui.drawImage(chip_image_background_path, x_offset, y_offset)
-    local offset_between_background_and_chip_x = 8
-    local offset_between_background_and_chip_y = 6
+    local offset_between_background_and_chip_x = 7
+    local offset_between_background_and_chip_y = 5
     if chip_image ~= nil then
        render_argb_2d_array(chip_image, x_offset + offset_between_background_and_chip_x , y_offset + offset_between_background_and_chip_y, width, height)
     end
+
 
 
     -- Render damage and print_name

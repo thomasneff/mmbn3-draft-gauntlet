@@ -15,6 +15,7 @@ local CHIP_ID = require "defs.chip_id_defs"
 local CHIP_CODE = require "defs.chip_code_defs"
 local CHIP_CODE_REVERSE = require "defs.chip_code_reverse_defs"
 local CHIP_ICON = require "defs.chip_icon_defs"
+local CHIP_PICTURE = require "defs.chip_picture_defs"
 local CHIP_DATA = require "defs.chip_data_defs"
 local BUFF_GENERATOR = require "buff_effects.buff_groups"
 local gauntlet_data = require "gauntlet_data"
@@ -156,6 +157,8 @@ function state_logic.determine_drops(number_of_drops)
     --TODO: for now, this just randomizes.
     state_logic.randomize_dropped_chips(number_of_drops)
 
+    state_logic.update_dropped_chips_pictures(state_logic.dropped_chips)
+
 end
 
 function state_logic.on_enter_battle()
@@ -199,6 +202,7 @@ function state_logic.randomize_dropped_chips(number_of_dropped_chips)
     for chip_idx = 1,number_of_dropped_chips do
 
         state_logic.dropped_chips[chip_idx] = CHIP.new_random_chip_with_random_code()
+        --state_logic.dropped_chips[chip_idx] = CHIP.new_chip_with_code(CHIP_ID.Mole1, 0)
 
     end
    
@@ -215,6 +219,19 @@ function state_logic.randomize_folder()
     end
    
     
+end
+
+
+function state_logic.update_dropped_chips_pictures(list_of_chips)
+
+    for chip_idx = 1,#list_of_chips do
+        local chip = list_of_chips[chip_idx]
+        local chip_address = CHIP_DATA[chip.ID].CHIP_PICTURE_OFFSET
+        local chip_palette_address = CHIP_DATA[chip.ID].CHIP_PICTURE_PALETTE_OFFSET
+        list_of_chips[chip_idx].ARGB_PICTURE = CHIP_PICTURE.get_argb_2d_array_for_image_address(chip_address, chip_palette_address)
+
+    end
+
 end
 
 function state_logic.get_printable_chip_name(chip)

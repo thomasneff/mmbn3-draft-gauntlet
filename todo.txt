@@ -1,7 +1,6 @@
 Entities. Add all the info from TREZ.
 
 
-
 Implement Chip drops.
 
 Implement better battle progression (split into easy, medium, hard viruses, with t1, t2, t3, t4, possibly t5)

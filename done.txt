@@ -49,3 +49,5 @@ Implement Roguelike-style upgrades after each round. For that, make all variable
 
 Find out battle clear offset, to load initial.State again after finishing 10 battles.
     - Found 0x08029398. This is executed when finishing a battle, therefore can be used to count battles.
+
+Implement Chip Picture rendering.
