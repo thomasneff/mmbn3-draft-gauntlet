@@ -10,6 +10,10 @@ Implement reasonable start folder randomization?
 
 
 
+Find out how to change number of chips in Cust Screen.
+Find out how to change cust gauge speed.
+
+
 Find out Boomer PanelGrab offset.
 Find out Swordy AreaGrab offset.
 Find out Pengi IceStage offset. <-- this should be easy, as I don't remember any other virus/navi using IceStage.

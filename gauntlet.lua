@@ -12,7 +12,7 @@ state_logic.initialize()
 --For some reason, BizHawk with VBA-Next requires an address that's 4 bytes larger. Whatever.
 event.onmemoryexecute(state_logic.on_enter_battle, GENERIC_DEFS.BATTLE_START_ADDRESS + 4)
 
-
+event.onmemoryexecute(state_logic.on_battle_end, GENERIC_DEFS.END_OF_GAUNTLET_BATTLE_ADDRESS)
 
 
 

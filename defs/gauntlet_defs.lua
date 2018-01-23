@@ -5,7 +5,7 @@ local GAUNTLET_DEFS = {
     MIN_NUMBER_OF_VIRUSES = 3,
     NUMBER_OF_VIRUSES_OVERRIDE = {},
     NON_VIRUS_ENTITY_CHANCE = 4, -- 4 % Chance of non-virus (e.g. RockCube) entities spawning.
-    HP_INCREASE_PER_ROUND = {100, 200, 400, 800},
+    HP_INCREASE_PER_ROUND = {0, 50, 100, 200},
     NUMBER_OF_DROPPED_BUFFS = 3,
     NUMBER_OF_DROPPED_CHIPS = 3,
 }

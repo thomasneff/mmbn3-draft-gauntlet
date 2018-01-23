@@ -30,12 +30,14 @@ local GAME_STATE = {
     TRANSITION_TO_BUFF_SELECT = 0x06,
     BUFF_SELECT = 0x07,
     WAIT_FOR_HP_PATCH = 0x08,
+    LOAD_INITIAL = 0x09,
 }
 local state_logic = {}
 
 
 state_logic.dropped_chips = {}
 state_logic.dropped_buffs = {}
+state_logic.initial_state = "initial.State"
 
 gauntlet_data.current_folder = {}
 gauntlet_data.mega_max_hp = 100
@@ -129,6 +131,14 @@ function state_logic.patch_next_battle()
 
 end
 
+local DEBUG = 0
+function state_logic.on_battle_end()
+
+    if state_logic.battle_pointer_index > GAUNTLET_DEFS.BATTLES_PER_ROUND then
+       state_logic.current_state = GAME_STATE.LOAD_INITIAL 
+    end  
+
+end
 
 function state_logic.determine_drops(number_of_drops)
 
@@ -169,6 +179,7 @@ function state_logic.on_next_round()
     
     --print ("BEFORE MEGA MAX INCREASE PER ROUND")
     gauntlet_data.mega_max_hp = gauntlet_data.mega_max_hp + GAUNTLET_DEFS.HP_INCREASE_PER_ROUND[state_logic.current_round]
+    gauntlet_data.hp_patch_required = 1
     --print(" MEGA MAX HP: ", gauntlet_data.mega_max_hp)
     --print ("BEFORE CHANGE MAX HP")
     
@@ -199,6 +210,7 @@ function state_logic.randomize_folder()
     for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
 
         gauntlet_data.current_folder[chip_idx] = CHIP.new_random_chip_with_random_code()
+        --gauntlet_data.current_folder[chip_idx] = CHIP.new_chip_with_code(0xFF, 0)
 
     end
    
@@ -263,8 +275,9 @@ function state_logic.initialize()
 
     math.randomseed(os.time())
 
-    savestate.load("initial.State")
+    savestate.load(state_logic.initial_state)
     gauntlet_data.mega_max_hp = 100
+    gauntlet_data.hp_patch_required = 0
     state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
     --state_logic.dropped_chip.ID = -1
     state_logic.dropped_chip.PRINT_NAME = state_logic.get_printable_chip_name(state_logic.dropped_chip)
@@ -311,6 +324,9 @@ end
 
 function state_logic.main_loop()
 
+    if DEBUG == 1 then
+        print ("DEBUG: STATE: ", state_logic.current_state)
+    end
     input_handler.handle_inputs()
 
 
@@ -534,16 +550,29 @@ function state_logic.main_loop()
 
     elseif state_logic.current_state == GAME_STATE.WAIT_FOR_HP_PATCH then
 
-        state_logic.hp_patch_frame_counter = state_logic.hp_patch_frame_counter + 1
-
-        -- We need to wait a few frames to patch the in-battle HP of megaman in RAM. Otherwise we would need a hook way before battle, which I don't want to find right now.
-        if state_logic.hp_patch_frame_counter > GENERIC_DEFS.FRAMES_BEFORE_HP_PATCH then
-            state_logic.hp_patch_frame_counter = 0
+        if gauntlet_data.hp_patch_required == 0 then
             state_logic.current_state = GAME_STATE.RUNNING
-            mmbn3_utils.change_megaman_max_hp(gauntlet_data.mega_max_hp) 
-            mmbn3_utils.change_megaman_current_hp(gauntlet_data.mega_max_hp) 
-            --print("PATCHED HP!")
+        else
+
+            state_logic.hp_patch_frame_counter = state_logic.hp_patch_frame_counter + 1
+
+            -- We need to wait a few frames to patch the in-battle HP of megaman in RAM. Otherwise we would need a hook way before battle, which I don't want to find right now.
+            if state_logic.hp_patch_frame_counter > GENERIC_DEFS.FRAMES_BEFORE_HP_PATCH then
+                state_logic.hp_patch_frame_counter = 0
+                state_logic.current_state = GAME_STATE.RUNNING
+                mmbn3_utils.change_megaman_max_hp(gauntlet_data.mega_max_hp) 
+                mmbn3_utils.change_megaman_current_hp(gauntlet_data.mega_max_hp) 
+                gauntlet_data.hp_patch_required = 0
+                --print("PATCHED HP!")
+            end
         end
+    elseif state_logic.current_state == GAME_STATE.LOAD_INITIAL then
+        -- Simply load initial state again if we beat all rounds.
+        savestate.load(state_logic.initial_state)
+        client.unpause()
+        state_logic.current_state = GAME_STATE.RUNNING
+    
+    
 
     else -- Default state, should never happen
         state_logic.current_state = GAME_STATE.RUNNING

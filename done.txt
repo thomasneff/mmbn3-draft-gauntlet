@@ -47,3 +47,5 @@ Implement HP scaling over rounds.
 
 Implement Roguelike-style upgrades after each round. For that, make all variables part of state_logic, and each upgrade simply has a name, description and function that gets called upon selection.
 
+Find out battle clear offset, to load initial.State again after finishing 10 battles.
+    - Found 0x08029398. This is executed when finishing a battle, therefore can be used to count battles.
