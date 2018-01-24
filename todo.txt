@@ -7,7 +7,7 @@ Entities. Add all the info from TREZ.
 
 
 
-Get all virus breeder viruses in the save game so the chips don't puff.
+
 
 Implement folder sorting in rendering. (Simply use start to toggle through Alpha/Code/ID/Damage)
 Render current folder chip in upper-right corner. (Possibly needs smaller chip BG)

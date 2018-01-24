@@ -69,4 +69,7 @@ BUG: Bolt picture was displayed with name GaiaBlade
     - The bug results from Punk missing from my CHIP IDs. (should be 0x110). Afterwards everything is screwed up until KingMan, where 0x117 is missing.
     - We need to dump the chip data again :(
 
-BUG: KingMan (V1) icon is the one from GaiaBlade
+    - BUG: KingMan (V1) icon is the one from GaiaBlade
+
+
+Get all virus breeder viruses in the save game so the chips don't puff.
