@@ -55,3 +55,18 @@ Implement Chip Picture rendering.
 Implement example buff ("Cannons do + 20 Damage"), to test chip patching of folder chips.
 
 Implement example buff nerfing specific kinds of viruses.
+
+BUG: soft-resetting doesn't reset all upgrades.
+SOLUTION: probably implement an "UNDO" for all buffs, store all activated buffs and undo them all upon soft reset.
+
+During battle, Bolt is fine. Therefore I think just the picture offsets might be messed up, since we don't patch those.
+However, it seems more like the name offsets for rendering (... PRINT_NAME?) might be wrong, since during game everything is fine,
+but during rendering, the names are wrong, but the icons are correct.
+BUG: Fountain picture was displayed with name Bolt
+BUG: Bolt picture was displayed with name GaiaBlade
+    - Has the correct picture + icon for Fountain, but wrong name. Damage and other stuff is also correct.
+    - During battle, the name is correct, so it's probably just the name offset, that's wrong, since we don't patch the names.
+    - The bug results from Punk missing from my CHIP IDs. (should be 0x110). Afterwards everything is screwed up until KingMan, where 0x117 is missing.
+    - We need to dump the chip data again :(
+
+BUG: KingMan (V1) icon is the one from GaiaBlade

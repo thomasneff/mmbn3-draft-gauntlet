@@ -32,10 +32,23 @@ local POSSIBLE_ENTITIES = {
 local HP_MULTIPLIER_PER_ROUND = {0.75, 0.75, 0.75, 0.75}
 
 function NERF_VIRUS_GROUP:activate(current_round)
-
+    self.old_hp_table = {}
     -- This is an example for how to modify virus data.
+    --print("ACTIVATE NERF")
     for key, entity in pairs(self.entity_family) do
+        self.old_hp_table[entity] = ENTITIES[entity].HP_BASE
         ENTITIES[entity].HP_BASE = math.floor(ENTITIES[entity].HP_BASE * HP_MULTIPLIER_PER_ROUND[current_round])
+        --print("NEW HP: ", ENTITIES[entity].HP_BASE)
+    end
+    
+end
+
+function NERF_VIRUS_GROUP:deactivate(current_round)
+
+    -- This is an example for how to unmodify virus data.
+    --print("DEACTIVATE NERF")
+    for key, entity in pairs(self.entity_family) do
+        ENTITIES[entity].HP_BASE = self.old_hp_table[entity]
         --print("NEW HP: ", ENTITIES[entity].HP_BASE)
     end
     

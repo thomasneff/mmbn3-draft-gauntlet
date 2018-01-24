@@ -16,6 +16,13 @@ function HP_INCREASE:activate(current_round)
 end
 
 
+function HP_INCREASE:deactivate(current_round)
+
+    gauntlet_data.mega_max_hp = gauntlet_data.mega_max_hp - HP_INCREASE_PER_ROUND[current_round]
+    gauntlet_data.hp_patch_required = 1
+
+end
+
 function HP_INCREASE:get_description(current_round)
 
     return "Increases HP by " .. tostring(HP_INCREASE_PER_ROUND[current_round])

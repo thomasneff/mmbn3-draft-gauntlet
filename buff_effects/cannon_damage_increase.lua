@@ -21,6 +21,19 @@ function CANNON_DAMAGE_INCREASE:activate(current_round)
     CHIP_DATA[CHIP_ID.ZCanon2].DAMAGE = CHIP_DATA[CHIP_ID.ZCanon2].DAMAGE + DAMAGE_INCREASE_PER_ROUND[current_round]
     CHIP_DATA[CHIP_ID.ZCanon3].DAMAGE = CHIP_DATA[CHIP_ID.ZCanon3].DAMAGE + DAMAGE_INCREASE_PER_ROUND[current_round]
 
+
+end
+
+function CANNON_DAMAGE_INCREASE:deactivate(current_round)
+
+    -- This is an example for how to modify chip data.
+    CHIP_DATA[CHIP_ID.Cannon].DAMAGE = CHIP_DATA[CHIP_ID.Cannon].DAMAGE - DAMAGE_INCREASE_PER_ROUND[current_round]
+    CHIP_DATA[CHIP_ID.HiCannon].DAMAGE = CHIP_DATA[CHIP_ID.HiCannon].DAMAGE - DAMAGE_INCREASE_PER_ROUND[current_round]
+    CHIP_DATA[CHIP_ID.MCannon].DAMAGE = CHIP_DATA[CHIP_ID.MCannon].DAMAGE - DAMAGE_INCREASE_PER_ROUND[current_round]
+    CHIP_DATA[CHIP_ID.ZCanon1].DAMAGE = CHIP_DATA[CHIP_ID.ZCanon1].DAMAGE - DAMAGE_INCREASE_PER_ROUND[current_round]
+    CHIP_DATA[CHIP_ID.ZCanon2].DAMAGE = CHIP_DATA[CHIP_ID.ZCanon2].DAMAGE - DAMAGE_INCREASE_PER_ROUND[current_round]
+    CHIP_DATA[CHIP_ID.ZCanon3].DAMAGE = CHIP_DATA[CHIP_ID.ZCanon3].DAMAGE - DAMAGE_INCREASE_PER_ROUND[current_round]
+
 end
 
 
@@ -30,6 +43,9 @@ function CANNON_DAMAGE_INCREASE:get_description(current_round)
 
 
 end
+
+
+
 
 function CANNON_DAMAGE_INCREASE.new()
 

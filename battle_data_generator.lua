@@ -179,7 +179,7 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind)
 
 
     end
-
+    --new_entity = deepcopy(ENTITIES.Canodumb2)
     print(new_entity.NAME)
     
     if is_twins_virus(new_entity) then

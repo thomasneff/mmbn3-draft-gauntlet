@@ -1,6 +1,6 @@
 local state_logic = require "state_logic"
 local GENERIC_DEFS = require "defs.generic_defs"
---local CHIP_DATA = require "defs.chip_data_defs"
+local CHIP_DATA = require "defs.chip_data_defs"
 
 
 -- Setup Callbacks for battle start to patch viruses

@@ -35,11 +35,11 @@ local GAME_STATE = {
 }
 local state_logic = {}
 
-
+state_logic.activated_buffs = {}
 state_logic.dropped_chips = {}
 state_logic.dropped_buffs = {}
 state_logic.initial_state = "initial.State"
-
+state_logic.number_of_activated_buffs = 0
 gauntlet_data.current_folder = {}
 gauntlet_data.mega_max_hp = 100
 
@@ -203,7 +203,7 @@ function state_logic.randomize_dropped_chips(number_of_dropped_chips)
     for chip_idx = 1,number_of_dropped_chips do
 
         state_logic.dropped_chips[chip_idx] = CHIP.new_random_chip_with_random_code()
-        --state_logic.dropped_chips[chip_idx] = CHIP.new_chip_with_code(CHIP_ID.Mole1, 0)
+        --state_logic.dropped_chips[chip_idx] = CHIP.new_chip_with_code(CHIP_ID.Bolt, 0)
 
     end
    
@@ -240,7 +240,7 @@ function state_logic.get_printable_chip_name(chip)
     if chip.ID == -1 then
         return ""
     end
-
+    
     local string_with_special_chars = CHIP_NAME[chip.ID] .. " " .. CHIP_CODE_REVERSE[chip.CODE]
 
     return CHIP_NAME_UTILS.replace_special_chars(string_with_special_chars)
@@ -288,12 +288,28 @@ function state_logic.update_buff_discriptions()
 
 end
 
+function state_logic.undo_activated_buffs()
+    
+    if state_logic.number_of_activated_buffs == 0 then
+        return
+    end
+
+    for i = state_logic.number_of_activated_buffs, 1 do
+        state_logic.activated_buffs[i]:deactivate(i)
+    end
+
+end
 
 function state_logic.initialize()
 
     math.randomseed(os.time())
 
     savestate.load(state_logic.initial_state)
+
+    -- Undo all activated buffs
+    state_logic.undo_activated_buffs()
+    state_logic.number_of_activated_buffs = 0
+    state_logic.activated_buffs = {}
     gauntlet_data.mega_max_hp = 100
     gauntlet_data.hp_patch_required = 0
     state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
@@ -331,6 +347,7 @@ function state_logic.check_reset()
         and input_handler.inputs_held["B"]
         and input_handler.inputs_held["L"]
         and input_handler.inputs_held["R"] then
+
 
         state_logic.initialize()
 
@@ -376,6 +393,8 @@ function state_logic.main_loop()
 
             for idx = 1,#state_logic.dropped_chips do
                 state_logic.dropped_chips[idx].PRINT_NAME = state_logic.get_printable_chip_name(state_logic.dropped_chips[idx])
+                print(bizstring.hex(state_logic.dropped_chips[idx].ID))
+                print(state_logic.dropped_chips[idx].PRINT_NAME)
             end
 
             
@@ -556,6 +575,10 @@ function state_logic.main_loop()
             
             local dropped_buff = state_logic.dropped_buffs[state_logic.dropped_buff_render_index]
             dropped_buff:activate(state_logic.current_round)
+            state_logic.number_of_activated_buffs = state_logic.number_of_activated_buffs + 1
+            state_logic.activated_buffs[state_logic.number_of_activated_buffs] = dropped_buff
+
+
             state_logic.current_state = GAME_STATE.TRANSITION_TO_CHIP_SELECT
             state_logic.should_redraw = 1
         end
