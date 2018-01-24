@@ -51,3 +51,7 @@ Find out battle clear offset, to load initial.State again after finishing 10 bat
     - Found 0x08029398. This is executed when finishing a battle, therefore can be used to count battles.
 
 Implement Chip Picture rendering.
+
+Implement example buff ("Cannons do + 20 Damage"), to test chip patching of folder chips.
+
+Implement example buff nerfing specific kinds of viruses.

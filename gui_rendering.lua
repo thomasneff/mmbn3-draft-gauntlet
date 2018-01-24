@@ -203,8 +203,8 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip)
     local new_chip_offset_x = 182
     local new_chip_offset_y = 80
 
-
-    if new_chip.PRINT_NAME ~= nil and new_chip.PRINT_NAME ~= "" then
+    --print(new_chip)
+    if new_chip.PRINT_NAME ~= nil and new_chip.PRINT_NAME ~= "" and new_chip.ID ~= -1 then
         -- Render icon.
         render_argb_2d_array(new_chip.ARGB_ICON, new_chip_offset_x, new_chip_offset_y - offset_per_row * 1 - CHIP_ICON.HEIGHT, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
         drawTextOutline(new_chip_offset_x, new_chip_offset_y - offset_per_row * 1,  "New Chip: ", "black", "green", "transparent", 9, "Arial")

@@ -1,6 +1,13 @@
 Entities. Add all the info from TREZ.
 
 
+
+
+Implement folder sorting in rendering. (Simply use start to toggle through Alpha/Code/ID/Damage)
+Render current folder chip in upper-right corner. (Possibly needs smaller chip BG)
+
+Possibly implement images for buffs? Would implement simply as chip_id and render a chip.
+
 Implement Chip drops.
 
 Implement better battle progression (split into easy, medium, hard viruses, with t1, t2, t3, t4, possibly t5)
@@ -27,15 +34,6 @@ Chip Data defs, index to Name, Chip Icon, Chip Image, address for codes, damage
 we automatically patch over it at the start with those values
 
 
-entity groups with customization:
-We need a rising difficulty curve inside each gauntlet as well. 
-Therefore we either need to bind the battle count min and max as well as the round to the virus, or create more complex entity groups ourselves
-maybe we should just get rid of the "round" and do entity groups for each fight, automatically assembled?
-
-
-Entities will contain flags for regular, miniboss, boss
-contain ranges for when they can appear (battle, no need for rounds)
-
 contain drop tables for chips, 
 map from chance to list of chips with codes?
 
@@ -49,11 +47,3 @@ ChipGenerator.GetChipWithSpecificCodeIfExists(CHIPS.ShockWav, CHIP_CODE.A) -- th
 95 = ChipGenerator.GetChipAsterisk(CHIPS.ShockWav)
 
 100 = ChipGenerator.GetChipListNonAsterisk(CHIPS.SonicWav)
-
-
-For drafting, we need to have state - during "DRAFT-STATE", we need to wait for and validate user-input (user needs to click on a chip, then replace one from the folder)
-For easier implementation, the replace screen contains a "throw away" button.
-
-Same system for choosing roguelike bonuses.
-Upon choosing a chip and the folder index to replace it with, we mod it into the folder and unpause until the next battle.
-
