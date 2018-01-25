@@ -31,6 +31,7 @@ SetIce: 02005787 <-- set to 0037
 SetMagma: 02005787 <-- set to 0038
 SetSand: 02005787 <-- set to 003A
 SetHoly: 02005787 <-- set to 0019
+
 AirShoes: 0x02005773
 FastGauge: 0x02005788
 UnderShirt: 0x02005798

@@ -2,6 +2,7 @@ local HP_INCREASE = require "buff_effects.hp_increase"
 local CANNON_DAMAGE_INCREASE = require "buff_effects.cannon_damage_increase"
 local NERF_VIRUS_GROUP = require "buff_effects.nerf_virus_group"
 local STYLE_CHANGE = require "buff_effects.style_change"
+local SET_STAGE = require "buff_effects.set_stage"
 local deepcopy = require "deepcopy"
 -- Similar to entity groups, we define which buffs can appear randomly.
 -- TODO: possibly add specific probabilities?
@@ -14,6 +15,7 @@ BUFF_GROUPS[1] = {
     CANNON_DAMAGE_INCREASE,
     NERF_VIRUS_GROUP,
     STYLE_CHANGE,
+    SET_STAGE,
 }
 
 BUFF_GROUPS[2] = {
@@ -21,6 +23,7 @@ BUFF_GROUPS[2] = {
     CANNON_DAMAGE_INCREASE,
     NERF_VIRUS_GROUP,
     STYLE_CHANGE,
+    SET_STAGE,
 }
 
 BUFF_GROUPS[3] = {
@@ -28,6 +31,7 @@ BUFF_GROUPS[3] = {
     CANNON_DAMAGE_INCREASE,
     NERF_VIRUS_GROUP,
     STYLE_CHANGE,
+    SET_STAGE,
 }
 
 BUFF_GROUPS[3] = {
@@ -35,6 +39,7 @@ BUFF_GROUPS[3] = {
     CANNON_DAMAGE_INCREASE,
     NERF_VIRUS_GROUP,
     STYLE_CHANGE,
+    SET_STAGE,
 }
 
 

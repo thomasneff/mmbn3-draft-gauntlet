@@ -68,6 +68,15 @@ function mmbn3_utils.change_megaman_style(new_style)
     local megaman_style_address = defs.STYLE_CHANGE_ADDRESS
     mmbn3_utils.writebyte(megaman_style_address, new_style)
 
+    -- REMOVEME: testing other navicust things
+    -- mmbn3_utils.writebyte(0x02005787, 0x19)
+
+end
+
+function mmbn3_utils.set_stage(value) 
+    local address = defs.SET_STAGE_ADDRESS
+    mmbn3_utils.writebyte(address, value)
+
 end
 
 function mmbn3_utils.change_number_of_cust_screen_chips(value) 

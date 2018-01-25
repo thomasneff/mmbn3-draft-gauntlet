@@ -316,6 +316,7 @@ function state_logic.initialize()
     state_logic.undo_activated_buffs()
     state_logic.number_of_activated_buffs = 0
     state_logic.activated_buffs = {}
+    gauntlet_data.stage = 0
     gauntlet_data.mega_max_hp = 100
     gauntlet_data.hp_patch_required = 0
     gauntlet_data.mega_style = 0x00
@@ -619,6 +620,7 @@ function state_logic.main_loop()
         state_logic.update_printable_chip_names_in_folder()
         state_logic.update_argb_chip_icons_in_folder()
         mmbn3_utils.change_megaman_style(gauntlet_data.mega_style)
+        mmbn3_utils.set_stage(gauntlet_data.stage) 
         --mmbn3_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
 
         --print("Patched folder!")

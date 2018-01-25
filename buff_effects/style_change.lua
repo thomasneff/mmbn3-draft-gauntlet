@@ -46,7 +46,7 @@ function STYLE_CHANGE.new()
 
     local new_style_change = deepcopy(STYLE_CHANGE)
     local new_style = deepcopy(STYLE_GENERATOR.random_style())
-    print("NEW NAME: ", new_style.NAME, "STYLE:", new_style.STYLE)
+
     new_style_change.STYLE = new_style.STYLE
     new_style_change.NAME = new_style.NAME .. "-Style"
     new_style_change.DESCRIPTION = new_style_change:get_description(1)
