@@ -111,6 +111,12 @@ function state_logic.patch_next_battle()
         --print("3")
         state_logic.next_round()
     end
+
+    --print("MOD: ", state_logic.current_round % GAUNTLET_DEFS.ROUNDS_PER_BUFF_DROP)
+    if (state_logic.current_battle - 1) % GAUNTLET_DEFS.ROUNDS_PER_BUFF_DROP == 0 then
+        state_logic.current_state = GAME_STATE.TRANSITION_TO_BUFF_SELECT
+    end
+
     -- print("5")
     
     -- print("7")
@@ -312,6 +318,7 @@ function state_logic.initialize()
     state_logic.activated_buffs = {}
     gauntlet_data.mega_max_hp = 100
     gauntlet_data.hp_patch_required = 0
+    gauntlet_data.mega_style = 0x00
     state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
     state_logic.dropped_chip.ID = -1
     state_logic.dropped_chip.PRINT_NAME = state_logic.get_printable_chip_name(state_logic.dropped_chip)
@@ -609,6 +616,8 @@ function state_logic.main_loop()
         state_logic.battle_pointer_index = state_logic.battle_pointer_index + 1
         state_logic.update_printable_chip_names_in_folder()
         state_logic.update_argb_chip_icons_in_folder()
+        mmbn3_utils.change_megaman_style(gauntlet_data.mega_style) 
+
         --print("Patched folder!")
         client.unpause()
         

@@ -73,3 +73,45 @@ BUG: Bolt picture was displayed with name GaiaBlade
 
 
 Get all virus breeder viruses in the save game so the chips don't puff.
+
+
+02001DCA sets style change after battle. we might be able to find out how this influences the style change RNG. Then we could manipulate it and just load a style-change savestate.
+
+at 08015CB2, current style (0x11 for ElecCust) is loaded into r0.
+at 08015B48,  after hitting "overwrite" for the style, it is written into the currently equipped modifier.
+at 08015B3A, the TYPE of the style might loaded from 0200F8DA (at least it's one part of the style)
+at 08015B3E, the ELEMENT of the style might be loaded from 0200F8DB
+at 08015B40, the final style code is written into r0.
+... Changing r0 here DOES change the style!
+Then r0 (the style code) is stored at 02001880 + 1 and 02001880 + 14
+STYLE OFFSETS before battle: 0x02001881, 0x02001894
+
+in transition, style is stored first to 0x0200F334
+then gets stored into 0x0203B39C
+
+Style: Style-equipped modifier is at 0x02001894. Need to fire up debugger to check what loads this and intercept.
+  - At 0x08047306, the Number of Chips is set for CustStyle.
+  - Name/Text for styles: 0x0871223C starts "ElecCust".
+  - Style change routine sets the following, maybe this is also the NaviCust routine?
+    - MegaChips: 5770 + 14
+    - GigaChips: 5770 + 15
+    - CustScreenChips: 5770 + 13
+    - ??? : 5770 + 26 (this is set to 1 for ElecCust)
+    - BusterAttack : 5770 + 8 (this is set to 0 for ElecCust)
+    - BusterWeaponLevel : 5770 + D (this is set to 1 for ElecCust)
+    - OilBody/AimFish/etc. : 5770 + 1B (this is set to FF for ElecCust)
+    - ??? : 5770 + 4 (this is set to 1 for ElecCust)
+    - CustScreenChips : 5770 + 13 (this is set to 7 for ElecCust)
+    - BusterSpeed : 5770 + 9 (this is set to 1 for ElecCust)
+    - BusterCharge : 5770 + A (this is set to 1 for ElecCust)
+    - BusterSpeed : 5770 + 9 (again..? this is set to 2 for ElecCust)
+  - It seems that 0803CB54 calls the NaviCust-RAM patch function at 0x08047340
+  - It seems that 0803CAFA calls some function 08047304 upon changing to ElecCust, at least 02005770 is already in r2 at that point.
+    - This might be the style initialization...? before calling it, it pushes hardcoded values of 0x04 into r0, 0x01 into r1. This is basically the fnuction that takes offset/value for navi cust stuff?
+
+Weapon Level is also stored in 02009740 + 4 = 02009744
+
+0x0200F334
+memory.writebyte(0x0000F334, 0x1C, "EWRAM") <-- with our current setup, this successfully changes the style if done in TRANSITION_TO_RUNNING.
+
+

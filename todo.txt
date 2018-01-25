@@ -4,15 +4,14 @@ Entities. Add all the info from TREZ.
 
 
 
-
-
-
+Remove all NaviCust programs from initial.State
 
 
 Implement folder sorting in rendering. (Simply use start to toggle through Alpha/Code/ID/Damage)
 Render current folder chip in upper-right corner. (Possibly needs smaller chip BG)
 
 Possibly implement images for buffs? Would implement simply as chip_id and render a chip.
+Possibly implement buff rarities? Normal, Mega, Giga?
 
 Implement Chip drops.
 
@@ -20,9 +19,35 @@ Implement better battle progression (split into easy, medium, hard viruses, with
 
 Implement reasonable start folder randomization?
 
+Implement other buffs related to NaviCust stuff.
 
+
+
+AirShoes: 0x02005773
+FastGauge: 0x02005788
+UnderShirt: 0x02005798
+SuperArmor: 0x02005771
+ShadowShoes: 0x02005772 <-- set to 0x01
+FloatShoes: 0x02005772 <-- set to 0x02
+BreakBuster: 0x02005776
+BreakCharge: 0x0200577E
+BlockWithL: 0x0200577F <-- set to 0x02
+ShieldWithL: 0x0200577F <-- set to 0x04
+ReflectWithL: 0x0200577F <-- set to 0x06
+DarkLicense: 0x02005790
+
+
+Implement buffs related to Buster.
+  - 0x02005778 is the offset for Buster Attack.
+  - 0x02005779 is the offset for Buster Speed.
+  - 0x0200577A is the offset for Buster Charge.
+  - 0x0200577D is the offset for Buster Weapon Level.
 
 Find out how to change number of chips in Cust Screen.
+  - 0x02005783 is the offset for number of chips before battle.
+  - 0x02006CAE is the offset for number of chips during battle.
+    - we should simply patch both.
+  - Implement example buff that implements this (e.g. All Mettaur-Virusses instantly kill you, but you start with +X custom chips)
 Find out how to change cust gauge speed.
 
 

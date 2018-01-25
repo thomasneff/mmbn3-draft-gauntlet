@@ -39,7 +39,7 @@ end
 
 function CANNON_DAMAGE_INCREASE:get_description(current_round)
 
-    return "Increases Damage of all Cannon-Type\nChips by " .. tostring(DAMAGE_INCREASE_PER_ROUND[current_round])
+    return "Increases Damage of all Cannon-Type\nChips by " .. tostring(DAMAGE_INCREASE_PER_ROUND[current_round]) .. "."
 
 
 end

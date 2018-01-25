@@ -4,6 +4,7 @@ local gauntlet_data = {}
 gauntlet_data.current_folder = {}
 gauntlet_data.mega_max_hp = 100
 gauntlet_data.hp_patch_required = 0
+gauntlet_data.mega_style = 0x00
 
 
 return gauntlet_data

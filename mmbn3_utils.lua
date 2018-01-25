@@ -50,18 +50,23 @@ function mmbn3_utils.writedword(address, value)
 end
 
 function mmbn3_utils.change_megaman_current_hp(new_value)
-    local megaman_current_hp_address = 0x020018A0 -- This is the address before battle.
+    --local megaman_current_hp_address = 0x020018A0 -- This is the address before battle.
     -- We need the address just before battle.
-    megaman_current_hp_address = 0x02037510
+    local megaman_current_hp_address = defs.MEGA_CURRENT_HP_ADDRESS
     mmbn3_utils.writeword(megaman_current_hp_address, new_value)
 end
 
 function mmbn3_utils.change_megaman_max_hp(new_value) 
-    local megaman_max_hp_address = 0x020018A2 -- This is the address before battle.
+    --local megaman_max_hp_address = 0x020018A2 -- This is the address before battle.
     -- We need the address IN battle.
-    megaman_max_hp_address = 0x02037512
+    local megaman_max_hp_address = defs.MEGA_MAX_HP_ADDRESS
     mmbn3_utils.writeword(megaman_max_hp_address, new_value)
 
+end
+
+function mmbn3_utils.change_megaman_style(new_style) 
+    local megaman_style_address = defs.STYLE_CHANGE_ADDRESS
+    mmbn3_utils.writebyte(megaman_style_address, new_style)
 end
 
 
