@@ -14,6 +14,12 @@ function STYLE_CHANGE:activate(current_round)
     self.old_style = gauntlet_data.mega_style
     gauntlet_data.mega_style = self.STYLE
 
+    if self.STYLE >= 0x11 and self.STYLE <= 0x14 then
+        gauntlet_data.cust_style_number_of_chips = 1
+    else
+        gauntlet_data.cust_style_number_of_chips = 0
+    end
+
 
 end
 
@@ -21,7 +27,8 @@ end
 function STYLE_CHANGE:deactivate(current_round)
 
     gauntlet_data.mega_style = self.old_style
-
+    gauntlet_data.cust_style_mp = 0
+    gauntlet_data.cust_style_number_of_chips = 0
 
 end
 

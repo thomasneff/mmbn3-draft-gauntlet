@@ -115,3 +115,8 @@ Weapon Level is also stored in 02009740 + 4 = 02009744
 memory.writebyte(0x0000F334, 0x1C, "EWRAM") <-- with our current setup, this successfully changes the style if done in TRANSITION_TO_RUNNING.
 
 
+
+Find out how to change number of chips in Cust Screen.
+  - 0x02005783 is the offset for number of chips before battle.
+  - 0x02006CAE is the offset for number of chips during battle.
+    - we should simply patch both.

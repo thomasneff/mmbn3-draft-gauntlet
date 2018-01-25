@@ -319,6 +319,8 @@ function state_logic.initialize()
     gauntlet_data.mega_max_hp = 100
     gauntlet_data.hp_patch_required = 0
     gauntlet_data.mega_style = 0x00
+    gauntlet_data.cust_style_number_of_chips = 0
+    gauntlet_data.cust_screen_number_of_chips = 5
     state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
     state_logic.dropped_chip.ID = -1
     state_logic.dropped_chip.PRINT_NAME = state_logic.get_printable_chip_name(state_logic.dropped_chip)
@@ -616,7 +618,8 @@ function state_logic.main_loop()
         state_logic.battle_pointer_index = state_logic.battle_pointer_index + 1
         state_logic.update_printable_chip_names_in_folder()
         state_logic.update_argb_chip_icons_in_folder()
-        mmbn3_utils.change_megaman_style(gauntlet_data.mega_style) 
+        mmbn3_utils.change_megaman_style(gauntlet_data.mega_style)
+        --mmbn3_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
 
         --print("Patched folder!")
         client.unpause()
@@ -638,6 +641,7 @@ function state_logic.main_loop()
                 mmbn3_utils.change_megaman_max_hp(gauntlet_data.mega_max_hp) 
                 mmbn3_utils.change_megaman_current_hp(gauntlet_data.mega_max_hp) 
                 gauntlet_data.hp_patch_required = 0
+                mmbn3_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
                 --print("PATCHED HP!")
             end
         end

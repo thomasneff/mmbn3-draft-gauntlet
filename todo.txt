@@ -2,7 +2,8 @@ Entities. Add all the info from TREZ.
 
 
 
-
+BugStyle RNG doesn't work.
+  - RNG seems to be at 02009730 (4 bytes) and possibly 02009800 (4 bytes)
 
 Remove all NaviCust programs from initial.State
 
@@ -22,7 +23,14 @@ Implement reasonable start folder randomization?
 Implement other buffs related to NaviCust stuff.
 
 
+All NaviCust programs can simply be patched in TRANSITION_TO_RUNNING
 
+SetMetal: 02005787 <-- set to 0035
+SetGreen: 02005787 <-- set to 0036
+SetIce: 02005787 <-- set to 0037
+SetMagma: 02005787 <-- set to 0038
+SetSand: 02005787 <-- set to 003A
+SetHoly: 02005787 <-- set to 0019
 AirShoes: 0x02005773
 FastGauge: 0x02005788
 UnderShirt: 0x02005798
@@ -43,11 +51,8 @@ Implement buffs related to Buster.
   - 0x0200577A is the offset for Buster Charge.
   - 0x0200577D is the offset for Buster Weapon Level.
 
-Find out how to change number of chips in Cust Screen.
-  - 0x02005783 is the offset for number of chips before battle.
-  - 0x02006CAE is the offset for number of chips during battle.
-    - we should simply patch both.
-  - Implement example buff that implements this (e.g. All Mettaur-Virusses instantly kill you, but you start with +X custom chips)
+
+Implement example buff that implements custom + (e.g. All Mettaur-Virusses instantly kill you, but you start with +X custom chips)
 Find out how to change cust gauge speed.
 
 

@@ -67,6 +67,17 @@ end
 function mmbn3_utils.change_megaman_style(new_style) 
     local megaman_style_address = defs.STYLE_CHANGE_ADDRESS
     mmbn3_utils.writebyte(megaman_style_address, new_style)
+
+end
+
+function mmbn3_utils.change_number_of_cust_screen_chips(value) 
+    local address = defs.NUMBER_OF_CUST_CHIPS_ADDRESS
+    --value = 0xF
+    --print("CUST SCCREENCHIPS: ", value)
+    mmbn3_utils.writebyte(address, value)
+
+    
+    
 end
 
 
