@@ -25,7 +25,7 @@ end
 
 function HP_INCREASE:get_description(current_round)
 
-    return "Increases HP by " .. tostring(HP_INCREASE_PER_ROUND[current_round]) .. "."
+    return "Increases HP by " .. tostring(HP_INCREASE_PER_ROUND[current_round]) .. "!"
 
 
 end

@@ -370,6 +370,14 @@ function state_logic.initialize()
     gauntlet_data.hp_patch_required = 0
     gauntlet_data.folder_shuffle_state = 0
     gauntlet_data.mega_style = 0x00
+    gauntlet_data.mega_AirShoes = 0
+    gauntlet_data.mega_FastGauge = 0
+    gauntlet_data.mega_UnderShirt = 0
+    gauntlet_data.mega_SuperArmor = 0
+    gauntlet_data.mega_AttackPlus = 0
+    gauntlet_data.mega_ChargePlus = 0
+    gauntlet_data.mega_SpeedPlus = 0
+    gauntlet_data.mega_WeaponLevelPlus = 1
     gauntlet_data.cust_style_number_of_chips = 0
     gauntlet_data.cust_screen_number_of_chips = 5
     state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
@@ -414,6 +422,42 @@ function state_logic.check_reset()
 
 
     end
+
+end
+
+
+function state_logic.patch_before_battle_start()
+
+    -- Patch folder with all new stuff.
+    -- state_logic.randomize_folder()
+    mmbn3_utils.patch_folder(gauntlet_data.current_folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM)
+        
+    local new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle)
+
+    -- This is used to determine drops.
+    state_logic.battle_data[state_logic.current_battle] = new_battle_data
+
+
+    mmbn3_utils.patch_battle(GAUNTLET_BATTLE_POINTERS[state_logic.battle_pointer_index], new_battle_data)
+    mmbn3_utils.patch_entity_data(state_logic.battle_data[state_logic.current_battle].ENTITIES)
+    state_logic.current_battle = state_logic.current_battle + 1
+    state_logic.battle_pointer_index = state_logic.battle_pointer_index + 1
+    state_logic.update_printable_chip_names_in_folder()
+    state_logic.update_argb_chip_icons_in_folder()
+    
+    mmbn3_utils.set_stage(gauntlet_data.stage) 
+    
+    mmbn3_utils.writebyte(0x02005773, gauntlet_data.mega_AirShoes)
+    mmbn3_utils.writebyte(0x02005788, gauntlet_data.mega_FastGauge)
+    mmbn3_utils.writebyte(0x02005798, gauntlet_data.mega_UnderShirt)
+    mmbn3_utils.writebyte(0x02005771, gauntlet_data.mega_SuperArmor)
+    mmbn3_utils.writebyte(0x02005778, gauntlet_data.mega_AttackPlus)
+    mmbn3_utils.writebyte(0x0200577A, gauntlet_data.mega_ChargePlus)
+    mmbn3_utils.writebyte(0x02005779, gauntlet_data.mega_SpeedPlus)
+    mmbn3_utils.writebyte(0x0200577D, gauntlet_data.mega_WeaponLevelPlus)
+
+
+
 
 end
 
@@ -660,26 +704,9 @@ function state_logic.main_loop()
         
     elseif state_logic.current_state == GAME_STATE.TRANSITION_TO_RUNNING then
 
-        -- Patch folder with all new stuff.
-        -- state_logic.randomize_folder()
-        mmbn3_utils.patch_folder(gauntlet_data.current_folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM)
-        
-        local new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle)
-
-        -- This is used to determine drops.
-        state_logic.battle_data[state_logic.current_battle] = new_battle_data
-
-
-        mmbn3_utils.patch_battle(GAUNTLET_BATTLE_POINTERS[state_logic.battle_pointer_index], new_battle_data)
-        mmbn3_utils.patch_entity_data(state_logic.battle_data[state_logic.current_battle].ENTITIES)
-        state_logic.current_battle = state_logic.current_battle + 1
-        state_logic.battle_pointer_index = state_logic.battle_pointer_index + 1
-        state_logic.update_printable_chip_names_in_folder()
-        state_logic.update_argb_chip_icons_in_folder()
-        mmbn3_utils.change_megaman_style(gauntlet_data.mega_style)
-        mmbn3_utils.set_stage(gauntlet_data.stage) 
+        state_logic.patch_before_battle_start()
         --mmbn3_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
-
+        mmbn3_utils.change_megaman_style(gauntlet_data.mega_style)
         --print("Patched folder!")
         client.unpause()
         

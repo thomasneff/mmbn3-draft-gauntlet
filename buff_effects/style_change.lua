@@ -20,6 +20,10 @@ function STYLE_CHANGE:activate(current_round)
         gauntlet_data.cust_style_number_of_chips = 0
     end
 
+    if self.STYLE >= 0x31 and self.STYLE <= 0x34 then
+        gauntlet_data.mega_WeaponLevelPlus = 0
+    end
+
 
 end
 

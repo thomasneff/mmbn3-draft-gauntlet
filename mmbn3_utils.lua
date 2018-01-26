@@ -66,7 +66,13 @@ end
 
 function mmbn3_utils.change_megaman_style(new_style) 
     local megaman_style_address = defs.STYLE_CHANGE_ADDRESS
+    megaman_style_address = 0x02001881
     mmbn3_utils.writebyte(megaman_style_address, new_style)
+    mmbn3_utils.writebyte(0x02001881, new_style)
+    mmbn3_utils.writebyte(0x02001894, new_style)
+    mmbn3_utils.writebyte(0x0203B39C, new_style)
+
+    print("PATCHED MEGAMAN STYLE: ", bizstring.hex(new_style))
 
     -- REMOVEME: testing other navicust things
     -- mmbn3_utils.writebyte(0x02005787, 0x19)

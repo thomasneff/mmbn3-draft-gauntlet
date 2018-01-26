@@ -133,3 +133,17 @@ SetMagma: 02005787 <-- set to 0038
 SetSand: 02005787 <-- set to 003A
 SetHoly: 02005787 <-- set to 0019
 
+
+
+Implement buffs related to Buster.
+  - 0x02005778 is the offset for Buster Attack.
+  - 0x02005779 is the offset for Buster Speed.
+  - 0x0200577A is the offset for Buster Charge.
+  - 0x0200577D is the offset for Buster Weapon Level.
+
+
+
+AirShoes: 0x02005773
+FastGauge: 0x02005788
+UnderShirt: 0x02005798
+SuperArmor: 0x02005771

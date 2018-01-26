@@ -932,8 +932,8 @@ ENTITIES.Shadow.AI_BYTES[0x02]              = 0x32                              
 ENTITIES.Shadow.AI_BYTES[0x17DF0]           = 0x28                              -- Delay before sword 1-2. This is shared with other Shadow viruses in the same battle.
 ENTITIES.Shadow.AI_BYTES[0x17E1E]           = 0x0C                              -- Vertical attack duration (0x0C == 1 panel, 0x18 == 2 panels). This is shared with other Shadow viruses in the same battle.
 ENTITIES.Shadow.AI_BYTES[0x17D24]           = 0x1E                              -- Delay before axe. This is shared with other Shadow viruses in the same battle.
-ENTITIES.Shadow.BATTLE_NUMBERS              = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
-
+--ENTITIES.Shadow.BATTLE_NUMBERS              = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+--TODO: find some way to intelligently implement Shadow viruses early
 ENTITIES.RedDevil                           = new_base_entity(ENTITY_KIND.Virus, "RedDevil")
 ENTITIES.RedDevil.NAME                      = "RedDevil"
 ENTITIES.RedDevil.HP_BASE                   = 170
@@ -945,8 +945,8 @@ ENTITIES.RedDevil.AI_BYTES[0x02]            = 0x64                              
 ENTITIES.RedDevil.AI_BYTES[0x17DED]         = 0x28                              -- Delay before sword 1-2. This is shared with other RedDevil viruses in the same battle.
 ENTITIES.RedDevil.AI_BYTES[0x17E1B]         = 0x0C                              -- Vertical attack duration (0x0C == 1 panel, 0x18 == 2 panels). This is shared with other RedDevil viruses in the same battle.
 ENTITIES.RedDevil.AI_BYTES[0x17D21]         = 0x1E                              -- Delay before axe. This is shared with other RedDevil viruses in the same battle.
-ENTITIES.RedDevil.BATTLE_NUMBERS            = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
-
+--ENTITIES.RedDevil.BATTLE_NUMBERS            = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+--TODO: find some way to intelligently implement Shadow viruses early
 ENTITIES.BlueDemon                          = new_base_entity(ENTITY_KIND.Virus, "BlueDemon")
 ENTITIES.BlueDemon.NAME                     = "BlueDemon"
 ENTITIES.BlueDemon.HP_BASE                  = 210
