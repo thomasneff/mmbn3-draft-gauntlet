@@ -120,3 +120,16 @@ Find out how to change number of chips in Cust Screen.
   - 0x02005783 is the offset for number of chips before battle.
   - 0x02006CAE is the offset for number of chips during battle.
     - we should simply patch both.
+
+Implement folder sorting in rendering. (Simply use start to toggle through Alpha/Code/ID/Damage)
+
+
+For stages, try out the other values as well.
+
+SetMetal: 02005787 <-- set to 0035
+SetGreen: 02005787 <-- set to 0036
+SetIce: 02005787 <-- set to 0037
+SetMagma: 02005787 <-- set to 0038
+SetSand: 02005787 <-- set to 003A
+SetHoly: 02005787 <-- set to 0019
+

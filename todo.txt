@@ -1,6 +1,11 @@
 Entities. Add all the info from TREZ.
 
 
+Implement reasonable start folder randomization?
+  - For now, it randomizes based on Library stars...
+Implement random drops according to Library Stars, 80% Chance of current tier, 10% chance of higher, 10% chance of lower
+  - This is just temporary, until curated drops are implemented. Might keep it as an option though, as it could be fun.
+
 
 BugStyle RNG doesn't work.
   - RNG seems to be at 02009730 (4 bytes) and possibly 02009800 (4 bytes)
@@ -8,29 +13,23 @@ BugStyle RNG doesn't work.
 Remove all NaviCust programs from initial.State
 
 
-Implement folder sorting in rendering. (Simply use start to toggle through Alpha/Code/ID/Damage)
+
 Render current folder chip in upper-right corner. (Possibly needs smaller chip BG)
 
 Possibly implement images for buffs? Would implement simply as chip_id and render a chip.
 Possibly implement buff rarities? Normal, Mega, Giga?
 
-Implement Chip drops.
+
 
 Implement better battle progression (split into easy, medium, hard viruses, with t1, t2, t3, t4, possibly t5)
 
-Implement reasonable start folder randomization?
+
 
 Implement other buffs related to NaviCust stuff.
 
 
 All NaviCust programs can simply be patched in TRANSITION_TO_RUNNING
 
-SetMetal: 02005787 <-- set to 0035
-SetGreen: 02005787 <-- set to 0036
-SetIce: 02005787 <-- set to 0037
-SetMagma: 02005787 <-- set to 0038
-SetSand: 02005787 <-- set to 003A
-SetHoly: 02005787 <-- set to 0019
 
 AirShoes: 0x02005773
 FastGauge: 0x02005788

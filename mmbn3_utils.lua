@@ -171,17 +171,33 @@ function patch_chip_data(chip)
 
 end
 
+
+function shuffle(tbl)
+    size = #tbl
+    for i = size, 1, -1 do
+      local rand = math.random(size)
+      tbl[i], tbl[rand] = tbl[rand], tbl[i]
+    end
+    return tbl
+  end
+
 -- This changes all chips for the given folder_address to the chips contained in "folder".
 function mmbn3_utils.patch_folder(folder, folder_address)
+
+
+
 
     local folder_length = #folder
     local working_address = folder_address
 
+    -- We shuffle before patching to prevent issues with fixed RNG due to loading from the same savestate.
+    local shuffled_folder = shuffle(folder)
+
     for chip_index = 1,folder_length do
 
-        working_address = write_folder_chip_to_address(working_address, folder[chip_index])
+        working_address = write_folder_chip_to_address(working_address, shuffled_folder[chip_index])
 
-        patch_chip_data(folder[chip_index])
+        patch_chip_data(shuffled_folder[chip_index])
 
     end
 

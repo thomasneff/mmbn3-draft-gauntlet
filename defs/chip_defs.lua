@@ -1,7 +1,7 @@
 local CHIP_CODE = require "defs.chip_code_defs"
 local CHIP_ID = require "defs.chip_id_defs"
 local deepcopy = require "deepcopy"
-
+local randomchoice = require "randomchoice"
 local CHIP = {}
 
 local CHIP_TEMPLATE = {
@@ -11,16 +11,6 @@ local CHIP_TEMPLATE = {
 
 
 }
-
-function randomchoice(t) --Selects a random item from a table
-    local keys = {}
-    for key, value in pairs(t) do
-        keys[#keys+1] = key --Store keys in another table
-    end
-    
-    index = keys[math.random(1, #keys)]
-    return t[index]
-end
 
 function CHIP.new_chip_with_code(chip_id, chip_code)
 
@@ -37,7 +27,6 @@ end
 function CHIP.new_chip_with_random_code_from_list(chip_id, chip_codes)
 
     new_chip = deepcopy(CHIP_TEMPLATE)
-
     new_chip.CODE = randomchoice(chip_codes)--chip_codes[math.random(#chip_codes)]
     new_chip.ID = chip_id
 

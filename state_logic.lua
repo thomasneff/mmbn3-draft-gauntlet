@@ -17,7 +17,9 @@ local CHIP_CODE_REVERSE = require "defs.chip_code_reverse_defs"
 local CHIP_ICON = require "defs.chip_icon_defs"
 local CHIP_PICTURE = require "defs.chip_picture_defs"
 local CHIP_DATA = require "defs.chip_data_defs"
+local CHIP_DROP_UTILS = require "defs.chip_drop_utils"
 local BUFF_GENERATOR = require "buff_effects.buff_groups"
+local START_FOLDER = require "defs.start_folder_defs"
 local gauntlet_data = require "gauntlet_data"
 
 -- TODO: possibly add more states.
@@ -153,7 +155,8 @@ function state_logic.determine_drops(number_of_drops)
 
         -- TODO: determine drops from state_logic.battle_data[state_logic.current_battle].ENTITIES entity droptables.
         --TODO: for now, this just randomizes.
-        state_logic.randomize_dropped_chips(number_of_drops)
+        --state_logic.randomize_dropped_chips(number_of_drops)
+        state_logic.dropped_chips = CHIP_DROP_UTILS.dropped_chips_from_battle(state_logic.battle_data[state_logic.current_battle - 1], state_logic.current_round, number_of_drops)
 
         state_logic.update_dropped_chips_pictures(state_logic.dropped_chips)
         
@@ -229,6 +232,17 @@ function state_logic.randomize_folder()
 end
 
 
+
+function state_logic.initialize_folder()
+
+    gauntlet_data.current_folder = {}
+
+    gauntlet_data.current_folder = START_FOLDER.get_random(nil)
+
+    
+end
+
+
 function state_logic.update_dropped_chips_pictures(list_of_chips)
 
     for chip_idx = 1,#list_of_chips do
@@ -246,7 +260,7 @@ function state_logic.get_printable_chip_name(chip)
     if chip.ID == -1 then
         return ""
     end
-    
+
     local string_with_special_chars = CHIP_NAME[chip.ID] .. " " .. CHIP_CODE_REVERSE[chip.CODE]
 
     return CHIP_NAME_UTILS.replace_special_chars(string_with_special_chars)
@@ -306,6 +320,41 @@ function state_logic.undo_activated_buffs()
 
 end
 
+function state_logic.shuffle_folder()
+    -- This shuffles the folder according to the currently chosen sorting mode
+
+    if gauntlet_data.folder_shuffle_state == 0 then
+        -- Alphabetically
+        table.sort(gauntlet_data.current_folder, function(a, b)
+            return CHIP_NAME[a.ID] < CHIP_NAME[b.ID]
+          end)
+
+    elseif gauntlet_data.folder_shuffle_state == 1 then
+        -- Code
+        table.sort(gauntlet_data.current_folder, function(a, b)
+            return a.CODE < b.CODE
+          end)
+
+    elseif gauntlet_data.folder_shuffle_state == 2 then
+        -- ID
+        table.sort(gauntlet_data.current_folder, function(a, b)
+            return a.ID < b.ID
+          end)
+
+    elseif gauntlet_data.folder_shuffle_state == 3 then
+        -- Damage
+        table.sort(gauntlet_data.current_folder, function(a, b)
+            return CHIP_DATA[a.ID].DAMAGE < CHIP_DATA[b.ID].DAMAGE 
+          end)
+    end
+
+    gauntlet_data.folder_shuffle_state = (gauntlet_data.folder_shuffle_state + 1) % 4
+    
+
+end
+
+
+
 function state_logic.initialize()
 
     math.randomseed(os.time())
@@ -319,6 +368,7 @@ function state_logic.initialize()
     gauntlet_data.stage = 0
     gauntlet_data.mega_max_hp = 100
     gauntlet_data.hp_patch_required = 0
+    gauntlet_data.folder_shuffle_state = 0
     gauntlet_data.mega_style = 0x00
     gauntlet_data.cust_style_number_of_chips = 0
     gauntlet_data.cust_screen_number_of_chips = 5
@@ -336,7 +386,7 @@ function state_logic.initialize()
     state_logic.reset_selected_chips()
 
 
-    state_logic.randomize_folder()
+    state_logic.initialize_folder()
     state_logic.update_printable_chip_names_in_folder()
     state_logic.update_argb_chip_icons_in_folder()
     
@@ -477,6 +527,13 @@ function state_logic.main_loop()
         
         local num_chips_per_col = 15
         local num_chips_per_folder = 30
+
+        if input_handler.inputs_pressed["Start"] == true then
+            -- Shuffle folder according to Alpha/Code/ID/Attack
+            state_logic.shuffle_folder()
+            state_logic.should_redraw = 1
+        end
+
         --print (input_handler.inputs_pressed["A"])
         if input_handler.inputs_pressed["Left"] == true then
             state_logic.folder_chip_render_index = (state_logic.folder_chip_render_index - num_chips_per_col) % (num_chips_per_folder)

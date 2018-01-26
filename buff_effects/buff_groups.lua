@@ -4,6 +4,7 @@ local NERF_VIRUS_GROUP = require "buff_effects.nerf_virus_group"
 local STYLE_CHANGE = require "buff_effects.style_change"
 local SET_STAGE = require "buff_effects.set_stage"
 local deepcopy = require "deepcopy"
+local randomchoice = require "randomchoice"
 -- Similar to entity groups, we define which buffs can appear randomly.
 -- TODO: possibly add specific probabilities?
 local BUFF_GROUPS = {
@@ -44,15 +45,6 @@ BUFF_GROUPS[3] = {
 
 
 local buff_generator = {}
-function randomchoice(t) --Selects a random item from a table
-    local keys = {}
-    for key, value in pairs(t) do
-        keys[#keys+1] = key --Store keys in another table
-    end
-    
-    index = keys[math.random(1, #keys)]
-    return t[index]
-end
 
 function buff_generator.random_buffs_from_round(current_round, number_of_buffs)
 

@@ -1,3 +1,5 @@
+local randomchoice = require "randomchoice"
+
 -- NOTHING = 0x00
 local STYLE_DEFS = {
     ELEC_GUTS   = 0x09,
@@ -62,15 +64,6 @@ local STYLE_NAMES = {
 
 local STYLE_DEFS_GENERATOR = {}
 
-function randomchoice(t) --Selects a random item from a table
-    local keys = {}
-    for key, value in pairs(t) do
-        keys[#keys+1] = key --Store keys in another table
-    end
-    
-    index = keys[math.random(1, #keys)]
-    return t[index]
-end
 
 function STYLE_DEFS_GENERATOR.random_style()
     local new_style = {}

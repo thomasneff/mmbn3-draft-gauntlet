@@ -48,6 +48,7 @@ function new_base_entity(entity_kind, entity_id)
     new_base_entity.AI_ADDRESS = ENTITY_AI_ADDRESS[entity_id]
 
     new_base_entity.ELEMENT = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+    new_base_entity.ID      = entity_id
 
     return new_base_entity
 end
