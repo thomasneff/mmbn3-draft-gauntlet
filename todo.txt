@@ -1,5 +1,10 @@
 Entities. Add all the info from TREZ.
 
+Special drops for Miniboss/Bosses? Drop tables are already implemented, would only need to be defined.
+
+
+
+
 Test if all buffs and patching still works. Look at HP, Custom+, all other NaviCust things, styles...
 
 BUG/Intentional? Picking an HP buff in round 5 restores HP. Could be a nice intended strategy?

@@ -291,7 +291,7 @@ function mmbn3_utils.patch_entity_data(entities)
         end
     
         -- Patch entity HP and Element, since they both use the same word.
-        if new_entity.HP_ADDRESS ~= nil then
+        if new_entity.HP_ADDRESS ~= nil and new_entity.HP_BASE ~= nil then
 
             -- We don't need bitwise ops here if we just do an if.
             local masked_hp = new_entity.HP_BASE
@@ -306,7 +306,7 @@ function mmbn3_utils.patch_entity_data(entities)
         end
 
         -- Patch entity Name
-        if new_entity.NAME_ADDRESS ~= nil then
+        if new_entity.NAME_ADDRESS ~= nil and new_entity.NAME ~= nil then
             write_mmbn3_string(new_entity.NAME_ADDRESS, new_entity.NAME)
         end
 

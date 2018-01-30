@@ -100,6 +100,19 @@ for i = 1,10 do
     
 end
 
+local TIER_1_MINIBOSS_BATTLES = {5}
+local TIER_2_MINIBOSS_BATTLES = {15}
+local TIER_3_MINIBOSS_BATTLES = {25}
+local TIER_4_MINIBOSS_BATTLES = {35}
+--local TIER_5_MINIBOSS_BATTLES = {5}
+
+local TIER_1_BOSS_BATTLES = {10}
+local TIER_2_BOSS_BATTLES = {20}
+local TIER_3_BOSS_BATTLES = {30}
+local TIER_4_BOSS_BATTLES = {40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50}
+
+
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Non-Virus Entities --
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2345,6 +2358,409 @@ ENTITIES.BoomerOmega.AI_BYTES[0x05]         = 0x08                              
 ENTITIES.BoomerOmega.AI_BYTES[0x06]         = 0x00                              -- Not read.
 ENTITIES.BoomerOmega.AI_BYTES[0x07]         = 0x00                              -- Not read.
 ENTITIES.BoomerOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Navis --
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Flashman                           = new_base_entity(ENTITY_KIND.Virus, "Flashman")
+ENTITIES.Flashman.NAME                      = "Flashman"
+ENTITIES.Flashman.HP_BASE                   = 300
+ENTITIES.Flashman.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.Flashman.AI_BYTES                  = {}
+ENTITIES.Flashman.AI_BYTES[0x00]            = 0x0A                              -- (??).
+ENTITIES.Flashman.AI_BYTES[0x01]            = 0x78                              -- Delay before FlashBulb explosion.
+ENTITIES.Flashman.AI_BYTES[0x02]            = 0x0A                              -- Damage FlashTower.
+ENTITIES.Flashman.AI_BYTES[0x03]            = 0x0F                              -- Damage FlashAttack.
+ENTITIES.Flashman.AI_BYTES[0x04]            = 0x05                              -- Bulb's HP.
+ENTITIES.Flashman.AI_BYTES[0x05]            = 0x10                              -- Delay before move 1.
+ENTITIES.Flashman.AI_BYTES[0x06]            = 0x3C                              -- Delay before move 2.
+ENTITIES.Flashman.AI_BYTES[0x07]            = 0x64                              -- Delay after FlashTower.
+ENTITIES.Flashman.AI_BYTES[0x08]            = 0x3C                              -- Delay after FlashAttack.
+ENTITIES.Flashman.AI_BYTES[0x09]            = 0x3C                              -- Delay after FlashBulb.
+ENTITIES.Flashman.AI_BYTES[0x0A]            = 0x00                              -- Number of AreaGrab chips.
+ENTITIES.Flashman.AI_BYTES[0x0B]            = 0x0F                              -- FlashTower speed delay.
+ENTITIES.Flashman.AI_BYTES[0x7E9C]          = 0x24                              -- Delay before FlashAttack.
+ENTITIES.Flashman.AI_BYTES[0x7E98]          = 0x08                              -- Delay before FlashAttack hits.
+ENTITIES.Flashman.BATTLE_NUMBERS            = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- TODO: All other Navis are not AI-Documented yet. If necessary (e.g. for making a modded Version), look up the stuff from http://forums.therockmanexezone.com/topic/8907775/1/
+ENTITIES.FlashmanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "FlashmanAlpha")
+ENTITIES.FlashmanAlpha.BATTLE_NUMBERS       = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.FlashmanBeta                       = new_base_entity(ENTITY_KIND.Virus, "FlashmanBeta")
+ENTITIES.FlashmanBeta.BATTLE_NUMBERS        = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.FlashmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "FlashmanOmega")
+ENTITIES.FlashmanOmega.BATTLE_NUMBERS       = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Beastman                           = new_base_entity(ENTITY_KIND.Virus, "Beastman")
+ENTITIES.Beastman.BATTLE_NUMBERS            = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.BeastmanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "BeastmanAlpha")
+ENTITIES.BeastmanAlpha.BATTLE_NUMBERS       = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.BeastmanBeta                       = new_base_entity(ENTITY_KIND.Virus, "BeastmanBeta")
+ENTITIES.BeastmanBeta.BATTLE_NUMBERS        = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.BeastmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "BeastmanOmega")
+ENTITIES.BeastmanOmega.BATTLE_NUMBERS       = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Bubbleman                          = new_base_entity(ENTITY_KIND.Virus, "Bubbleman")
+ENTITIES.Bubbleman.BATTLE_NUMBERS           = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.BubblemanAlpha                     = new_base_entity(ENTITY_KIND.Virus, "BubblemanAlpha")
+ENTITIES.BubblemanAlpha.BATTLE_NUMBERS      = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.BubblemanBeta                      = new_base_entity(ENTITY_KIND.Virus, "BubblemanBeta")
+ENTITIES.BubblemanBeta.BATTLE_NUMBERS       = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.BubblemanOmega                     = new_base_entity(ENTITY_KIND.Virus, "BubblemanOmega")
+ENTITIES.BubblemanOmega.BATTLE_NUMBERS      = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Desertman                          = new_base_entity(ENTITY_KIND.Virus, "Desertman")
+ENTITIES.Desertman.BATTLE_NUMBERS           = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.DesertmanAlpha                     = new_base_entity(ENTITY_KIND.Virus, "DesertmanAlpha")
+ENTITIES.DesertmanAlpha.BATTLE_NUMBERS      = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.DesertmanBeta                      = new_base_entity(ENTITY_KIND.Virus, "DesertmanBeta")
+ENTITIES.DesertmanBeta.BATTLE_NUMBERS       = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.DesertmanOmega                     = new_base_entity(ENTITY_KIND.Virus, "DesertmanOmega")
+ENTITIES.DesertmanOmega.BATTLE_NUMBERS      = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Plantman                           = new_base_entity(ENTITY_KIND.Virus, "Plantman")
+ENTITIES.Plantman.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.PlantmanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "PlantmanAlpha")
+ENTITIES.PlantmanAlpha.BATTLE_NUMBERS       = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.PlantmanBeta                       = new_base_entity(ENTITY_KIND.Virus, "PlantmanBeta")
+ENTITIES.PlantmanBeta.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.PlantmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "PlantmanOmega")
+ENTITIES.PlantmanOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Flameman                           = new_base_entity(ENTITY_KIND.Virus, "Flameman")
+ENTITIES.Flameman.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.FlamemanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "FlamemanAlpha")
+ENTITIES.FlamemanAlpha.BATTLE_NUMBERS       = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.FlamemanBeta                       = new_base_entity(ENTITY_KIND.Virus, "FlamemanBeta")
+ENTITIES.FlamemanBeta.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.FlamemanOmega                      = new_base_entity(ENTITY_KIND.Virus, "FlamemanOmega")
+ENTITIES.FlamemanOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Drillman                           = new_base_entity(ENTITY_KIND.Virus, "Drillman")
+ENTITIES.Drillman.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.DrillmanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "DrillmanAlpha")
+ENTITIES.DrillmanAlpha.BATTLE_NUMBERS       = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.DrillmanBeta                       = new_base_entity(ENTITY_KIND.Virus, "DrillmanBeta")
+ENTITIES.DrillmanBeta.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.DrillmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "DrillmanOmega")
+ENTITIES.DrillmanOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Alpha                              = new_base_entity(ENTITY_KIND.Virus, "Alpha")
+ENTITIES.Alpha.BATTLE_NUMBERS               = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.AlphaOmega                         = new_base_entity(ENTITY_KIND.Virus, "AlphaOmega")
+ENTITIES.AlphaOmega.BATTLE_NUMBERS          = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Gutsman                            = new_base_entity(ENTITY_KIND.Virus, "Gutsman")
+ENTITIES.Gutsman.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.GutsmanAlpha                       = new_base_entity(ENTITY_KIND.Virus, "GutsmanAlpha")
+ENTITIES.GutsmanAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.GutsmanBeta                        = new_base_entity(ENTITY_KIND.Virus, "GutsmanBeta")
+ENTITIES.GutsmanBeta.BATTLE_NUMBERS         = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.GutsmanOmega                       = new_base_entity(ENTITY_KIND.Virus, "GutsmanOmega")
+ENTITIES.GutsmanOmega.BATTLE_NUMBERS        = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Protoman                           = new_base_entity(ENTITY_KIND.Virus, "Protoman")
+ENTITIES.Protoman.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.ProtomanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "ProtomanAlpha")
+ENTITIES.ProtomanAlpha.BATTLE_NUMBERS       = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.ProtomanBeta                       = new_base_entity(ENTITY_KIND.Virus, "ProtomanBeta")
+ENTITIES.ProtomanBeta.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.ProtomanOmega                      = new_base_entity(ENTITY_KIND.Virus, "ProtomanOmega")
+ENTITIES.ProtomanOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Metalman                           = new_base_entity(ENTITY_KIND.Virus, "Metalman")
+ENTITIES.Metalman.BATTLE_NUMBERS            = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.MetalmanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "MetalmanAlpha")
+ENTITIES.MetalmanAlpha.BATTLE_NUMBERS       = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.MetalmanBeta                       = new_base_entity(ENTITY_KIND.Virus, "MetalmanBeta")
+ENTITIES.MetalmanBeta.BATTLE_NUMBERS        = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.MetalmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "MetalmanOmega")
+ENTITIES.MetalmanOmega.BATTLE_NUMBERS       = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Punk                               = new_base_entity(ENTITY_KIND.Virus, "Punk")
+ENTITIES.Punk.BATTLE_NUMBERS                = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.PunkAlpha                          = new_base_entity(ENTITY_KIND.Virus, "PunkAlpha")
+ENTITIES.PunkAlpha.BATTLE_NUMBERS           = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.PunkBeta                           = new_base_entity(ENTITY_KIND.Virus, "PunkBeta")
+ENTITIES.PunkBeta.BATTLE_NUMBERS            = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.PunkOmega                          = new_base_entity(ENTITY_KIND.Virus, "PunkOmega")
+ENTITIES.PunkOmega.BATTLE_NUMBERS           = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Kingman                            = new_base_entity(ENTITY_KIND.Virus, "Kingman")
+ENTITIES.Kingman.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.KingmanAlpha                       = new_base_entity(ENTITY_KIND.Virus, "KingmanAlpha")
+ENTITIES.KingmanAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.KingmanBeta                        = new_base_entity(ENTITY_KIND.Virus, "KingmanBeta")
+ENTITIES.KingmanBeta.BATTLE_NUMBERS         = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.KingmanOmega                       = new_base_entity(ENTITY_KIND.Virus, "KingmanOmega")
+ENTITIES.KingmanOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Mistman                            = new_base_entity(ENTITY_KIND.Virus, "Mistman")
+ENTITIES.Mistman.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.MistmanAlpha                       = new_base_entity(ENTITY_KIND.Virus, "MistmanAlpha")
+ENTITIES.MistmanAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.MistmanBeta                        = new_base_entity(ENTITY_KIND.Virus, "MistmanBeta")
+ENTITIES.MistmanBeta.BATTLE_NUMBERS         = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.MistmanOmega                       = new_base_entity(ENTITY_KIND.Virus, "MistmanOmega")
+ENTITIES.MistmanOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Bowlman                            = new_base_entity(ENTITY_KIND.Virus, "Bowlman")
+ENTITIES.Bowlman.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.BowlmanAlpha                       = new_base_entity(ENTITY_KIND.Virus, "BowlmanAlpha")
+ENTITIES.BowlmanAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.BowlmanBeta                        = new_base_entity(ENTITY_KIND.Virus, "BowlmanBeta")
+ENTITIES.BowlmanBeta.BATTLE_NUMBERS         = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.BowlmanOmega                       = new_base_entity(ENTITY_KIND.Virus, "BowlmanOmega")
+ENTITIES.BowlmanOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Darkman                            = new_base_entity(ENTITY_KIND.Virus, "Darkman")
+ENTITIES.Darkman.BATTLE_NUMBERS             = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.DarkmanAlpha                       = new_base_entity(ENTITY_KIND.Virus, "DarkmanAlpha")
+ENTITIES.DarkmanAlpha.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.DarkmanBeta                        = new_base_entity(ENTITY_KIND.Virus, "DarkmanBeta")
+ENTITIES.DarkmanBeta.BATTLE_NUMBERS         = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.DarkmanOmega                       = new_base_entity(ENTITY_KIND.Virus, "DarkmanOmega")
+ENTITIES.DarkmanOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Japanman                           = new_base_entity(ENTITY_KIND.Virus, "Japanman")
+ENTITIES.Japanman.BATTLE_NUMBERS            = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.JapanmanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "JapanmanAlpha")
+ENTITIES.JapanmanAlpha.BATTLE_NUMBERS       = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.JapanmanBeta                       = new_base_entity(ENTITY_KIND.Virus, "JapanmanBeta")
+ENTITIES.JapanmanBeta.BATTLE_NUMBERS        = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.JapanmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "JapanmanOmega")
+ENTITIES.JapanmanOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Serenade                           = new_base_entity(ENTITY_KIND.Virus, "Serenade")
+ENTITIES.Serenade.BATTLE_NUMBERS            = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.SerenadeAlpha                      = new_base_entity(ENTITY_KIND.Virus, "SerenadeAlpha")
+ENTITIES.SerenadeAlpha.BATTLE_NUMBERS       = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.SerenadeBeta                       = new_base_entity(ENTITY_KIND.Virus, "SerenadeBeta")
+ENTITIES.SerenadeBeta.BATTLE_NUMBERS        = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.SerenadeOmega                      = new_base_entity(ENTITY_KIND.Virus, "SerenadeOmega")
+ENTITIES.SerenadeOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.Bass                               = new_base_entity(ENTITY_KIND.Virus, "Bass")
+ENTITIES.Bass.BATTLE_NUMBERS                = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.BassGS                             = new_base_entity(ENTITY_KIND.Virus, "BassGS")
+ENTITIES.BassGS.BATTLE_NUMBERS              = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ENTITIES.BassOmega                          = new_base_entity(ENTITY_KIND.Virus, "BassOmega")
+ENTITIES.BassOmega.BATTLE_NUMBERS           = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

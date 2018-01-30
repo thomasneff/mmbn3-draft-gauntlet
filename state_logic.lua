@@ -59,7 +59,7 @@ state_logic.dropped_chip_render_index = 1
 state_logic.draft_chip_render_index = 1
 state_logic.dropped_buff_render_index = 1
 state_logic.folder_chip_render_index = 1
-
+state_logic.pause_frame_counter = 0
 
 state_logic.gui_change_savestate = nil
 
@@ -936,6 +936,29 @@ function state_logic.main_loop()
     else -- Default state, should never happen
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
     end
+
+    -- Pause-Buffer penalty  0x02001889
+    -- Would need to check for first cust-screen open to prevent invalid triggers at the start of battle.
+    --local is_paused = memory.readbyte(GENERIC_DEFS.GAME_PAUSED_ADDRESS - 0x02000000, "EWRAM")
+    --local is_cust_open = memory.readbyte(0x0200C0C9 - 0x02000000, "EWRAM")
+    
+    -- if is_paused == 1 and is_cust_open == 0 then
+
+    --   state_logic.pause_frame_counter =  state_logic.pause_frame_counter + 1
+    --    if state_logic.pause_frame_counter >=  GAUNTLET_DEFS.PAUSE_BUFFER_HP_PENALTY.FRAME_INTERVAL then
+
+    --        state_logic.pause_frame_counter = 0
+            -- Get current HP
+    --       local current_hp = memory.read_u16_le(0x02037510 - 0x02000000, "EWRAM")
+
+    --        current_hp = current_hp - GAUNTLET_DEFS.PAUSE_BUFFER_HP_PENALTY.HP_DECREASE
+            
+    --        memory.write_u16_le(0x02037510 - 0x02000000, current_hp, "EWRAM")
+
+    --    end
+        
+
+    --end
 
     emu.yield()
 end
