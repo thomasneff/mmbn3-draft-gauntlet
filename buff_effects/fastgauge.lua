@@ -3,6 +3,7 @@ local deepcopy = require "deepcopy"
 
 local FastGauge = {
     NAME = "FastGauge",
+    REMOVE_AFTER_ACTIVATION = 1,
 }
 
 

@@ -145,5 +145,32 @@ Implement buffs related to Buster.
 
 AirShoes: 0x02005773
 FastGauge: 0x02005788
-UnderShirt: 0x02005798
+UnderShirt: 0x02005774
 SuperArmor: 0x02005771
+
+BUG: UnderShirt isn't working.
+  - Was just a wrong address.
+
+Implement reasonable start folder randomization?
+  - For now, it randomizes based on Library stars...
+Implement random drops according to Library Stars, 80% Chance of current tier, 10% chance of higher, 10% chance of lower
+  - This is just temporary, until curated drops are implemented. Might keep it as an option though, as it could be fun.
+
+
+Implement objects on MegaMan side.
+
+Implement Select to switch to folder view from all choose states. (Just use nil for selected chip and index.)
+
+Implement list of starting folder options. (each folder already has a overloaded function, we can use this.)
+  - Draw an arrow to signify if there are more at the top or bottom.
+
+
+Implement 30 Chips folder drafting. (Needs nil-checks in rendering)
+
+
+Implement nicer draft with a generator function. Test using 9 standard, 1 mega, 9 standard, 1 mega, 9 standard, 1 giga.
+
+
+Implement removal of certain buffs when activated? Don't know how I'd implement that yet.
+
+

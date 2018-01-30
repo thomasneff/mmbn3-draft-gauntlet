@@ -3,6 +3,7 @@ local deepcopy = require "deepcopy"
 
 local UnderShirt = {
     NAME = "UnderShirt",
+    REMOVE_AFTER_ACTIVATION = 1,
 }
 
 

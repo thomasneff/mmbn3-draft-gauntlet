@@ -3,6 +3,7 @@ local deepcopy = require "deepcopy"
 
 local SuperArmor = {
     NAME = "SuperArmor",
+    REMOVE_AFTER_ACTIVATION = 1,
 }
 
 
@@ -11,6 +12,7 @@ function SuperArmor:activate(current_round)
 
     self.old_SuperArmor = gauntlet_data.mega_SuperArmor
     gauntlet_data.mega_SuperArmor = 1
+
 
 end
 

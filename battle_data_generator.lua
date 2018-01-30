@@ -196,8 +196,13 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind)
         
     while found_random_pos == 1 do
         found_random_pos = 0
-        x_pos = math.random(4, 6)
-        y_pos = math.random(1, 3)
+        if new_entity.BATTLE_DATA.KIND == ENTITY_KIND.Virus then
+            x_pos = math.random(4, 6)
+            y_pos = math.random(1, 3)
+        else
+            x_pos = math.random(1, 6)
+            y_pos = math.random(1, 3)
+        end
 
         found_random_pos = grid[x_pos][y_pos]
     end
@@ -251,6 +256,9 @@ function battle_data_generator.random_from_battle(current_battle)
             grid[i][j] = 0
         end
     end
+
+    -- Set MegaMan as flagged.
+    grid[2][2] = 1
 
     -- This flag is used to check if we rolled at least one virus.
     local contains_virus_table = {

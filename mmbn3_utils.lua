@@ -4,6 +4,7 @@ local TEXT_TABLE = require "defs.text_table_defs"
 local ENTITY_PALETTE_DEFS = require "defs.entity_palette_defs"
 local CHIP_DATA_ADDRESS = require "defs.chip_data_address_defs"
 local CHIP_DATA = require "defs.chip_data_defs"
+local deepcopy = require "deepcopy"
 local mmbn3_utils = {}
 
 -- This is a wrapper for BizHawk with VBA-Next that automatically selects the correct memory domain.
@@ -54,13 +55,17 @@ function mmbn3_utils.change_megaman_current_hp(new_value)
     -- We need the address just before battle.
     local megaman_current_hp_address = defs.MEGA_CURRENT_HP_ADDRESS
     mmbn3_utils.writeword(megaman_current_hp_address, new_value)
+    mmbn3_utils.writeword(0x020018A0, new_value)
+    mmbn3_utils.writeword(0x0200F888, new_value)
 end
 
 function mmbn3_utils.change_megaman_max_hp(new_value) 
     --local megaman_max_hp_address = 0x020018A2 -- This is the address before battle.
     -- We need the address IN battle.
     local megaman_max_hp_address = defs.MEGA_MAX_HP_ADDRESS
+    print("Patched HP: ", new_value)
     mmbn3_utils.writeword(megaman_max_hp_address, new_value)
+    mmbn3_utils.writeword(0x020018A2, new_value)
 
 end
 
@@ -88,7 +93,7 @@ end
 function mmbn3_utils.change_number_of_cust_screen_chips(value) 
     local address = defs.NUMBER_OF_CUST_CHIPS_ADDRESS
     --value = 0xF
-    --print("CUST SCCREENCHIPS: ", value)
+    print("CUST SCREENCHIPS: ", value)
     mmbn3_utils.writebyte(address, value)
 
     
@@ -197,7 +202,7 @@ function mmbn3_utils.patch_folder(folder, folder_address)
     local working_address = folder_address
 
     -- We shuffle before patching to prevent issues with fixed RNG due to loading from the same savestate.
-    local shuffled_folder = shuffle(folder)
+    local shuffled_folder = shuffle(deepcopy(folder))
 
     for chip_index = 1,folder_length do
 

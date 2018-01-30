@@ -7,6 +7,11 @@ local CHIP_CODE = require "defs.chip_code_defs"
 
 local chip_image_background_path = "chip_image_background.png"
 local buff_image_background_path = "buff_background.png"
+local loadout_image_background_path = "buff_background.png"
+local arrow_left_path = "arrow_left.png"
+local arrow_right_path = "arrow_right.png"
+local arrow_up_path = "arrow_up.png"
+local arrow_down_path = "arrow_down.png"
 
 function drawTextOutline(x_pos, y_pos, string, outline_color, color, background_color, font_size, font_family)
 
@@ -112,16 +117,16 @@ function render_buff(buff, x_offset, y_offset, is_selected)
     end
 
     gui.drawImage(buff_image_background_path, x_offset, y_offset)
-    local name_offset_x = 14
+    local name_offset_x = 10
     local name_offset_y = 7
-    local desc_offset_x = 14
+    local desc_offset_x = 10
     local desc_offset_y = 20
     --print("BUFF: ", buff)
     local buff_name = buff.NAME
     local buff_description = buff.DESCRIPTION
 
-    drawTextOutline(name_offset_x + x_offset, name_offset_y + y_offset,  buff_name, "black", "white", "transparent", 10, "Arial")
-    drawTextOutline(desc_offset_x + x_offset, desc_offset_y + y_offset, buff_description, "black", "lightblue", "transparent", 10, "Arial")
+    drawTextOutline(name_offset_x + x_offset, name_offset_y + y_offset,  buff_name, "black", "white", "transparent", 9, "Arial")
+    drawTextOutline(desc_offset_x + x_offset, desc_offset_y + y_offset, buff_description, "black", "lightblue", "transparent", 9, "Arial")
 
 
 
@@ -142,6 +147,8 @@ function gui_rendering.render_buff_selection(buff_list, selected_buff_index)
     local x_offset = base_offset_x
     local y_offset = base_offset_y
 
+    
+
     for buff_idx = 1,num_buffs do
 
 
@@ -157,6 +164,78 @@ function gui_rendering.render_buff_selection(buff_list, selected_buff_index)
 end
 
 
+
+function render_loadout(loadout, x_offset, y_offset, is_selected)
+
+    -- Render green selection box
+    local bg_size_x = 230
+    local bg_size_y = 50
+
+    if is_selected == true then
+        gui.drawRectangle(x_offset - 5, y_offset - 3, bg_size_x + 9, bg_size_y + 5, nil, "green")
+    end
+
+    gui.drawImage(loadout_image_background_path, x_offset, y_offset)
+    local name_offset_x = 10
+    local name_offset_y = 7
+    local desc_offset_x = 10
+    local desc_offset_y = 20
+    --print("loadout: ", loadout)
+    local loadout_name = loadout.NAME
+    local loadout_description = loadout.DESCRIPTION
+
+    drawTextOutline(name_offset_x + x_offset, name_offset_y + y_offset,  loadout_name, "black", "white", "transparent", 9, "Arial")
+    drawTextOutline(desc_offset_x + x_offset, desc_offset_y + y_offset, loadout_description, "black", "lightblue", "transparent", 9, "Arial")
+
+
+
+
+end
+
+function gui_rendering.render_loadouts(loadout_list, selected_loadout_index)
+
+    -- Assume 3 loadouts, draw them side by side.
+    local num_loadouts = #loadout_list
+    --print(loadout_list)
+    local offset_per_loadout_x = 0
+    local offset_per_loadout_y = 53
+    local base_offset_x = 5
+    local base_offset_y = 3 + offset_per_loadout_y
+    base_offset_y = base_offset_y - offset_per_loadout_y * (selected_loadout_index - 1)
+    local x_offset = base_offset_x
+    local y_offset = base_offset_y
+
+
+    
+
+    for loadout_idx = 1,num_loadouts do
+
+
+        
+        render_loadout(loadout_list[loadout_idx], x_offset, y_offset, loadout_idx == selected_loadout_index)
+
+        x_offset = x_offset + offset_per_loadout_x
+        y_offset = y_offset + offset_per_loadout_y
+
+    end
+
+    -- Render arrow guides
+    if (num_loadouts - selected_loadout_index) > 1 then
+        -- Render down-arrow.
+
+        gui.drawImage(arrow_down_path, 220, 140, 16, 8)
+
+    end
+
+    if (selected_loadout_index) > 2 then
+        -- Render down-arrow.
+
+        gui.drawImage(arrow_up_path, 220, 10, 16, 8)
+
+    end
+
+
+end
 
 
 -- This function is used to render the current folder for chip replacement.
@@ -182,14 +261,18 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip)
         y_offset = base_offset_y
         for row_idx = 1,num_chips_per_col do
 
+            if folder[chip_counter] ~= nil then
+                
            
-            -- Render icon.
-            render_argb_2d_array(folder[chip_counter].ARGB_ICON, x_offset - CHIP_ICON.WIDTH - 2, y_offset, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
+                -- Render icon.
+                render_argb_2d_array(folder[chip_counter].ARGB_ICON, x_offset - CHIP_ICON.WIDTH - 2, y_offset, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
 
-            if chip_counter == selected_chip_index then
-               drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", "white", "green", 10, "Arial")
-            else
-               drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", "white", "transparent", 10, "Arial")
+                if chip_counter == selected_chip_index then
+                drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", "white", "green", 10, "Arial")
+                else
+                drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", "white", "transparent", 10, "Arial")
+                end
+
             end
 
             y_offset = y_offset + offset_per_row
@@ -204,7 +287,7 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip)
     local new_chip_offset_y = 80
 
     --print(new_chip)
-    if new_chip.PRINT_NAME ~= nil and new_chip.PRINT_NAME ~= "" and new_chip.ID ~= -1 then
+    if new_chip ~= nil and new_chip.PRINT_NAME ~= nil and new_chip.PRINT_NAME ~= "" and new_chip.ID ~= -1 then
         -- Render icon.
         render_argb_2d_array(new_chip.ARGB_ICON, new_chip_offset_x, new_chip_offset_y - offset_per_row * 1 - CHIP_ICON.HEIGHT, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
         drawTextOutline(new_chip_offset_x, new_chip_offset_y - offset_per_row * 1,  "New Chip: ", "black", "green", "transparent", 9, "Arial")

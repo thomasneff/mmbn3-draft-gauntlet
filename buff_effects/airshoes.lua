@@ -3,6 +3,7 @@ local deepcopy = require "deepcopy"
 
 local AirShoes = {
     NAME = "AirShoes",
+    REMOVE_AFTER_ACTIVATION = 1,
 }
 
 

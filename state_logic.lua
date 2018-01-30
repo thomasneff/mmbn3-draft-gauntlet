@@ -20,21 +20,12 @@ local CHIP_DATA = require "defs.chip_data_defs"
 local CHIP_DROP_UTILS = require "defs.chip_drop_utils"
 local BUFF_GENERATOR = require "buff_effects.buff_groups"
 local START_FOLDER = require "defs.start_folder_defs"
+local LOADOUTS = require "loadouts.loadout_defs"
 local gauntlet_data = require "gauntlet_data"
+local deepcopy = require "deepcopy"
 
 -- TODO: possibly add more states.
-local GAME_STATE = {
-    RUNNING = 0x00,
-    TRANSITION_TO_CHIP_SELECT = 0x01,
-    CHIP_SELECT = 0x02,
-    TRANSITION_TO_CHIP_REPLACE = 0x03,
-    CHIP_REPLACE = 0x04,
-    TRANSITION_TO_RUNNING = 0x05,
-    TRANSITION_TO_BUFF_SELECT = 0x06,
-    BUFF_SELECT = 0x07,
-    WAIT_FOR_HP_PATCH = 0x08,
-    LOAD_INITIAL = 0x09,
-}
+
 local state_logic = {}
 
 state_logic.activated_buffs = {}
@@ -49,18 +40,23 @@ state_logic.dropped_chips[1] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE
 state_logic.dropped_chips[2] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.B)
 state_logic.dropped_chips[3] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.C)
 
+state_logic.draft_selection_chips = {}
+
 state_logic.should_redraw = 1
 
 state_logic.hp_patch_frame_counter = 0
+state_logic.battle_start_frame_counter = 0
 
 state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
 state_logic.dropped_chip.ID = -1
 state_logic.dropped_chip.PRINT_NAME = ""
+state_logic.loadout_chosen = 0
+state_logic.selected_loadout_index = 1
 
 
-
-state_logic.current_state = GAME_STATE.RUNNING
+gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
 state_logic.dropped_chip_render_index = 1
+state_logic.draft_chip_render_index = 1
 state_logic.dropped_buff_render_index = 1
 state_logic.folder_chip_render_index = 1
 
@@ -116,7 +112,7 @@ function state_logic.patch_next_battle()
 
     --print("MOD: ", state_logic.current_round % GAUNTLET_DEFS.ROUNDS_PER_BUFF_DROP)
     if (state_logic.current_battle - 1) % GAUNTLET_DEFS.ROUNDS_PER_BUFF_DROP == 0 then
-        state_logic.current_state = GAME_STATE.TRANSITION_TO_BUFF_SELECT
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT
     end
 
     -- print("5")
@@ -138,7 +134,7 @@ local DEBUG = 0
 function state_logic.on_battle_end()
 
     if state_logic.battle_pointer_index > GAUNTLET_DEFS.BATTLES_PER_ROUND then
-       state_logic.current_state = GAME_STATE.LOAD_INITIAL 
+       gauntlet_data.current_state = gauntlet_data.GAME_STATE.LOAD_INITIAL 
     end  
 
 end
@@ -173,17 +169,25 @@ function state_logic.on_enter_battle()
 
     state_logic.patch_next_battle()
     state_logic.determine_drops(GAUNTLET_DEFS.NUMBER_OF_DROPPED_CHIPS)
+    state_logic.shuffle_folder()
 
-    if state_logic.current_state ~= GAME_STATE.TRANSITION_TO_BUFF_SELECT and  
-        state_logic.current_state ~= GAME_STATE.BUFF_SELECT then
-            state_logic.current_state = GAME_STATE.TRANSITION_TO_CHIP_SELECT
+    if gauntlet_data.current_state ~= gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT and  
+        gauntlet_data.current_state ~= gauntlet_data.GAME_STATE.BUFF_SELECT then
+            gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT
     end
 
-    --print("STATE_ENTER: ", state_logic.current_state)
+
+    if state_logic.loadout_chosen == 0 then
+
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_STARTING_LOADOUT
+
+    end
+
+    --print("STATE_ENTER: ", gauntlet_data.current_state)
     --print(print(state_logic.dropped_chip))
     
     
-    --state_logic.current_state = GAME_STATE.TRANSITION_TO_CHIP_SELECT
+    --gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT
 
 end
 
@@ -197,7 +201,7 @@ function state_logic.on_next_round()
     --print ("BEFORE CHANGE MAX HP")
     
     --print ("BEFORE TRANSITION TO BUFF SELECT")
-    state_logic.current_state = GAME_STATE.TRANSITION_TO_BUFF_SELECT
+    gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT
 
 end
 
@@ -257,6 +261,10 @@ end
 
 function state_logic.get_printable_chip_name(chip)
 
+    if chip == nil then
+        return ""
+    end
+
     if chip.ID == -1 then
         return ""
     end
@@ -268,6 +276,11 @@ function state_logic.get_printable_chip_name(chip)
 end
 
 function state_logic.get_argb_icon(chip)
+
+    if chip == nil then
+        return nil
+    end
+
 
     if chip.ID == -1 then
         return nil
@@ -283,7 +296,7 @@ end
 
 function state_logic.update_argb_chip_icons_in_folder()
     
-    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
+    for chip_idx = 1,#gauntlet_data.current_folder do
         gauntlet_data.current_folder[chip_idx].ARGB_ICON = state_logic.get_argb_icon(gauntlet_data.current_folder[chip_idx])
     end
     
@@ -293,7 +306,7 @@ end
 
 function state_logic.update_printable_chip_names_in_folder()
 
-    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
+    for chip_idx = 1,#gauntlet_data.current_folder do
         gauntlet_data.current_folder[chip_idx].PRINT_NAME = state_logic.get_printable_chip_name(gauntlet_data.current_folder[chip_idx])
     end
 
@@ -348,7 +361,7 @@ function state_logic.shuffle_folder()
           end)
     end
 
-    gauntlet_data.folder_shuffle_state = (gauntlet_data.folder_shuffle_state + 1) % 4
+    
     
 
 end
@@ -380,6 +393,9 @@ function state_logic.initialize()
     gauntlet_data.mega_WeaponLevelPlus = 1
     gauntlet_data.cust_style_number_of_chips = 0
     gauntlet_data.cust_screen_number_of_chips = 5
+    gauntlet_data.folder_view = 0
+    state_logic.loadout_chosen = 0
+    state_logic.selected_loadout_index = 1
     state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
     state_logic.dropped_chip.ID = -1
     state_logic.dropped_chip.PRINT_NAME = state_logic.get_printable_chip_name(state_logic.dropped_chip)
@@ -391,14 +407,17 @@ function state_logic.initialize()
     state_logic.current_battle = 1
     state_logic.battle_pointer_index = 1
     state_logic.hp_patch_frame_counter = 0
+    state_logic.battle_start_frame_counter = 0
     state_logic.reset_selected_chips()
-
-
+    gauntlet_data.folder_draft_chip_list = {}
+    state_logic.draft_selection_chips = {}
+    gauntlet_data.folder_draft_chip_generator = {}
+    BUFF_GENERATOR.initialize()
     state_logic.initialize_folder()
     state_logic.update_printable_chip_names_in_folder()
     state_logic.update_argb_chip_icons_in_folder()
     
-    state_logic.current_state = GAME_STATE.RUNNING
+    gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
 
     client.unpause()
     -- Upon start, initialize the current round:
@@ -449,7 +468,7 @@ function state_logic.patch_before_battle_start()
     
     mmbn3_utils.writebyte(0x02005773, gauntlet_data.mega_AirShoes)
     mmbn3_utils.writebyte(0x02005788, gauntlet_data.mega_FastGauge)
-    mmbn3_utils.writebyte(0x02005798, gauntlet_data.mega_UnderShirt)
+    mmbn3_utils.writebyte(0x02005774, gauntlet_data.mega_UnderShirt)
     mmbn3_utils.writebyte(0x02005771, gauntlet_data.mega_SuperArmor)
     mmbn3_utils.writebyte(0x02005778, gauntlet_data.mega_AttackPlus)
     mmbn3_utils.writebyte(0x0200577A, gauntlet_data.mega_ChargePlus)
@@ -457,14 +476,45 @@ function state_logic.patch_before_battle_start()
     mmbn3_utils.writebyte(0x0200577D, gauntlet_data.mega_WeaponLevelPlus)
 
 
+    mmbn3_utils.change_megaman_max_hp(gauntlet_data.mega_max_hp) 
+    -- We need to wait a few frames to patch the in-battle HP of megaman in RAM. Otherwise we would need a hook way before battle, which I don't want to find right now.
+    if  gauntlet_data.hp_patch_required == 1 then
+        mmbn3_utils.change_megaman_max_hp(gauntlet_data.mega_max_hp) 
+        mmbn3_utils.change_megaman_current_hp(gauntlet_data.mega_max_hp) 
+        gauntlet_data.hp_patch_required = 0
+    end
+
+    mmbn3_utils.change_megaman_style(gauntlet_data.mega_style)
+
+    mmbn3_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
+
+
 
 
 end
 
+
+function state_logic.folder_view_switch_and_sort()
+
+    if input_handler.inputs_pressed["Select"] == true then
+        gauntlet_data.folder_view = (gauntlet_data.folder_view + 1) % 2
+        state_logic.should_redraw = 1
+    end
+
+    if input_handler.inputs_pressed["Start"] == true then
+        gauntlet_data.folder_shuffle_state = (gauntlet_data.folder_shuffle_state + 1) % 4
+        state_logic.shuffle_folder()
+        
+        state_logic.should_redraw = 1
+    end
+
+end
+
+
 function state_logic.main_loop()
 
     if DEBUG == 1 then
-        print ("DEBUG: STATE: ", state_logic.current_state)
+        print ("DEBUG: STATE: ", gauntlet_data.current_state)
     end
     input_handler.handle_inputs()
 
@@ -473,20 +523,20 @@ function state_logic.main_loop()
 
 
     
-    --print ("Current state: " .. state_logic.current_state)
-    if state_logic.current_state == GAME_STATE.RUNNING then
+    --print ("Current state: " .. gauntlet_data.current_state)
+    if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
 
         -- Do nothing.
 
-    elseif state_logic.current_state == GAME_STATE.TRANSITION_TO_CHIP_SELECT then
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT then
         -- We pause here and make a savestate.
-        --print("Transition to chip select.")
+        print("Transition to chip select.")
         state_logic.gui_change_savestate = memorysavestate.savecorestate()
         state_logic.reset_selected_chips()
         if state_logic.battle_data[state_logic.current_battle - 1] == nil then
             -- We didn't finish a battle yet, therefore no chip.
 
-            state_logic.current_state = GAME_STATE.TRANSITION_TO_CHIP_REPLACE
+            gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_REPLACE
             --print(state_logic.dropped_chip)
         else
 
@@ -503,17 +553,18 @@ function state_logic.main_loop()
 
             
             
-            state_logic.current_state = GAME_STATE.CHIP_SELECT
+            gauntlet_data.current_state = gauntlet_data.GAME_STATE.CHIP_SELECT
             
 
         end
         client.pause()
         state_logic.should_redraw = 1
-
-    elseif state_logic.current_state == GAME_STATE.CHIP_SELECT then
         
 
-         if input_handler.inputs_pressed["Left"] == true then
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.CHIP_SELECT then
+        
+
+        if input_handler.inputs_pressed["Left"] == true then
             state_logic.dropped_chip_render_index = (state_logic.dropped_chip_render_index - 1) % (#state_logic.dropped_chips)
             if state_logic.dropped_chip_render_index == 0 then
                 state_logic.dropped_chip_render_index = (#state_logic.dropped_chips)
@@ -530,6 +581,7 @@ function state_logic.main_loop()
             state_logic.should_redraw = 1
         end
 
+        state_logic.folder_view_switch_and_sort()
 
         if input_handler.inputs_pressed["A"] == true then
 
@@ -539,14 +591,22 @@ function state_logic.main_loop()
 
             state_logic.dropped_chip.PRINT_NAME = state_logic.get_printable_chip_name(state_logic.dropped_chip)
             state_logic.dropped_chip.ARGB_ICON = state_logic.get_argb_icon(state_logic.dropped_chip)
-            state_logic.current_state = GAME_STATE.TRANSITION_TO_CHIP_REPLACE
+            gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_REPLACE
+            gauntlet_data.folder_view = 0
             state_logic.should_redraw = 1
         end
 
         if state_logic.should_redraw == 1 then
-            --print("RENDERRRRRR")
-            --print("DROPPED CHIPS: ", dropped_chips)
-            gui_rendering.render_chip_selection(state_logic.dropped_chips, state_logic.dropped_chip_render_index)
+
+            
+            if gauntlet_data.folder_view == 0 then
+                gui_rendering.render_chip_selection(state_logic.dropped_chips, state_logic.dropped_chip_render_index)
+            else
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil)
+            end
+
+
+            
             gui.DrawFinish()
             memorysavestate.loadcorestate(state_logic.gui_change_savestate)
             state_logic.should_redraw = 0
@@ -556,17 +616,18 @@ function state_logic.main_loop()
 
         
 
-    elseif state_logic.current_state == GAME_STATE.TRANSITION_TO_CHIP_REPLACE then
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_REPLACE then
         state_logic.gui_change_savestate = memorysavestate.savecorestate()
         memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         -- print(state_logic.dropped_chip)
-        state_logic.current_state = GAME_STATE.CHIP_REPLACE
+        print("Transition to chip replace.")
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.CHIP_REPLACE
         state_logic.should_redraw = 1
 
-    elseif state_logic.current_state == GAME_STATE.CHIP_REPLACE then
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.CHIP_REPLACE then
         --print("IN CHIP_REPLACE")
         -- Render folder, respond to inputs for selected chip. Patch folder for selected chip, then unpause.
-        --print(state_logic.current_state)
+        --print(gauntlet_data.current_state)
         -- We render 15 x 2 chips.
         
         local num_chips_per_col = 15
@@ -574,7 +635,9 @@ function state_logic.main_loop()
 
         if input_handler.inputs_pressed["Start"] == true then
             -- Shuffle folder according to Alpha/Code/ID/Attack
+            gauntlet_data.folder_shuffle_state = (gauntlet_data.folder_shuffle_state + 1) % 4
             state_logic.shuffle_folder()
+            
             state_logic.should_redraw = 1
         end
 
@@ -623,14 +686,14 @@ function state_logic.main_loop()
                 gauntlet_data.current_folder[state_logic.folder_chip_render_index] = state_logic.dropped_chip
             end
 
-            state_logic.current_state = GAME_STATE.TRANSITION_TO_RUNNING
+            gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
             state_logic.should_redraw = 1
         end
 
         if input_handler.inputs_pressed["B"] == true then
             -- Just skip - we didn't want a chip!
             --print("B pressed")
-            state_logic.current_state = GAME_STATE.TRANSITION_TO_RUNNING
+            gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
             
             state_logic.should_redraw = 1
         end
@@ -643,23 +706,19 @@ function state_logic.main_loop()
             state_logic.should_redraw = 0
         end
 
-    elseif state_logic.current_state == GAME_STATE.TRANSITION_TO_BUFF_SELECT then    
-        --print ("IN TRANSITION TO BUFF SELECT")
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT then    
+
         state_logic.gui_change_savestate = memorysavestate.savecorestate()
         
-        --print ("AFTER LOAD_CORE_STATE")
-        state_logic.current_state = GAME_STATE.BUFF_SELECT
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.BUFF_SELECT
         state_logic.should_redraw = 1
-        --print ("BEFORE DROP BUFFS")
         state_logic.dropped_buffs = BUFF_GENERATOR.random_buffs_from_round(state_logic.current_round, GAUNTLET_DEFS.NUMBER_OF_DROPPED_BUFFS)
-        --print ("BEFORE update_buff_discriptions")
         state_logic.update_buff_discriptions()
-        --print(state_logic.dropped_chip)
         memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         client.pause()
 
 
-    elseif state_logic.current_state == GAME_STATE.BUFF_SELECT then
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.BUFF_SELECT then
         --print ("IN BUFF_SELECT")
         
         if input_handler.inputs_pressed["Up"] == true then
@@ -679,68 +738,203 @@ function state_logic.main_loop()
             state_logic.should_redraw = 1
         end
 
+        state_logic.folder_view_switch_and_sort()
+
 
         if input_handler.inputs_pressed["A"] == true then
 
             --print("Selected a Chip!")
             
             local dropped_buff = state_logic.dropped_buffs[state_logic.dropped_buff_render_index]
-            dropped_buff:activate(state_logic.current_round)
+            BUFF_GENERATOR.activate_buff(dropped_buff, state_logic.current_round)
             state_logic.number_of_activated_buffs = state_logic.number_of_activated_buffs + 1
             state_logic.activated_buffs[state_logic.number_of_activated_buffs] = dropped_buff
 
-
-            state_logic.current_state = GAME_STATE.TRANSITION_TO_CHIP_SELECT
+            gauntlet_data.folder_view = 0
+            gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT
             state_logic.should_redraw = 1
         end
 
         if state_logic.should_redraw == 1 then
+            
+            if gauntlet_data.folder_view == 0 then
+                gui_rendering.render_buff_selection(state_logic.dropped_buffs, state_logic.dropped_buff_render_index)
+            else
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil)
+            end
 
-            gui_rendering.render_buff_selection(state_logic.dropped_buffs, state_logic.dropped_buff_render_index)
+            
             gui.DrawFinish()
             memorysavestate.loadcorestate(state_logic.gui_change_savestate)
             state_logic.should_redraw = 0
         end
         
-    elseif state_logic.current_state == GAME_STATE.TRANSITION_TO_RUNNING then
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING then
 
         state_logic.patch_before_battle_start()
         --mmbn3_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
-        mmbn3_utils.change_megaman_style(gauntlet_data.mega_style)
+        
         --print("Patched folder!")
         client.unpause()
+         --mmbn3_utils.change_megaman_max_hp(gauntlet_data.mega_max_hp) 
         
-        state_logic.current_state = GAME_STATE.WAIT_FOR_HP_PATCH
-
-    elseif state_logic.current_state == GAME_STATE.WAIT_FOR_HP_PATCH then
-
-        if gauntlet_data.hp_patch_required == 0 then
-            state_logic.current_state = GAME_STATE.RUNNING
-        else
-
-            state_logic.hp_patch_frame_counter = state_logic.hp_patch_frame_counter + 1
-
-            -- We need to wait a few frames to patch the in-battle HP of megaman in RAM. Otherwise we would need a hook way before battle, which I don't want to find right now.
-            if state_logic.hp_patch_frame_counter > GENERIC_DEFS.FRAMES_BEFORE_HP_PATCH then
-                state_logic.hp_patch_frame_counter = 0
-                state_logic.current_state = GAME_STATE.RUNNING
-                mmbn3_utils.change_megaman_max_hp(gauntlet_data.mega_max_hp) 
-                mmbn3_utils.change_megaman_current_hp(gauntlet_data.mega_max_hp) 
-                gauntlet_data.hp_patch_required = 0
-                mmbn3_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
-                --print("PATCHED HP!")
-            end
-        end
-    elseif state_logic.current_state == GAME_STATE.LOAD_INITIAL then
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
+        
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.LOAD_INITIAL then
         -- Simply load initial state again if we beat all rounds.
         savestate.load(state_logic.initial_state)
         client.unpause()
-        state_logic.current_state = GAME_STATE.RUNNING
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
     
-    
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_STARTING_LOADOUT then
+        state_logic.gui_change_savestate = memorysavestate.savecorestate()
+        
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.CHOOSE_STARTING_LOADOUT
+        state_logic.should_redraw = 1
+        
+        
+        memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+        client.pause()
+
+
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.CHOOSE_STARTING_LOADOUT then
+
+        -- TODO: render list of starting loadouts. Each loadout should provide a callable function that can set various things.
+        
+
+        if input_handler.inputs_pressed["Up"] == true then
+            state_logic.selected_loadout_index = (state_logic.selected_loadout_index - 1) % (#LOADOUTS)
+            
+            if state_logic.selected_loadout_index == 0 then
+                state_logic.selected_loadout_index = 1
+            end
+            state_logic.should_redraw = 1
+        end
+
+        if input_handler.inputs_pressed["Down"] == true then
+            state_logic.selected_loadout_index = (state_logic.selected_loadout_index + 1) % (#LOADOUTS + 1)
+            if state_logic.selected_loadout_index == 0 then
+                state_logic.selected_loadout_index = #LOADOUTS
+            end
+            state_logic.should_redraw = 1
+        end
+
+        state_logic.folder_view_switch_and_sort()
+
+
+        if input_handler.inputs_pressed["A"] == true then
+
+            --print("Selected a Chip!")
+            print("Selected Loadout: ", LOADOUTS[state_logic.selected_loadout_index])
+            gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT
+
+
+            LOADOUTS[state_logic.selected_loadout_index].activate()
+            state_logic.update_printable_chip_names_in_folder()
+            state_logic.update_argb_chip_icons_in_folder()
+            --print("Folder after loadout: ", gauntlet_data.current_folder)
+            gauntlet_data.folder_view = 0
+            state_logic.loadout_chosen = 1
+            state_logic.selected_loadout_index = 1
+        end
+
+        if state_logic.should_redraw == 1 then
+            
+            if gauntlet_data.folder_view == 0 then
+                gui_rendering.render_loadouts(LOADOUTS, state_logic.selected_loadout_index)
+            else
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil)
+            end
+
+            
+            gui.DrawFinish()
+            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            state_logic.should_redraw = 0
+        end
+
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_DRAFT_FOLDER then
+        state_logic.gui_change_savestate = memorysavestate.savecorestate()
+        
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.DRAFT_FOLDER
+        state_logic.should_redraw = 1
+        
+
+        --print("Transition to draft folder!")
+
+        for draft_chip_idx = 1,GAUNTLET_DEFS.NUMBER_OF_DRAFT_CHIPS do
+
+            state_logic.draft_selection_chips[draft_chip_idx] = gauntlet_data.folder_draft_chip_generator(#gauntlet_data.current_folder + 1)
+            state_logic.draft_selection_chips[draft_chip_idx].PRINT_NAME = state_logic.get_printable_chip_name(state_logic.draft_selection_chips[draft_chip_idx])
+        end
+        state_logic.update_argb_chip_icons_in_folder()
+        state_logic.update_dropped_chips_pictures(state_logic.draft_selection_chips)
+        --print("Folder:", gauntlet_data.current_folder)
+
+        if #gauntlet_data.current_folder == 30 then
+
+            gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT
+
+        end
+        
+        memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+        client.pause()
+
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.DRAFT_FOLDER then
+        
+
+        if input_handler.inputs_pressed["Left"] == true then
+            state_logic.draft_chip_render_index = (state_logic.draft_chip_render_index - 1) % (#state_logic.draft_selection_chips)
+            if state_logic.draft_chip_render_index == 0 then
+                state_logic.draft_chip_render_index = (#state_logic.draft_selection_chips)
+            end
+            state_logic.should_redraw = 1
+        end
+
+        if input_handler.inputs_pressed["Right"] == true then
+            state_logic.draft_chip_render_index = (state_logic.draft_chip_render_index + 1) % (#state_logic.draft_selection_chips + 1)
+           
+            if state_logic.draft_chip_render_index == 0 then
+                state_logic.draft_chip_render_index = 1
+            end
+            state_logic.should_redraw = 1
+        end
+
+        state_logic.folder_view_switch_and_sort()
+
+        if input_handler.inputs_pressed["A"] == true then
+
+            --print("Selected a Chip!")
+            
+            local new_chip = state_logic.draft_selection_chips[state_logic.draft_chip_render_index]
+
+            gauntlet_data.current_folder[#gauntlet_data.current_folder + 1] = deepcopy(new_chip)
+            state_logic.update_printable_chip_names_in_folder()
+            state_logic.update_argb_chip_icons_in_folder()
+
+            gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_DRAFT_FOLDER
+            gauntlet_data.folder_view = 0
+            state_logic.should_redraw = 1
+            state_logic.draft_chip_render_index = 1
+        end
+
+        if state_logic.should_redraw == 1 then
+
+            
+            if gauntlet_data.folder_view == 0 then
+                gui_rendering.render_chip_selection(state_logic.draft_selection_chips, state_logic.draft_chip_render_index)
+            else
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil)
+            end
+
+
+            
+            gui.DrawFinish()
+            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            state_logic.should_redraw = 0
+        end
 
     else -- Default state, should never happen
-        state_logic.current_state = GAME_STATE.RUNNING
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
     end
 
     emu.yield()

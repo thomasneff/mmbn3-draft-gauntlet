@@ -1,21 +1,13 @@
 Entities. Add all the info from TREZ.
 
-BUG: UnderShirt isn't working.
+Test if all buffs and patching still works. Look at HP, Custom+, all other NaviCust things, styles...
 
-Implement reasonable start folder randomization?
-  - For now, it randomizes based on Library stars...
-Implement random drops according to Library Stars, 80% Chance of current tier, 10% chance of higher, 10% chance of lower
-  - This is just temporary, until curated drops are implemented. Might keep it as an option though, as it could be fun.
+BUG/Intentional? Picking an HP buff in round 5 restores HP. Could be a nice intended strategy?
 
 
-BugStyle RNG doesn't work.
-  - RNG seems to be at 02009730 (4 bytes) and possibly 02009800 (4 bytes)
+Remove N-O-2 virus, as it's OP.
 
-Remove all NaviCust programs from initial.State
 
-Implement removal of certain buffs when activated? Don't know how I'd implement that yet.
-
-Render current folder chip in upper-right corner. (Possibly needs smaller chip BG)
 
 Possibly implement images for buffs? Would implement simply as chip_id and render a chip.
 Possibly implement buff rarities? Normal, Mega, Giga?
