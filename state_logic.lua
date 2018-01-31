@@ -23,7 +23,7 @@ local START_FOLDER = require "defs.start_folder_defs"
 local LOADOUTS = require "loadouts.loadout_defs"
 local gauntlet_data = require "gauntlet_data"
 local deepcopy = require "deepcopy"
-
+local CHIP_DROP_METHODS = require "chip_drop_methods.chip_drop_method_defs"
 -- TODO: possibly add more states.
 
 local state_logic = {}
@@ -43,7 +43,7 @@ state_logic.dropped_chips[3] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE
 state_logic.draft_selection_chips = {}
 
 state_logic.should_redraw = 1
-
+gauntlet_data.chip_drop_method = CHIP_DROP_METHODS[1]
 state_logic.hp_patch_frame_counter = 0
 state_logic.battle_start_frame_counter = 0
 
@@ -52,7 +52,7 @@ state_logic.dropped_chip.ID = -1
 state_logic.dropped_chip.PRINT_NAME = ""
 state_logic.loadout_chosen = 0
 state_logic.selected_loadout_index = 1
-
+state_logic.selected_drop_method_index = 1
 
 gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
 state_logic.dropped_chip_render_index = 1
@@ -152,7 +152,7 @@ function state_logic.determine_drops(number_of_drops)
         -- TODO: determine drops from state_logic.battle_data[state_logic.current_battle].ENTITIES entity droptables.
         --TODO: for now, this just randomizes.
         --state_logic.randomize_dropped_chips(number_of_drops)
-        state_logic.dropped_chips = CHIP_DROP_UTILS.dropped_chips_from_battle(state_logic.battle_data[state_logic.current_battle - 1], state_logic.current_round, number_of_drops)
+        state_logic.dropped_chips = gauntlet_data.chip_drop_method.generate_drops(state_logic.battle_data[state_logic.current_battle - 1], state_logic.current_round, number_of_drops)--CHIP_DROP_UTILS.dropped_chips_from_battle(state_logic.battle_data[state_logic.current_battle - 1], state_logic.current_round, number_of_drops)
 
         state_logic.update_dropped_chips_pictures(state_logic.dropped_chips)
         
@@ -179,7 +179,7 @@ function state_logic.on_enter_battle()
 
     if state_logic.loadout_chosen == 0 then
 
-        gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_STARTING_LOADOUT
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_DROP_METHOD
 
     end
 
@@ -394,6 +394,8 @@ function state_logic.initialize()
     gauntlet_data.cust_style_number_of_chips = 0
     gauntlet_data.cust_screen_number_of_chips = 5
     gauntlet_data.folder_view = 0
+    gauntlet_data.chip_drop_method = CHIP_DROP_METHODS[1]
+    gauntlet_data.chip_drop_method.activate()
     state_logic.loadout_chosen = 0
     state_logic.selected_loadout_index = 1
     state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
@@ -408,6 +410,8 @@ function state_logic.initialize()
     state_logic.battle_pointer_index = 1
     state_logic.hp_patch_frame_counter = 0
     state_logic.battle_start_frame_counter = 0
+    state_logic.selected_drop_method_index = 1
+
     state_logic.reset_selected_chips()
     gauntlet_data.folder_draft_chip_list = {}
     state_logic.draft_selection_chips = {}
@@ -842,6 +846,71 @@ function state_logic.main_loop()
             
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_loadouts(LOADOUTS, state_logic.selected_loadout_index)
+            else
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil)
+            end
+
+            
+            gui.DrawFinish()
+            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            state_logic.should_redraw = 0
+        end
+
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_DROP_METHOD then
+        state_logic.gui_change_savestate = memorysavestate.savecorestate()
+        
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.CHOOSE_DROP_METHOD
+        state_logic.should_redraw = 1
+        
+        
+        memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+        client.pause()
+
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.CHOOSE_DROP_METHOD then
+
+        -- TODO: render list of starting loadouts. Each loadout should provide a callable function that can set various things.
+        
+
+        if input_handler.inputs_pressed["Up"] == true then
+            state_logic.selected_drop_method_index = (state_logic.selected_drop_method_index - 1) % (#CHIP_DROP_METHODS)
+            
+            if state_logic.selected_drop_method_index == 0 then
+                state_logic.selected_drop_method_index = 1
+            end
+            state_logic.should_redraw = 1
+        end
+
+        if input_handler.inputs_pressed["Down"] == true then
+            state_logic.selected_drop_method_index = (state_logic.selected_drop_method_index + 1) % (#CHIP_DROP_METHODS + 1)
+            if state_logic.selected_drop_method_index == 0 then
+                state_logic.selected_drop_method_index = #CHIP_DROP_METHODS
+            end
+            state_logic.should_redraw = 1
+        end
+
+        state_logic.folder_view_switch_and_sort()
+
+
+        if input_handler.inputs_pressed["A"] == true then
+
+            --print("Selected a Chip!")
+            print("Selected drop method: ", CHIP_DROP_METHODS[state_logic.selected_drop_method_index])
+            gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_STARTING_LOADOUT
+
+
+            gauntlet_data.chip_drop_method = CHIP_DROP_METHODS[state_logic.selected_drop_method_index]
+            gauntlet_data.chip_drop_method.activate()
+
+            
+            --print("Folder after loadout: ", gauntlet_data.current_folder)
+            gauntlet_data.folder_view = 0
+            state_logic.selected_drop_method_index = 1
+        end
+
+        if state_logic.should_redraw == 1 then
+            
+            if gauntlet_data.folder_view == 0 then
+                gui_rendering.render_loadouts(CHIP_DROP_METHODS, state_logic.selected_drop_method_index)
             else
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil)
             end

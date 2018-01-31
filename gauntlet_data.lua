@@ -16,7 +16,9 @@ gauntlet_data.GAME_STATE = {
     TRANSITION_TO_CHOOSE_STARTING_LOADOUT = 0x0A,
     CHOOSE_STARTING_LOADOUT = 0x0B,
     TRANSITION_TO_DRAFT_FOLDER = 0x0C,
-    DRAFT_FOLDER = 0x0D
+    DRAFT_FOLDER = 0x0D,
+    TRANSITION_TO_CHOOSE_DROP_METHOD = 0x0E,
+    CHOOSE_DROP_METHOD = 0x0F
 }
 
 
@@ -41,5 +43,6 @@ gauntlet_data.folder_view = 0
 gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
 gauntlet_data.folder_draft_chip_list = {}
 gauntlet_data.folder_draft_chip_generator = {}
+gauntlet_data.chip_drop_method = {}
 
 return gauntlet_data
