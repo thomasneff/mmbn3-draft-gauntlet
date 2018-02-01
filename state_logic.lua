@@ -51,8 +51,8 @@ state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
 state_logic.dropped_chip.ID = -1
 state_logic.dropped_chip.PRINT_NAME = ""
 state_logic.loadout_chosen = 0
-state_logic.selected_loadout_index = 1
-state_logic.selected_drop_method_index = 1
+state_logic.selected_loadout_index = 2
+state_logic.selected_drop_method_index = 2
 
 gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
 state_logic.dropped_chip_render_index = 1
@@ -397,7 +397,7 @@ function state_logic.initialize()
     gauntlet_data.chip_drop_method = CHIP_DROP_METHODS[1]
     gauntlet_data.chip_drop_method.activate()
     state_logic.loadout_chosen = 0
-    state_logic.selected_loadout_index = 1
+    state_logic.selected_loadout_index = 2
     state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
     state_logic.dropped_chip.ID = -1
     state_logic.dropped_chip.PRINT_NAME = state_logic.get_printable_chip_name(state_logic.dropped_chip)
@@ -410,7 +410,7 @@ function state_logic.initialize()
     state_logic.battle_pointer_index = 1
     state_logic.hp_patch_frame_counter = 0
     state_logic.battle_start_frame_counter = 0
-    state_logic.selected_drop_method_index = 1
+    state_logic.selected_drop_method_index = 2
 
     state_logic.reset_selected_chips()
     gauntlet_data.folder_draft_chip_list = {}
@@ -839,7 +839,7 @@ function state_logic.main_loop()
             --print("Folder after loadout: ", gauntlet_data.current_folder)
             gauntlet_data.folder_view = 0
             state_logic.loadout_chosen = 1
-            state_logic.selected_loadout_index = 1
+            state_logic.selected_loadout_index = 2
         end
 
         if state_logic.should_redraw == 1 then
@@ -904,7 +904,7 @@ function state_logic.main_loop()
             
             --print("Folder after loadout: ", gauntlet_data.current_folder)
             gauntlet_data.folder_view = 0
-            state_logic.selected_drop_method_index = 1
+            state_logic.selected_drop_method_index = 2
         end
 
         if state_logic.should_redraw == 1 then
