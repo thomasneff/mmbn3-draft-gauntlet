@@ -58,4 +58,65 @@ function CHIP.new_random_chip_with_random_code()
 end
 
 
+function CHIP.new_chip_with_random_code_generator(chip_id)
+
+    function gen() 
+
+        new_chip = deepcopy(CHIP_TEMPLATE)
+
+        new_chip.CODE = randomchoice(CHIP_CODE)
+        new_chip.ID = chip_id
+
+
+        return new_chip
+
+    end
+
+    return gen
+end
+
+function CHIP.new_random_chip_with_random_code_generator()
+
+  
+
+    return CHIP.new_random_chip_with_random_code
+end
+
+
+function CHIP.new_chip_with_random_code_from_list_generator(chip_id, chip_codes)
+
+    function gen()
+        new_chip = deepcopy(CHIP_TEMPLATE)
+        new_chip.CODE = randomchoice(chip_codes)--chip_codes[math.random(#chip_codes)]
+        new_chip.ID = chip_id
+        return new_chip
+    end
+
+
+    return gen
+end
+
+
+function CHIP.new_chip_generator(chip_id, chip_code)
+
+    function gen()
+        new_chip = deepcopy(CHIP_TEMPLATE)
+
+
+        if chip_code ~= nil then
+            new_chip.CODE = chip_code
+        else
+            new_chip.CODE = randomchoice(CHIP_CODE)
+        end
+        new_chip.ID = chip_id
+
+
+        return new_chip
+    end
+
+
+    return gen
+end
+
+
 return CHIP

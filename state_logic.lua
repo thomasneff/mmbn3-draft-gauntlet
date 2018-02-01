@@ -168,7 +168,7 @@ function state_logic.on_enter_battle()
     
 
     state_logic.patch_next_battle()
-    state_logic.determine_drops(GAUNTLET_DEFS.NUMBER_OF_DROPPED_CHIPS)
+    --state_logic.determine_drops(GAUNTLET_DEFS.NUMBER_OF_DROPPED_CHIPS)
     state_logic.shuffle_folder()
 
     if gauntlet_data.current_state ~= gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT and  

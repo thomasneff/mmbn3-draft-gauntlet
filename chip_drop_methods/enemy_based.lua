@@ -46,14 +46,30 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
 
     -- Now that we got all Virus-entities, we can randomly select one, and roll from its drop table (if it exists)
     local dropped_chips = {}
-
+    local virus_index = 0
     for drop_index = 1, number_of_drops do
 
-        local virus_entity_data = virus_entities[math.random(#virus_entities)]
 
+        -- We iterate over all viruses to make sure they can all drop stuff :)
+        local virus_entity_data = virus_entities[(virus_index % #virus_entities) + 1]
+        virus_index = virus_index + 1
+        --print(virus_entity_data)
+        --print(virus_entity_data.DROP_TABLE)
         if virus_entity_data.DROP_TABLE ~= nil then
-            -- TODO: implement virus chip drops
-            --       each DROP_TABLE should contain a CHIP_ID and a CODE_LIST
+            
+            local rng = math.random(100)
+
+            for key, drop_entry in ipairs(virus_entity_data.DROP_TABLE) do
+
+                if drop_entry.CUMULATIVE_RARITY >= rng then
+                    --print("Dropping " .. key .. " drop-table chip!")
+                    dropped_chips[drop_index] = drop_entry.CHIP_GEN()
+                    break
+                end
+
+            end
+
+
         else
 
             -- If there is no drop table, we drop randomly based on the current round.

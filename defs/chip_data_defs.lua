@@ -7245,7 +7245,7 @@ function getKeysSortedByValue(tbl, sortFunction)
 	  end)
 	
 	  return keys
-	end
+end
 	
 	
 	
