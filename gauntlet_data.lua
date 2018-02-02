@@ -1,4 +1,4 @@
--- Here we store everything that needs to be manipulated by buffs and state logic to avoid circular dependencies.
+-- Here we store everything that needs to be Manipulated by buffs and state logic to avoid circular dependencies.
 
 local gauntlet_data = {}
 

@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
-ENTITIES.Megaman.DROPTABLE =
+ENTITIES.MegaMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -1429,7 +1429,7 @@ ENTITIES.ShadowOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Brushman.DROPTABLE =
+ENTITIES.BrushMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -1451,7 +1451,7 @@ ENTITIES.Brushman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Brushman2.DROPTABLE =
+ENTITIES.BrushMan2.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -1473,7 +1473,7 @@ ENTITIES.Brushman2.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Brushman3.DROPTABLE =
+ENTITIES.BrushMan3.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -1495,7 +1495,7 @@ ENTITIES.Brushman3.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BrushmanOmega.DROPTABLE =
+ENTITIES.BrushManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3695,7 +3695,7 @@ ENTITIES.Number_G3.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Flashman.DROPTABLE =
+ENTITIES.FlashMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3717,7 +3717,7 @@ ENTITIES.Flashman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.FlashmanAlpha.DROPTABLE =
+ENTITIES.FlashManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3739,7 +3739,7 @@ ENTITIES.FlashmanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.FlashmanBeta.DROPTABLE =
+ENTITIES.FlashManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3761,7 +3761,7 @@ ENTITIES.FlashmanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.FlashmanOmega.DROPTABLE =
+ENTITIES.FlashManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3783,7 +3783,7 @@ ENTITIES.FlashmanOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Beastman.DROPTABLE =
+ENTITIES.BeastMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3805,7 +3805,7 @@ ENTITIES.Beastman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BeastmanAlpha.DROPTABLE =
+ENTITIES.BeastManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3827,7 +3827,7 @@ ENTITIES.BeastmanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BeastmanBeta.DROPTABLE =
+ENTITIES.BeastManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3849,7 +3849,7 @@ ENTITIES.BeastmanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BeastmanOmega.DROPTABLE =
+ENTITIES.BeastManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3871,7 +3871,7 @@ ENTITIES.BeastmanOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Bubbleman.DROPTABLE =
+ENTITIES.BubbleMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3893,7 +3893,7 @@ ENTITIES.Bubbleman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BubblemanAlpha.DROPTABLE =
+ENTITIES.BubbleManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3915,7 +3915,7 @@ ENTITIES.BubblemanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BubblemanBeta.DROPTABLE =
+ENTITIES.BubbleManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3937,7 +3937,7 @@ ENTITIES.BubblemanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BubblemanOmega.DROPTABLE =
+ENTITIES.BubbleManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3959,7 +3959,7 @@ ENTITIES.BubblemanOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Desertman.DROPTABLE =
+ENTITIES.DesertMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3981,7 +3981,7 @@ ENTITIES.Desertman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DesertmanAlpha.DROPTABLE =
+ENTITIES.DesertManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4003,7 +4003,7 @@ ENTITIES.DesertmanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DesertmanBeta.DROPTABLE =
+ENTITIES.DesertManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4025,7 +4025,7 @@ ENTITIES.DesertmanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DesertmanOmega.DROPTABLE =
+ENTITIES.DesertManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4047,7 +4047,7 @@ ENTITIES.DesertmanOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Plantman.DROPTABLE =
+ENTITIES.PlantMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4069,7 +4069,7 @@ ENTITIES.Plantman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.PlantmanAlpha.DROPTABLE =
+ENTITIES.PlantManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4091,7 +4091,7 @@ ENTITIES.PlantmanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.PlantmanBeta.DROPTABLE =
+ENTITIES.PlantManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4113,7 +4113,7 @@ ENTITIES.PlantmanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.PlantmanOmega.DROPTABLE =
+ENTITIES.PlantManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4135,7 +4135,7 @@ ENTITIES.PlantmanOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Flameman.DROPTABLE =
+ENTITIES.FlameMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4157,7 +4157,7 @@ ENTITIES.Flameman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.FlamemanAlpha.DROPTABLE =
+ENTITIES.FlameManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4179,7 +4179,7 @@ ENTITIES.FlamemanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.FlamemanBeta.DROPTABLE =
+ENTITIES.FlameManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4201,7 +4201,7 @@ ENTITIES.FlamemanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.FlamemanOmega.DROPTABLE =
+ENTITIES.FlameManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4223,7 +4223,7 @@ ENTITIES.FlamemanOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Drillman.DROPTABLE =
+ENTITIES.DrillMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4245,7 +4245,7 @@ ENTITIES.Drillman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DrillmanAlpha.DROPTABLE =
+ENTITIES.DrillManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4267,7 +4267,7 @@ ENTITIES.DrillmanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DrillmanBeta.DROPTABLE =
+ENTITIES.DrillManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4289,7 +4289,7 @@ ENTITIES.DrillmanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DrillmanOmega.DROPTABLE =
+ENTITIES.DrillManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4355,7 +4355,7 @@ ENTITIES.AlphaOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Gutsman.DROPTABLE =
+ENTITIES.GutsMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4377,7 +4377,7 @@ ENTITIES.Gutsman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.GutsmanAlpha.DROPTABLE =
+ENTITIES.GutsManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4399,7 +4399,7 @@ ENTITIES.GutsmanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.GutsmanBeta.DROPTABLE =
+ENTITIES.GutsManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4421,7 +4421,7 @@ ENTITIES.GutsmanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.GutsmanOmega.DROPTABLE =
+ENTITIES.GutsManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4443,7 +4443,7 @@ ENTITIES.GutsmanOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Protoman.DROPTABLE =
+ENTITIES.ProtoMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4465,7 +4465,7 @@ ENTITIES.Protoman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.ProtomanAlpha.DROPTABLE =
+ENTITIES.ProtoManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4487,7 +4487,7 @@ ENTITIES.ProtomanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.ProtomanBeta.DROPTABLE =
+ENTITIES.ProtoManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4509,7 +4509,7 @@ ENTITIES.ProtomanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.ProtomanOmega.DROPTABLE =
+ENTITIES.ProtoManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4531,7 +4531,7 @@ ENTITIES.ProtomanOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Metalman.DROPTABLE =
+ENTITIES.MetalMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4553,7 +4553,7 @@ ENTITIES.Metalman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.MetalmanAlpha.DROPTABLE =
+ENTITIES.MetalManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4575,7 +4575,7 @@ ENTITIES.MetalmanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.MetalmanBeta.DROPTABLE =
+ENTITIES.MetalManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4597,7 +4597,7 @@ ENTITIES.MetalmanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.MetalmanOmega.DROPTABLE =
+ENTITIES.MetalManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4707,7 +4707,7 @@ ENTITIES.PunkOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Kingman.DROPTABLE =
+ENTITIES.KingMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4729,7 +4729,7 @@ ENTITIES.Kingman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.KingmanAlpha.DROPTABLE =
+ENTITIES.KingManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4751,7 +4751,7 @@ ENTITIES.KingmanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.KingmanBeta.DROPTABLE =
+ENTITIES.KingManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4773,7 +4773,7 @@ ENTITIES.KingmanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.KingmanOmega.DROPTABLE =
+ENTITIES.KingManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4795,7 +4795,7 @@ ENTITIES.KingmanOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Mistman.DROPTABLE =
+ENTITIES.MistMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4817,7 +4817,7 @@ ENTITIES.Mistman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.MistmanAlpha.DROPTABLE =
+ENTITIES.MistManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4839,7 +4839,7 @@ ENTITIES.MistmanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.MistmanBeta.DROPTABLE =
+ENTITIES.MistManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4861,7 +4861,7 @@ ENTITIES.MistmanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.MistmanOmega.DROPTABLE =
+ENTITIES.MistManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4883,7 +4883,7 @@ ENTITIES.MistmanOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Bowlman.DROPTABLE =
+ENTITIES.BowlMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4905,7 +4905,7 @@ ENTITIES.Bowlman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BowlmanAlpha.DROPTABLE =
+ENTITIES.BowlManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4927,7 +4927,7 @@ ENTITIES.BowlmanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BowlmanBeta.DROPTABLE =
+ENTITIES.BowlManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4949,7 +4949,7 @@ ENTITIES.BowlmanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BowlmanOmega.DROPTABLE =
+ENTITIES.BowlManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4971,7 +4971,7 @@ ENTITIES.BowlmanOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Darkman.DROPTABLE =
+ENTITIES.DarkMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4993,7 +4993,7 @@ ENTITIES.Darkman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DarkmanAlpha.DROPTABLE =
+ENTITIES.DarkManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -5015,7 +5015,7 @@ ENTITIES.DarkmanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DarkmanBeta.DROPTABLE =
+ENTITIES.DarkManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -5037,7 +5037,7 @@ ENTITIES.DarkmanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DarkmanOmega.DROPTABLE =
+ENTITIES.DarkManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -5059,7 +5059,7 @@ ENTITIES.DarkmanOmega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Japanman.DROPTABLE =
+ENTITIES.JapanMan.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -5081,7 +5081,7 @@ ENTITIES.Japanman.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.JapanmanAlpha.DROPTABLE =
+ENTITIES.JapanManAlpha.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -5103,7 +5103,7 @@ ENTITIES.JapanmanAlpha.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.JapanmanBeta.DROPTABLE =
+ENTITIES.JapanManBeta.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -5125,7 +5125,7 @@ ENTITIES.JapanmanBeta.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.JapanmanOmega.DROPTABLE =
+ENTITIES.JapanManOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,

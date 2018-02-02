@@ -50,29 +50,29 @@ function mmbn3_utils.writedword(address, value)
 
 end
 
-function mmbn3_utils.change_megaman_current_hp(new_value)
-    --local megaman_current_hp_address = 0x020018A0 -- This is the address before battle.
+function mmbn3_utils.change_megaMan_current_hp(new_value)
+    --local megaMan_current_hp_address = 0x020018A0 -- This is the address before battle.
     -- We need the address just before battle.
-    local megaman_current_hp_address = defs.MEGA_CURRENT_HP_ADDRESS
-    mmbn3_utils.writeword(megaman_current_hp_address, new_value)
+    local megaMan_current_hp_address = defs.MEGA_CURRENT_HP_ADDRESS
+    mmbn3_utils.writeword(megaMan_current_hp_address, new_value)
     mmbn3_utils.writeword(0x020018A0, new_value)
     mmbn3_utils.writeword(0x0200F888, new_value)
 end
 
-function mmbn3_utils.change_megaman_max_hp(new_value) 
-    --local megaman_max_hp_address = 0x020018A2 -- This is the address before battle.
+function mmbn3_utils.change_megaMan_max_hp(new_value) 
+    --local megaMan_max_hp_address = 0x020018A2 -- This is the address before battle.
     -- We need the address IN battle.
-    local megaman_max_hp_address = defs.MEGA_MAX_HP_ADDRESS
+    local megaMan_max_hp_address = defs.MEGA_MAX_HP_ADDRESS
     print("Patched HP: ", new_value)
-    mmbn3_utils.writeword(megaman_max_hp_address, new_value)
+    mmbn3_utils.writeword(megaMan_max_hp_address, new_value)
     mmbn3_utils.writeword(0x020018A2, new_value)
 
 end
 
-function mmbn3_utils.change_megaman_style(new_style) 
-    local megaman_style_address = defs.STYLE_CHANGE_ADDRESS
-    megaman_style_address = 0x02001881
-    mmbn3_utils.writebyte(megaman_style_address, new_style)
+function mmbn3_utils.change_megaMan_style(new_style) 
+    local megaMan_style_address = defs.STYLE_CHANGE_ADDRESS
+    megaMan_style_address = 0x02001881
+    mmbn3_utils.writebyte(megaMan_style_address, new_style)
     mmbn3_utils.writebyte(0x02001881, new_style)
     mmbn3_utils.writebyte(0x02001894, new_style)
     mmbn3_utils.writebyte(0x0203B39C, new_style)
@@ -286,7 +286,7 @@ function mmbn3_utils.patch_entity_data(entities)
 
     for key, new_entity in pairs(entities) do
 
-        if new_entity.BATTLE_DATA.KIND == ENTITY_KIND.Megaman then
+        if new_entity.BATTLE_DATA.KIND == ENTITY_KIND.MegaMan then
             break
         end
     

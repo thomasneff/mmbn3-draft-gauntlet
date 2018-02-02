@@ -5,10 +5,10 @@ local STARTING_HP = require "defs.starting_hp_defs"
 local BATTLE_STAGE_DEFS = require "defs.battle_stage_defs"
 -- Can't change music yet unfortunately without more reverse engineering.
 local pointer_entry_template = {
-  -- Important - this address starts at the first entity (Megaman, typically)
+  -- Important - this address starts at the first entity (MegaMan, typically)
   ADDRESS = 0x0801AA60,
 
-  UNID_BYTE_1 = 0x00, -- freezes game if != 0, possibly "Optional Folder Pointer" (http://forums.therockmanexezone.com/topic/8831451/1/)
+  UNID_BYTE_1 = 0x00, -- freezes game if != 0, possibly "Optional Folder Pointer" (http://forums.therockManexezone.com/topic/8831451/1/)
   UNID_BYTE_2 = 0x00, -- freezes game if != 0
   UNID_BYTE_3 = 0x00, -- freezes game if != 0
   UNID_BYTE_4 = 0x00, -- freezes game if != 0

@@ -1,5 +1,5 @@
 -- This file contains definitions for enemy chip usage (e.g. Dominerd, FlashMan)
--- Mostly taken from http://forums.therockmanexezone.com/topic/10006275/1/
+-- Mostly taken from http://forums.therockManexezone.com/topic/10006275/1/
 -- Many of those chips crash or do nothing if not used with MegaMan (-> r2 in ExecTimeFreezeChip needs to be set to 0x01)
 -- I'm still including them in case we want to hook ExecTimeFreezeChip and execute arbitrary stuff for us.
 -- (Example - we could make a custom hook, that replaces all time-freeze chips with a specific chip, or forces all enemy chips to be good, etc.)
@@ -90,27 +90,27 @@ TIME_FREEZE_CHIP_DEFS.WindOmega = {
 }
 
 
-TIME_FREEZE_CHIP_DEFS.Flashman = {
+TIME_FREEZE_CHIP_DEFS.FlashMan = {
     FAMILY = 0x06,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.FlashmanV2 = {
+TIME_FREEZE_CHIP_DEFS.FlashManV2 = {
     FAMILY = 0x06,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.FlashmanV3 = {
+TIME_FREEZE_CHIP_DEFS.FlashManV3 = {
     FAMILY = 0x06,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.FlashmanV4 = {
+TIME_FREEZE_CHIP_DEFS.FlashManV4 = {
     FAMILY = 0x06,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.FlashmanV5 = {
+TIME_FREEZE_CHIP_DEFS.FlashManV5 = {
     FAMILY = 0x06,
     SUBFAMILY = 0x04
 }
@@ -136,52 +136,52 @@ TIME_FREEZE_CHIP_DEFS.ZPunch = {
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.Gutsman = {
+TIME_FREEZE_CHIP_DEFS.GutsMan = {
     FAMILY = 0x09,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.GutsmanV2 = {
+TIME_FREEZE_CHIP_DEFS.GutsManV2 = {
     FAMILY = 0x09,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.GutsmanV3 = {
+TIME_FREEZE_CHIP_DEFS.GutsManV3 = {
     FAMILY = 0x09,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.GutsmanV4 = {
+TIME_FREEZE_CHIP_DEFS.GutsManV4 = {
     FAMILY = 0x09,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.GutsmanV5 = {
+TIME_FREEZE_CHIP_DEFS.GutsManV5 = {
     FAMILY = 0x09,
     SUBFAMILY = 0x04
 }
 
-TIME_FREEZE_CHIP_DEFS.Beastman = {
+TIME_FREEZE_CHIP_DEFS.BeastMan = {
     FAMILY = 0x0A,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.BeastmanV2 = {
+TIME_FREEZE_CHIP_DEFS.BeastManV2 = {
     FAMILY = 0x0A,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.BeastmanV3 = {
+TIME_FREEZE_CHIP_DEFS.BeastManV3 = {
     FAMILY = 0x0A,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.BeastmanV4 = {
+TIME_FREEZE_CHIP_DEFS.BeastManV4 = {
     FAMILY = 0x0A,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.BeastmanV5 = {
+TIME_FREEZE_CHIP_DEFS.BeastManV5 = {
     FAMILY = 0x0A,
     SUBFAMILY = 0x04
 }
@@ -201,27 +201,27 @@ TIME_FREEZE_CHIP_DEFS.AirShoes = {
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.Bubbleman = {
+TIME_FREEZE_CHIP_DEFS.BubbleMan = {
     FAMILY = 0x0E,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.BubblemanV2 = {
+TIME_FREEZE_CHIP_DEFS.BubbleManV2 = {
     FAMILY = 0x0E,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.BubblemanV3 = {
+TIME_FREEZE_CHIP_DEFS.BubbleManV3 = {
     FAMILY = 0x0E,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.BubblemanV4 = {
+TIME_FREEZE_CHIP_DEFS.BubbleManV4 = {
     FAMILY = 0x0E,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.BubblemanV5 = {
+TIME_FREEZE_CHIP_DEFS.BubbleManV5 = {
     FAMILY = 0x0E,
     SUBFAMILY = 0x04
 }
@@ -272,27 +272,27 @@ TIME_FREEZE_CHIP_DEFS.Mine = {
 }
 
 
-TIME_FREEZE_CHIP_DEFS.Metalman = {
+TIME_FREEZE_CHIP_DEFS.MetalMan = {
     FAMILY = 0x14,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.MetalmanV2 = {
+TIME_FREEZE_CHIP_DEFS.MetalManV2 = {
     FAMILY = 0x14,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.MetalmanV3 = {
+TIME_FREEZE_CHIP_DEFS.MetalManV3 = {
     FAMILY = 0x14,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.MetalmanV4 = {
+TIME_FREEZE_CHIP_DEFS.MetalManV4 = {
     FAMILY = 0x14,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.MetalmanV5 = {
+TIME_FREEZE_CHIP_DEFS.MetalManV5 = {
     FAMILY = 0x14,
     SUBFAMILY = 0x04
 }
@@ -436,27 +436,27 @@ TIME_FREEZE_CHIP_DEFS.SwordyOmega = {
 }
 
 
-TIME_FREEZE_CHIP_DEFS.Desertman = {
+TIME_FREEZE_CHIP_DEFS.DesertMan = {
     FAMILY = 0x1F,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.DesertmanV2 = {
+TIME_FREEZE_CHIP_DEFS.DesertManV2 = {
     FAMILY = 0x1F,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.DesertmanV3 = {
+TIME_FREEZE_CHIP_DEFS.DesertManV3 = {
     FAMILY = 0x1F,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.DesertmanV4 = {
+TIME_FREEZE_CHIP_DEFS.DesertManV4 = {
     FAMILY = 0x1F,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.DesertmanV5 = {
+TIME_FREEZE_CHIP_DEFS.DesertManV5 = {
     FAMILY = 0x1F,
     SUBFAMILY = 0x04
 }
@@ -524,27 +524,27 @@ TIME_FREEZE_CHIP_DEFS.Timpani = {
 }
 
 
-TIME_FREEZE_CHIP_DEFS.Plantman = {
+TIME_FREEZE_CHIP_DEFS.PlantMan = {
     FAMILY = 0x27,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.PlantmanV2 = {
+TIME_FREEZE_CHIP_DEFS.PlantManV2 = {
     FAMILY = 0x27,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.PlantmanV3 = {
+TIME_FREEZE_CHIP_DEFS.PlantManV3 = {
     FAMILY = 0x27,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.PlantmanV4 = {
+TIME_FREEZE_CHIP_DEFS.PlantManV4 = {
     FAMILY = 0x27,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.PlantmanV5 = {
+TIME_FREEZE_CHIP_DEFS.PlantManV5 = {
     FAMILY = 0x27,
     SUBFAMILY = 0x04
 }
@@ -570,53 +570,53 @@ TIME_FREEZE_CHIP_DEFS.NeedlerOmega = {
 }
 
 
-TIME_FREEZE_CHIP_DEFS.Drillman = {
+TIME_FREEZE_CHIP_DEFS.DrillMan = {
     FAMILY = 0x29,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.DrillmanV2 = {
+TIME_FREEZE_CHIP_DEFS.DrillManV2 = {
     FAMILY = 0x29,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.DrillmanV3 = {
+TIME_FREEZE_CHIP_DEFS.DrillManV3 = {
     FAMILY = 0x29,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.DrillmanV4 = {
+TIME_FREEZE_CHIP_DEFS.DrillManV4 = {
     FAMILY = 0x29,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.DrillmanV5 = {
+TIME_FREEZE_CHIP_DEFS.DrillManV5 = {
     FAMILY = 0x29,
     SUBFAMILY = 0x04
 }
 
 
-TIME_FREEZE_CHIP_DEFS.Flameman = {
+TIME_FREEZE_CHIP_DEFS.FlameMan = {
     FAMILY = 0x2A,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.FlamemanV2 = {
+TIME_FREEZE_CHIP_DEFS.FlameManV2 = {
     FAMILY = 0x2A,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.FlamemanV3 = {
+TIME_FREEZE_CHIP_DEFS.FlameManV3 = {
     FAMILY = 0x2A,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.FlamemanV4 = {
+TIME_FREEZE_CHIP_DEFS.FlameManV4 = {
     FAMILY = 0x2A,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.FlamemanV5 = {
+TIME_FREEZE_CHIP_DEFS.FlameManV5 = {
     FAMILY = 0x2A,
     SUBFAMILY = 0x04
 }
@@ -698,27 +698,27 @@ TIME_FREEZE_CHIP_DEFS.KillerEyeOmega = {
 }
 
 
-TIME_FREEZE_CHIP_DEFS.Mistman = {
+TIME_FREEZE_CHIP_DEFS.MistMan = {
     FAMILY = 0x3D,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.MistmanV2 = {
+TIME_FREEZE_CHIP_DEFS.MistManV2 = {
     FAMILY = 0x3D,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.MistmanV3 = {
+TIME_FREEZE_CHIP_DEFS.MistManV3 = {
     FAMILY = 0x3D,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.MistmanV4 = {
+TIME_FREEZE_CHIP_DEFS.MistManV4 = {
     FAMILY = 0x3D,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.MistmanV5 = {
+TIME_FREEZE_CHIP_DEFS.MistManV5 = {
     FAMILY = 0x3D,
     SUBFAMILY = 0x04
 }
@@ -749,27 +749,27 @@ TIME_FREEZE_CHIP_DEFS.Team2 = {
 }
 
 
-TIME_FREEZE_CHIP_DEFS.Bowlman = {
+TIME_FREEZE_CHIP_DEFS.BowlMan = {
     FAMILY = 0x40,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.BowlmanV2 = {
+TIME_FREEZE_CHIP_DEFS.BowlManV2 = {
     FAMILY = 0x40,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.BowlmanV3 = {
+TIME_FREEZE_CHIP_DEFS.BowlManV3 = {
     FAMILY = 0x40,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.BowlmanV4 = {
+TIME_FREEZE_CHIP_DEFS.BowlManV4 = {
     FAMILY = 0x40,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.BowlmanV5 = {
+TIME_FREEZE_CHIP_DEFS.BowlManV5 = {
     FAMILY = 0x40,
     SUBFAMILY = 0x04
 }
@@ -826,54 +826,54 @@ TIME_FREEZE_CHIP_DEFS.ERROR_DELETE = {
 }
 
 
-TIME_FREEZE_CHIP_DEFS.Protoman = {
+TIME_FREEZE_CHIP_DEFS.ProtoMan = {
     FAMILY = 0x44,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.ProtomanV2 = {
+TIME_FREEZE_CHIP_DEFS.ProtoManV2 = {
     FAMILY = 0x44,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.ProtomanV3 = {
+TIME_FREEZE_CHIP_DEFS.ProtoManV3 = {
     FAMILY = 0x44,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.ProtomanV4 = {
+TIME_FREEZE_CHIP_DEFS.ProtoManV4 = {
     FAMILY = 0x44,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.ProtomanV5 = {
+TIME_FREEZE_CHIP_DEFS.ProtoManV5 = {
     FAMILY = 0x44,
     SUBFAMILY = 0x04
 }
 
 
 
-TIME_FREEZE_CHIP_DEFS.Darkman = {
+TIME_FREEZE_CHIP_DEFS.DarkMan = {
     FAMILY = 0x45,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.DarkmanV2 = {
+TIME_FREEZE_CHIP_DEFS.DarkManV2 = {
     FAMILY = 0x45,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.DarkmanV3 = {
+TIME_FREEZE_CHIP_DEFS.DarkManV3 = {
     FAMILY = 0x45,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.DarkmanV4 = {
+TIME_FREEZE_CHIP_DEFS.DarkManV4 = {
     FAMILY = 0x45,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.DarkmanV5 = {
+TIME_FREEZE_CHIP_DEFS.DarkManV5 = {
     FAMILY = 0x45,
     SUBFAMILY = 0x04
 }
@@ -903,33 +903,33 @@ TIME_FREEZE_CHIP_DEFS.BassGS = {
 }
 
 
-TIME_FREEZE_CHIP_DEFS.Japanman = {
+TIME_FREEZE_CHIP_DEFS.JapanMan = {
     FAMILY = 0x4A,
     SUBFAMILY = 0x00
 }
 
-TIME_FREEZE_CHIP_DEFS.JapanmanV2 = {
+TIME_FREEZE_CHIP_DEFS.JapanManV2 = {
     FAMILY = 0x4A,
     SUBFAMILY = 0x01
 }
 
-TIME_FREEZE_CHIP_DEFS.JapanmanV3 = {
+TIME_FREEZE_CHIP_DEFS.JapanManV3 = {
     FAMILY = 0x4A,
     SUBFAMILY = 0x02
 }
 
-TIME_FREEZE_CHIP_DEFS.JapanmanV4 = {
+TIME_FREEZE_CHIP_DEFS.JapanManV4 = {
     FAMILY = 0x4A,
     SUBFAMILY = 0x03
 }
 
-TIME_FREEZE_CHIP_DEFS.JapanmanV5 = {
+TIME_FREEZE_CHIP_DEFS.JapanManV5 = {
     FAMILY = 0x4A,
     SUBFAMILY = 0x04
 }
 
 
-TIME_FREEZE_CHIP_DEFS.Japanman_Backup = {
+TIME_FREEZE_CHIP_DEFS.JapanMan_Backup = {
     FAMILY = 0x4B,
     SUBFAMILY = 0x00
 }

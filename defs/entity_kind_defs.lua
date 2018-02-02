@@ -1,8 +1,8 @@
 
--- Taken from http://forums.therockmanexezone.com/topic/746085/1/
+-- Taken from http://forums.therockManexezone.com/topic/746085/1/
 
 local ENTITY_KIND = {
-    Megaman = 0x00,
+    MegaMan = 0x00,
     Virus = 0x01,
     Rock = 0x02,
     RockCube = 0x03,

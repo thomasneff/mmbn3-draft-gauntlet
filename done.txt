@@ -75,7 +75,7 @@ BUG: Bolt picture was displayed with name GaiaBlade
 Get all virus breeder viruses in the save game so the chips don't puff.
 
 
-02001DCA sets style change after battle. we might be able to find out how this influences the style change RNG. Then we could manipulate it and just load a style-change savestate.
+02001DCA sets style change after battle. we might be able to find out how this influences the style change RNG. Then we could Manipulate it and just load a style-change savestate.
 
 at 08015CB2, current style (0x11 for ElecCust) is loaded into r0.
 at 08015B48,  after hitting "overwrite" for the style, it is written into the currently equipped modifier.

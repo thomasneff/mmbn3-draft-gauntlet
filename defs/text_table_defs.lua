@@ -1,5 +1,5 @@
 
--- Taken from https://github.com/RockmanEXEZone/MMBN-Table-Files/blob/master/done/bn3-utf8.tbl
+-- Taken from https://github.com/RockManEXEZone/MMBN-Table-Files/blob/master/done/bn3-utf8.tbl
 
 local TEXT_TABLE = {
   [" "]	=	0x0	,

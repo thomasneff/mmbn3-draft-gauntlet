@@ -480,15 +480,15 @@ function state_logic.patch_before_battle_start()
     mmbn3_utils.writebyte(0x0200577D, gauntlet_data.mega_WeaponLevelPlus)
 
 
-    mmbn3_utils.change_megaman_max_hp(gauntlet_data.mega_max_hp) 
-    -- We need to wait a few frames to patch the in-battle HP of megaman in RAM. Otherwise we would need a hook way before battle, which I don't want to find right now.
+    mmbn3_utils.change_megaMan_max_hp(gauntlet_data.mega_max_hp) 
+    -- We need to wait a few frames to patch the in-battle HP of megaMan in RAM. Otherwise we would need a hook way before battle, which I don't want to find right now.
     if  gauntlet_data.hp_patch_required == 1 then
-        mmbn3_utils.change_megaman_max_hp(gauntlet_data.mega_max_hp) 
-        mmbn3_utils.change_megaman_current_hp(gauntlet_data.mega_max_hp) 
+        mmbn3_utils.change_megaMan_max_hp(gauntlet_data.mega_max_hp) 
+        mmbn3_utils.change_megaMan_current_hp(gauntlet_data.mega_max_hp) 
         gauntlet_data.hp_patch_required = 0
     end
 
-    mmbn3_utils.change_megaman_style(gauntlet_data.mega_style)
+    mmbn3_utils.change_megaMan_style(gauntlet_data.mega_style)
 
     mmbn3_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
 
@@ -780,7 +780,7 @@ function state_logic.main_loop()
         
         --print("Patched folder!")
         client.unpause()
-         --mmbn3_utils.change_megaman_max_hp(gauntlet_data.mega_max_hp) 
+         --mmbn3_utils.change_megaMan_max_hp(gauntlet_data.mega_max_hp) 
         
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
         

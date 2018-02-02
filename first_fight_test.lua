@@ -9,10 +9,10 @@ local example_fight_data = {
     UNKNOWN_ZERO_BYTE_3 = 0x00,
     ENTITIES = {
         {
-            TYPE = defs.ENTITY_TYPE.Megaman,
+            TYPE = defs.ENTITY_TYPE.MegaMan,
             X_POS = 0x02,
             Y_POS = 0x02,
-            KIND = defs.ENTITY_KIND.Megaman
+            KIND = defs.ENTITY_KIND.MegaMan
         },
         {
             TYPE = defs.ENTITY_TYPE.Mettaur,
@@ -78,7 +78,7 @@ end
 -- UNID_
 
 local example_fight_pointer_entry = {
-  -- Important - this address starts at the first entity (Megaman, typically)
+  -- Important - this address starts at the first entity (MegaMan, typically)
   ADDRESS = 0x0801AA60,
 
   UNID_BYTE_1 = 0x00, -- freezes game if != 0

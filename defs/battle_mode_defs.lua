@@ -1,5 +1,5 @@
 
--- Taken from http://forums.therockmanexezone.com/topic/8831451/1/
+-- Taken from http://forums.therockManexezone.com/topic/8831451/1/
 
 local BATTLE_MODE = {
     Normal1 = 0x00,

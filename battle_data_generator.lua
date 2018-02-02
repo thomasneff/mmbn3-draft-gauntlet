@@ -15,10 +15,10 @@ local battle_data_template = {
     ENTITIES = {
         {
             BATTLE_DATA = {
-                TYPE = ENTITY_TYPE.Megaman,
+                TYPE = ENTITY_TYPE.MegaMan,
                 X_POS = 0x02,
                 Y_POS = 0x02,
-                KIND = ENTITY_KIND.Megaman
+                KIND = ENTITY_KIND.MegaMan
             }
             
         },
@@ -244,7 +244,7 @@ function battle_data_generator.random_from_battle(current_battle)
     --print(current_battle)
     --print(ENTITY_GROUPS[current_battle])
     local entity_group = deepcopy(ENTITY_GROUPS[current_battle])
-    battle_entities[0] = ENTITIES.Megaman
+    battle_entities[0] = ENTITIES.MegaMan
     
 
     -- Create a grid of entity positions so we don't position enemies at the same spot.

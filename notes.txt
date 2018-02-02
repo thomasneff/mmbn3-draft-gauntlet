@@ -65,7 +65,7 @@ I found the pointer table!
 
 the first offset is @ 0812DC7C, then it is always 0x10 bytes offset (= 16 bytes aligned)
 
-let's find out how it manages the gauntlet?
+let's find out how it Manages the gauntlet?
 
 0812F18C calls something with updated r0 after the fight.
 
@@ -107,7 +107,7 @@ Byte 4: ?? doesn't seem to do anything
 so basically just a 2 byte chip ID, and probably 2 bytes code?
 
 
-At the point I'm doing it, manipulating the folder is already too late.
+At the point I'm doing it, Manipulating the folder is already too late.
 At 080114B6, the first chip in the first folder is accessed.
 This is computed every frame during chip select? But that means that changing it should have an effect?
 And indeed, it does. So I'm doing it wrong.

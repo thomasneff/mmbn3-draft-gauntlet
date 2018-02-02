@@ -17,8 +17,8 @@ local deepcopy = require "deepcopy"
 
 local BASE_BATTLE_DATA = {
     KIND = ENTITY_KIND.Virus,
-    X_POS = 0x02, -- We use these defaults so we don't have to change Megaman's starting position later on
-    Y_POS = 0x02, -- We use these defaults so we don't have to change Megaman's starting position later on
+    X_POS = 0x02, -- We use these defaults so we don't have to change MegaMan's starting position later on
+    Y_POS = 0x02, -- We use these defaults so we don't have to change MegaMan's starting position later on
     TYPE = ENTITY_TYPE.Mettaur
 }
 
@@ -35,7 +35,7 @@ function new_battle_data(entity_kind, entity_type)
 end
 
 -- This returns a new base entity containing battle data, name address and HP address.
--- Unfortunately, damage and AI addresses need to be done manually, which sucks.
+-- Unfortunately, damage and AI addresses need to be done Manually, which sucks.
 function new_base_entity(entity_kind, entity_id)
 
     local new_base_entity = {}
@@ -45,7 +45,7 @@ function new_base_entity(entity_kind, entity_id)
     new_base_entity.BATTLE_DATA = new_battle_data(entity_kind, entity_type)
     new_base_entity.NAME_ADDRESS = ENTITY_NAME_ADDRESS_TRANSLATOR[entity_id]
 
-    -- This should just return nil for Megaman and do nothing
+    -- This should just return nil for MegaMan and do nothing
     new_base_entity.HP_ADDRESS = ENTITY_HP_TRANSLATOR.translate(entity_type)
 
     new_base_entity.AI_ADDRESS = ENTITY_AI_ADDRESS[entity_id]
@@ -56,9 +56,9 @@ function new_base_entity(entity_kind, entity_id)
     return new_base_entity
 end
 
-ENTITIES.Megaman                            = new_base_entity(ENTITY_KIND.Megaman, "Megaman")
+ENTITIES.MegaMan                            = new_base_entity(ENTITY_KIND.MegaMan, "MegaMan")
 
---All AI Bytes need to be looked up at http://forums.therockmanexezone.com/topic/8907775/1/
+--All AI Bytes need to be looked up at http://forums.therockManexezone.com/topic/8907775/1/
 
 
 local ALL_BATTLES = {}
@@ -991,7 +991,7 @@ ENTITIES.ShadowOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-local Brushman_PanelType = 
+local BrushMan_PanelType = 
 {
     NONE = 0x00,
     BROKEN = 0x01,
@@ -1006,53 +1006,53 @@ local Brushman_PanelType =
     SAND = 0x0A
 }
 
-ENTITIES.Brushman                           = new_base_entity(ENTITY_KIND.Virus, "Brushman")
-ENTITIES.Brushman.NAME                      = "Brushman"
-ENTITIES.Brushman.HP_BASE                   = 120
-ENTITIES.Brushman.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
-ENTITIES.Brushman.AI_BYTES                  = {}
-ENTITIES.Brushman.AI_BYTES[0x00]            = 0x78                              -- Delay before attack / movement.
-ENTITIES.Brushman.AI_BYTES[0x01]            = 0x01                              -- Number of holy panels in a row (own field).
-ENTITIES.Brushman.AI_BYTES[0x02]            = Brushman_PanelType.POISON         -- Type of panel 1 (enemy field).
-ENTITIES.Brushman.AI_BYTES[0x03]            = Brushman_PanelType.SAND           -- Type of panel 2 (enemy field).
-ENTITIES.Brushman.AI_BYTES[0x04]            = 0x32                              -- Contact damage.
-ENTITIES.Brushman.BATTLE_NUMBERS            = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.BrushMan                           = new_base_entity(ENTITY_KIND.Virus, "BrushMan")
+ENTITIES.BrushMan.NAME                      = "BrushMan"
+ENTITIES.BrushMan.HP_BASE                   = 120
+ENTITIES.BrushMan.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.BrushMan.AI_BYTES                  = {}
+ENTITIES.BrushMan.AI_BYTES[0x00]            = 0x78                              -- Delay before attack / movement.
+ENTITIES.BrushMan.AI_BYTES[0x01]            = 0x01                              -- Number of holy panels in a row (own field).
+ENTITIES.BrushMan.AI_BYTES[0x02]            = BrushMan_PanelType.POISON         -- Type of panel 1 (enemy field).
+ENTITIES.BrushMan.AI_BYTES[0x03]            = BrushMan_PanelType.SAND           -- Type of panel 2 (enemy field).
+ENTITIES.BrushMan.AI_BYTES[0x04]            = 0x32                              -- Contact damage.
+ENTITIES.BrushMan.BATTLE_NUMBERS            = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.Brushman2                          = new_base_entity(ENTITY_KIND.Virus, "Brushman2")
-ENTITIES.Brushman2.NAME                     = "Brushman2"
-ENTITIES.Brushman2.HP_BASE                  = 170
-ENTITIES.Brushman2.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
-ENTITIES.Brushman2.AI_BYTES                 = {}
-ENTITIES.Brushman2.AI_BYTES[0x00]           = 0x5A                              -- Delay before attack / movement.
-ENTITIES.Brushman2.AI_BYTES[0x01]           = 0x01                              -- Number of holy panels in a row (own field).
-ENTITIES.Brushman2.AI_BYTES[0x02]           = Brushman_PanelType.LAVA           -- Type of panel 1 (enemy field).
-ENTITIES.Brushman2.AI_BYTES[0x03]           = Brushman_PanelType.ICE            -- Type of panel 2 (enemy field).
-ENTITIES.Brushman2.AI_BYTES[0x04]           = 0x64                              -- Contact damage.
-ENTITIES.Brushman2.BATTLE_NUMBERS           = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.BrushMan2                          = new_base_entity(ENTITY_KIND.Virus, "BrushMan2")
+ENTITIES.BrushMan2.NAME                     = "BrushMan2"
+ENTITIES.BrushMan2.HP_BASE                  = 170
+ENTITIES.BrushMan2.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.BrushMan2.AI_BYTES                 = {}
+ENTITIES.BrushMan2.AI_BYTES[0x00]           = 0x5A                              -- Delay before attack / movement.
+ENTITIES.BrushMan2.AI_BYTES[0x01]           = 0x01                              -- Number of holy panels in a row (own field).
+ENTITIES.BrushMan2.AI_BYTES[0x02]           = BrushMan_PanelType.LAVA           -- Type of panel 1 (enemy field).
+ENTITIES.BrushMan2.AI_BYTES[0x03]           = BrushMan_PanelType.ICE            -- Type of panel 2 (enemy field).
+ENTITIES.BrushMan2.AI_BYTES[0x04]           = 0x64                              -- Contact damage.
+ENTITIES.BrushMan2.BATTLE_NUMBERS           = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.Brushman3                          = new_base_entity(ENTITY_KIND.Virus, "Brushman3")
-ENTITIES.Brushman3.NAME                     = "Brushman3"
-ENTITIES.Brushman3.HP_BASE                  = 220
-ENTITIES.Brushman3.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
-ENTITIES.Brushman3.AI_BYTES                 = {}
-ENTITIES.Brushman3.AI_BYTES[0x00]           = 0x3C                              -- Delay before attack / movement.
-ENTITIES.Brushman3.AI_BYTES[0x01]           = 0x02                              -- Number of holy panels in a row (own field).
-ENTITIES.Brushman3.AI_BYTES[0x02]           = Brushman_PanelType.POISON         -- Type of panel 1 (enemy field).
-ENTITIES.Brushman3.AI_BYTES[0x03]           = Brushman_PanelType.LAVA           -- Type of panel 2 (enemy field).
-ENTITIES.Brushman3.AI_BYTES[0x04]           = 0x96                              -- Contact damage.
-ENTITIES.Brushman3.BATTLE_NUMBERS           = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.BrushMan3                          = new_base_entity(ENTITY_KIND.Virus, "BrushMan3")
+ENTITIES.BrushMan3.NAME                     = "BrushMan3"
+ENTITIES.BrushMan3.HP_BASE                  = 220
+ENTITIES.BrushMan3.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.BrushMan3.AI_BYTES                 = {}
+ENTITIES.BrushMan3.AI_BYTES[0x00]           = 0x3C                              -- Delay before attack / movement.
+ENTITIES.BrushMan3.AI_BYTES[0x01]           = 0x02                              -- Number of holy panels in a row (own field).
+ENTITIES.BrushMan3.AI_BYTES[0x02]           = BrushMan_PanelType.POISON         -- Type of panel 1 (enemy field).
+ENTITIES.BrushMan3.AI_BYTES[0x03]           = BrushMan_PanelType.LAVA           -- Type of panel 2 (enemy field).
+ENTITIES.BrushMan3.AI_BYTES[0x04]           = 0x96                              -- Contact damage.
+ENTITIES.BrushMan3.BATTLE_NUMBERS           = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.BrushmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "BrushmanOmega")
-ENTITIES.BrushmanOmega.NAME                 = "Brushman\003"
-ENTITIES.BrushmanOmega.HP_BASE              = 300
-ENTITIES.BrushmanOmega.ELEMENT              = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
-ENTITIES.BrushmanOmega.AI_BYTES             = {}
-ENTITIES.BrushmanOmega.AI_BYTES[0x00]       = 0x28                              -- Delay before attack / movement.
-ENTITIES.BrushmanOmega.AI_BYTES[0x01]       = 0x02                              -- Number of holy panels in a row (own field).
-ENTITIES.BrushmanOmega.AI_BYTES[0x02]       = Brushman_PanelType.POISON         -- Type of panel 1 (enemy field).
-ENTITIES.BrushmanOmega.AI_BYTES[0x03]       = Brushman_PanelType.POISON         -- Type of panel 2 (enemy field).
-ENTITIES.BrushmanOmega.AI_BYTES[0x04]       = 0xC8                              -- Contact damage.
-ENTITIES.BrushmanOmega.BATTLE_NUMBERS       = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.BrushManOmega                      = new_base_entity(ENTITY_KIND.Virus, "BrushManOmega")
+ENTITIES.BrushManOmega.NAME                 = "BrushMan\003"
+ENTITIES.BrushManOmega.HP_BASE              = 300
+ENTITIES.BrushManOmega.ELEMENT              = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
+ENTITIES.BrushManOmega.AI_BYTES             = {}
+ENTITIES.BrushManOmega.AI_BYTES[0x00]       = 0x28                              -- Delay before attack / movement.
+ENTITIES.BrushManOmega.AI_BYTES[0x01]       = 0x02                              -- Number of holy panels in a row (own field).
+ENTITIES.BrushManOmega.AI_BYTES[0x02]       = BrushMan_PanelType.POISON         -- Type of panel 1 (enemy field).
+ENTITIES.BrushManOmega.AI_BYTES[0x03]       = BrushMan_PanelType.POISON         -- Type of panel 2 (enemy field).
+ENTITIES.BrushManOmega.AI_BYTES[0x04]       = 0xC8                              -- Contact damage.
+ENTITIES.BrushManOmega.BATTLE_NUMBERS       = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1519,7 +1519,7 @@ ENTITIES.Heavy.HP_BASE                      = 100
 ENTITIES.Heavy.ELEMENT                      = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.Heavy.AI_BYTES                     = {}
 ENTITIES.Heavy.AI_BYTES[0x00]               = 0x19                              -- Vertical speed delay (enemy side).
-ENTITIES.Heavy.AI_BYTES[0x01]               = 0x3C                              -- Vertical speed delay (megaman side).
+ENTITIES.Heavy.AI_BYTES[0x01]               = 0x3C                              -- Vertical speed delay (megaMan side).
 ENTITIES.Heavy.AI_BYTES[0x02]               = 0x01                              -- Delay before vertical movement.
 ENTITIES.Heavy.AI_BYTES[0x03]               = 0x01                              -- (??) always 0x01.
 ENTITIES.Heavy.AI_BYTES[0x04]               = 0x1E                              -- Damage by contact.
@@ -1531,7 +1531,7 @@ ENTITIES.Heavier.HP_BASE                    = 150
 ENTITIES.Heavier.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.Heavier.AI_BYTES                   = {}
 ENTITIES.Heavier.AI_BYTES[0x00]             = 0x14                              -- Vertical speed delay (enemy side).
-ENTITIES.Heavier.AI_BYTES[0x01]             = 0x32                              -- Vertical speed delay (megaman side).
+ENTITIES.Heavier.AI_BYTES[0x01]             = 0x32                              -- Vertical speed delay (megaMan side).
 ENTITIES.Heavier.AI_BYTES[0x02]             = 0x01                              -- Delay before vertical movement.
 ENTITIES.Heavier.AI_BYTES[0x03]             = 0x01                              -- (??) always 0x01.
 ENTITIES.Heavier.AI_BYTES[0x04]             = 0x3C                              -- Damage by contact.
@@ -1543,7 +1543,7 @@ ENTITIES.Heaviest.HP_BASE                   = 200
 ENTITIES.Heaviest.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.Heaviest.AI_BYTES                  = {}
 ENTITIES.Heaviest.AI_BYTES[0x00]            = 0x0F                              -- Vertical speed delay (enemy side).
-ENTITIES.Heaviest.AI_BYTES[0x01]            = 0x28                              -- Vertical speed delay (megaman side).
+ENTITIES.Heaviest.AI_BYTES[0x01]            = 0x28                              -- Vertical speed delay (megaMan side).
 ENTITIES.Heaviest.AI_BYTES[0x02]            = 0x01                              -- Delay before vertical movement.
 ENTITIES.Heaviest.AI_BYTES[0x03]            = 0x01                              -- (??) always 0x01.
 ENTITIES.Heaviest.AI_BYTES[0x04]            = 0x5A                              -- Damage by contact.
@@ -1555,7 +1555,7 @@ ENTITIES.HeavyOmega.HP_BASE                 = 300
 ENTITIES.HeavyOmega.ELEMENT                 = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
 ENTITIES.HeavyOmega.AI_BYTES                = {}
 ENTITIES.HeavyOmega.AI_BYTES[0x00]          = 0x0A                              -- Vertical speed delay (enemy side).
-ENTITIES.HeavyOmega.AI_BYTES[0x01]          = 0x1E                              -- Vertical speed delay (megaman side).
+ENTITIES.HeavyOmega.AI_BYTES[0x01]          = 0x1E                              -- Vertical speed delay (megaMan side).
 ENTITIES.HeavyOmega.AI_BYTES[0x02]          = 0x01                              -- Delay before vertical movement.
 ENTITIES.HeavyOmega.AI_BYTES[0x03]          = 0x01                              -- (??) always 0x01.
 ENTITIES.HeavyOmega.AI_BYTES[0x04]          = 0x96                              -- Damage by contact.
@@ -2368,162 +2368,162 @@ ENTITIES.BoomerOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Flashman                           = new_base_entity(ENTITY_KIND.Virus, "Flashman")
-ENTITIES.Flashman.NAME                      = "Flashman"
-ENTITIES.Flashman.HP_BASE                   = 300
-ENTITIES.Flashman.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
-ENTITIES.Flashman.AI_BYTES                  = {}
-ENTITIES.Flashman.AI_BYTES[0x00]            = 0x0A                              -- (??).
-ENTITIES.Flashman.AI_BYTES[0x01]            = 0x78                              -- Delay before FlashBulb explosion.
-ENTITIES.Flashman.AI_BYTES[0x02]            = 0x0A                              -- Damage FlashTower.
-ENTITIES.Flashman.AI_BYTES[0x03]            = 0x0F                              -- Damage FlashAttack.
-ENTITIES.Flashman.AI_BYTES[0x04]            = 0x05                              -- Bulb's HP.
-ENTITIES.Flashman.AI_BYTES[0x05]            = 0x10                              -- Delay before move 1.
-ENTITIES.Flashman.AI_BYTES[0x06]            = 0x3C                              -- Delay before move 2.
-ENTITIES.Flashman.AI_BYTES[0x07]            = 0x64                              -- Delay after FlashTower.
-ENTITIES.Flashman.AI_BYTES[0x08]            = 0x3C                              -- Delay after FlashAttack.
-ENTITIES.Flashman.AI_BYTES[0x09]            = 0x3C                              -- Delay after FlashBulb.
-ENTITIES.Flashman.AI_BYTES[0x0A]            = 0x00                              -- Number of AreaGrab chips.
-ENTITIES.Flashman.AI_BYTES[0x0B]            = 0x0F                              -- FlashTower speed delay.
-ENTITIES.Flashman.AI_BYTES[0x7E9C]          = 0x24                              -- Delay before FlashAttack.
-ENTITIES.Flashman.AI_BYTES[0x7E98]          = 0x08                              -- Delay before FlashAttack hits.
-ENTITIES.Flashman.BATTLE_NUMBERS            = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.FlashMan                           = new_base_entity(ENTITY_KIND.Virus, "FlashMan")
+ENTITIES.FlashMan.NAME                      = "FlashMan"
+ENTITIES.FlashMan.HP_BASE                   = 300
+ENTITIES.FlashMan.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.FlashMan.AI_BYTES                  = {}
+ENTITIES.FlashMan.AI_BYTES[0x00]            = 0x0A                              -- (??).
+ENTITIES.FlashMan.AI_BYTES[0x01]            = 0x78                              -- Delay before FlashBulb explosion.
+ENTITIES.FlashMan.AI_BYTES[0x02]            = 0x0A                              -- Damage FlashTower.
+ENTITIES.FlashMan.AI_BYTES[0x03]            = 0x0F                              -- Damage FlashAttack.
+ENTITIES.FlashMan.AI_BYTES[0x04]            = 0x05                              -- Bulb's HP.
+ENTITIES.FlashMan.AI_BYTES[0x05]            = 0x10                              -- Delay before move 1.
+ENTITIES.FlashMan.AI_BYTES[0x06]            = 0x3C                              -- Delay before move 2.
+ENTITIES.FlashMan.AI_BYTES[0x07]            = 0x64                              -- Delay after FlashTower.
+ENTITIES.FlashMan.AI_BYTES[0x08]            = 0x3C                              -- Delay after FlashAttack.
+ENTITIES.FlashMan.AI_BYTES[0x09]            = 0x3C                              -- Delay after FlashBulb.
+ENTITIES.FlashMan.AI_BYTES[0x0A]            = 0x00                              -- Number of AreaGrab chips.
+ENTITIES.FlashMan.AI_BYTES[0x0B]            = 0x0F                              -- FlashTower speed delay.
+ENTITIES.FlashMan.AI_BYTES[0x7E9C]          = 0x24                              -- Delay before FlashAttack.
+ENTITIES.FlashMan.AI_BYTES[0x7E98]          = 0x08                              -- Delay before FlashAttack hits.
+ENTITIES.FlashMan.BATTLE_NUMBERS            = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- TODO: All other Navis are not AI-Documented yet. If necessary (e.g. for making a modded Version), look up the stuff from http://forums.therockmanexezone.com/topic/8907775/1/
-ENTITIES.FlashmanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "FlashmanAlpha")
-ENTITIES.FlashmanAlpha.BATTLE_NUMBERS       = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+-- TODO: All other Navis are not AI-Documented yet. If necessary (e.g. for making a modded Version), look up the stuff from http://forums.therockManexezone.com/topic/8907775/1/
+ENTITIES.FlashManAlpha                      = new_base_entity(ENTITY_KIND.Virus, "FlashManAlpha")
+ENTITIES.FlashManAlpha.BATTLE_NUMBERS       = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.FlashmanBeta                       = new_base_entity(ENTITY_KIND.Virus, "FlashmanBeta")
-ENTITIES.FlashmanBeta.BATTLE_NUMBERS        = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.FlashManBeta                       = new_base_entity(ENTITY_KIND.Virus, "FlashManBeta")
+ENTITIES.FlashManBeta.BATTLE_NUMBERS        = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.FlashmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "FlashmanOmega")
-ENTITIES.FlashmanOmega.BATTLE_NUMBERS       = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.FlashManOmega                      = new_base_entity(ENTITY_KIND.Virus, "FlashManOmega")
+ENTITIES.FlashManOmega.BATTLE_NUMBERS       = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Beastman                           = new_base_entity(ENTITY_KIND.Virus, "Beastman")
-ENTITIES.Beastman.BATTLE_NUMBERS            = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BeastMan                           = new_base_entity(ENTITY_KIND.Virus, "BeastMan")
+ENTITIES.BeastMan.BATTLE_NUMBERS            = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.BeastmanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "BeastmanAlpha")
-ENTITIES.BeastmanAlpha.BATTLE_NUMBERS       = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BeastManAlpha                      = new_base_entity(ENTITY_KIND.Virus, "BeastManAlpha")
+ENTITIES.BeastManAlpha.BATTLE_NUMBERS       = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.BeastmanBeta                       = new_base_entity(ENTITY_KIND.Virus, "BeastmanBeta")
-ENTITIES.BeastmanBeta.BATTLE_NUMBERS        = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BeastManBeta                       = new_base_entity(ENTITY_KIND.Virus, "BeastManBeta")
+ENTITIES.BeastManBeta.BATTLE_NUMBERS        = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.BeastmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "BeastmanOmega")
-ENTITIES.BeastmanOmega.BATTLE_NUMBERS       = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BeastManOmega                      = new_base_entity(ENTITY_KIND.Virus, "BeastManOmega")
+ENTITIES.BeastManOmega.BATTLE_NUMBERS       = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Bubbleman                          = new_base_entity(ENTITY_KIND.Virus, "Bubbleman")
-ENTITIES.Bubbleman.BATTLE_NUMBERS           = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BubbleMan                          = new_base_entity(ENTITY_KIND.Virus, "BubbleMan")
+ENTITIES.BubbleMan.BATTLE_NUMBERS           = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.BubblemanAlpha                     = new_base_entity(ENTITY_KIND.Virus, "BubblemanAlpha")
-ENTITIES.BubblemanAlpha.BATTLE_NUMBERS      = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BubbleManAlpha                     = new_base_entity(ENTITY_KIND.Virus, "BubbleManAlpha")
+ENTITIES.BubbleManAlpha.BATTLE_NUMBERS      = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.BubblemanBeta                      = new_base_entity(ENTITY_KIND.Virus, "BubblemanBeta")
-ENTITIES.BubblemanBeta.BATTLE_NUMBERS       = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BubbleManBeta                      = new_base_entity(ENTITY_KIND.Virus, "BubbleManBeta")
+ENTITIES.BubbleManBeta.BATTLE_NUMBERS       = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.BubblemanOmega                     = new_base_entity(ENTITY_KIND.Virus, "BubblemanOmega")
-ENTITIES.BubblemanOmega.BATTLE_NUMBERS      = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BubbleManOmega                     = new_base_entity(ENTITY_KIND.Virus, "BubbleManOmega")
+ENTITIES.BubbleManOmega.BATTLE_NUMBERS      = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Desertman                          = new_base_entity(ENTITY_KIND.Virus, "Desertman")
-ENTITIES.Desertman.BATTLE_NUMBERS           = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.DesertMan                          = new_base_entity(ENTITY_KIND.Virus, "DesertMan")
+ENTITIES.DesertMan.BATTLE_NUMBERS           = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.DesertmanAlpha                     = new_base_entity(ENTITY_KIND.Virus, "DesertmanAlpha")
-ENTITIES.DesertmanAlpha.BATTLE_NUMBERS      = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.DesertManAlpha                     = new_base_entity(ENTITY_KIND.Virus, "DesertManAlpha")
+ENTITIES.DesertManAlpha.BATTLE_NUMBERS      = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.DesertmanBeta                      = new_base_entity(ENTITY_KIND.Virus, "DesertmanBeta")
-ENTITIES.DesertmanBeta.BATTLE_NUMBERS       = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.DesertManBeta                      = new_base_entity(ENTITY_KIND.Virus, "DesertManBeta")
+ENTITIES.DesertManBeta.BATTLE_NUMBERS       = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.DesertmanOmega                     = new_base_entity(ENTITY_KIND.Virus, "DesertmanOmega")
-ENTITIES.DesertmanOmega.BATTLE_NUMBERS      = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.DesertManOmega                     = new_base_entity(ENTITY_KIND.Virus, "DesertManOmega")
+ENTITIES.DesertManOmega.BATTLE_NUMBERS      = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Plantman                           = new_base_entity(ENTITY_KIND.Virus, "Plantman")
-ENTITIES.Plantman.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.PlantMan                           = new_base_entity(ENTITY_KIND.Virus, "PlantMan")
+ENTITIES.PlantMan.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.PlantmanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "PlantmanAlpha")
-ENTITIES.PlantmanAlpha.BATTLE_NUMBERS       = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.PlantManAlpha                      = new_base_entity(ENTITY_KIND.Virus, "PlantManAlpha")
+ENTITIES.PlantManAlpha.BATTLE_NUMBERS       = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.PlantmanBeta                       = new_base_entity(ENTITY_KIND.Virus, "PlantmanBeta")
-ENTITIES.PlantmanBeta.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.PlantManBeta                       = new_base_entity(ENTITY_KIND.Virus, "PlantManBeta")
+ENTITIES.PlantManBeta.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.PlantmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "PlantmanOmega")
-ENTITIES.PlantmanOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.PlantManOmega                      = new_base_entity(ENTITY_KIND.Virus, "PlantManOmega")
+ENTITIES.PlantManOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Flameman                           = new_base_entity(ENTITY_KIND.Virus, "Flameman")
-ENTITIES.Flameman.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.FlameMan                           = new_base_entity(ENTITY_KIND.Virus, "FlameMan")
+ENTITIES.FlameMan.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.FlamemanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "FlamemanAlpha")
-ENTITIES.FlamemanAlpha.BATTLE_NUMBERS       = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.FlameManAlpha                      = new_base_entity(ENTITY_KIND.Virus, "FlameManAlpha")
+ENTITIES.FlameManAlpha.BATTLE_NUMBERS       = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.FlamemanBeta                       = new_base_entity(ENTITY_KIND.Virus, "FlamemanBeta")
-ENTITIES.FlamemanBeta.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.FlameManBeta                       = new_base_entity(ENTITY_KIND.Virus, "FlameManBeta")
+ENTITIES.FlameManBeta.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.FlamemanOmega                      = new_base_entity(ENTITY_KIND.Virus, "FlamemanOmega")
-ENTITIES.FlamemanOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.FlameManOmega                      = new_base_entity(ENTITY_KIND.Virus, "FlameManOmega")
+ENTITIES.FlameManOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Drillman                           = new_base_entity(ENTITY_KIND.Virus, "Drillman")
-ENTITIES.Drillman.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.DrillMan                           = new_base_entity(ENTITY_KIND.Virus, "DrillMan")
+ENTITIES.DrillMan.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.DrillmanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "DrillmanAlpha")
-ENTITIES.DrillmanAlpha.BATTLE_NUMBERS       = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.DrillManAlpha                      = new_base_entity(ENTITY_KIND.Virus, "DrillManAlpha")
+ENTITIES.DrillManAlpha.BATTLE_NUMBERS       = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.DrillmanBeta                       = new_base_entity(ENTITY_KIND.Virus, "DrillmanBeta")
-ENTITIES.DrillmanBeta.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.DrillManBeta                       = new_base_entity(ENTITY_KIND.Virus, "DrillManBeta")
+ENTITIES.DrillManBeta.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.DrillmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "DrillmanOmega")
-ENTITIES.DrillmanOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.DrillManOmega                      = new_base_entity(ENTITY_KIND.Virus, "DrillManOmega")
+ENTITIES.DrillManOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2537,63 +2537,63 @@ ENTITIES.AlphaOmega.BATTLE_NUMBERS          = TIER_4_BOSS_BATTLES               
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Gutsman                            = new_base_entity(ENTITY_KIND.Virus, "Gutsman")
-ENTITIES.Gutsman.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.GutsMan                            = new_base_entity(ENTITY_KIND.Virus, "GutsMan")
+ENTITIES.GutsMan.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.GutsmanAlpha                       = new_base_entity(ENTITY_KIND.Virus, "GutsmanAlpha")
-ENTITIES.GutsmanAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.GutsManAlpha                       = new_base_entity(ENTITY_KIND.Virus, "GutsManAlpha")
+ENTITIES.GutsManAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.GutsmanBeta                        = new_base_entity(ENTITY_KIND.Virus, "GutsmanBeta")
-ENTITIES.GutsmanBeta.BATTLE_NUMBERS         = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.GutsManBeta                        = new_base_entity(ENTITY_KIND.Virus, "GutsManBeta")
+ENTITIES.GutsManBeta.BATTLE_NUMBERS         = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.GutsmanOmega                       = new_base_entity(ENTITY_KIND.Virus, "GutsmanOmega")
-ENTITIES.GutsmanOmega.BATTLE_NUMBERS        = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.GutsManOmega                       = new_base_entity(ENTITY_KIND.Virus, "GutsManOmega")
+ENTITIES.GutsManOmega.BATTLE_NUMBERS        = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Protoman                           = new_base_entity(ENTITY_KIND.Virus, "Protoman")
-ENTITIES.Protoman.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.ProtoMan                           = new_base_entity(ENTITY_KIND.Virus, "ProtoMan")
+ENTITIES.ProtoMan.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.ProtomanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "ProtomanAlpha")
-ENTITIES.ProtomanAlpha.BATTLE_NUMBERS       = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.ProtoManAlpha                      = new_base_entity(ENTITY_KIND.Virus, "ProtoManAlpha")
+ENTITIES.ProtoManAlpha.BATTLE_NUMBERS       = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.ProtomanBeta                       = new_base_entity(ENTITY_KIND.Virus, "ProtomanBeta")
-ENTITIES.ProtomanBeta.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.ProtoManBeta                       = new_base_entity(ENTITY_KIND.Virus, "ProtoManBeta")
+ENTITIES.ProtoManBeta.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.ProtomanOmega                      = new_base_entity(ENTITY_KIND.Virus, "ProtomanOmega")
-ENTITIES.ProtomanOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.ProtoManOmega                      = new_base_entity(ENTITY_KIND.Virus, "ProtoManOmega")
+ENTITIES.ProtoManOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Metalman                           = new_base_entity(ENTITY_KIND.Virus, "Metalman")
-ENTITIES.Metalman.BATTLE_NUMBERS            = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.MetalMan                           = new_base_entity(ENTITY_KIND.Virus, "MetalMan")
+ENTITIES.MetalMan.BATTLE_NUMBERS            = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.MetalmanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "MetalmanAlpha")
-ENTITIES.MetalmanAlpha.BATTLE_NUMBERS       = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.MetalManAlpha                      = new_base_entity(ENTITY_KIND.Virus, "MetalManAlpha")
+ENTITIES.MetalManAlpha.BATTLE_NUMBERS       = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.MetalmanBeta                       = new_base_entity(ENTITY_KIND.Virus, "MetalmanBeta")
-ENTITIES.MetalmanBeta.BATTLE_NUMBERS        = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.MetalManBeta                       = new_base_entity(ENTITY_KIND.Virus, "MetalManBeta")
+ENTITIES.MetalManBeta.BATTLE_NUMBERS        = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.MetalmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "MetalmanOmega")
-ENTITIES.MetalmanOmega.BATTLE_NUMBERS       = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.MetalManOmega                      = new_base_entity(ENTITY_KIND.Virus, "MetalManOmega")
+ENTITIES.MetalManOmega.BATTLE_NUMBERS       = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2617,103 +2617,103 @@ ENTITIES.PunkOmega.BATTLE_NUMBERS           = TIER_4_BOSS_BATTLES               
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Kingman                            = new_base_entity(ENTITY_KIND.Virus, "Kingman")
-ENTITIES.Kingman.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.KingMan                            = new_base_entity(ENTITY_KIND.Virus, "KingMan")
+ENTITIES.KingMan.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.KingmanAlpha                       = new_base_entity(ENTITY_KIND.Virus, "KingmanAlpha")
-ENTITIES.KingmanAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.KingManAlpha                       = new_base_entity(ENTITY_KIND.Virus, "KingManAlpha")
+ENTITIES.KingManAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.KingmanBeta                        = new_base_entity(ENTITY_KIND.Virus, "KingmanBeta")
-ENTITIES.KingmanBeta.BATTLE_NUMBERS         = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.KingManBeta                        = new_base_entity(ENTITY_KIND.Virus, "KingManBeta")
+ENTITIES.KingManBeta.BATTLE_NUMBERS         = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.KingmanOmega                       = new_base_entity(ENTITY_KIND.Virus, "KingmanOmega")
-ENTITIES.KingmanOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.KingManOmega                       = new_base_entity(ENTITY_KIND.Virus, "KingManOmega")
+ENTITIES.KingManOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Mistman                            = new_base_entity(ENTITY_KIND.Virus, "Mistman")
-ENTITIES.Mistman.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.MistMan                            = new_base_entity(ENTITY_KIND.Virus, "MistMan")
+ENTITIES.MistMan.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.MistmanAlpha                       = new_base_entity(ENTITY_KIND.Virus, "MistmanAlpha")
-ENTITIES.MistmanAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.MistManAlpha                       = new_base_entity(ENTITY_KIND.Virus, "MistManAlpha")
+ENTITIES.MistManAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.MistmanBeta                        = new_base_entity(ENTITY_KIND.Virus, "MistmanBeta")
-ENTITIES.MistmanBeta.BATTLE_NUMBERS         = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.MistManBeta                        = new_base_entity(ENTITY_KIND.Virus, "MistManBeta")
+ENTITIES.MistManBeta.BATTLE_NUMBERS         = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.MistmanOmega                       = new_base_entity(ENTITY_KIND.Virus, "MistmanOmega")
-ENTITIES.MistmanOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.MistManOmega                       = new_base_entity(ENTITY_KIND.Virus, "MistManOmega")
+ENTITIES.MistManOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Bowlman                            = new_base_entity(ENTITY_KIND.Virus, "Bowlman")
-ENTITIES.Bowlman.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BowlMan                            = new_base_entity(ENTITY_KIND.Virus, "BowlMan")
+ENTITIES.BowlMan.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.BowlmanAlpha                       = new_base_entity(ENTITY_KIND.Virus, "BowlmanAlpha")
-ENTITIES.BowlmanAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BowlManAlpha                       = new_base_entity(ENTITY_KIND.Virus, "BowlManAlpha")
+ENTITIES.BowlManAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.BowlmanBeta                        = new_base_entity(ENTITY_KIND.Virus, "BowlmanBeta")
-ENTITIES.BowlmanBeta.BATTLE_NUMBERS         = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BowlManBeta                        = new_base_entity(ENTITY_KIND.Virus, "BowlManBeta")
+ENTITIES.BowlManBeta.BATTLE_NUMBERS         = TIER_3_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.BowlmanOmega                       = new_base_entity(ENTITY_KIND.Virus, "BowlmanOmega")
-ENTITIES.BowlmanOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.BowlManOmega                       = new_base_entity(ENTITY_KIND.Virus, "BowlManOmega")
+ENTITIES.BowlManOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Darkman                            = new_base_entity(ENTITY_KIND.Virus, "Darkman")
-ENTITIES.Darkman.BATTLE_NUMBERS             = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.DarkMan                            = new_base_entity(ENTITY_KIND.Virus, "DarkMan")
+ENTITIES.DarkMan.BATTLE_NUMBERS             = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.DarkmanAlpha                       = new_base_entity(ENTITY_KIND.Virus, "DarkmanAlpha")
-ENTITIES.DarkmanAlpha.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.DarkManAlpha                       = new_base_entity(ENTITY_KIND.Virus, "DarkManAlpha")
+ENTITIES.DarkManAlpha.BATTLE_NUMBERS        = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.DarkmanBeta                        = new_base_entity(ENTITY_KIND.Virus, "DarkmanBeta")
-ENTITIES.DarkmanBeta.BATTLE_NUMBERS         = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.DarkManBeta                        = new_base_entity(ENTITY_KIND.Virus, "DarkManBeta")
+ENTITIES.DarkManBeta.BATTLE_NUMBERS         = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.DarkmanOmega                       = new_base_entity(ENTITY_KIND.Virus, "DarkmanOmega")
-ENTITIES.DarkmanOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.DarkManOmega                       = new_base_entity(ENTITY_KIND.Virus, "DarkManOmega")
+ENTITIES.DarkManOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Japanman                           = new_base_entity(ENTITY_KIND.Virus, "Japanman")
-ENTITIES.Japanman.BATTLE_NUMBERS            = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.JapanMan                           = new_base_entity(ENTITY_KIND.Virus, "JapanMan")
+ENTITIES.JapanMan.BATTLE_NUMBERS            = TIER_2_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.JapanmanAlpha                      = new_base_entity(ENTITY_KIND.Virus, "JapanmanAlpha")
-ENTITIES.JapanmanAlpha.BATTLE_NUMBERS       = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.JapanManAlpha                      = new_base_entity(ENTITY_KIND.Virus, "JapanManAlpha")
+ENTITIES.JapanManAlpha.BATTLE_NUMBERS       = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.JapanmanBeta                       = new_base_entity(ENTITY_KIND.Virus, "JapanmanBeta")
-ENTITIES.JapanmanBeta.BATTLE_NUMBERS        = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.JapanManBeta                       = new_base_entity(ENTITY_KIND.Virus, "JapanManBeta")
+ENTITIES.JapanManBeta.BATTLE_NUMBERS        = TIER_4_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.JapanmanOmega                      = new_base_entity(ENTITY_KIND.Virus, "JapanmanOmega")
-ENTITIES.JapanmanOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.JapanManOmega                      = new_base_entity(ENTITY_KIND.Virus, "JapanManOmega")
+ENTITIES.JapanManOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2852,7 +2852,7 @@ ENTITIES.GEDDONPLZ.BATTLE_NUMBERS = {5, 10, 15, 20, 25, 30, 35, 40}
 -------------------------------------------------------------------------------
 -- DROP_TABLES
 -------------------------------------------------------------------------------
-ENTITIES.Megaman.DROP_TABLE =
+ENTITIES.MegaMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4282,7 +4282,7 @@ ENTITIES.ShadowOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Brushman.DROP_TABLE =
+ENTITIES.BrushMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4304,7 +4304,7 @@ ENTITIES.Brushman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Brushman2.DROP_TABLE =
+ENTITIES.BrushMan2.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4326,7 +4326,7 @@ ENTITIES.Brushman2.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Brushman3.DROP_TABLE =
+ENTITIES.BrushMan3.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -4348,7 +4348,7 @@ ENTITIES.Brushman3.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BrushmanOmega.DROP_TABLE =
+ENTITIES.BrushManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6350,7 +6350,205 @@ ENTITIES.BoomerOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Flashman.DROP_TABLE =
+ENTITIES.FlashMan.DROP_TABLE =
+{
+  [1] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMan, CHIP_CODE.F)
+  },
+  [2] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV2, CHIP_CODE.F)
+  },
+  [3] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMan, CHIP_CODE.Asterisk)
+  },
+  [4] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV2, CHIP_CODE.Asterisk))
+  }
+}
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+ENTITIES.FlashManAlpha.DROP_TABLE =
+{
+  [1] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV2, CHIP_CODE.F)
+  },
+  [2] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV3, CHIP_CODE.F)
+  },
+  [3] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV2, CHIP_CODE.Asterisk)
+  },
+  [4] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV3, CHIP_CODE.Asterisk))
+  }
+}
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+ENTITIES.FlashManBeta.DROP_TABLE =
+{
+  [1] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV3, CHIP_CODE.F)
+  },
+  [2] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV4, CHIP_CODE.F))
+  },
+  [3] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV3, CHIP_CODE.Asterisk)
+  },
+  [4] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV4, CHIP_CODE.Asterisk))
+  }
+}
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+ENTITIES.FlashManOmega.DROP_TABLE =
+{
+  [1] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV5, CHIP_CODE.F)
+  },
+  [2] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV5)
+  },
+  [3] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV5, CHIP_CODE.Asterisk)
+  },
+  [4] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk))
+  }
+}
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+ENTITIES.BeastMan.DROP_TABLE =
+{
+  [1] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMan, CHIP_CODE.B)
+  },
+  [2] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV2, CHIP_CODE.B)
+  },
+  [3] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMan, CHIP_CODE.Asterisk)
+  },
+  [4] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV2, CHIP_CODE.Asterisk))
+  }
+}
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+ENTITIES.BeastManAlpha.DROP_TABLE =
+{
+  [1] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV2, CHIP_CODE.B)
+  },
+  [2] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV3, CHIP_CODE.B)
+  },
+  [3] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV2, CHIP_CODE.Asterisk)
+  },
+  [4] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV3, CHIP_CODE.Asterisk))
+  }
+}
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+ENTITIES.BeastManBeta.DROP_TABLE =
+{
+  [1] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV3, CHIP_CODE.B)
+  },
+  [2] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV4, CHIP_CODE.B)
+  },
+  [3] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV3, CHIP_CODE.Asterisk)
+  },
+  [4] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV4, CHIP_CODE.Asterisk))
+  }
+}
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+ENTITIES.BeastManOmega.DROP_TABLE =
+{
+  [1] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV5, CHIP_CODE.B)
+  },
+  [2] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV5)
+  },
+  [3] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV5, CHIP_CODE.Asterisk)
+  },
+  [4] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk))
+  }
+}
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+ENTITIES.BubbleMan.DROP_TABLE =
+{
+  [1] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BubblMan, CHIP_CODE.B)
+  },
+  [2] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV4, CHIP_CODE.B)
+  },
+  [3] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV3, CHIP_CODE.Asterisk)
+  },
+  [4] = {
+    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV4, CHIP_CODE.Asterisk))
+  }
+}
+-------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+ENTITIES.BubbleManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6372,7 +6570,7 @@ ENTITIES.Flashman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.FlashmanAlpha.DROP_TABLE =
+ENTITIES.BubbleManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6394,7 +6592,7 @@ ENTITIES.FlashmanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.FlashmanBeta.DROP_TABLE =
+ENTITIES.BubbleManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6416,7 +6614,7 @@ ENTITIES.FlashmanBeta.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.FlashmanOmega.DROP_TABLE =
+ENTITIES.DesertMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6438,7 +6636,7 @@ ENTITIES.FlashmanOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Beastman.DROP_TABLE =
+ENTITIES.DesertManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6460,7 +6658,7 @@ ENTITIES.Beastman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BeastmanAlpha.DROP_TABLE =
+ENTITIES.DesertManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6482,7 +6680,7 @@ ENTITIES.BeastmanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BeastmanBeta.DROP_TABLE =
+ENTITIES.DesertManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6504,7 +6702,7 @@ ENTITIES.BeastmanBeta.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BeastmanOmega.DROP_TABLE =
+ENTITIES.PlantMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6526,7 +6724,7 @@ ENTITIES.BeastmanOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Bubbleman.DROP_TABLE =
+ENTITIES.PlantManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6548,7 +6746,7 @@ ENTITIES.Bubbleman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BubblemanAlpha.DROP_TABLE =
+ENTITIES.PlantManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6570,7 +6768,7 @@ ENTITIES.BubblemanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BubblemanBeta.DROP_TABLE =
+ENTITIES.PlantManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6592,7 +6790,7 @@ ENTITIES.BubblemanBeta.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BubblemanOmega.DROP_TABLE =
+ENTITIES.FlameMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6614,7 +6812,7 @@ ENTITIES.BubblemanOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Desertman.DROP_TABLE =
+ENTITIES.FlameManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6636,7 +6834,7 @@ ENTITIES.Desertman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DesertmanAlpha.DROP_TABLE =
+ENTITIES.FlameManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6658,7 +6856,7 @@ ENTITIES.DesertmanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DesertmanBeta.DROP_TABLE =
+ENTITIES.FlameManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6680,7 +6878,7 @@ ENTITIES.DesertmanBeta.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DesertmanOmega.DROP_TABLE =
+ENTITIES.DrillMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6702,7 +6900,7 @@ ENTITIES.DesertmanOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Plantman.DROP_TABLE =
+ENTITIES.DrillManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6724,7 +6922,7 @@ ENTITIES.Plantman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.PlantmanAlpha.DROP_TABLE =
+ENTITIES.DrillManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -6746,205 +6944,7 @@ ENTITIES.PlantmanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.PlantmanBeta.DROP_TABLE =
-{
-  [1] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [2] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [3] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [4] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  }
-}
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
-ENTITIES.PlantmanOmega.DROP_TABLE =
-{
-  [1] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [2] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [3] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [4] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  }
-}
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
-ENTITIES.Flameman.DROP_TABLE =
-{
-  [1] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [2] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [3] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [4] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  }
-}
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
-ENTITIES.FlamemanAlpha.DROP_TABLE =
-{
-  [1] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [2] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [3] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [4] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  }
-}
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
-ENTITIES.FlamemanBeta.DROP_TABLE =
-{
-  [1] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [2] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [3] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [4] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  }
-}
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
-ENTITIES.FlamemanOmega.DROP_TABLE =
-{
-  [1] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [2] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [3] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [4] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  }
-}
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
-ENTITIES.Drillman.DROP_TABLE =
-{
-  [1] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [2] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [3] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [4] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  }
-}
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
-ENTITIES.DrillmanAlpha.DROP_TABLE =
-{
-  [1] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [2] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [3] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [4] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  }
-}
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
-ENTITIES.DrillmanBeta.DROP_TABLE =
-{
-  [1] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [2] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [3] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  },
-  [4] = {
-    CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
-  }
-}
--------------------------------------------------------------------------------
-
--------------------------------------------------------------------------------
-ENTITIES.DrillmanOmega.DROP_TABLE =
+ENTITIES.DrillManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7010,7 +7010,7 @@ ENTITIES.AlphaOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Gutsman.DROP_TABLE =
+ENTITIES.GutsMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7032,7 +7032,7 @@ ENTITIES.Gutsman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.GutsmanAlpha.DROP_TABLE =
+ENTITIES.GutsManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7054,7 +7054,7 @@ ENTITIES.GutsmanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.GutsmanBeta.DROP_TABLE =
+ENTITIES.GutsManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7076,7 +7076,7 @@ ENTITIES.GutsmanBeta.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.GutsmanOmega.DROP_TABLE =
+ENTITIES.GutsManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7098,7 +7098,7 @@ ENTITIES.GutsmanOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Protoman.DROP_TABLE =
+ENTITIES.ProtoMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7120,7 +7120,7 @@ ENTITIES.Protoman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.ProtomanAlpha.DROP_TABLE =
+ENTITIES.ProtoManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7142,7 +7142,7 @@ ENTITIES.ProtomanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.ProtomanBeta.DROP_TABLE =
+ENTITIES.ProtoManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7164,7 +7164,7 @@ ENTITIES.ProtomanBeta.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.ProtomanOmega.DROP_TABLE =
+ENTITIES.ProtoManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7186,7 +7186,7 @@ ENTITIES.ProtomanOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Metalman.DROP_TABLE =
+ENTITIES.MetalMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7208,7 +7208,7 @@ ENTITIES.Metalman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.MetalmanAlpha.DROP_TABLE =
+ENTITIES.MetalManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7230,7 +7230,7 @@ ENTITIES.MetalmanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.MetalmanBeta.DROP_TABLE =
+ENTITIES.MetalManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7252,7 +7252,7 @@ ENTITIES.MetalmanBeta.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.MetalmanOmega.DROP_TABLE =
+ENTITIES.MetalManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7362,7 +7362,7 @@ ENTITIES.PunkOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Kingman.DROP_TABLE =
+ENTITIES.KingMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7384,7 +7384,7 @@ ENTITIES.Kingman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.KingmanAlpha.DROP_TABLE =
+ENTITIES.KingManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7406,7 +7406,7 @@ ENTITIES.KingmanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.KingmanBeta.DROP_TABLE =
+ENTITIES.KingManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7428,7 +7428,7 @@ ENTITIES.KingmanBeta.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.KingmanOmega.DROP_TABLE =
+ENTITIES.KingManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7450,7 +7450,7 @@ ENTITIES.KingmanOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Mistman.DROP_TABLE =
+ENTITIES.MistMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7472,7 +7472,7 @@ ENTITIES.Mistman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.MistmanAlpha.DROP_TABLE =
+ENTITIES.MistManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7494,7 +7494,7 @@ ENTITIES.MistmanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.MistmanBeta.DROP_TABLE =
+ENTITIES.MistManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7516,7 +7516,7 @@ ENTITIES.MistmanBeta.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.MistmanOmega.DROP_TABLE =
+ENTITIES.MistManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7538,7 +7538,7 @@ ENTITIES.MistmanOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Bowlman.DROP_TABLE =
+ENTITIES.BowlMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7560,7 +7560,7 @@ ENTITIES.Bowlman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BowlmanAlpha.DROP_TABLE =
+ENTITIES.BowlManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7582,7 +7582,7 @@ ENTITIES.BowlmanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BowlmanBeta.DROP_TABLE =
+ENTITIES.BowlManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7604,7 +7604,7 @@ ENTITIES.BowlmanBeta.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.BowlmanOmega.DROP_TABLE =
+ENTITIES.BowlManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7626,7 +7626,7 @@ ENTITIES.BowlmanOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Darkman.DROP_TABLE =
+ENTITIES.DarkMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7648,7 +7648,7 @@ ENTITIES.Darkman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DarkmanAlpha.DROP_TABLE =
+ENTITIES.DarkManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7670,7 +7670,7 @@ ENTITIES.DarkmanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DarkmanBeta.DROP_TABLE =
+ENTITIES.DarkManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7692,7 +7692,7 @@ ENTITIES.DarkmanBeta.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.DarkmanOmega.DROP_TABLE =
+ENTITIES.DarkManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7714,7 +7714,7 @@ ENTITIES.DarkmanOmega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Japanman.DROP_TABLE =
+ENTITIES.JapanMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7736,7 +7736,7 @@ ENTITIES.Japanman.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.JapanmanAlpha.DROP_TABLE =
+ENTITIES.JapanManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7758,7 +7758,7 @@ ENTITIES.JapanmanAlpha.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.JapanmanBeta.DROP_TABLE =
+ENTITIES.JapanManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7780,7 +7780,7 @@ ENTITIES.JapanmanBeta.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.JapanmanOmega.DROP_TABLE =
+ENTITIES.JapanManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,

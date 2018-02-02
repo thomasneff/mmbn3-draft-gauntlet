@@ -1,5 +1,5 @@
 
--- Taken from http://forums.therockmanexezone.com/topic/8831451/1/
+-- Taken from http://forums.therockManexezone.com/topic/8831451/1/
 local NUMBER_OF_BACKGROUNDS = 0x1D
 local BACKGROUND_TYPE = {
     ACDC_Area = 0x00,
