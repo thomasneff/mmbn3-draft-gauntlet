@@ -277,7 +277,7 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
         local replaces_giga_chip = is_folder_chip_giga and is_dropped_chip_giga
 
                             --print("REPLACES: ", replaces_mega_chip, replaces_giga_chip)
-        if (((dropped_chip_data.CHIP_RANKING % 4) == 1 and gauntlet_data.current_number_of_mega_chips >= gauntlet_data.mega_chip_limit) 
+        if (((dropped_chip_data.CHIP_RANKING % 4) == 1 and gauntlet_data.current_number_of_mega_chips >= gauntlet_data.mega_chip_limit + gauntlet_data.mega_chip_limit_team) 
         or ((dropped_chip_data.CHIP_RANKING % 4) == 2 and gauntlet_data.current_number_of_giga_chips >= gauntlet_data.giga_chip_limit))
                                 
         and replaces_mega_chip == false and replaces_giga_chip == false

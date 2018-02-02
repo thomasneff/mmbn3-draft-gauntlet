@@ -173,4 +173,8 @@ Implement nicer draft with a generator function. Test using 9 standard, 1 mega, 
 
 Implement removal of certain buffs when activated? Don't know how I'd implement that yet.
 
+Enforce MegaChip/GigaChip limit + add standard chip drops for Bosses?
+    - We can easily keep track of added mega/giga chips.
+    - Add text to rendering that displays the limit.
+
 

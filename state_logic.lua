@@ -417,7 +417,7 @@ function state_logic.initialize()
     state_logic.hp_patch_frame_counter = 0
     state_logic.battle_start_frame_counter = 0
     state_logic.selected_drop_method_index = 2
-
+    gauntlet_data.mega_chip_limit_team = 0
     state_logic.reset_selected_chips()
     gauntlet_data.folder_draft_chip_list = {}
     state_logic.draft_selection_chips = {}
@@ -706,7 +706,7 @@ function state_logic.main_loop()
 
                 local replaces_giga_chip = is_folder_chip_giga and is_dropped_chip_giga
 
-                if (((dropped_chip_data.CHIP_RANKING % 4) == 1 and gauntlet_data.current_number_of_mega_chips >= gauntlet_data.mega_chip_limit) 
+                if (((dropped_chip_data.CHIP_RANKING % 4) == 1 and gauntlet_data.current_number_of_mega_chips >= gauntlet_data.mega_chip_limit + gauntlet_data.mega_chip_limit_team) 
                     or ((dropped_chip_data.CHIP_RANKING % 4) == 2 and gauntlet_data.current_number_of_giga_chips >= gauntlet_data.giga_chip_limit))
                     
                     and replaces_mega_chip == false and replaces_giga_chip == false

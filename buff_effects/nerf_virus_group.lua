@@ -29,7 +29,7 @@ local POSSIBLE_ENTITIES = {
 
 
 
-local HP_MULTIPLIER_PER_ROUND = {0.75, 0.75, 0.75, 0.75}
+local HP_MULTIPLIER_PER_ROUND = {0.75, 0.75, 0.75, 0.75, 0.75}
 
 function NERF_VIRUS_GROUP:activate(current_round)
     self.old_hp_table = {}

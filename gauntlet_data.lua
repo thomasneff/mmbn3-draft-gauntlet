@@ -40,6 +40,7 @@ gauntlet_data.mega_ChargePlus = 0
 gauntlet_data.mega_SpeedPlus = 0
 gauntlet_data.mega_WeaponLevelPlus = 1
 gauntlet_data.mega_chip_limit = 5
+gauntlet_data.mega_chip_limit_team = 0
 gauntlet_data.giga_chip_limit = 1
 gauntlet_data.current_number_of_mega_chips = 0
 gauntlet_data.current_number_of_giga_chips = 0

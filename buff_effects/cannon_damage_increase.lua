@@ -9,7 +9,7 @@ local CANNON_DAMAGE_INCREASE = {
 }
 
 
-local DAMAGE_INCREASE_PER_ROUND = {10, 20, 30, 40}
+local DAMAGE_INCREASE_PER_ROUND = {10, 20, 30, 40, 50}
 
 function CANNON_DAMAGE_INCREASE:activate(current_round)
 

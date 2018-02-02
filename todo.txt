@@ -2,9 +2,7 @@ Entities. Add all the info from TREZ.
 
 Special drops for Miniboss/Bosses? Drop tables are already implemented, would only need to be defined.
 
-Enforce MegaChip/GigaChip limit + add standard chip drops for Bosses?
-    - We can easily keep track of added mega/giga chips.
-    - Add text to rendering that displays the limit.
+
 
 Add all virus families to debuff-buff, otherwise remove for now.
 

@@ -13,7 +13,8 @@ local SUPERARMOR = require "buff_effects.superarmor"
 local UNDERSHIRT = require "buff_effects.undershirt"
 local FASTGAUGE = require "buff_effects.fastgauge"
 local AIRSHOES = require "buff_effects.airshoes"
-
+local MEGAPLUS = require "buff_effects.megachipplus"
+local GIGAPLUS = require "buff_effects.gigachipplus"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -35,7 +36,9 @@ BUFF_GROUPS[1] = {
     SUPERARMOR,
     UNDERSHIRT,
     FASTGAUGE,
-    AIRSHOES
+    AIRSHOES,
+    MEGAPLUS,
+    GIGAPLUS,
 }
 
 BUFF_GROUPS[2] = BUFF_GROUPS[1]

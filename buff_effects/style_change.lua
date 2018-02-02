@@ -25,6 +25,11 @@ function STYLE_CHANGE:activate(current_round)
     end
 
 
+    if self.STYLE >= 0x19 and self.STYLE <= 0x1C then
+        gauntlet_data.mega_chip_limit_team = 1
+    end
+
+
 end
 
 
@@ -33,6 +38,7 @@ function STYLE_CHANGE:deactivate(current_round)
     gauntlet_data.mega_style = self.old_style
     gauntlet_data.cust_style_mp = 0
     gauntlet_data.cust_style_number_of_chips = 0
+    gauntlet_data.mega_chip_limit_team = 0
 
 end
 

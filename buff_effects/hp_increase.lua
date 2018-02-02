@@ -6,7 +6,7 @@ local HP_INCREASE = {
 
 }
 
-local HP_INCREASE_PER_ROUND = {50, 100, 200, 400}
+local HP_INCREASE_PER_ROUND = {50, 100, 200, 300, 400}
 
 function HP_INCREASE:activate(current_round)
 
