@@ -1,5 +1,6 @@
 -- Here we store everything that needs to be Manipulated by buffs and state logic to avoid circular dependencies.
 
+
 local gauntlet_data = {}
 
 gauntlet_data.GAME_STATE = {
@@ -38,7 +39,10 @@ gauntlet_data.mega_AttackPlus = 0
 gauntlet_data.mega_ChargePlus = 0
 gauntlet_data.mega_SpeedPlus = 0
 gauntlet_data.mega_WeaponLevelPlus = 1
-
+gauntlet_data.mega_chip_limit = 5
+gauntlet_data.giga_chip_limit = 1
+gauntlet_data.current_number_of_mega_chips = 0
+gauntlet_data.current_number_of_giga_chips = 0
 gauntlet_data.folder_view = 0
 gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
 gauntlet_data.folder_draft_chip_list = {}

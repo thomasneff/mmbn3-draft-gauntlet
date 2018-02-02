@@ -63,6 +63,8 @@ state_logic.pause_frame_counter = 0
 
 state_logic.gui_change_savestate = nil
 
+gauntlet_data.mega_chip_limit = GAUNTLET_DEFS.INITIAL_MEGA_CHIP_LIMIT
+gauntlet_data.giga_chip_limit = GAUNTLET_DEFS.INITIAL_GIGA_CHIP_LIMIT
 
 state_logic.current_round = 0
 state_logic.current_battle = 1
@@ -393,6 +395,10 @@ function state_logic.initialize()
     gauntlet_data.mega_WeaponLevelPlus = 1
     gauntlet_data.cust_style_number_of_chips = 0
     gauntlet_data.cust_screen_number_of_chips = 5
+    gauntlet_data.mega_chip_limit = GAUNTLET_DEFS.INITIAL_MEGA_CHIP_LIMIT
+    gauntlet_data.giga_chip_limit = GAUNTLET_DEFS.INITIAL_GIGA_CHIP_LIMIT
+    gauntlet_data.current_number_of_mega_chips = 0
+    gauntlet_data.current_number_of_giga_chips = 0
     gauntlet_data.folder_view = 0
     gauntlet_data.chip_drop_method = CHIP_DROP_METHODS[1]
     gauntlet_data.chip_drop_method.activate()
@@ -593,6 +599,7 @@ function state_logic.main_loop()
             
             state_logic.dropped_chip = state_logic.dropped_chips[state_logic.dropped_chip_render_index]
 
+
             state_logic.dropped_chip.PRINT_NAME = state_logic.get_printable_chip_name(state_logic.dropped_chip)
             state_logic.dropped_chip.ARGB_ICON = state_logic.get_argb_icon(state_logic.dropped_chip)
             gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_REPLACE
@@ -606,7 +613,7 @@ function state_logic.main_loop()
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_chip_selection(state_logic.dropped_chips, state_logic.dropped_chip_render_index)
             else
-                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil)
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data)
             end
 
 
@@ -685,13 +692,53 @@ function state_logic.main_loop()
         if input_handler.inputs_pressed["A"] == true then
             -- TODO: add chip to folder!
             --print("A pressed")
-            
+          
             if state_logic.dropped_chip.ID ~= -1 then
-                gauntlet_data.current_folder[state_logic.folder_chip_render_index] = state_logic.dropped_chip
-            end
 
-            gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
-            state_logic.should_redraw = 1
+                local dropped_chip_data = CHIP_DATA[state_logic.dropped_chip.ID]
+                local is_dropped_chip_mega = (dropped_chip_data.CHIP_RANKING % 4) == 1
+                local is_dropped_chip_giga = (dropped_chip_data.CHIP_RANKING % 4) == 1
+                local folder_chip_data = CHIP_DATA[gauntlet_data.current_folder[state_logic.folder_chip_render_index].ID]
+                local is_folder_chip_mega = (folder_chip_data.CHIP_RANKING % 4) == 1
+                local is_folder_chip_giga = (folder_chip_data.CHIP_RANKING % 4) == 1
+
+                local replaces_mega_chip = is_folder_chip_mega and is_dropped_chip_mega
+
+                local replaces_giga_chip = is_folder_chip_giga and is_dropped_chip_giga
+
+                if (((dropped_chip_data.CHIP_RANKING % 4) == 1 and gauntlet_data.current_number_of_mega_chips >= gauntlet_data.mega_chip_limit) 
+                    or ((dropped_chip_data.CHIP_RANKING % 4) == 2 and gauntlet_data.current_number_of_giga_chips >= gauntlet_data.giga_chip_limit))
+                    
+                    and replaces_mega_chip == false and replaces_giga_chip == false
+                    then
+                
+                    -- We do nothing if we can't pick due to Mega/GigaChip limits. We check for replacement of Mega/Giga chips.
+
+                else        
+                    
+                    
+                    if (dropped_chip_data.CHIP_RANKING % 4) == 1 then
+        
+                        gauntlet_data.current_number_of_mega_chips = gauntlet_data.current_number_of_mega_chips + 1
+            
+                    elseif (dropped_chip_data.CHIP_RANKING % 4) == 2 then
+            
+                        gauntlet_data.current_number_of_giga_chips = gauntlet_data.current_number_of_giga_chips + 1
+            
+                    end
+    
+                    
+                    gauntlet_data.current_folder[state_logic.folder_chip_render_index] = state_logic.dropped_chip
+                    gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
+                    state_logic.should_redraw = 1
+
+                    
+                end
+
+            else
+                gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
+                state_logic.should_redraw = 1
+            end
         end
 
         if input_handler.inputs_pressed["B"] == true then
@@ -704,7 +751,7 @@ function state_logic.main_loop()
         --print(state_logic.folder_chip_render_index)
 
         if state_logic.should_redraw == 1 then
-            gui_rendering.render_folder(gauntlet_data.current_folder, state_logic.folder_chip_render_index, state_logic.dropped_chip)
+            gui_rendering.render_folder(gauntlet_data.current_folder, state_logic.folder_chip_render_index, state_logic.dropped_chip, gauntlet_data)
             gui.DrawFinish()
             memorysavestate.loadcorestate(state_logic.gui_change_savestate)
             state_logic.should_redraw = 0
@@ -721,6 +768,20 @@ function state_logic.main_loop()
         memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         client.pause()
 
+        -- Determine number of Mega/Giga chips in folder.
+        for key, chip in pairs(gauntlet_data.current_folder) do
+
+            if (CHIP_DATA[chip.ID].CHIP_RANKING % 4) == 1 then
+    
+                gauntlet_data.current_number_of_mega_chips = gauntlet_data.current_number_of_mega_chips + 1
+    
+            elseif (CHIP_DATA[chip.ID].CHIP_RANKING % 4) == 2 then
+    
+                gauntlet_data.current_number_of_giga_chips = gauntlet_data.current_number_of_giga_chips + 1
+    
+            end
+          
+        end
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.BUFF_SELECT then
         --print ("IN BUFF_SELECT")
@@ -764,7 +825,7 @@ function state_logic.main_loop()
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_buff_selection(state_logic.dropped_buffs, state_logic.dropped_buff_render_index)
             else
-                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil)
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data)
             end
 
             
@@ -847,7 +908,7 @@ function state_logic.main_loop()
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_loadouts(LOADOUTS, state_logic.selected_loadout_index)
             else
-                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil)
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data)
             end
 
             
@@ -912,7 +973,7 @@ function state_logic.main_loop()
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_loadouts(CHIP_DROP_METHODS, state_logic.selected_drop_method_index)
             else
-                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil)
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data)
             end
 
             
@@ -992,7 +1053,7 @@ function state_logic.main_loop()
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_chip_selection(state_logic.draft_selection_chips, state_logic.draft_chip_render_index)
             else
-                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil)
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data)
             end
 
 

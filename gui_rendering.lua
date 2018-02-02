@@ -240,7 +240,7 @@ end
 
 -- This function is used to render the current folder for chip replacement.
 -- TODO: this currently just renders fixed Cannon *. Should take the folder into account.
-function gui_rendering.render_folder(folder, selected_chip_index, new_chip)
+function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gauntlet_data)
 
     --print("RENDERING")
     --gui.clearGraphics()
@@ -257,6 +257,44 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip)
     local x_offset = base_offset_x
     local y_offset = base_offset_y
     local chip_counter = 1
+
+    local can_replace_chip = true
+
+    if new_chip == nil or new_chip.ID == -1 then
+    
+    else
+        local dropped_chip_data = CHIP_DATA[new_chip.ID]
+        --print("DROPPED CHIP DATA: ", dropped_chip_data)
+        local is_dropped_chip_mega = (dropped_chip_data.CHIP_RANKING % 4) == 1
+        local is_dropped_chip_giga = (dropped_chip_data.CHIP_RANKING % 4) == 1
+        local folder_chip_data = CHIP_DATA[folder[selected_chip_index].ID]
+        --print("FOLDER CHIP DATA: ", folder_chip_data)
+        local is_folder_chip_mega = (folder_chip_data.CHIP_RANKING % 4) == 1
+        local is_folder_chip_giga = (folder_chip_data.CHIP_RANKING % 4) == 1
+
+        local replaces_mega_chip = is_folder_chip_mega and is_dropped_chip_mega
+
+        local replaces_giga_chip = is_folder_chip_giga and is_dropped_chip_giga
+
+                            --print("REPLACES: ", replaces_mega_chip, replaces_giga_chip)
+        if (((dropped_chip_data.CHIP_RANKING % 4) == 1 and gauntlet_data.current_number_of_mega_chips >= gauntlet_data.mega_chip_limit) 
+        or ((dropped_chip_data.CHIP_RANKING % 4) == 2 and gauntlet_data.current_number_of_giga_chips >= gauntlet_data.giga_chip_limit))
+                                
+        and replaces_mega_chip == false and replaces_giga_chip == false
+        then
+            can_replace_chip = false
+        else
+
+        end
+    end
+
+
+    
+
+
+
+    
+   
     for col_idx = 1, num_cols do
         y_offset = base_offset_y
         for row_idx = 1,num_chips_per_col do
@@ -268,9 +306,14 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip)
                 render_argb_2d_array(folder[chip_counter].ARGB_ICON, x_offset - CHIP_ICON.WIDTH - 2, y_offset, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
 
                 if chip_counter == selected_chip_index then
-                drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", "white", "green", 10, "Arial")
+                    -- Render red background if we can't add a new megachip.
+                    if can_replace_chip == false then
+                        drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", "white", "red", 10, "Arial")
+                    else
+                        drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", "white", "green", 10, "Arial")
+                    end
                 else
-                drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", "white", "transparent", 10, "Arial")
+                    drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", "white", "transparent", 10, "Arial")
                 end
 
             end
@@ -295,6 +338,18 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip)
         drawTextOutline(new_chip_offset_x, new_chip_offset_y + offset_per_row * 1, "ATK: " .. tostring(CHIP_DATA[new_chip.ID].DAMAGE), "black", "lightblue", "transparent", 9, "Arial")
         drawTextOutline(new_chip_offset_x, new_chip_offset_y + offset_per_row * 2,  "B = Cancel", "black", "red", "transparent", 9, "Arial")
     end
+
+    -- Render Mega/GigaChip limits
+    new_chip_offset_y = 5
+    drawTextOutline(new_chip_offset_x, new_chip_offset_y,  "Mega: " .. tostring(gauntlet_data.current_number_of_mega_chips) 
+                                                                    .. " / " .. tostring(gauntlet_data.mega_chip_limit) , "black", "white", "transparent", 9, "Arial")
+    drawTextOutline(new_chip_offset_x, new_chip_offset_y + 10,  "Giga: " .. tostring(gauntlet_data.current_number_of_giga_chips) 
+                                                                    .. " / " .. tostring(gauntlet_data.giga_chip_limit) , "black", "white", "transparent", 9, "Arial")
+
+
+
+
+
 
 end
 
