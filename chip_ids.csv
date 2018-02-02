@@ -57,7 +57,7 @@
 44	57	ZapRing3	=	[0x44]	,		=	"""ZapRing3"""	,
 5A	58	IceWave1	=	[0x5A]	,		=	"""IceWave1"""	,
 5B	59	IceWave2	=	[0x5B]	,		=	"""IceWave2"""	,
-5C	60	IveWave3	=	[0x5C]	,		=	"""IveWave3"""	,
+5C	60	IceWave3	=	[0x5C]	,		=	"""IceWave3"""	,
 45	61	Yo-Yo1	=	[0x45]	,		=	"""Yo-Yo1"""	,
 46	62	Yo-Yo2	=	[0x46]	,		=	"""Yo-Yo2"""	,
 47	63	Yo-Yo3	=	[0x47]	,		=	"""Yo-Yo3"""	,

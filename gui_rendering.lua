@@ -326,13 +326,13 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
 
     -- Render new chip
 
-    local new_chip_offset_x = 182
+    local new_chip_offset_x = 178
     local new_chip_offset_y = 80
 
     --print(new_chip)
     if new_chip ~= nil and new_chip.PRINT_NAME ~= nil and new_chip.PRINT_NAME ~= "" and new_chip.ID ~= -1 then
         -- Render icon.
-        render_argb_2d_array(new_chip.ARGB_ICON, new_chip_offset_x, new_chip_offset_y - offset_per_row * 1 - CHIP_ICON.HEIGHT, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
+        render_argb_2d_array(new_chip.ARGB_ICON, new_chip_offset_x + 2, new_chip_offset_y - offset_per_row * 1 - CHIP_ICON.HEIGHT - 2, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
         drawTextOutline(new_chip_offset_x, new_chip_offset_y - offset_per_row * 1,  "New Chip: ", "black", "green", "transparent", 9, "Arial")
         drawTextOutline(new_chip_offset_x, new_chip_offset_y,  new_chip.PRINT_NAME, "black", "white", "transparent", 9, "Arial")
         drawTextOutline(new_chip_offset_x, new_chip_offset_y + offset_per_row * 1, "ATK: " .. tostring(CHIP_DATA[new_chip.ID].DAMAGE), "black", "lightblue", "transparent", 9, "Arial")
@@ -340,11 +340,11 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
     end
 
     -- Render Mega/GigaChip limits
-    new_chip_offset_y = 5
+    new_chip_offset_y = 0
     drawTextOutline(new_chip_offset_x, new_chip_offset_y,  "Mega: " .. tostring(gauntlet_data.current_number_of_mega_chips) 
-                                                                    .. " / " .. tostring(gauntlet_data.mega_chip_limit) , "black", "white", "transparent", 9, "Arial")
+                                                                    .. " / " .. tostring(gauntlet_data.mega_chip_limit) , "black", "white", "transparent", 10, "Arial")
     drawTextOutline(new_chip_offset_x, new_chip_offset_y + 10,  "Giga: " .. tostring(gauntlet_data.current_number_of_giga_chips) 
-                                                                    .. " / " .. tostring(gauntlet_data.giga_chip_limit) , "black", "white", "transparent", 9, "Arial")
+                                                                    .. " / " .. tostring(gauntlet_data.giga_chip_limit) , "black", "white", "transparent", 10, "Arial")
 
 
 

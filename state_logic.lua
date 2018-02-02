@@ -36,6 +36,8 @@ state_logic.number_of_activated_buffs = 0
 gauntlet_data.current_folder = {}
 gauntlet_data.mega_max_hp = 100
 
+state_logic.initial_chip_amount_flag = 0
+
 state_logic.dropped_chips[1] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
 state_logic.dropped_chips[2] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.B)
 state_logic.dropped_chips[3] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.C)
@@ -167,8 +169,6 @@ end
 
 function state_logic.on_enter_battle()
     
-    
-
     state_logic.patch_next_battle()
     --state_logic.determine_drops(GAUNTLET_DEFS.NUMBER_OF_DROPPED_CHIPS)
     state_logic.shuffle_folder()
@@ -395,6 +395,7 @@ function state_logic.initialize()
     gauntlet_data.mega_WeaponLevelPlus = 1
     gauntlet_data.cust_style_number_of_chips = 0
     gauntlet_data.cust_screen_number_of_chips = 5
+    state_logic.initial_chip_amount_flag = 0
     gauntlet_data.mega_chip_limit = GAUNTLET_DEFS.INITIAL_MEGA_CHIP_LIMIT
     gauntlet_data.giga_chip_limit = GAUNTLET_DEFS.INITIAL_GIGA_CHIP_LIMIT
     gauntlet_data.current_number_of_mega_chips = 0
@@ -769,20 +770,24 @@ function state_logic.main_loop()
         client.pause()
 
         -- Determine number of Mega/Giga chips in folder.
-        for key, chip in pairs(gauntlet_data.current_folder) do
+        if state_logic.initial_chip_amount_flag == 0 then
 
-            if (CHIP_DATA[chip.ID].CHIP_RANKING % 4) == 1 then
-    
-                gauntlet_data.current_number_of_mega_chips = gauntlet_data.current_number_of_mega_chips + 1
-    
-            elseif (CHIP_DATA[chip.ID].CHIP_RANKING % 4) == 2 then
-    
-                gauntlet_data.current_number_of_giga_chips = gauntlet_data.current_number_of_giga_chips + 1
-    
+            for key, chip in pairs(gauntlet_data.current_folder) do
+
+                if (CHIP_DATA[chip.ID].CHIP_RANKING % 4) == 1 then
+        
+                    gauntlet_data.current_number_of_mega_chips = gauntlet_data.current_number_of_mega_chips + 1
+        
+                elseif (CHIP_DATA[chip.ID].CHIP_RANKING % 4) == 2 then
+        
+                    gauntlet_data.current_number_of_giga_chips = gauntlet_data.current_number_of_giga_chips + 1
+        
+                end
+            
             end
-          
-        end
 
+            state_logic.initial_chip_amount_flag = 1
+        end
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.BUFF_SELECT then
         --print ("IN BUFF_SELECT")
         

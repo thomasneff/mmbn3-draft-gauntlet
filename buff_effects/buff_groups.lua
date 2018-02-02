@@ -13,7 +13,8 @@ function buff_generator.random_buffs_from_round(current_round, number_of_buffs)
     local buffs = {}
     local buff_group = BUFF_GROUPS_DATA.BUFF_GROUPS[current_round]
     --print("BUFFS: ", number_of_buffs)
-    --print("BUFF GROUP: ", buff_group)
+    print("BUFF GROUP: ", buff_group)
+    
     for i = 1,number_of_buffs do
 
         buffs[i] = buff_group[math.random(#buff_group)].new()

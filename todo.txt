@@ -1,8 +1,6 @@
 Entities. Add all the info from TREZ.
 
-Special drops for Miniboss/Bosses? Drop tables are already implemented, would only need to be defined.
-
-
+BUG/UNINTENDED: The on_enter_battle() callback gets fired twice after the initial battle. Doesn't matter however, as we guard against that anyways.
 
 Add all virus families to debuff-buff, otherwise remove for now.
 
