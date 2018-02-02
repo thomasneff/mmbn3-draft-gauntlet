@@ -2775,7 +2775,7 @@ ENTITIES.BassOmega.BATTLE_NUMBERS           = TIER_4_BOSS_BATTLES               
 
 
 
--- Crackin' yar panels and stealing yar stuff!
+--[[ Crackin' yar panels and stealing yar stuff!
 ENTITIES.LolMettaur = deepcopy(ENTITIES.MettaurOmega)
 ENTITIES.LolMettaur.HP_BASE = 420
 ENTITIES.LolMettaur.NAME = "LolMettr"
@@ -2817,7 +2817,7 @@ ENTITIES.GEDDONPLZ.AI_BYTES[0x08]            = 0xCC                             
 ENTITIES.GEDDONPLZ.AI_BYTES[0x1603C]         = TIME_FREEZE_CHIP_DEFS.GelRain.FAMILY                 -- Chip Family. This is shared between other Dominerd viruses in the same battle.
 ENTITIES.GEDDONPLZ.AI_BYTES[0x1603E]         = TIME_FREEZE_CHIP_DEFS.GelRain.SUBFAMILY                             -- Chip Subfamily. This is shared between other Dominerd viruses in the same battle.
 ENTITIES.GEDDONPLZ.AI_BYTES[0x16042]         = 20                              -- Chip Damage. This is shared between other Dominerd viruses in the same battle.
-ENTITIES.GEDDONPLZ.BATTLE_NUMBERS = {5, 10, 15, 20, 25, 30, 35, 40}
+ENTITIES.GEDDONPLZ.BATTLE_NUMBERS = {5, 10, 15, 20, 25, 30, 35, 40}--]]
 
 
 
@@ -6358,7 +6358,7 @@ ENTITIES.FlashMan.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV2, CHIP_CODE.F)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
@@ -6380,7 +6380,7 @@ ENTITIES.FlashManAlpha.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV3, CHIP_CODE.F)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
@@ -6402,7 +6402,7 @@ ENTITIES.FlashManBeta.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV4, CHIP_CODE.F)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlashMnV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
@@ -6446,7 +6446,7 @@ ENTITIES.BeastMan.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV2, CHIP_CODE.B)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
@@ -6468,7 +6468,7 @@ ENTITIES.BeastManAlpha.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV3, CHIP_CODE.B)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
@@ -6490,7 +6490,7 @@ ENTITIES.BeastManBeta.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV4, CHIP_CODE.B)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BeastMnV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
@@ -6534,7 +6534,7 @@ ENTITIES.BubbleMan.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BubblMnV2, CHIP_CODE.B)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BubblMnV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
@@ -6556,7 +6556,7 @@ ENTITIES.BubbleManAlpha.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BubblMnV3, CHIP_CODE.B)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BubblMnV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
@@ -6578,7 +6578,7 @@ ENTITIES.BubbleManBeta.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BubblMnV4, CHIP_CODE.B)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BubblMnV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
@@ -6622,7 +6622,7 @@ ENTITIES.DesertMan.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DesrtMnV2, CHIP_CODE.D)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DesrtMnV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
@@ -6644,7 +6644,7 @@ ENTITIES.DesertManAlpha.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DesrtMnV3, CHIP_CODE.D)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DesrtMnV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
@@ -6666,7 +6666,7 @@ ENTITIES.DesertManBeta.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DesrtMnV4, CHIP_CODE.D)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DesrtMnV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
@@ -6706,19 +6706,19 @@ ENTITIES.PlantMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMan, CHIP_CODE.P)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMan, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV2, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6728,19 +6728,19 @@ ENTITIES.PlantManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV2, CHIP_CODE.P)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV2, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV3, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6750,19 +6750,19 @@ ENTITIES.PlantManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV3, CHIP_CODE.P)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV3, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV4, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6772,19 +6772,19 @@ ENTITIES.PlantManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV5, CHIP_CODE.P)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV5)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.PlantMnV5, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6794,19 +6794,19 @@ ENTITIES.FlameMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamMan, CHIP_CODE.F)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamMan, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV2, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6816,19 +6816,19 @@ ENTITIES.FlameManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV2, CHIP_CODE.F)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV2, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV3, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6838,19 +6838,19 @@ ENTITIES.FlameManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV3, CHIP_CODE.F)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV3, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV4, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6860,19 +6860,19 @@ ENTITIES.FlameManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV5, CHIP_CODE.F)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV5)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FlamManV5, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6882,19 +6882,19 @@ ENTITIES.DrillMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMan, CHIP_CODE.D)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMan, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV2, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6904,19 +6904,19 @@ ENTITIES.DrillManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV2, CHIP_CODE.D)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV2, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV3, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6926,19 +6926,19 @@ ENTITIES.DrillManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV3, CHIP_CODE.D)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV3, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV4, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6948,19 +6948,19 @@ ENTITIES.DrillManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV5, CHIP_CODE.D)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV5)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DrillMnV5, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6970,19 +6970,19 @@ ENTITIES.Alpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Guardian)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.NaviRcycl, CHIP_CODE.Z)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Guardian, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.NaviRcycl, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -6992,19 +6992,19 @@ ENTITIES.AlphaOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.AlphArmSigma, CHIP_CODE.Asterisk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.AlphArmOmega, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FoldrBak, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7014,19 +7014,19 @@ ENTITIES.GutsMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutsMan, CHIP_CODE.G)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutPunch, CHIP_CODE.Asterisk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutsMan, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutsManV2, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7036,19 +7036,19 @@ ENTITIES.GutsManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutsManV2, CHIP_CODE.G)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutStrgt, CHIP_CODE.Asterisk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutsManV2, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutsManV3, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7058,19 +7058,19 @@ ENTITIES.GutsManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutsManV3, CHIP_CODE.G)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutImpct, CHIP_CODE.Asterisk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutsManV3, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutsManV4, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7080,19 +7080,19 @@ ENTITIES.GutsManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutsManV5, CHIP_CODE.G)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutsManV5)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.GutsManV5, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7102,19 +7102,19 @@ ENTITIES.ProtoMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMan, CHIP_CODE.B)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMnV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMan, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMnV2, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7124,19 +7124,19 @@ ENTITIES.ProtoManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMnV2, CHIP_CODE.B)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMnV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMnV2, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMnV3, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7146,19 +7146,19 @@ ENTITIES.ProtoManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMnV3, CHIP_CODE.B)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMnV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMnV3, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMnV4, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7168,19 +7168,19 @@ ENTITIES.ProtoManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMnV5, CHIP_CODE.B)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DeltaRay, CHIP_CODE.Z)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.ProtoMnV5, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DeltaRay, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7190,19 +7190,19 @@ ENTITIES.MetalMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMan, CHIP_CODE.M)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMan, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV2, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7212,19 +7212,19 @@ ENTITIES.MetalManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV2, CHIP_CODE.M)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV2, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV3, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7234,19 +7234,19 @@ ENTITIES.MetalManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV3, CHIP_CODE.M)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV3, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV4, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7256,19 +7256,19 @@ ENTITIES.MetalManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV5, CHIP_CODE.M)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV5)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MetalMnV5, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7278,19 +7278,19 @@ ENTITIES.Punk.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Punk, CHIP_CODE.P)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Punk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Punk, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.NaviPlus40, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7300,19 +7300,19 @@ ENTITIES.PunkAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Punk, CHIP_CODE.P)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Punk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Punk, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.NaviPlus40, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7322,19 +7322,19 @@ ENTITIES.PunkBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Punk, CHIP_CODE.P)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Punk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Punk, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.NaviPlus40, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7344,19 +7344,19 @@ ENTITIES.PunkOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Punk, CHIP_CODE.P)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Punk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Punk, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.NaviPlus40, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7366,19 +7366,19 @@ ENTITIES.KingMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.KingMan, CHIP_CODE.K)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Pawn)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.KingMan, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.KingManV2, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7388,19 +7388,19 @@ ENTITIES.KingManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.KingManV2, CHIP_CODE.K)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Pawn)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.KingManV2, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.KingManV3, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7410,19 +7410,19 @@ ENTITIES.KingManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.KingManV3, CHIP_CODE.K)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Pawn)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.KingManV3, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.KingManV4, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7432,19 +7432,19 @@ ENTITIES.KingManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.KingManV5, CHIP_CODE.K)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Pawn, CHIP_CODE.Asterisk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.KingManV5, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7454,19 +7454,19 @@ ENTITIES.MistMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistMan, CHIP_CODE.M)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistMan, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV2, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7476,19 +7476,19 @@ ENTITIES.MistManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV2, CHIP_CODE.M)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV2, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV3, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7498,19 +7498,19 @@ ENTITIES.MistManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV3, CHIP_CODE.M)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV3, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV4, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7520,19 +7520,19 @@ ENTITIES.MistManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV5, CHIP_CODE.M)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV5)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.MistManV5, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7542,19 +7542,19 @@ ENTITIES.BowlMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlMan, CHIP_CODE.B)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlMan, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV2, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7564,19 +7564,19 @@ ENTITIES.BowlManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV2, CHIP_CODE.B)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV2, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV3, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7586,19 +7586,19 @@ ENTITIES.BowlManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV3, CHIP_CODE.B)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV3, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV4, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7608,19 +7608,19 @@ ENTITIES.BowlManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV5, CHIP_CODE.B)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV5)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BowlManV5, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7630,19 +7630,19 @@ ENTITIES.DarkMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkMan, CHIP_CODE.D)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkMan, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV2, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7652,19 +7652,19 @@ ENTITIES.DarkManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV2, CHIP_CODE.D)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV2, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV3, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7674,19 +7674,19 @@ ENTITIES.DarkManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV3, CHIP_CODE.D)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV3, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV4, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7696,19 +7696,19 @@ ENTITIES.DarkManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV5, CHIP_CODE.D)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV5)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkManV5, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7718,19 +7718,19 @@ ENTITIES.JapanMan.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMan, CHIP_CODE.Y)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV2)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMan, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV2, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7740,19 +7740,19 @@ ENTITIES.JapanManAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV2, CHIP_CODE.Y)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV3)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV2, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV3, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7762,19 +7762,19 @@ ENTITIES.JapanManBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV3, CHIP_CODE.Y)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV4)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV3, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV4, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7784,19 +7784,19 @@ ENTITIES.JapanManOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV5, CHIP_CODE.Y)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV5)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.JapanMnV5, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FullCust, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7806,19 +7806,19 @@ ENTITIES.Serenade.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.NaviPlus40, CHIP_CODE.Asterisk)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkAura, CHIP_CODE.A)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Serenade, CHIP_CODE.S)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Serenade, CHIP_CODE.S)
   }
 }
 -------------------------------------------------------------------------------
@@ -7828,19 +7828,19 @@ ENTITIES.SerenadeAlpha.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.AtkPlus30, CHIP_CODE.Asterisk)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkAura, CHIP_CODE.A)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Serenade, CHIP_CODE.S)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Serenade, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7850,19 +7850,19 @@ ENTITIES.SerenadeBeta.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkAura, CHIP_CODE.A)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Serenade, CHIP_CODE.S)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkAura, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Serenade, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7872,19 +7872,19 @@ ENTITIES.SerenadeOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.DarkAura, CHIP_CODE.Asterisk)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Serenade, CHIP_CODE.Asterisk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FolderBak, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FolderBak, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7894,19 +7894,19 @@ ENTITIES.Bass.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.LifeAura, CHIP_CODE.D)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.LifeAura, CHIP_CODE.Asterisk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Bass, CHIP_CODE.X)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BassPlus, CHIP_CODE.X)
   }
 }
 -------------------------------------------------------------------------------
@@ -7916,19 +7916,19 @@ ENTITIES.BassGS.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.LifeAura, CHIP_CODE.Asterisk)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.Bass, CHIP_CODE.Asterisk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BassPlus, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FolderBak, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7938,19 +7938,19 @@ ENTITIES.BassOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BassPlus, CHIP_CODE.Asterisk)
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FolderBak, CHIP_CODE.Asterisk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BassGS, CHIP_CODE.X)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_random_chip_with_random_code_generator()
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.BassGS, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
