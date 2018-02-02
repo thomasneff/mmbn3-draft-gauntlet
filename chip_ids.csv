@@ -7,7 +7,7 @@
 7	7	Lavacan1	=	[0x7]	,		=	"""Lavacan1"""	,
 8	8	Lavacan2	=	[0x8]	,		=	"""Lavacan2"""	,
 9	9	Lavacan3	=	[0x9]	,		=	"""Lavacan3"""	,
-72	10	Volcanoe	=	[0x72]	,		=	"""Volcanoe"""	,
+72	10	Volcano	=	[0x72]	,		=	"""Volcano"""	,
 0A	11	ShotGun	=	[0x0A]	,		=	"""ShotGun"""	,
 0B	12	V-Gun	=	[0x0B]	,		=	"""V-Gun"""	,
 0C	13	SideGun	=	[0x0C]	,		=	"""SideGun"""	,
