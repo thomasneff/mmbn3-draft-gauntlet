@@ -194,6 +194,7 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind)
     --    new_entity = deepcopy(ENTITIES.Guardian)
     --    ent_cnt = 1
     --end
+
     print(new_entity.NAME)
     
     if is_twins_virus(new_entity) then
@@ -222,6 +223,13 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind)
     end
 
 
+    if new_entity.BATTLE_DATA.TYPE == ENTITY_TYPE.Alpha or
+       new_entity.BATTLE_DATA.TYPE == ENTITY_TYPE.AlphaOmega then
+
+        x_pos = 5
+        y_pos = 2
+
+    end
     if new_entity.BATTLE_DATA.KIND == ENTITY_KIND.Virus then    
         contains_virus_table.VALUE = contains_virus_table.VALUE + 1
     end
