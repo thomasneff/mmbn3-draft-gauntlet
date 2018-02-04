@@ -422,10 +422,10 @@ ENTITIES.HardHead                           = new_base_entity(ENTITY_KIND.Virus,
 ENTITIES.HardHead.NAME                      = "HardHead"
 ENTITIES.HardHead.HP_BASE                   = 80
 ENTITIES.HardHead.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
-ENTITIES.HardHead.AI_BYTES                  = {}
-ENTITIES.HardHead.AI_BYTES[0x00]            = 0xF0                              -- Delay before shooting.
-ENTITIES.HardHead.AI_BYTES[0x01]            = 0x3C                              -- Damage hardball.
-ENTITIES.HardHead.AI_BYTES[0x02]            = HardHead_BallType.BREAK_BALL      -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
+--ENTITIES.HardHead.AI_BYTES                  = {}
+--ENTITIES.HardHead.AI_BYTES[0x00]            = 0xF0                              -- Delay before shooting.
+--ENTITIES.HardHead.AI_BYTES[0x01]            = 0x3C                              -- Damage hardball.
+--ENTITIES.HardHead.AI_BYTES[0x02]            = HardHead_BallType.BREAK_BALL      -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
 --ENTITIES.HardHead.AI_BYTES[0x14576]         = 0x32                              -- Delay before shooting (animation). Shared with other HardHead viruses in the same battle.
 --ENTITIES.HardHead.AI_BYTES[0x14614]         = 0x1E                              -- Delay after attack. Shared with other HardHead viruses in the same battle.
 ENTITIES.HardHead.BATTLE_NUMBERS            = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
@@ -434,10 +434,10 @@ ENTITIES.ColdHead                           = new_base_entity(ENTITY_KIND.Virus,
 ENTITIES.ColdHead.NAME                      = "ColdHead"
 ENTITIES.ColdHead.HP_BASE                   = 120
 ENTITIES.ColdHead.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_AQUA
-ENTITIES.ColdHead.AI_BYTES                  = {}
-ENTITIES.ColdHead.AI_BYTES[0x00]            = 0x96                              -- Delay before shooting.
-ENTITIES.ColdHead.AI_BYTES[0x01]            = 0x64                              -- Damage hardball.
-ENTITIES.ColdHead.AI_BYTES[0x02]            = HardHead_BallType.ICE_BALL        -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
+--ENTITIES.ColdHead.AI_BYTES                  = {}
+--ENTITIES.ColdHead.AI_BYTES[0x00]            = 0x96                              -- Delay before shooting.
+--ENTITIES.ColdHead.AI_BYTES[0x01]            = 0x64                              -- Damage hardball.
+--ENTITIES.ColdHead.AI_BYTES[0x02]            = HardHead_BallType.ICE_BALL        -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
 --ENTITIES.ColdHead.AI_BYTES[0x14573]         = 0x32                              -- Delay before shooting (animation). Shared with other HardHead viruses in the same battle.
 --ENTITIES.ColdHead.AI_BYTES[0x14611]         = 0x1E                              -- Delay after attack. Shared with other HardHead viruses in the same battle.
 ENTITIES.ColdHead.BATTLE_NUMBERS            = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
@@ -446,10 +446,10 @@ ENTITIES.HotHead                            = new_base_entity(ENTITY_KIND.Virus,
 ENTITIES.HotHead.NAME                       = "HotHead"
 ENTITIES.HotHead.HP_BASE                    = 200
 ENTITIES.HotHead.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_HEAT
-ENTITIES.HotHead.AI_BYTES                   = {}
-ENTITIES.HotHead.AI_BYTES[0x00]             = 0x5A                              -- Delay before shooting.
-ENTITIES.HotHead.AI_BYTES[0x01]             = 0x64                              -- Damage hardball.
-ENTITIES.HotHead.AI_BYTES[0x02]             = HardHead_BallType.LAVA_BALL       -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
+--ENTITIES.HotHead.AI_BYTES                   = {}
+--ENTITIES.HotHead.AI_BYTES[0x00]             = 0x5A                              -- Delay before shooting.
+--ENTITIES.HotHead.AI_BYTES[0x01]             = 0x64                              -- Damage hardball.
+--ENTITIES.HotHead.AI_BYTES[0x02]             = HardHead_BallType.LAVA_BALL       -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
 --ENTITIES.HotHead.AI_BYTES[0x14570]          = 0x32                              -- Delay before shooting (animation). Shared with other HardHead viruses in the same battle.
 --ENTITIES.HotHead.AI_BYTES[0x1460E]          = 0x1E                              -- Delay after attack. Shared with other HardHead viruses in the same battle.
 ENTITIES.HotHead.BATTLE_NUMBERS             = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
@@ -458,10 +458,10 @@ ENTITIES.HardHeadOmega                      = new_base_entity(ENTITY_KIND.Virus,
 ENTITIES.HardHeadOmega.NAME                 = "HardHead\003"
 ENTITIES.HardHeadOmega.HP_BASE              = 300
 ENTITIES.HardHeadOmega.ELEMENT              = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
-ENTITIES.HardHeadOmega.AI_BYTES             = {}
-ENTITIES.HardHeadOmega.AI_BYTES[0x00]       = 0xF0                              -- Delay before shooting.
-ENTITIES.HardHeadOmega.AI_BYTES[0x01]       = 0xC8                              -- Damage hardball.
-ENTITIES.HardHeadOmega.AI_BYTES[0x02]       = HardHead_BallType.BREAK_BALL      -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
+--ENTITIES.HardHeadOmega.AI_BYTES             = {}
+--ENTITIES.HardHeadOmega.AI_BYTES[0x00]       = 0xF0                              -- Delay before shooting.
+--ENTITIES.HardHeadOmega.AI_BYTES[0x01]       = 0xC8                              -- Damage hardball.
+--ENTITIES.HardHeadOmega.AI_BYTES[0x02]       = HardHead_BallType.BREAK_BALL      -- Type of ball. 0x00 == break panel, 0x01 == ice ball, 0x02 == lava ball.
 --ENTITIES.HardHeadOmega.AI_BYTES[0x1456D]    = 0x32                              -- Delay before shooting (animation). Shared with other HardHead viruses in the same battle.
 --ENTITIES.HardHeadOmega.AI_BYTES[0x1460B]    = 0x1E                              -- Delay after attack. Shared with other HardHead viruses in the same battle.
 ENTITIES.HardHeadOmega.BATTLE_NUMBERS       = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
