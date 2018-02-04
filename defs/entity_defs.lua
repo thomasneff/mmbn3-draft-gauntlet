@@ -525,7 +525,7 @@ ENTITIES.Shrimpy2.AI_BYTES                  = {}
 ENTITIES.Shrimpy2.AI_BYTES[0x00]            = 0x18                              -- Vertical speed.
 ENTITIES.Shrimpy2.AI_BYTES[0x01]            = 0x01                              -- Frequency of attacks (higher value == more frequent).
 ENTITIES.Shrimpy2.AI_BYTES[0x02]            = 0x3C                              -- Damage by bubble.
-ENTITIES.Shrimpy2.AI_BYTES[0xA20E]          = 0x10                              -- Delay after attack. This is shared with all other Shrimpy viruses in the same battle.
+ENTITIES.Shrimpy2.AI_BYTES[0xA20B]          = 0x10                              -- Delay after attack. This is shared with all other Shrimpy viruses in the same battle.
 ENTITIES.Shrimpy2.BATTLE_NUMBERS            = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.Shrimpy3                           = new_base_entity(ENTITY_KIND.Virus, "Shrimpy3")
@@ -536,7 +536,7 @@ ENTITIES.Shrimpy3.AI_BYTES                  = {}
 ENTITIES.Shrimpy3.AI_BYTES[0x00]            = 0x14                              -- Vertical speed.
 ENTITIES.Shrimpy3.AI_BYTES[0x01]            = 0x02                              -- Frequency of attacks (higher value == more frequent).
 ENTITIES.Shrimpy3.AI_BYTES[0x02]            = 0x5A                              -- Damage by bubble.
-ENTITIES.Shrimpy3.AI_BYTES[0xA20E]          = 0x10                              -- Delay after attack. This is shared with all other Shrimpy viruses in the same battle.
+ENTITIES.Shrimpy3.AI_BYTES[0xA208]          = 0x10                              -- Delay after attack. This is shared with all other Shrimpy viruses in the same battle.
 ENTITIES.Shrimpy3.BATTLE_NUMBERS            = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.ShrimpyOmega                       = new_base_entity(ENTITY_KIND.Virus, "ShrimpyOmega")
@@ -547,7 +547,7 @@ ENTITIES.ShrimpyOmega.AI_BYTES              = {}
 ENTITIES.ShrimpyOmega.AI_BYTES[0x00]        = 0x0F                              -- Vertical speed.
 ENTITIES.ShrimpyOmega.AI_BYTES[0x01]        = 0x03                              -- Frequency of attacks (higher value == more frequent).
 ENTITIES.ShrimpyOmega.AI_BYTES[0x02]        = 0x96                              -- Damage by bubble.
-ENTITIES.ShrimpyOmega.AI_BYTES[0xA20E]      = 0x10                              -- Delay after attack. This is shared with all other Shrimpy viruses in the same battle.
+ENTITIES.ShrimpyOmega.AI_BYTES[0xA205]      = 0x10                              -- Delay after attack. This is shared with all other Shrimpy viruses in the same battle.
 ENTITIES.ShrimpyOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------

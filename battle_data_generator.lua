@@ -126,7 +126,7 @@ function is_twins_virus(entity)
         or entity.BATTLE_DATA.TYPE == ENTITY_TYPE.TwinsOmega
 end
 
-
+-- local ent_cnt = 1
 -- This function takes a game grid, updates it and positions a new entity from a given entity group onto it.
 function roll_entity(grid, entity_group, contains_virus_table, entity_kind)
 
@@ -179,7 +179,21 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind)
 
 
     end
-    --new_entity = deepcopy(ENTITIES.Canodumb2)
+
+
+    --if ent_cnt == 1 then
+    --    new_entity = deepcopy(ENTITIES.ShrimpyOmega)
+    --    ent_cnt = 2
+    --elseif ent_cnt == 2 then
+    --    new_entity = deepcopy(ENTITIES.ShrimpyOmega)
+    --    ent_cnt = 3
+    --elseif ent_cnt == 3 then
+    --    new_entity = deepcopy(ENTITIES.SpikeyOmega)
+    --    ent_cnt = 4
+    --else
+    --    new_entity = deepcopy(ENTITIES.Guardian)
+    --    ent_cnt = 1
+    --end
     print(new_entity.NAME)
     
     if is_twins_virus(new_entity) then
@@ -223,7 +237,7 @@ end
 
 -- This creates new battle data for a given round and battle.
 function battle_data_generator.random_from_battle(current_battle)
-
+    --ent_cnt = 1
     -- Goals: Create a rising difficulty from battle 1 to 10, with a sub-boss at round 5, main boss at round 10.
     --        For that, we need to define virus groups and when they can appear, respectively.
     local new_battle_data = battle_data_generator.new_from_template()
