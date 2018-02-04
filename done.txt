@@ -194,3 +194,5 @@ ShieldWithL: 0x0200577F <-- set to 0x04
 ReflectWithL: 0x0200577F <-- set to 0x06
 DarkLicense: 0x02005790
 
+
+BUG: sometimes during buff selection (happened at the start of round 4 last time), the random buff selection crashes with nil

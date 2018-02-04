@@ -93,7 +93,7 @@ function state_logic.next_round()
         mmbn3_utils.change_battle_pointer_data(ptr_table_working_address, new_pointer_entry)
         ptr_table_working_address = ptr_table_working_address - GENERIC_DEFS.OFFSET_BETWEEN_POINTER_TABLE_ENTRIES
     end
-    print("Patched Battle Stage Setups!")
+    --print("Patched Battle Stage Setups!")
 
     state_logic.on_next_round()
 
@@ -550,7 +550,7 @@ function state_logic.main_loop()
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT then
         -- We pause here and make a savestate.
-        print("Transition to chip select.")
+        --print("Transition to chip select.")
         state_logic.gui_change_savestate = memorysavestate.savecorestate()
         state_logic.reset_selected_chips()
         if state_logic.battle_data[state_logic.current_battle - 1] == nil then
@@ -567,8 +567,8 @@ function state_logic.main_loop()
 
             for idx = 1,#state_logic.dropped_chips do
                 state_logic.dropped_chips[idx].PRINT_NAME = state_logic.get_printable_chip_name(state_logic.dropped_chips[idx])
-                print(bizstring.hex(state_logic.dropped_chips[idx].ID))
-                print(state_logic.dropped_chips[idx].PRINT_NAME)
+                --print(bizstring.hex(state_logic.dropped_chips[idx].ID))
+                --print(state_logic.dropped_chips[idx].PRINT_NAME)
             end
 
             
@@ -641,7 +641,7 @@ function state_logic.main_loop()
         state_logic.gui_change_savestate = memorysavestate.savecorestate()
         memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         -- print(state_logic.dropped_chip)
-        print("Transition to chip replace.")
+        --print("Transition to chip replace.")
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.CHIP_REPLACE
         state_logic.should_redraw = 1
 
@@ -904,7 +904,7 @@ function state_logic.main_loop()
         if input_handler.inputs_pressed["A"] == true then
 
             --print("Selected a Chip!")
-            print("Selected Loadout: ", LOADOUTS[state_logic.selected_loadout_index])
+            --print("Selected Loadout: ", LOADOUTS[state_logic.selected_loadout_index])
             gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT
 
 
@@ -969,7 +969,7 @@ function state_logic.main_loop()
         if input_handler.inputs_pressed["A"] == true then
 
             --print("Selected a Chip!")
-            print("Selected drop method: ", CHIP_DROP_METHODS[state_logic.selected_drop_method_index])
+            --print("Selected drop method: ", CHIP_DROP_METHODS[state_logic.selected_drop_method_index])
             gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_STARTING_LOADOUT
 
 

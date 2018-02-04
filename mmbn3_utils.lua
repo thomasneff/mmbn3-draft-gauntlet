@@ -63,7 +63,7 @@ function mmbn3_utils.change_megaMan_max_hp(new_value)
     --local megaMan_max_hp_address = 0x020018A2 -- This is the address before battle.
     -- We need the address IN battle.
     local megaMan_max_hp_address = defs.MEGA_MAX_HP_ADDRESS
-    print("Patched HP: ", new_value)
+    --print("Patched HP: ", new_value)
     mmbn3_utils.writeword(megaMan_max_hp_address, new_value)
     mmbn3_utils.writeword(0x020018A2, new_value)
 
@@ -77,7 +77,7 @@ function mmbn3_utils.change_megaMan_style(new_style)
     mmbn3_utils.writebyte(0x02001894, new_style)
     mmbn3_utils.writebyte(0x0203B39C, new_style)
 
-    print("PATCHED MEGAMAN STYLE: ", bizstring.hex(new_style))
+    --print("PATCHED MEGAMAN STYLE: ", bizstring.hex(new_style))
 
     -- REMOVEME: testing other navicust things
     -- mmbn3_utils.writebyte(0x02005787, 0x19)
@@ -93,7 +93,7 @@ end
 function mmbn3_utils.change_number_of_cust_screen_chips(value) 
     local address = defs.NUMBER_OF_CUST_CHIPS_ADDRESS
     --value = 0xF
-    print("CUST SCREENCHIPS: ", value)
+    --print("CUST SCREENCHIPS: ", value)
     mmbn3_utils.writebyte(address, value)
 
     
