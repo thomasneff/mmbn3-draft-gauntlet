@@ -707,10 +707,10 @@ function state_logic.main_loop()
 
                 local dropped_chip_data = CHIP_DATA[state_logic.dropped_chip.ID]
                 local is_dropped_chip_mega = (dropped_chip_data.CHIP_RANKING % 4) == 1
-                local is_dropped_chip_giga = (dropped_chip_data.CHIP_RANKING % 4) == 1
+                local is_dropped_chip_giga = (dropped_chip_data.CHIP_RANKING % 4) == 2
                 local folder_chip_data = CHIP_DATA[gauntlet_data.current_folder[state_logic.folder_chip_render_index].ID]
                 local is_folder_chip_mega = (folder_chip_data.CHIP_RANKING % 4) == 1
-                local is_folder_chip_giga = (folder_chip_data.CHIP_RANKING % 4) == 1
+                local is_folder_chip_giga = (folder_chip_data.CHIP_RANKING % 4) == 2
 
                 local replaces_mega_chip = is_folder_chip_mega and is_dropped_chip_mega
 

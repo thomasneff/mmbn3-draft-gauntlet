@@ -285,11 +285,11 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
         local dropped_chip_data = CHIP_DATA[new_chip.ID]
         --print("DROPPED CHIP DATA: ", dropped_chip_data)
         local is_dropped_chip_mega = (dropped_chip_data.CHIP_RANKING % 4) == 1
-        local is_dropped_chip_giga = (dropped_chip_data.CHIP_RANKING % 4) == 1
+        local is_dropped_chip_giga = (dropped_chip_data.CHIP_RANKING % 4) == 2
         local folder_chip_data = CHIP_DATA[folder[selected_chip_index].ID]
         --print("FOLDER CHIP DATA: ", folder_chip_data)
         local is_folder_chip_mega = (folder_chip_data.CHIP_RANKING % 4) == 1
-        local is_folder_chip_giga = (folder_chip_data.CHIP_RANKING % 4) == 1
+        local is_folder_chip_giga = (folder_chip_data.CHIP_RANKING % 4) == 2
 
         local replaces_mega_chip = is_folder_chip_mega and is_dropped_chip_mega
 
