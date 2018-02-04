@@ -2059,7 +2059,7 @@ ENTITIES.N_O_3.AI_BYTES[0x04]               = 0x01                              
 ENTITIES.N_O_3.AI_BYTES[0x05]               = 0x05                              -- Attack speed delay.
 ENTITIES.N_O_3.BATTLE_NUMBERS               = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.N_O_Omega                          = new_base_entity(ENTITY_KIND.Virus, "N_OOmega")
+ENTITIES.N_O_Omega                          = new_base_entity(ENTITY_KIND.Virus, "N_O_Omega")
 ENTITIES.N_O_Omega.NAME                     = "N.O-\003"
 ENTITIES.N_O_Omega.HP_BASE                  = 300
 ENTITIES.N_O_Omega.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_NONE
