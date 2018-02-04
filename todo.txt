@@ -23,20 +23,6 @@ Implement better battle progression (split into easy, medium, hard viruses, with
 
 
 
-Implement other buffs related to NaviCust stuff.
-
-
-All NaviCust programs can simply be patched in TRANSITION_TO_RUNNING
-
-
-ShadowShoes: 0x02005772 <-- set to 0x01
-FloatShoes: 0x02005772 <-- set to 0x02
-BreakBuster: 0x02005776
-BreakCharge: 0x0200577E
-BlockWithL: 0x0200577F <-- set to 0x02
-ShieldWithL: 0x0200577F <-- set to 0x04
-ReflectWithL: 0x0200577F <-- set to 0x06
-DarkLicense: 0x02005790
 
 
 Implement example buff that implements custom + (e.g. All Mettaur-Virusses instantly kill you, but you start with +X custom chips)

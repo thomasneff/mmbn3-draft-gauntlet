@@ -15,6 +15,11 @@ local FASTGAUGE = require "buff_effects.fastgauge"
 local AIRSHOES = require "buff_effects.airshoes"
 local MEGAPLUS = require "buff_effects.megachipplus"
 local GIGAPLUS = require "buff_effects.gigachipplus"
+local BREAKBUSTER = require "buff_effects.breakbuster"
+local BREAKCHARGE = require "buff_effects.breakcharge"
+local DARKLICENSE = require "buff_effects.darklicense"
+local FLOATSHOES = require "buff_effects.floatshoes"
+local REFLECT = require "buff_effects.reflect"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -24,8 +29,6 @@ local BUFF_GROUPS = {
 
 BUFF_GROUPS[1] = {
     HP_INCREASE,
-    --CANNON_DAMAGE_INCREASE,
-    --NERF_VIRUS_GROUP,
     STYLE_CHANGE,
     SET_STAGE,
     BUSTER_SPEEDPLUS,
@@ -39,6 +42,12 @@ BUFF_GROUPS[1] = {
     AIRSHOES,
     MEGAPLUS,
     GIGAPLUS,
+    BREAKBUSTER,
+    BREAKCHARGE,
+    DARKLICENSE,
+    FLOATSHOES,
+    REFLECT
+
 }
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

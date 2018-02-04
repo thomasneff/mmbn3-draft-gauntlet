@@ -58,15 +58,16 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
         if virus_entity_data.DROP_TABLE ~= nil then
             
             local rng = math.random(100)
-
+            local rarity = 0
             for key, drop_entry in ipairs(virus_entity_data.DROP_TABLE) do
 
                 if drop_entry.CUMULATIVE_RARITY >= rng then
                     --print("Dropping " .. key .. " drop-table chip!")
                     dropped_chips[drop_index] = drop_entry.CHIP_GEN()
+                    dropped_chips[drop_index].RARITY = rarity
                     break
                 end
-
+                rarity = rarity + 1
             end
 
 

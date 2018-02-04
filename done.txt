@@ -179,4 +179,18 @@ Enforce MegaChip/GigaChip limit + add standard chip drops for Bosses?
 
 Special drops for Miniboss/Bosses? Drop tables are already implemented, would only need to be defined.
 
+Implement other buffs related to NaviCust stuff.
+
+
+All NaviCust programs can simply be patched in TRANSITION_TO_RUNNING
+
+
+ShadowShoes: 0x02005772 <-- set to 0x01
+FloatShoes: 0x02005772 <-- set to 0x02
+BreakBuster: 0x02005776
+BreakCharge: 0x0200577E
+BlockWithL: 0x0200577F <-- set to 0x02
+ShieldWithL: 0x0200577F <-- set to 0x04
+ReflectWithL: 0x0200577F <-- set to 0x06
+DarkLicense: 0x02005790
 

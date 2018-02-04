@@ -392,6 +392,11 @@ function state_logic.initialize()
     gauntlet_data.mega_AttackPlus = 0
     gauntlet_data.mega_ChargePlus = 0
     gauntlet_data.mega_SpeedPlus = 0
+    gauntlet_data.mega_FloatShoes = 0
+    gauntlet_data.mega_BreakBuster = 0
+    gauntlet_data.mega_BreakCharge = 0
+    gauntlet_data.mega_DarkLicense = 0
+    gauntlet_data.mega_Reflect = 0
     gauntlet_data.mega_WeaponLevelPlus = 1
     gauntlet_data.cust_style_number_of_chips = 0
     gauntlet_data.cust_screen_number_of_chips = 5
@@ -485,7 +490,11 @@ function state_logic.patch_before_battle_start()
     mmbn3_utils.writebyte(0x0200577A, gauntlet_data.mega_ChargePlus)
     mmbn3_utils.writebyte(0x02005779, gauntlet_data.mega_SpeedPlus)
     mmbn3_utils.writebyte(0x0200577D, gauntlet_data.mega_WeaponLevelPlus)
-
+    mmbn3_utils.writebyte(0x02005772, gauntlet_data.mega_FloatShoes)
+    mmbn3_utils.writebyte(0x02005776, gauntlet_data.mega_BreakBuster)
+    mmbn3_utils.writebyte(0x0200577E, gauntlet_data.mega_BreakCharge)
+    mmbn3_utils.writebyte(0x02005790, gauntlet_data.mega_DarkLicense)
+    mmbn3_utils.writebyte(0x0200577F, gauntlet_data.mega_Reflect)
 
     mmbn3_utils.change_megaMan_max_hp(gauntlet_data.mega_max_hp) 
     -- We need to wait a few frames to patch the in-battle HP of megaMan in RAM. Otherwise we would need a hook way before battle, which I don't want to find right now.

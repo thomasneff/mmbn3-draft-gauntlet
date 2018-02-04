@@ -6,6 +6,9 @@ local CHIP_CODE = require "defs.chip_code_defs"
 
 
 local chip_image_background_path = "chip_image_background.png"
+local chip_rare_image_background_path = "chip_image_background_rare.png"
+local chip_super_rare_image_background_path = "chip_image_background_super_rare.png"
+local chip_ultra_rare_image_background_path = "chip_image_background_ultra_rare.png"
 local buff_image_background_path = "buff_background.png"
 local loadout_image_background_path = "buff_background.png"
 local arrow_left_path = "arrow_left.png"
@@ -59,11 +62,23 @@ function render_chip_with_background(chip, x_offset, y_offset, width, height, is
     local bg_size_x = 80
     local bg_size_y = 139
     -- Render green selection box
+
     if is_selected == true then
         gui.drawRectangle(x_offset - 5, y_offset - 5, bg_size_x + 10, bg_size_y, nil, "green")
     end
-    
-    gui.drawImage(chip_image_background_path, x_offset, y_offset)
+    if chip.RARITY == nil then
+        gui.drawImage(chip_image_background_path, x_offset, y_offset)
+    elseif chip.RARITY == 0 then
+        gui.drawImage(chip_image_background_path, x_offset, y_offset)
+    elseif chip.RARITY == 1 then
+        gui.drawImage(chip_rare_image_background_path, x_offset, y_offset)
+    elseif chip.RARITY == 2 then
+        gui.drawImage(chip_super_rare_image_background_path, x_offset, y_offset)
+    elseif chip.RARITY == 3 then
+        gui.drawImage(chip_ultra_rare_image_background_path, x_offset, y_offset)
+    else
+        gui.drawImage(chip_image_background_path, x_offset, y_offset)
+    end
     local offset_between_background_and_chip_x = 7
     local offset_between_background_and_chip_y = 5
     if chip_image ~= nil then
@@ -96,12 +111,16 @@ function gui_rendering.render_chip_selection(chip_list, selected_chip_index)
     for chip_idx = 1,num_chips do
 
 
-        
-        render_chip_with_background(chip_list[chip_idx], x_offset, y_offset, 64, 56, chip_idx == selected_chip_index)
-
+        if chip_idx ~= selected_chip_index then
+            render_chip_with_background(chip_list[chip_idx], x_offset, y_offset, 64, 56, false)
+        end
         x_offset = x_offset + offset_per_chip_x
 
     end
+    x_offset = base_offset_x + offset_per_chip_x * (selected_chip_index - 1)
+    -- We render the selected chip always last.
+    render_chip_with_background(chip_list[selected_chip_index], x_offset, y_offset, 64, 56, true)
+
 
 
 end
@@ -342,7 +361,7 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
     -- Render Mega/GigaChip limits
     new_chip_offset_y = 0
     drawTextOutline(new_chip_offset_x, new_chip_offset_y,  "Mega: " .. tostring(gauntlet_data.current_number_of_mega_chips) 
-                                                                    .. " / " .. tostring(gauntlet_data.mega_chip_limit) , "black", "white", "transparent", 10, "Arial")
+                                                                    .. " / " .. tostring(gauntlet_data.mega_chip_limit + gauntlet_data.mega_chip_limit_team) , "black", "white", "transparent", 10, "Arial")
     drawTextOutline(new_chip_offset_x, new_chip_offset_y + 10,  "Giga: " .. tostring(gauntlet_data.current_number_of_giga_chips) 
                                                                     .. " / " .. tostring(gauntlet_data.giga_chip_limit) , "black", "white", "transparent", 10, "Arial")
 
