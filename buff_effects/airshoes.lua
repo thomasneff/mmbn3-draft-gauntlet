@@ -24,7 +24,7 @@ end
 
 function AirShoes:get_description(current_round)
 
-    return "Ignore destroyed panels!"
+    return "Ignore hole panels!"
 
 end
 
