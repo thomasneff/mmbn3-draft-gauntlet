@@ -401,7 +401,7 @@ function state_logic.initialize()
     gauntlet_data.stage = 0
     gauntlet_data.mega_max_hp = 100
     gauntlet_data.hp_patch_required = 0
-    gauntlet_data.folder_shuffle_state = 0
+    gauntlet_data.folder_shuffle_state = 1
     gauntlet_data.mega_style = 0x00
     gauntlet_data.mega_AirShoes = 0
     gauntlet_data.mega_FastGauge = 0
