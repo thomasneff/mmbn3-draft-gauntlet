@@ -63,7 +63,14 @@ function DRAFT_STANDARD_MEGA_MAX_1.activate()
     random_codes[4] = math.random(14, 18)
     random_codes[5] = math.random(19, 22)
     random_codes[6] = math.random(23, 25)
-    random_codes[7] = 26
+    random_codes[7] = random_codes[1]
+    random_codes[8] = random_codes[2]
+    random_codes[9] = random_codes[3]
+    random_codes[10] = random_codes[4]
+    random_codes[11] = random_codes[5]
+    random_codes[12] = random_codes[6]
+    -- Asterisk is more unlikely.
+    random_codes[13] = 26
 
 
     -- Add all combination of chips and codes.
