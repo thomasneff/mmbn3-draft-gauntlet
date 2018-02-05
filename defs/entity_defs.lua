@@ -2618,7 +2618,7 @@ ENTITIES.PunkOmega.BATTLE_NUMBERS           = TIER_4_BOSS_BATTLES               
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ENTITIES.KingMan                            = new_base_entity(ENTITY_KIND.Virus, "KingMan")
-ENTITIES.KingMan.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.KingMan.BATTLE_NUMBERS             = TIER_1_BOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2638,7 +2638,7 @@ ENTITIES.KingManOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ENTITIES.MistMan                            = new_base_entity(ENTITY_KIND.Virus, "MistMan")
-ENTITIES.MistMan.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.MistMan.BATTLE_NUMBERS             = TIER_1_BOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2658,7 +2658,7 @@ ENTITIES.MistManOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ENTITIES.BowlMan                            = new_base_entity(ENTITY_KIND.Virus, "BowlMan")
-ENTITIES.BowlMan.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BowlMan.BATTLE_NUMBERS             = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
