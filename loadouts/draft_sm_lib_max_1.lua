@@ -18,9 +18,14 @@ function random_chip_generator(chip_index)
 
     if chip_index == 10 or chip_index == 20 or chip_index == 30 then
         -- MegaChip codes are randomized so you have to either get lucky or commit to MegaChips during battle.
-        return CHIP.new_chip_with_random_code_from_list(randomchoice_key(mega_chips))
+        local chip = CHIP.new_chip_with_random_code(randomchoice_key(mega_chips))
+        
+        return chip
     else
-        return CHIP.new_chip_with_random_code_from_list(randomchoice_key(standard_chips), random_codes)
+        
+        local chip = CHIP.new_chip_with_random_code_from_list(randomchoice_key(standard_chips), random_codes)
+        
+        return chip
     end
 
 

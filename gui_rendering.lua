@@ -256,6 +256,12 @@ function gui_rendering.render_loadouts(loadout_list, selected_loadout_index)
 
 end
 
+function gui_rendering.render_gauntlet_complete()
+
+    drawTextOutline(20, 60,  "Congratulations!", "black", "white", "transparent", 16, "Arial")
+    drawTextOutline(20, 100,  "You Win!", "black", "white", "transparent", 16, "Arial")
+
+end
 
 -- This function is used to render the current folder for chip replacement.
 -- TODO: this currently just renders fixed Cannon *. Should take the folder into account.

@@ -78,11 +78,22 @@ function state_logic.next_round()
     
     -- We just finished the round. We might want to load a savestate? Or just let the user do that.
     state_logic.current_round = state_logic.current_round + 1
-    print("Starting Round " .. state_logic.current_round)
+
+    
+
+    
     -- Reset all address variables, as we now start from the beginning again.
     state_logic.battle_pointer_index = 1
-    local ptr_table_working_address = GENERIC_DEFS.FIRST_GAUNTLET_BATTLE_POINTER_ADDRESS
 
+    if state_logic.current_round == (GAUNTLET_DEFS.MAX_NUMBER_OF_ROUNDS + 1) then
+
+        return
+
+    end
+
+
+    local ptr_table_working_address = GENERIC_DEFS.FIRST_GAUNTLET_BATTLE_POINTER_ADDRESS
+    print("Starting Round " .. state_logic.current_round)
 
     -- Patch all battle stage setups. This needs to be done before engaging the gauntlet.
     -- The game loads this probably into RAM, so we could only change that later if we found out the 
@@ -118,6 +129,9 @@ function state_logic.patch_next_battle()
     if (state_logic.current_battle - 1) % GAUNTLET_DEFS.ROUNDS_PER_BUFF_DROP == 0 then
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT
     end
+
+
+    
 
     -- print("5")
     
@@ -187,7 +201,11 @@ function state_logic.on_enter_battle()
 
     --print("STATE_ENTER: ", gauntlet_data.current_state)
     --print(print(state_logic.dropped_chip))
-    
+    if state_logic.current_round >= (GAUNTLET_DEFS.MAX_NUMBER_OF_ROUNDS + 1) then
+
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_GAUNTLET_COMPLETE
+
+    end
     
     --gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT
 
@@ -518,6 +536,7 @@ function state_logic.folder_view_switch_and_sort()
 
     if input_handler.inputs_pressed["Select"] == true then
         gauntlet_data.folder_view = (gauntlet_data.folder_view + 1) % 2
+        state_logic.shuffle_folder()
         state_logic.should_redraw = 1
     end
 
@@ -1076,6 +1095,28 @@ function state_logic.main_loop()
             memorysavestate.loadcorestate(state_logic.gui_change_savestate)
             state_logic.should_redraw = 0
         end
+
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_GAUNTLET_COMPLETE then
+        state_logic.gui_change_savestate = memorysavestate.savecorestate()
+        
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.GAUNTLET_COMPLETE
+        state_logic.should_redraw = 1
+        
+        memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+        client.pause()
+
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.GAUNTLET_COMPLETE then
+
+        if state_logic.should_redraw == 1 then
+
+            
+            gui_rendering.render_gauntlet_complete()
+
+            gui.DrawFinish()
+            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            state_logic.should_redraw = 0
+        end
+        
 
     else -- Default state, should never happen
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
