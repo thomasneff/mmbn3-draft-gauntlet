@@ -487,7 +487,7 @@ ENTITIES.HeatJelly.AI_BYTES[0x01]           = 0x64                              
 ENTITIES.HeatJelly.BATTLE_NUMBERS           = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.EarthJelly                         = new_base_entity(ENTITY_KIND.Virus, "EarthJelly")
-ENTITIES.EarthJelly.NAME                    = "EarthJelly"
+ENTITIES.EarthJelly.NAME                    = "ErthJelly"
 ENTITIES.EarthJelly.HP_BASE                 = 270
 ENTITIES.EarthJelly.ELEMENT                 = ENTITY_ELEMENT_DEFS.ELEMENT_WOOD
 ENTITIES.EarthJelly.AI_BYTES                = {}
@@ -2074,61 +2074,61 @@ ENTITIES.N_O_Omega.BATTLE_NUMBERS           = TIER_4_BATTLES_WITHOUT_BOSSES     
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-ENTITIES.Eleball                            = new_base_entity(ENTITY_KIND.Virus, "Eleball")
-ENTITIES.Eleball.NAME                       = "Eleball"
-ENTITIES.Eleball.HP_BASE                    = 80
-ENTITIES.Eleball.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
-ENTITIES.Eleball.AI_BYTES                   = {}
-ENTITIES.Eleball.AI_BYTES[0x00]             = 0x14                              -- Damage.
-ENTITIES.Eleball.AI_BYTES[0x01]             = 0x10                              -- (??).
-ENTITIES.Eleball.AI_BYTES[0x02]             = 0x18                              -- Delay before attack.
-ENTITIES.Eleball.AI_BYTES[0x03]             = 0x0F                              -- Attack speed delay.
-ENTITIES.Eleball.AI_BYTES[0x04]             = 0x78                              -- Duration of attack.
-ENTITIES.Eleball.AI_BYTES[0x05]             = 0x32                              -- Delay after attack.
-ENTITIES.Eleball.AI_BYTES[0x06]             = 0x32                              -- Delay speed movement.
-ENTITIES.Eleball.BATTLE_NUMBERS             = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.EleBall                            = new_base_entity(ENTITY_KIND.Virus, "EleBall")
+ENTITIES.EleBall.NAME                       = "EleBall"
+ENTITIES.EleBall.HP_BASE                    = 80
+ENTITIES.EleBall.ELEMENT                    = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.EleBall.AI_BYTES                   = {}
+ENTITIES.EleBall.AI_BYTES[0x00]             = 0x14                              -- Damage.
+ENTITIES.EleBall.AI_BYTES[0x01]             = 0x10                              -- (??).
+ENTITIES.EleBall.AI_BYTES[0x02]             = 0x18                              -- Delay before attack.
+ENTITIES.EleBall.AI_BYTES[0x03]             = 0x0F                              -- Attack speed delay.
+ENTITIES.EleBall.AI_BYTES[0x04]             = 0x78                              -- Duration of attack.
+ENTITIES.EleBall.AI_BYTES[0x05]             = 0x32                              -- Delay after attack.
+ENTITIES.EleBall.AI_BYTES[0x06]             = 0x32                              -- Delay speed movement.
+ENTITIES.EleBall.BATTLE_NUMBERS             = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.Elesphere                          = new_base_entity(ENTITY_KIND.Virus, "Elesphere")
-ENTITIES.Elesphere.NAME                     = "Elesphere"
-ENTITIES.Elesphere.HP_BASE                  = 150
-ENTITIES.Elesphere.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
-ENTITIES.Elesphere.AI_BYTES                 = {}
-ENTITIES.Elesphere.AI_BYTES[0x00]           = 0x32                              -- Damage.
-ENTITIES.Elesphere.AI_BYTES[0x01]           = 0x11                              -- (??).
-ENTITIES.Elesphere.AI_BYTES[0x02]           = 0x16                              -- Delay before attack.
-ENTITIES.Elesphere.AI_BYTES[0x03]           = 0x0C                              -- Attack speed delay.
-ENTITIES.Elesphere.AI_BYTES[0x04]           = 0x78                              -- Duration of attack.
-ENTITIES.Elesphere.AI_BYTES[0x05]           = 0x32                              -- Delay after attack.
-ENTITIES.Elesphere.AI_BYTES[0x06]           = 0x14                              -- Delay speed movement.
-ENTITIES.Elesphere.BATTLE_NUMBERS           = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.EleSphere                          = new_base_entity(ENTITY_KIND.Virus, "EleSphere")
+ENTITIES.EleSphere.NAME                     = "EleSphere"
+ENTITIES.EleSphere.HP_BASE                  = 150
+ENTITIES.EleSphere.ELEMENT                  = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.EleSphere.AI_BYTES                 = {}
+ENTITIES.EleSphere.AI_BYTES[0x00]           = 0x32                              -- Damage.
+ENTITIES.EleSphere.AI_BYTES[0x01]           = 0x11                              -- (??).
+ENTITIES.EleSphere.AI_BYTES[0x02]           = 0x16                              -- Delay before attack.
+ENTITIES.EleSphere.AI_BYTES[0x03]           = 0x0C                              -- Attack speed delay.
+ENTITIES.EleSphere.AI_BYTES[0x04]           = 0x78                              -- Duration of attack.
+ENTITIES.EleSphere.AI_BYTES[0x05]           = 0x32                              -- Delay after attack.
+ENTITIES.EleSphere.AI_BYTES[0x06]           = 0x14                              -- Delay speed movement.
+ENTITIES.EleSphere.BATTLE_NUMBERS           = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.Eleglobe                           = new_base_entity(ENTITY_KIND.Virus, "Eleglobe")
-ENTITIES.Eleglobe.NAME                      = "Eleglobe"
-ENTITIES.Eleglobe.HP_BASE                   = 200
-ENTITIES.Eleglobe.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
-ENTITIES.Eleglobe.AI_BYTES                  = {}
-ENTITIES.Eleglobe.AI_BYTES[0x00]            = 0x50                              -- Damage.
-ENTITIES.Eleglobe.AI_BYTES[0x01]            = 0x12                              -- (??).
-ENTITIES.Eleglobe.AI_BYTES[0x02]            = 0x14                              -- Delay before attack.
-ENTITIES.Eleglobe.AI_BYTES[0x03]            = 0x0A                              -- Attack speed delay.
-ENTITIES.Eleglobe.AI_BYTES[0x04]            = 0x78                              -- Duration of attack.
-ENTITIES.Eleglobe.AI_BYTES[0x05]            = 0x32                              -- Delay after attack.
-ENTITIES.Eleglobe.AI_BYTES[0x06]            = 0x11                              -- Delay speed movement.
-ENTITIES.Eleglobe.BATTLE_NUMBERS            = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.EleGlobe                           = new_base_entity(ENTITY_KIND.Virus, "EleGlobe")
+ENTITIES.EleGlobe.NAME                      = "EleGlobe"
+ENTITIES.EleGlobe.HP_BASE                   = 200
+ENTITIES.EleGlobe.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.EleGlobe.AI_BYTES                  = {}
+ENTITIES.EleGlobe.AI_BYTES[0x00]            = 0x50                              -- Damage.
+ENTITIES.EleGlobe.AI_BYTES[0x01]            = 0x12                              -- (??).
+ENTITIES.EleGlobe.AI_BYTES[0x02]            = 0x14                              -- Delay before attack.
+ENTITIES.EleGlobe.AI_BYTES[0x03]            = 0x0A                              -- Attack speed delay.
+ENTITIES.EleGlobe.AI_BYTES[0x04]            = 0x78                              -- Duration of attack.
+ENTITIES.EleGlobe.AI_BYTES[0x05]            = 0x32                              -- Delay after attack.
+ENTITIES.EleGlobe.AI_BYTES[0x06]            = 0x11                              -- Delay speed movement.
+ENTITIES.EleGlobe.BATTLE_NUMBERS            = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.EleballOmega                       = new_base_entity(ENTITY_KIND.Virus, "EleballOmega")
-ENTITIES.EleballOmega.NAME                  = "Eleball\003"
-ENTITIES.EleballOmega.HP_BASE               = 200
-ENTITIES.EleballOmega.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
-ENTITIES.EleballOmega.AI_BYTES              = {}
-ENTITIES.EleballOmega.AI_BYTES[0x00]        = 0xA0                              -- Damage.
-ENTITIES.EleballOmega.AI_BYTES[0x01]        = 0x12                              -- (??).
-ENTITIES.EleballOmega.AI_BYTES[0x02]        = 0x10                              -- Delay before attack.
-ENTITIES.EleballOmega.AI_BYTES[0x03]        = 0x08                              -- Attack speed delay.
-ENTITIES.EleballOmega.AI_BYTES[0x04]        = 0x78                              -- Duration of attack.
-ENTITIES.EleballOmega.AI_BYTES[0x05]        = 0x32                              -- Delay after attack.
-ENTITIES.EleballOmega.AI_BYTES[0x06]        = 0x0D                              -- Delay speed movement.
-ENTITIES.EleballOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.EleBallOmega                       = new_base_entity(ENTITY_KIND.Virus, "EleBallOmega")
+ENTITIES.EleBallOmega.NAME                  = "EleBall\003"
+ENTITIES.EleBallOmega.HP_BASE               = 200
+ENTITIES.EleBallOmega.ELEMENT               = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
+ENTITIES.EleBallOmega.AI_BYTES              = {}
+ENTITIES.EleBallOmega.AI_BYTES[0x00]        = 0xA0                              -- Damage.
+ENTITIES.EleBallOmega.AI_BYTES[0x01]        = 0x12                              -- (??).
+ENTITIES.EleBallOmega.AI_BYTES[0x02]        = 0x10                              -- Delay before attack.
+ENTITIES.EleBallOmega.AI_BYTES[0x03]        = 0x08                              -- Attack speed delay.
+ENTITIES.EleBallOmega.AI_BYTES[0x04]        = 0x78                              -- Duration of attack.
+ENTITIES.EleBallOmega.AI_BYTES[0x05]        = 0x32                              -- Delay after attack.
+ENTITIES.EleBallOmega.AI_BYTES[0x06]        = 0x0D                              -- Delay speed movement.
+ENTITIES.EleBallOmega.BATTLE_NUMBERS        = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -5910,7 +5910,7 @@ ENTITIES.N_O_Omega.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Eleball.DROP_TABLE =
+ENTITIES.EleBall.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -5932,7 +5932,7 @@ ENTITIES.Eleball.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Elesphere.DROP_TABLE =
+ENTITIES.EleSphere.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -5954,7 +5954,7 @@ ENTITIES.Elesphere.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Eleglobe.DROP_TABLE =
+ENTITIES.EleGlobe.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -5976,7 +5976,7 @@ ENTITIES.Eleglobe.DROP_TABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.EleballOmega.DROP_TABLE =
+ENTITIES.EleBallOmega.DROP_TABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -7880,11 +7880,11 @@ ENTITIES.SerenadeOmega.DROP_TABLE =
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FolderBak, CHIP_CODE.Asterisk)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FoldrBak, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FolderBak, CHIP_CODE.Asterisk)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FoldrBak, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7928,7 +7928,7 @@ ENTITIES.BassGS.DROP_TABLE =
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FolderBak, CHIP_CODE.Asterisk)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FoldrBak, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------
@@ -7942,7 +7942,7 @@ ENTITIES.BassOmega.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FolderBak, CHIP_CODE.Asterisk)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.FoldrBak, CHIP_CODE.Asterisk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,

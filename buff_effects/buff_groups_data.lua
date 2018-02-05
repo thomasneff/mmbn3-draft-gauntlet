@@ -20,6 +20,7 @@ local BREAKCHARGE = require "buff_effects.breakcharge"
 local DARKLICENSE = require "buff_effects.darklicense"
 local FLOATSHOES = require "buff_effects.floatshoes"
 local REFLECT = require "buff_effects.reflect"
+local ELEMENT_CHIP_DAMAGE_INCREASE = require "buff_effects.element_chip_damage_increase"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -46,7 +47,9 @@ BUFF_GROUPS[1] = {
     BREAKCHARGE,
     DARKLICENSE,
     FLOATSHOES,
-    REFLECT
+    REFLECT,
+    ELEMENT_CHIP_DAMAGE_INCREASE,
+    NERF_VIRUS_GROUP
 
 }
 

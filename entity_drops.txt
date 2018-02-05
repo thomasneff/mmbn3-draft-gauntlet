@@ -3057,7 +3057,7 @@ ENTITIES.N_O_Omega.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Eleball.DROPTABLE =
+ENTITIES.EleBall.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3079,7 +3079,7 @@ ENTITIES.Eleball.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Elesphere.DROPTABLE =
+ENTITIES.EleSphere.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3101,7 +3101,7 @@ ENTITIES.Elesphere.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.Eleglobe.DROPTABLE =
+ENTITIES.EleGlobe.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,
@@ -3123,7 +3123,7 @@ ENTITIES.Eleglobe.DROPTABLE =
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
-ENTITIES.EleballOmega.DROPTABLE =
+ENTITIES.EleBallOmega.DROPTABLE =
 {
   [1] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_COMMON_CUMULATIVE_CHANCE,

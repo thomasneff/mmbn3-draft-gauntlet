@@ -11,7 +11,7 @@ function buff_generator.random_buffs_from_round(current_round, number_of_buffs)
 
 
     local buffs = {}
-    local buff_group = BUFF_GROUPS_DATA.BUFF_GROUPS[current_round]
+    local buff_group = deepcopy(BUFF_GROUPS_DATA.BUFF_GROUPS[current_round])
     --print("BUFFS: ", number_of_buffs)
     --print("BUFF GROUP: ", buff_group)
     --print("BUFF GROUP LENGTH: ", #buff_group)
@@ -20,6 +20,7 @@ function buff_generator.random_buffs_from_round(current_round, number_of_buffs)
         local buff_idx = math.random(#buff_group)
         --print("BUFF GROUP RANDVAL: " , buff_idx)
         buffs[i] = buff_group[buff_idx].new()
+        table.remove(buff_group, buff_idx)
         --print("BUFFS[i]", buffs[i])
     end
 

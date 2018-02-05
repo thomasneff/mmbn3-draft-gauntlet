@@ -137,10 +137,10 @@
 88,,N_O_2,=,0x88,",",136
 89,,N_O_3,=,0x89,",",137
 8A,,N_O_Omega,=,0x8A,",",138
-8B,,Eleball,=,0x8B,",",139
-8C,,Elesphere,=,0x8C,",",140
-8D,,Eleglobe,=,0x8D,",",141
-8E,,EleballOmega,=,0x8E,",",142
+8B,,EleBall,=,0x8B,",",139
+8C,,EleSphere,=,0x8C,",",140
+8D,,EleGlobe,=,0x8D,",",141
+8E,,EleBallOmega,=,0x8E,",",142
 8F,,Volcano,=,0x8F,",",143
 90,,Volcaner,=,0x90,",",144
 91,,Volcanest,=,0x91,",",145
