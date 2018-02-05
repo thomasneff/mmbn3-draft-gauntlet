@@ -366,12 +366,35 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
 
     -- Render Mega/GigaChip limits
     new_chip_offset_y = 0
-    drawTextOutline(new_chip_offset_x, new_chip_offset_y,  "Mega: " .. tostring(gauntlet_data.current_number_of_mega_chips) 
+    drawTextOutline(new_chip_offset_x, new_chip_offset_y,  "Mega: " , "black", "white", "transparent", 10, "Arial")
+    
+    drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y,  tostring(gauntlet_data.current_number_of_mega_chips) 
                                                                     .. " / " .. tostring(gauntlet_data.mega_chip_limit + gauntlet_data.mega_chip_limit_team) , "black", "white", "transparent", 10, "Arial")
-    drawTextOutline(new_chip_offset_x, new_chip_offset_y + 10,  "Giga: " .. tostring(gauntlet_data.current_number_of_giga_chips) 
+    
+    drawTextOutline(new_chip_offset_x, new_chip_offset_y + 10,  "Giga: ", "black", "white", "transparent", 10, "Arial")
+    
+    drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 10,  tostring(gauntlet_data.current_number_of_giga_chips) 
                                                                     .. " / " .. tostring(gauntlet_data.giga_chip_limit) , "black", "white", "transparent", 10, "Arial")
 
+    -- Render Sorting mode
+    drawTextOutline(new_chip_offset_x, new_chip_offset_y + 30, "Sort:", "black", "white", "transparent", 10, "Arial")
+    if gauntlet_data.folder_shuffle_state == 0 then
+        -- Alphabetically
+        drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 30, "ABC", "black", "orange", "transparent", 10, "Arial")
 
+
+    elseif gauntlet_data.folder_shuffle_state == 1 then
+        -- Code
+        drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 30, "Code", "black", "orange", "transparent", 10, "Arial")
+
+    elseif gauntlet_data.folder_shuffle_state == 2 then
+        -- ID
+        drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 30, "ID", "black", "orange", "transparent", 10, "Arial")
+
+    elseif gauntlet_data.folder_shuffle_state == 3 then
+        -- Damage
+        drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 30, "ATK", "black", "orange", "transparent", 10, "Arial")
+    end
 
 
 
