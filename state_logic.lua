@@ -661,6 +661,7 @@ function state_logic.main_loop()
         memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         -- print(state_logic.dropped_chip)
         --print("Transition to chip replace.")
+        state_logic.shuffle_folder()
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.CHIP_REPLACE
         state_logic.should_redraw = 1
 
