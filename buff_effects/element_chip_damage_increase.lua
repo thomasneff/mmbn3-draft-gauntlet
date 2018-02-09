@@ -29,7 +29,7 @@ function ELEMENT_CHIP_DAMAGE_INCREASE:activate(current_round)
 
         if chip_data.ELEMENT == self.ELEMENT then
 
-            if self.ADDITIVE == 0 then
+            if self.ADDITIVE == 1 then
                 
                 CHIP_DATA[key].DAMAGE = CHIP_DATA[key].DAMAGE + DAMAGE_INCREASE_ADD[current_round]
             else

@@ -7,14 +7,14 @@ local CHIP = require "defs.chip_defs"
 local CHIP_ID = require "defs.chip_id_defs"
 local CHIP_CODE = require "defs.chip_code_defs"
 local randomchoice_key = require "randomchoice_key"
-local DRAFT_STANDARD_MEGA_MAX_1 = {}
+local DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES = {}
 
 local standard_chips = {}
 local mega_chips = {}
 local giga_chips = {}
 local random_codes = {}
 
-function random_chip_generator(chip_index)
+function DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES.random_chip_generator(chip_index)
 
     if chip_index == 10 or chip_index == 20 or chip_index == 30 then
         -- MegaChip codes are randomized so you have to either get lucky or commit to MegaChips during battle.
@@ -35,7 +35,7 @@ function random_chip_generator(chip_index)
 
 end
 
-function DRAFT_STANDARD_MEGA_MAX_1.activate()
+function DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES.activate()
 
     gauntlet_data.folder_draft_chip_list = {}
 
@@ -89,16 +89,16 @@ function DRAFT_STANDARD_MEGA_MAX_1.activate()
     gauntlet_data.current_folder = {}
 
     gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_DRAFT_FOLDER
-    gauntlet_data.folder_draft_chip_generator = random_chip_generator
+    gauntlet_data.folder_draft_chip_generator = DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES.random_chip_generator
     print("Draft S/M - Patched folder.")
     --print("Length of folder draft chip list:", #gauntlet_data.folder_draft_chip_list)
 
 end
 
 
-DRAFT_STANDARD_MEGA_MAX_1.NAME = "Draft Folder (Mixed, 1 Star, 10 Codes +  * )"
-DRAFT_STANDARD_MEGA_MAX_1.DESCRIPTION = "You pick 30 Chips for your folder!\n(27 Standard, 3 Mega)!"
+DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES.NAME = "Draft Folder (Mixed, 1 Star, 10 Codes +  * )"
+DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES.DESCRIPTION = "You pick 30 Chips for your folder!\n(27 Standard, 3 Mega)!"
 
 
-return DRAFT_STANDARD_MEGA_MAX_1
+return DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES
 

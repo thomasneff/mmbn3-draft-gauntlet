@@ -14,15 +14,18 @@ local mega_chips = {}
 local giga_chips = {}
 local random_codes = {}
 
-function random_chip_generator(chip_index)
+function DRAFT_STANDARD_MEGA_MAX_1.random_chip_generator(chip_index)
 
+
+
+    
     if chip_index == 10 or chip_index == 20 or chip_index == 30 then
         -- MegaChip codes are randomized so you have to either get lucky or commit to MegaChips during battle.
         local chip = CHIP.new_chip_with_random_code(randomchoice_key(mega_chips))
         
         return chip
     else
-        
+        --print(standard_chips)
         local chip = CHIP.new_chip_with_random_code_from_list(randomchoice_key(standard_chips), random_codes)
         
         return chip
@@ -92,7 +95,7 @@ function DRAFT_STANDARD_MEGA_MAX_1.activate()
     gauntlet_data.current_folder = {}
 
     gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_DRAFT_FOLDER
-    gauntlet_data.folder_draft_chip_generator = random_chip_generator
+    gauntlet_data.folder_draft_chip_generator = DRAFT_STANDARD_MEGA_MAX_1.random_chip_generator
     print("Draft S/M - Patched folder.")
     --print("Length of folder draft chip list:", #gauntlet_data.folder_draft_chip_list)
 

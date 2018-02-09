@@ -790,7 +790,7 @@ function state_logic.main_loop()
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT then    
 
         state_logic.gui_change_savestate = memorysavestate.savecorestate()
-        
+        --print("TRANSITION TO BUFF SELECT")
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.BUFF_SELECT
         state_logic.should_redraw = 1
         state_logic.dropped_buffs = BUFF_GENERATOR.random_buffs_from_round(state_logic.current_round, GAUNTLET_DEFS.NUMBER_OF_DROPPED_BUFFS)
@@ -929,12 +929,15 @@ function state_logic.main_loop()
 
 
             LOADOUTS[state_logic.selected_loadout_index].activate()
+
+            
             state_logic.update_printable_chip_names_in_folder()
             state_logic.update_argb_chip_icons_in_folder()
             --print("Folder after loadout: ", gauntlet_data.current_folder)
             gauntlet_data.folder_view = 0
             state_logic.loadout_chosen = 1
             state_logic.selected_loadout_index = 2
+            
         end
 
         if state_logic.should_redraw == 1 then
@@ -1024,12 +1027,16 @@ function state_logic.main_loop()
         
 
         --print("Transition to draft folder!")
+        
 
         for draft_chip_idx = 1,GAUNTLET_DEFS.NUMBER_OF_DRAFT_CHIPS do
-
+            --print("idx ", draft_chip_idx)
             state_logic.draft_selection_chips[draft_chip_idx] = gauntlet_data.folder_draft_chip_generator(#gauntlet_data.current_folder + 1)
+            --print("idxx ", draft_chip_idx)
             state_logic.draft_selection_chips[draft_chip_idx].PRINT_NAME = state_logic.get_printable_chip_name(state_logic.draft_selection_chips[draft_chip_idx])
         end
+
+        --print("After folder draft generator")
         state_logic.update_argb_chip_icons_in_folder()
         state_logic.update_dropped_chips_pictures(state_logic.draft_selection_chips)
         --print("Folder:", gauntlet_data.current_folder)
