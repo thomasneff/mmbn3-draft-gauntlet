@@ -144,6 +144,10 @@ ENTITIES.BlackBomb.BATTLE_NUMBERS           = ALL_BATTLES                       
 ENTITIES.BlackBomb.NAME                     = "BlackBomb"
 ENTITIES.BlackBomb.BATTLE_DATA.TYPE         = 0x00
 
+ENTITIES.MetalGear                          = new_base_entity(ENTITY_KIND.MetalGear,    "MetalGear")
+ENTITIES.MetalGear.BATTLE_NUMBERS           = ALL_BATTLES                       -- Battles in which this entity can appear.
+ENTITIES.MetalGear.NAME                     = "MetalGear"
+ENTITIES.MetalGear.BATTLE_DATA.TYPE         = 0x00
 
 
 

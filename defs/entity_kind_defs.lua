@@ -22,6 +22,7 @@ local NON_VIRUS_ENTITIES = {
     ENTITY_KIND.IceCube,
     ENTITY_KIND.Guardian,
     ENTITY_KIND.BlackBomb,
+    ENTITY_KIND.MetalGear
 }
 
 function ENTITY_KIND.random_non_virus_entity_kind()
