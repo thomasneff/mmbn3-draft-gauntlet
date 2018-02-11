@@ -33,9 +33,7 @@ function HP_INCREASE:deactivate(current_round)
     -- This is an example for how to modify chip data.
     for key, chip_data in pairs(CHIP_DATA) do
 
-        if chip_data.ELEMENT == self.ELEMENT then
-            CHIP_DATA[key] = deepcopy(self.old_chip_data[key])
-        end
+        CHIP_DATA[key] = deepcopy(self.old_chip_data[key])
 
     end
 

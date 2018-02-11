@@ -2558,7 +2558,7 @@ ENTITIES.GutsManOmega.BATTLE_NUMBERS        = TIER_4_MINIBOSS_BATTLES           
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ENTITIES.ProtoMan                           = new_base_entity(ENTITY_KIND.Virus, "ProtoMan")
-ENTITIES.ProtoMan.BATTLE_NUMBERS            = TIER_1_BOSS_BATTLES               -- Battles in which this entity can appear.
+ENTITIES.ProtoMan.BATTLE_NUMBERS            = TIER_2_MINIBOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2638,12 +2638,12 @@ ENTITIES.KingManOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ENTITIES.MistMan                            = new_base_entity(ENTITY_KIND.Virus, "MistMan")
-ENTITIES.MistMan.BATTLE_NUMBERS             = TIER_1_BOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.MistMan.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ENTITIES.MistManAlpha                       = new_base_entity(ENTITY_KIND.Virus, "MistManAlpha")
-ENTITIES.MistManAlpha.BATTLE_NUMBERS        = TIER_2_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.MistManAlpha.BATTLE_NUMBERS        = TIER_2_BOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -346,11 +346,15 @@ function state_logic.undo_activated_buffs()
     if state_logic.number_of_activated_buffs == 0 then
         return
     end
+    local buff_it = state_logic.number_of_activated_buffs
 
-    for i = state_logic.number_of_activated_buffs, 1 do
-        state_logic.activated_buffs[i]:deactivate(i)
+    for buff_it = state_logic.number_of_activated_buffs, 1, -1 do
+
+        print("Deactivating ", buff_it)
+        state_logic.activated_buffs[buff_it]:deactivate(buff_it)
+    
     end
-
+ 
 end
 
 function state_logic.shuffle_folder()

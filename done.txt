@@ -196,3 +196,6 @@ DarkLicense: 0x02005790
 
 
 BUG: sometimes during buff selection (happened at the start of round 4 last time), the random buff selection crashes with nil
+
+BUG: Sword/Element buffs don't disappear when soft resetting
+  -  Was just a bug in state_logic when reverse iterating over all buffs.
