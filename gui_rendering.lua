@@ -9,6 +9,7 @@ local chip_image_background_path = "chip_image_background.png"
 local chip_rare_image_background_path = "chip_image_background_rare.png"
 local chip_super_rare_image_background_path = "chip_image_background_super_rare.png"
 local chip_ultra_rare_image_background_path = "chip_image_background_ultra_rare.png"
+local chip_dark_image_background_path = "chip_image_background_dark.png"
 local buff_image_background_path = "buff_background.png"
 local loadout_image_background_path = "buff_background.png"
 local arrow_left_path = "arrow_left.png"
@@ -76,6 +77,8 @@ function render_chip_with_background(chip, x_offset, y_offset, width, height, is
         gui.drawImage(chip_super_rare_image_background_path, x_offset, y_offset)
     elseif chip.RARITY == 3 then
         gui.drawImage(chip_ultra_rare_image_background_path, x_offset, y_offset)
+    elseif chip.RARITY == 4 then
+        gui.drawImage(chip_dark_image_background_path, x_offset, y_offset)
     else
         gui.drawImage(chip_image_background_path, x_offset, y_offset)
     end

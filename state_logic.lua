@@ -289,6 +289,7 @@ function state_logic.get_printable_chip_name(chip)
         return ""
     end
 
+
     local string_with_special_chars = CHIP_NAME[chip.ID] .. " " .. CHIP_CODE_REVERSE[chip.CODE]
 
     return CHIP_NAME_UTILS.replace_special_chars(string_with_special_chars)

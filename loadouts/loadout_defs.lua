@@ -6,6 +6,7 @@ local DRAFT_RANDOM = require "loadouts.draft_random"
 local DRAFT_STANDARD_MEGA_GIGA = require "loadouts.draft_standard_mega_giga"
 local DRAFT_STANDARD_MEGA_MAX_1 = require "loadouts.draft_sm_lib_max_1"
 local DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES = require "loadouts.draft_sm_lib_max_1_more_codes"
+local MMBN3_START_FOLDER = require "loadouts.mmbn3_start_folder"
 local JUST_MONIKA = require "loadouts.just_monika"
 
 -- TODO: Each loadout should provide a NAME, a DESCRIPTION, and an activate() function.
@@ -14,6 +15,7 @@ local LIST_OF_LOADOUTS = {
     DRAFT_RANDOM,
     DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES,
     DRAFT_STANDARD_MEGA_MAX_1,
+    MMBN3_START_FOLDER,
     COMPLETELY_RANDOM,
     RANDOMIZED_1_STAR,
     RANDOMIZED_2_STAR,   

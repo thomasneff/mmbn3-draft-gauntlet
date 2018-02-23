@@ -5,6 +5,7 @@ local ENTITY_KIND = require "defs.entity_kind_defs"
 local CHIP_DATA = require "defs.chip_data_defs"
 local CHIP = require "defs.chip_defs"
 local randomchoice_key = require "randomchoice_key"
+local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 
 
 function library_chips(library_number)
@@ -56,19 +57,31 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
         --print(virus_entity_data)
         --print(virus_entity_data.DROP_TABLE)
         if virus_entity_data.DROP_TABLE ~= nil then
-            
-            local rng = math.random(100)
-            local rarity = 0
-            for key, drop_entry in ipairs(virus_entity_data.DROP_TABLE) do
 
-                if drop_entry.CUMULATIVE_RARITY >= rng then
-                    --print("Dropping " .. key .. " drop-table chip!")
-                    dropped_chips[drop_index] = drop_entry.CHIP_GEN()
-                    dropped_chips[drop_index].RARITY = rarity
-                    break
+            local dark_rng = math.random(1000)
+            if dark_rng <= GAUNTLET_DEFS.DROP_DARK_CHIP_CHANCE then
+            
+                dropped_chips[drop_index] = CHIP.new_random_chip_with_random_code()
+                dropped_chips[drop_index].RARITY = 4
+
+            else
+
+                local rng = math.random(100)
+                local rarity = 0
+                for key, drop_entry in ipairs(virus_entity_data.DROP_TABLE) do
+
+                    if drop_entry.CUMULATIVE_RARITY >= rng then
+                        --print("Dropping " .. key .. " drop-table chip!")
+                        dropped_chips[drop_index] = drop_entry.CHIP_GEN()
+                        dropped_chips[drop_index].RARITY = rarity
+                        break
+                    end
+                    rarity = rarity + 1
                 end
-                rarity = rarity + 1
+
             end
+            
+            
 
 
         else
