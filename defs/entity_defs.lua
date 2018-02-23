@@ -1936,7 +1936,7 @@ ENTITIES.QuestionMarkRed.AI_BYTES[0x03]     = 0x06                              
 ENTITIES.QuestionMarkRed.AI_BYTES[0x04]     = AlphaBug_Effect.PARALYZE + 0x01   -- Attack effect + duration. Long durations pretty much kill you instantly.
 ENTITIES.QuestionMarkRed.AI_BYTES[0x05]     = 0x02                              -- Sucking HP delay.
 ENTITIES.QuestionMarkRed.AI_BYTES[0x06]     = 0x01                              -- (??).
-ENTITIES.QuestionMarkRed.BATTLE_NUMBERS     = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.QuestionMarkRed.BATTLE_NUMBERS     = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.QuestionMarkBlue                   = new_base_entity(ENTITY_KIND.Virus, "QuestionMarkBlue")
 ENTITIES.QuestionMarkBlue.NAME              = "????!"
@@ -2272,7 +2272,7 @@ ENTITIES.Twins.AI_BYTES                     = {}
 ENTITIES.Twins.AI_BYTES[0x00]               = 0xB4                              -- (??). Probably some kind of delay.
 ENTITIES.Twins.AI_BYTES[0x01]               = 0x1E                              -- Damage.
 ENTITIES.Twins.AI_BYTES[0x02]               = 0x78                              -- (??). Probably some kind of delay.
-ENTITIES.Twins.BATTLE_NUMBERS               = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+ENTITIES.Twins.BATTLE_NUMBERS               = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.Twinner                            = new_base_entity(ENTITY_KIND.Virus, "Twinner")
 ENTITIES.Twinner.NAME                       = "Twinner"
