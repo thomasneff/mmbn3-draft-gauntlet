@@ -148,12 +148,31 @@ function state_logic.patch_next_battle()
 
 end
 
+
 local DEBUG = 0
+
+function state_logic.compute_perfect_fight_bonuses()
+
+    if gauntlet_data.has_mega_been_hit == 0 then
+        gauntlet_data.number_of_perfect_fights = gauntlet_data.number_of_perfect_fights + 1
+    end
+
+    gauntlet_data.has_mega_been_hit = 0
+
+    -- TODO: compute buff bonuses depending on perfect fights
+    
+
+
+end
+
+
 function state_logic.on_battle_end()
 
     if state_logic.battle_pointer_index > GAUNTLET_DEFS.BATTLES_PER_ROUND then
        gauntlet_data.current_state = gauntlet_data.GAME_STATE.LOAD_INITIAL 
     end  
+
+    state_logic.compute_perfect_fight_bonuses()
 
 end
 
@@ -451,6 +470,23 @@ function state_logic.initialize()
     gauntlet_data.folder_draft_chip_list = {}
     state_logic.draft_selection_chips = {}
     gauntlet_data.folder_draft_chip_generator = {}
+    
+    gauntlet_data.rarity_mods = {
+        [1] = 0, -- Common
+        [2] = 0, -- Rare
+        [3] = 0, -- SuperRare
+        [4] = 0, -- UltraRare
+    }
+
+    gauntlet_data.snecko_eye_enabled = 0
+    gauntlet_data.snecko_eye_number_of_codes = 6
+    gauntlet_data.snecko_eye_randomize_asterisk = GAUNTLET_DEFS.SNECKO_RANDOMIZE_ASTERISK
+
+    gauntlet_data.has_mega_been_hit = 0
+    gauntlet_data.number_of_perfect_fights = 0
+    gauntlet_data.last_hp = 0
+
+    
     BUFF_GENERATOR.initialize()
     state_logic.initialize_folder()
     state_logic.update_printable_chip_names_in_folder()
@@ -483,11 +519,32 @@ function state_logic.check_reset()
 
 end
 
+function state_logic.randomize_snecko_folder_codes(folder)
+
+    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
+
+        if gauntlet_data.snecko_eye_randomize_asterisk == 1 and gauntlet_data.current_folder[chip_idx].CODE ~= CHIP_CODE.Asterisk then 
+            gauntlet_data.current_folder[chip_idx].CODE = math.random(CHIP_CODE.A, gauntlet_data.snecko_eye_number_of_codes)
+        end
+      
+    end
+
+end
+
 
 function state_logic.patch_before_battle_start()
 
     -- Patch folder with all new stuff.
     -- state_logic.randomize_folder()
+
+    if gauntlet_data.snecko_eye_enabled == 1 then
+
+        -- Randomize folder codes
+        state_logic.randomize_snecko_folder_codes(gauntlet_data.current_folder)
+
+    end
+
+
     mmbn3_utils.patch_folder(gauntlet_data.current_folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM)
         
     local new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle)
@@ -525,7 +582,10 @@ function state_logic.patch_before_battle_start()
         mmbn3_utils.change_megaMan_max_hp(gauntlet_data.mega_max_hp) 
         mmbn3_utils.change_megaMan_current_hp(gauntlet_data.mega_max_hp) 
         gauntlet_data.hp_patch_required = 0
+        
     end
+
+    
 
     mmbn3_utils.change_megaMan_style(gauntlet_data.mega_style)
 
@@ -555,6 +615,14 @@ function state_logic.folder_view_switch_and_sort()
 end
 
 
+function state_logic.damage_taken()
+
+    print("Damage taken!")
+    gauntlet_data.has_mega_been_hit = 1
+    gauntlet_data.number_of_perfect_fights = 0
+
+end
+
 function state_logic.main_loop()
 
     if DEBUG == 1 then
@@ -570,7 +638,18 @@ function state_logic.main_loop()
     --print ("Current state: " .. gauntlet_data.current_state)
     if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
 
-        -- Do nothing.
+        -- Check if mega gets hit for certain buffs
+
+        local current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS - 0x02000000, "EWRAM")
+        
+        if current_hp < gauntlet_data.last_hp then
+
+            state_logic.damage_taken()
+
+        end
+
+        gauntlet_data.last_hp = current_hp
+
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT then
         -- We pause here and make a savestate.
@@ -1134,6 +1213,8 @@ function state_logic.main_loop()
     else -- Default state, should never happen
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
     end
+
+    
 
     -- Pause-Buffer penalty  0x02001889
     -- Would need to check for first cust-screen open to prevent invalid triggers at the start of battle.

@@ -1,3 +1,31 @@
+Buffs:
+
+ALL BUFFS THAT MANIPULATE HP NEED TO CHECK FOR <0 AND FORCE IT TO 1!
+
+MetalGear is bugged. (doesn't appear in battle)
+
+
+
+Stacking Buffs (stack after each perfect fight)
+    -   Figure out if we can detect lost HP. <-- easy AF, need to check if it breaks when a rockCube spawns on our field?
+    -   Implement 'streak' - function that does all streak-related things before patching the folder before battle.
+    -   We can basically just increase the damage of all chips we have in our folder (look at sword dmg increase for example)
+        - Afterwards, we simply revert that increase again.
+    -   Damage +X%/+FlatX for every perfect battle, up to +Y%
+    -   Drop Rarity (same as before with different types) +X% for every perfect battle, up to +Y%
+
+Heal %/Flat after every battle
+
+MemeBomb
+    -   Replace X chips of your folder with MiniBomb, MiniBomb does +200 damage.
+
+Option: Style Change after Fight 10.
+
+
+
+
+
+
 Entities. Add all the info from TREZ.
 
 During Drafting:

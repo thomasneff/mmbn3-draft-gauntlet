@@ -1,7 +1,7 @@
 local BATTLE_STAGE_DEFS = {}
 
 -- Taken from http://forums.therockManexezone.com/topic/8831451/1/
-BATTLE_STAGE_DEFS.NUM_STAGES = 128
+BATTLE_STAGE_DEFS.NUM_STAGES = 127
 
 
 

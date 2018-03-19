@@ -23,6 +23,10 @@ local REFLECT = require "buff_effects.reflect"
 local ELEMENT_CHIP_DAMAGE_INCREASE = require "buff_effects.element_chip_damage_increase"
 local SWORD_CHIP_DAMAGE_INCREASE = require "buff_effects.sword_chip_damage_increase"
 local STANDARD_CHIP_DAMAGE_INCREASE = require "buff_effects.standard_chip_damage_increase"
+local DROP_RARITY_INCREASE = require "buff_effects.drop_rarity_increase"
+local ELEMENT_CHIP_DAMAGE_INCREASE_HP_COST = require "buff_effects.element_chip_damage_increase_hp_cost"
+local SWORD_CHIP_DAMAGE_INCREASE_HP_COST = require "buff_effects.sword_chip_damage_increase_hp_cost"
+local SNECKO_EYE = require "buff_effects.snecko_eye"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -53,7 +57,17 @@ BUFF_GROUPS[1] = {
     ELEMENT_CHIP_DAMAGE_INCREASE,
     NERF_VIRUS_GROUP,
     SWORD_CHIP_DAMAGE_INCREASE,
-    STANDARD_CHIP_DAMAGE_INCREASE
+    STANDARD_CHIP_DAMAGE_INCREASE,
+    DROP_RARITY_INCREASE,
+    ELEMENT_CHIP_DAMAGE_INCREASE_HP_COST,
+    SWORD_CHIP_DAMAGE_INCREASE_HP_COST,
+    SNECKO_EYE
+}
+
+BUFF_GROUPS[1] = {
+    DROP_RARITY_INCREASE,
+    SNECKO_EYE,
+    SWORD_CHIP_DAMAGE_INCREASE_HP_COST
 }
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

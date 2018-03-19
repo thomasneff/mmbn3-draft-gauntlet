@@ -92,6 +92,14 @@ end
 
 function mmbn3_utils.change_number_of_cust_screen_chips(value) 
     local address = defs.NUMBER_OF_CUST_CHIPS_ADDRESS
+    
+    if value > 10 then
+        value = 10
+    end
+
+    if value <= 0 then
+        value = 1
+    end
     --value = 0xF
     --print("CUST SCREENCHIPS: ", value)
     mmbn3_utils.writebyte(address, value)

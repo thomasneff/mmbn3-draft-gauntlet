@@ -199,3 +199,19 @@ BUG: sometimes during buff selection (happened at the start of round 4 last time
 
 BUG: Sword/Element buffs don't disappear when soft resetting
   -  Was just a bug in state_logic when reverse iterating over all buffs.
+
+
+Increased drop chance (single buff, rolls from different rarities)
+    -   single buff, rolls from different rarities (e.g. Rare, Super Rare, Ultra Rare)
+    -   e.g.    Rare + 5%, HP - X
+    -           Super Rare + 5%, HP - 3X <-- this should be on the level of "Tank"
+    -           Ultra Rare + 5%, HP - 5X 
+    
+Damage buffs with drawback
+    -   add to existing buff as random roll, rolls -3X HP for *2 buff damage <-- on the level of "Tank"
+
+Snecko Eye
+    -   Randomizes codes after every battle to X number of codes (probably around 6 or 7)
+    -   Potentially don't randomize star code chips
+    -   Custom + X (probably around 2 or 3)
+    -   If it is too weak, maybe add chip damage? Not sure.

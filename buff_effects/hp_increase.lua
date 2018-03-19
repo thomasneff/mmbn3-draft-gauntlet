@@ -41,7 +41,7 @@ end
 
 function HP_INCREASE:get_description(current_round)
 
-    return "Increases HP by " .. tostring(HP_INCREASE_PER_ROUND[current_round]) .. ",\nDecreases Chip Damage by " .. -DAMAGE_INCREASE_MULT[current_round] .."%!"
+    return "Increases MaxHP by " .. tostring(HP_INCREASE_PER_ROUND[current_round]) .. ",\nDecreases Chip Damage by " .. -DAMAGE_INCREASE_MULT[current_round] .."%!"
 
 
 end

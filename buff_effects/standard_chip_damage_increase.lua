@@ -50,7 +50,7 @@ function STANDARD_CHIP_DAMAGE_INCREASE:get_description(current_round)
 
  
         return "Increases Damage of all Standard-Chips by "
-                 .. tostring(DAMAGE_INCREASE_STANDARD) .. "%,\nDecreases Damage of all other Chips by " .. tostring(-DAMAGE_INCREASE_MEGA_GIGA) .. "%!"
+                 .. tostring(DAMAGE_INCREASE_STANDARD) .. "%!\nDecreases Damage of all other Chips by " .. tostring(-DAMAGE_INCREASE_MEGA_GIGA) .. "%!"
     
 
 end
