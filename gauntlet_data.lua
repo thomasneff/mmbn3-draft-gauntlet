@@ -62,6 +62,21 @@ gauntlet_data.snecko_eye_randomize_asterisk = 1
 gauntlet_data.has_mega_been_hit = 0
 gauntlet_data.number_of_perfect_fights = 0
 gauntlet_data.last_hp = 0
+gauntlet_data.temporary_damage_bonus_mult = {
+    CURRENT = 1.0,
+    BASE = 1.0,
+    LIMIT = 1.0,
+    PERFECT_FIGHT_INCREASE = 0.0
+
+}
+
+gauntlet_data.temporary_damage_bonus_add = {
+    CURRENT = 0,
+    LIMIT = 0,
+    BASE = 0,
+    PERFECT_FIGHT_INCREASE = 0
+
+}
 
 gauntlet_data.rarity_mods = {
     [1] = 0, -- Common

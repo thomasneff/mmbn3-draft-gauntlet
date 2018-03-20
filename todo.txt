@@ -5,6 +5,9 @@ ALL BUFFS THAT MANIPULATE HP NEED TO CHECK FOR <0 AND FORCE IT TO 1!
 MetalGear is bugged. (doesn't appear in battle)
 
 
+TEST ALL BUFFS IMPLEMENTED THIS TUESDAY AFTERNOON
+
+
 
 Stacking Buffs (stack after each perfect fight)
     -   Figure out if we can detect lost HP. <-- easy AF, need to check if it breaks when a rockCube spawns on our field?
@@ -21,6 +24,9 @@ MemeBomb
 
 Option: Style Change after Fight 10.
 
+Pause-Breaker: every time pause is pressed, lose HP equal to 1% MaxHP, Custom + 2, HP + 100
+
+Buster...Only??! : replace X random chips in folder with BusterUp
 
 
 

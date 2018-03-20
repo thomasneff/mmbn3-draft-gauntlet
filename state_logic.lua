@@ -73,6 +73,8 @@ state_logic.current_battle = 1
 state_logic.battle_pointer_index = 1
 state_logic.battle_data = {}
 
+state_logic.CHIP_DATA_COPY = {}
+
 function state_logic.next_round()
 
     
@@ -161,6 +163,43 @@ function state_logic.compute_perfect_fight_bonuses()
 
     -- TODO: compute buff bonuses depending on perfect fights
     
+    
+    local damage_mult =  gauntlet_data.temporary_damage_bonus_mult.BASE +  gauntlet_data.temporary_damage_bonus_mult.PERFECT_FIGHT_INCREASE * gauntlet_data.number_of_perfect_fights
+    
+    if damage_mult > gauntlet_data.temporary_damage_bonus_mult.LIMIT then
+        damage_mult = gauntlet_data.temporary_damage_bonus_mult.LIMIT
+    end
+    
+    gauntlet_data.temporary_damage_bonus_mult.CURRENT = damage_mult
+    
+    local damage_add =  gauntlet_data.temporary_damage_bonus_add.BASE +  gauntlet_data.temporary_damage_bonus_add.PERFECT_FIGHT_INCREASE * gauntlet_data.number_of_perfect_fights
+    
+    if damage_add > gauntlet_data.temporary_damage_bonus_add.LIMIT then
+        damage_add = gauntlet_data.temporary_damage_bonus_add.LIMIT
+    end
+    
+    gauntlet_data.temporary_damage_bonus_add.CURRENT = damage_add
+    
+
+end
+
+
+function state_logic.compute_temporary_chip_changes()
+    
+
+    
+    
+    -- Restore CHIP_DATA from copy. Copies are always taken when taking a buff, as this is the only possibility where CHIP_DATA is changed directly.
+    for key, chip_data in pairs(CHIP_DATA) do
+        CHIP_DATA[key] = deepcopy(state_logic.CHIP_DATA_COPY[key])
+    end
+    
+     
+    
+    -- Apply temporary buffs
+    for key, chip_data in pairs(CHIP_DATA) do 
+        CHIP_DATA[key].DAMAGE = (CHIP_DATA[key].DAMAGE * gauntlet_data.temporary_damage_bonus_mult.CURRENT) + gauntlet_data.temporary_damage_bonus_add.CURRENT
+    end
 
 
 end
@@ -173,7 +212,11 @@ function state_logic.on_battle_end()
     end  
 
     state_logic.compute_perfect_fight_bonuses()
-
+    
+    
+    
+    
+    
 end
 
 function state_logic.determine_drops(number_of_drops)
@@ -205,6 +248,8 @@ function state_logic.on_enter_battle()
     state_logic.patch_next_battle()
     --state_logic.determine_drops(GAUNTLET_DEFS.NUMBER_OF_DROPPED_CHIPS)
     state_logic.shuffle_folder()
+    
+    
 
     if gauntlet_data.current_state ~= gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT and  
         gauntlet_data.current_state ~= gauntlet_data.GAME_STATE.BUFF_SELECT then
@@ -485,6 +530,29 @@ function state_logic.initialize()
     gauntlet_data.has_mega_been_hit = 0
     gauntlet_data.number_of_perfect_fights = 0
     gauntlet_data.last_hp = 0
+    
+    gauntlet_data.temporary_damage_bonus_mult = {
+        CURRENT = 1.0,
+        LIMIT = 1.0,
+        BASE = 1.0,
+        PERFECT_FIGHT_INCREASE = 0.0
+
+    }
+
+    gauntlet_data.temporary_damage_bonus_add = {
+        CURRENT = 0,
+        LIMIT = 0,
+        BASE = 0,
+        PERFECT_FIGHT_INCREASE = 0
+
+    }
+    
+    state_logic.CHIP_DATA_COPY = {}
+    
+    -- Store CHIP_DATA to copy so temporary buffs work fine.
+    for key, chip_data in pairs(CHIP_DATA) do
+        state_logic.CHIP_DATA_COPY[key] = deepcopy(CHIP_DATA[key])
+    end
 
     
     BUFF_GENERATOR.initialize()
@@ -546,6 +614,7 @@ function state_logic.patch_before_battle_start()
 
 
     mmbn3_utils.patch_folder(gauntlet_data.current_folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM)
+    
         
     local new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle)
 
@@ -682,6 +751,10 @@ function state_logic.main_loop()
         end
         client.pause()
         state_logic.should_redraw = 1
+        
+        -- Before we display chips, compute temporary damage bonuses.
+        -- This is also the point where we should take our copy of our chip data (taken directly before the battle starts) and overwrite it.
+        state_logic.compute_temporary_chip_changes(gauntlet_data.current_folder)
         
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.CHIP_SELECT then
@@ -927,6 +1000,12 @@ function state_logic.main_loop()
         if input_handler.inputs_pressed["A"] == true then
 
             --print("Selected a Chip!")
+            
+            -- Store CHIP_DATA to copy so temporary buffs work fine.
+            for key, chip_data in pairs(CHIP_DATA) do
+                state_logic.CHIP_DATA_COPY[key] = deepcopy(CHIP_DATA[key])
+            end
+            
             
             local dropped_buff = state_logic.dropped_buffs[state_logic.dropped_buff_render_index]
             BUFF_GENERATOR.activate_buff(dropped_buff, state_logic.current_round)
