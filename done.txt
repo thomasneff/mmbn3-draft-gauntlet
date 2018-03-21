@@ -215,3 +215,25 @@ Snecko Eye
     -   Potentially don't randomize star code chips
     -   Custom + X (probably around 2 or 3)
     -   If it is too weak, maybe add chip damage? Not sure.
+
+
+Stacking Buffs (stack after each perfect fight)
+    -   Figure out if we can detect lost HP. <-- easy AF, need to check if it breaks when a rockCube spawns on our field?
+    -   Implement 'streak' - function that does all streak-related things before patching the folder before battle.
+    -   We can basically just increase the damage of all chips we have in our folder (look at sword dmg increase for example)
+        - Afterwards, we simply revert that increase again.
+    -   Damage +X%/+FlatX for every perfect battle, up to +Y%
+    -   Drop Rarity (same as before with different types) +X% for every perfect battle, up to +Y%
+
+Heal %/Flat after every battle
+
+MemeBomb
+    -   Replace X chips of your folder with MiniBomb, MiniBomb does +200 damage.
+
+Option: Style Change after Fight 10.
+
+Replacing Giga/MegaChips with StandardChips is still broken and doesn't update the count correctly.
+    -   We're just recomputing the Mega/Giga chip counts more often.
+
+Cleaned up gui_rendering
+    -   Merged all list-rendering functions into a single function for Buffs/Loadouts/Drop Methods.

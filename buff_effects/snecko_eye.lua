@@ -4,9 +4,10 @@ local deepcopy = require "deepcopy"
 local SneckoEye = {
     NAME = "Snecko Eye",
     REMOVE_AFTER_ACTIVATION = 1,
+    DOUBLE_RARITY = 1
 }
 
-CUSTOM_INCREASE = 3
+CUSTOM_INCREASE = 2
 
 function SneckoEye:activate(current_round)
 

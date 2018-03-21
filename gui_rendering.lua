@@ -12,6 +12,7 @@ local chip_ultra_rare_image_background_path = "chip_image_background_ultra_rare.
 local chip_dark_image_background_path = "chip_image_background_dark.png"
 local buff_image_background_path = "buff_background.png"
 local loadout_image_background_path = "buff_background.png"
+local item_image_background_path = "buff_background.png"
 local arrow_left_path = "arrow_left.png"
 local arrow_right_path = "arrow_right.png"
 local arrow_up_path = "arrow_up.png"
@@ -128,36 +129,8 @@ function gui_rendering.render_chip_selection(chip_list, selected_chip_index)
 
 end
 
-function render_buff(buff, x_offset, y_offset, is_selected)
 
-    -- Render green selection box
-    local bg_size_x = 230
-    local bg_size_y = 50
-
-    if is_selected == true then
-        gui.drawRectangle(x_offset - 5, y_offset - 3, bg_size_x + 9, bg_size_y + 5, nil, "green")
-    end
-
-    gui.drawImage(buff_image_background_path, x_offset, y_offset)
-    local name_offset_x = 10
-    local name_offset_y = 7
-    local desc_offset_x = 10
-    local desc_offset_y = 20
-    --print("BUFF: ", buff)
-    local buff_name = buff.NAME
-    local buff_description = buff.DESCRIPTION
-
-    drawTextOutline(name_offset_x + x_offset, name_offset_y + y_offset,  buff_name, "black", "white", "transparent", 9, "Arial")
-    drawTextOutline(desc_offset_x + x_offset, desc_offset_y + y_offset, buff_description, "black", "lightblue", "transparent", 9, "Arial")
-
-
-
-
-end
-
-
-
-function gui_rendering.render_buff_selection(buff_list, selected_buff_index)
+function gui_rendering.render_items_non_centered_without_arrow_guides(buff_list, selected_buff_index)
 
     -- Assume 3 buffs, draw them side by side.
     local num_buffs = #buff_list
@@ -175,7 +148,7 @@ function gui_rendering.render_buff_selection(buff_list, selected_buff_index)
 
 
         
-        render_buff(buff_list[buff_idx], x_offset, y_offset, buff_idx == selected_buff_index)
+        render_item(buff_list[buff_idx], x_offset, y_offset, buff_idx == selected_buff_index)
 
         x_offset = x_offset + offset_per_buff_x
         y_offset = y_offset + offset_per_buff_y
@@ -185,9 +158,7 @@ function gui_rendering.render_buff_selection(buff_list, selected_buff_index)
 
 end
 
-
-
-function render_loadout(loadout, x_offset, y_offset, is_selected)
+function render_list_item(item, x_offset, y_offset, is_selected)
 
     -- Render green selection box
     local bg_size_x = 230
@@ -197,65 +168,63 @@ function render_loadout(loadout, x_offset, y_offset, is_selected)
         gui.drawRectangle(x_offset - 5, y_offset - 3, bg_size_x + 9, bg_size_y + 5, nil, "green")
     end
 
-    gui.drawImage(loadout_image_background_path, x_offset, y_offset)
+    gui.drawImage(item_image_background_path, x_offset, y_offset)
     local name_offset_x = 10
     local name_offset_y = 7
     local desc_offset_x = 10
     local desc_offset_y = 20
-    --print("loadout: ", loadout)
-    local loadout_name = loadout.NAME
-    local loadout_description = loadout.DESCRIPTION
+    --print("item: ", item)
+    local item_name = item.NAME
+    local item_description = item.DESCRIPTION
 
-    drawTextOutline(name_offset_x + x_offset, name_offset_y + y_offset,  loadout_name, "black", "white", "transparent", 9, "Arial")
-    drawTextOutline(desc_offset_x + x_offset, desc_offset_y + y_offset, loadout_description, "black", "lightblue", "transparent", 9, "Arial")
-
-
+    drawTextOutline(name_offset_x + x_offset, name_offset_y + y_offset,  item_name, "black", "white", "transparent", 9, "Arial")
+    drawTextOutline(desc_offset_x + x_offset, desc_offset_y + y_offset, item_description, "black", "lightblue", "transparent", 9, "Arial")
 
 
 end
 
-function gui_rendering.render_loadouts(loadout_list, selected_loadout_index)
 
-    -- Assume 3 loadouts, draw them side by side.
-    local num_loadouts = #loadout_list
-    --print(loadout_list)
-    local offset_per_loadout_x = 0
-    local offset_per_loadout_y = 53
+function gui_rendering.render_items(items, selected_item_index)
+
+    -- Assume 3 items, draw them side by side.
+    local num_items = #items
+    --print(items)
+    local offset_per_item_x = 0
+    local offset_per_item_y = 53
     local base_offset_x = 5
-    local base_offset_y = 3 + offset_per_loadout_y
-    base_offset_y = base_offset_y - offset_per_loadout_y * (selected_loadout_index - 1)
+    local base_offset_y = 3 + offset_per_item_y
+    base_offset_y = base_offset_y - offset_per_item_y * (selected_item_index - 1)
     local x_offset = base_offset_x
     local y_offset = base_offset_y
 
 
     
 
-    for loadout_idx = 1,num_loadouts do
+    for item_idx = 1,num_items do
 
 
         
-        render_loadout(loadout_list[loadout_idx], x_offset, y_offset, loadout_idx == selected_loadout_index)
+        render_list_item(items[item_idx], x_offset, y_offset, item_idx == selected_item_index)
 
-        x_offset = x_offset + offset_per_loadout_x
-        y_offset = y_offset + offset_per_loadout_y
+        x_offset = x_offset + offset_per_item_x
+        y_offset = y_offset + offset_per_item_y
 
     end
 
     -- Render arrow guides
-    if (num_loadouts - selected_loadout_index) > 1 then
+    if (num_items - selected_item_index) > 1 then
         -- Render down-arrow.
 
         gui.drawImage(arrow_down_path, 220, 140, 16, 8)
 
     end
 
-    if (selected_loadout_index) > 2 then
+    if (selected_item_index) > 2 then
         -- Render down-arrow.
 
         gui.drawImage(arrow_up_path, 220, 10, 16, 8)
 
     end
-
 
 end
 

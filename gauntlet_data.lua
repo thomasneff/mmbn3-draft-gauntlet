@@ -32,6 +32,7 @@ gauntlet_data.cust_style_number_of_chips = 0
 gauntlet_data.cust_screen_number_of_chips = 5
 gauntlet_data.stage = 0
 gauntlet_data.mega_max_hp = 100
+gauntlet_data.mega_regen_after_battle_relative_to_max = 0
 gauntlet_data.mega_style = 0x00
 gauntlet_data.mega_AirShoes = 0
 gauntlet_data.mega_FastGauge = 0

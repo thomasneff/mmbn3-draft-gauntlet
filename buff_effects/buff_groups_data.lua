@@ -1,4 +1,7 @@
 local deepcopy = require "deepcopy"
+local GAUNTLET_DEFS = require "defs.gauntlet_defs"
+
+
 local HP_INCREASE = require "buff_effects.hp_increase"
 local CANNON_DAMAGE_INCREASE = require "buff_effects.cannon_damage_increase"
 local NERF_VIRUS_GROUP = require "buff_effects.nerf_virus_group"
@@ -28,6 +31,8 @@ local ELEMENT_CHIP_DAMAGE_INCREASE_HP_COST = require "buff_effects.element_chip_
 local SWORD_CHIP_DAMAGE_INCREASE_HP_COST = require "buff_effects.sword_chip_damage_increase_hp_cost"
 local SNECKO_EYE = require "buff_effects.snecko_eye"
 local PERFECTIONIST = require "buff_effects.perfectionist"
+local REGENERATOR = require "buff_effects.regenerator"
+local MEMEBOMB    = require "buff_effects.memebomb"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -37,7 +42,6 @@ local BUFF_GROUPS = {
 
 BUFF_GROUPS[1] = {
     HP_INCREASE,
-    STYLE_CHANGE,
     SET_STAGE,
     BUSTER_SPEEDPLUS,
     BUSTER_ATTACKPLUS,
@@ -63,20 +67,32 @@ BUFF_GROUPS[1] = {
     ELEMENT_CHIP_DAMAGE_INCREASE_HP_COST,
     SWORD_CHIP_DAMAGE_INCREASE_HP_COST,
     SNECKO_EYE,
-    PERFECTIONIST
+    PERFECTIONIST,
+    REGENERATOR
 }
 
-BUFF_GROUPS[1] = {
-    DROP_RARITY_INCREASE,
-    SNECKO_EYE,
-    PERFECTIONIST
-}
+
+if GAUNTLET_DEFS.STYLE_CHANGE_AFTER_10_BATTLES == 0 then
+    BUFF_GROUPS[1][#BUFF_GROUPS + 1] = STYLE_CHANGE
+else
+    print("Removing Style-Change from Buff-Pool.")
+end
+
+
+
+
+--BUFF_GROUPS[1] = {
+--    SWORD_CHIP_DAMAGE_INCREASE,
+--    SNECKO_EYE,
+--    MEMEBOMB
+--}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])
 BUFF_GROUPS[3] = deepcopy(BUFF_GROUPS[1])
 BUFF_GROUPS[4] = deepcopy(BUFF_GROUPS[1])
 BUFF_GROUPS[5] = deepcopy(BUFF_GROUPS[1])
 
+BUFF_GROUPS_DATA.STYLE_CHANGE_BUFF = STYLE_CHANGE
 
 BUFF_GROUPS_DATA.BUFF_GROUPS = {}
 
