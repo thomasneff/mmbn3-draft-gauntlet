@@ -1,0 +1,11 @@
+Program takes the song table address, the range of songs to be extracted (min idx, max idx), and the base address of the song header where the new struct will be inserted.
+
+
+Patch structure for a single song:
+
+SONG_HEADER
+VOICES
+SAMPLE_DATA (if necessary through pointers and stuff)
+TRACK_DATA
+
+tool also creates another file containing TRACK_OFFSETS for automatically changing transposition and stuff :)

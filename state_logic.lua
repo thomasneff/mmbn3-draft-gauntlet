@@ -380,11 +380,16 @@ end
 
 function state_logic.update_folder_mega_giga_chip_counts()
 
+
     -- Upon chip replacement, recompute Mega/GigaChips
     gauntlet_data.current_number_of_giga_chips = 0
     gauntlet_data.current_number_of_mega_chips = 0
 
-    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
+
+
+    for chip_idx = 1,#gauntlet_data.current_folder do
+
+        
 
         if (CHIP_DATA[gauntlet_data.current_folder[chip_idx].ID].CHIP_RANKING % 4) == 1 then
 
@@ -743,7 +748,7 @@ end
 
 function state_logic.damage_taken()
 
-    print("Damage taken!")
+    
     gauntlet_data.has_mega_been_hit = 1
     gauntlet_data.number_of_perfect_fights = 0
 
@@ -769,7 +774,7 @@ function state_logic.main_loop()
         local current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS - 0x02000000, "EWRAM")
         
         if current_hp < gauntlet_data.last_hp and current_hp ~= 0 then
-
+            print("Damage taken! (Previous HP: " .. tostring(gauntlet_data.last_hp) .. ", Current HP: " .. tostring(current_hp) .. ", Max HP: " .. tostring(gauntlet_data.mega_max_hp) .. ")")
             state_logic.damage_taken()
 
         end

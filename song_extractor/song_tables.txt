@@ -1,0 +1,5 @@
+mmbn3: 0x00148C6C
+mmbn5: 0x00155BF4
+
+
+mmbn3 battle theme offset: 0015BEC4

@@ -2642,7 +2642,7 @@ ENTITIES.KingManOmega.BATTLE_NUMBERS        = TIER_4_BOSS_BATTLES               
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ENTITIES.MistMan                            = new_base_entity(ENTITY_KIND.Virus, "MistMan")
-ENTITIES.MistMan.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.MistMan.BATTLE_NUMBERS             = TIER_1_BOSS_BATTLES           -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 

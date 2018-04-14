@@ -1,6 +1,8 @@
 Buffs:
 
 Perfectionist bug: sometimes damage taken doesn't count, happened during Twins/Twinner fight (possibly after healing before/after taking damage?)
+  - Test using a mixed recov/plantman folder and forcing twins viruses. 
+    - although I don't think that the twins viruses are the issue, I think it's the hit detection, as it didn't detect a hit afair
 
 ALL BUFFS THAT MANIPULATE HP NEED TO CHECK FOR <0 AND FORCE IT TO 1!
 
