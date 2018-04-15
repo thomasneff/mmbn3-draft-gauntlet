@@ -1,5 +1,6 @@
 import sys
 import struct
+import os
 
 class SongTable:
     song_header_ptrs        = None  # 4 bytes per song header
@@ -31,8 +32,13 @@ class SampledInstrument:
     data_2                  = 0     # 4 bytes
     data_3                  = 0     # 4 bytes
     sample_size             = 0     # 4 bytes
+    invalid                 = True
     sample_pcm_data         = 0     # sample_size bytes
 
+def ensure_dir(file_path):
+    directory = os.path.dirname(file_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
 def read_32_bit_from_file_at_offset(file_contents, offset):
     return struct.unpack("I", file_contents[offset:offset+4])[0]
@@ -47,6 +53,7 @@ def extract_song_table(file_contents, song_table_address, first_song_index, last
     song_table.song_header_ptrs = []
     song_table.track_group_numbers = []
     working_address = song_table_address
+    working_address = working_address + first_song_index * 8
     for idx in range(first_song_index, last_song_index + 1):
         song_header_ptr = read_32_bit_from_file_at_offset(file_contents, working_address)
         working_address = working_address + 4
@@ -96,8 +103,14 @@ def extract_instrument_def(file_contents, instrument_def_address):
 
 def extract_sampled_instrument(file_contents, ptr):
     sampled_instrument = SampledInstrument()
-
+    print("ptr: ", hex(ptr))
     sampled_instrument.data_1 = read_32_bit_from_file_at_offset(file_contents, ptr)
+
+
+    sampled_instrument.invalid = (read_8_bit_from_file_at_offset(file_contents, ptr) +\
+                                 read_8_bit_from_file_at_offset(file_contents, ptr + 1) +\
+                                 read_8_bit_from_file_at_offset(file_contents, ptr + 2)) != 0
+
     ptr = ptr + 4
 
     sampled_instrument.data_2 = read_32_bit_from_file_at_offset(file_contents, ptr)
@@ -111,8 +124,21 @@ def extract_sampled_instrument(file_contents, ptr):
 
     sampled_instrument.sample_pcm_data = bytearray()
 
+    if sampled_instrument.invalid:
+        print("invalid sampled instrument")
+        sampled_instrument.sample_size = len(sampled_instrument.sample_pcm_data)
+        return sampled_instrument
+
+    print("Sample size: ", hex(sampled_instrument.sample_size))
+
+    if(sampled_instrument.sample_size > 0xFFFF):
+        print("-------------------------------------------------------------------------------------------------------")
+        print("Sample size too large - capping it!")
+        print("-------------------------------------------------------------------------------------------------------")
+        sampled_instrument.sample_size = 0xFFFF
+
     for idx in range(sampled_instrument.sample_size):
-        sampled_instrument.sample_pcm_data.append(read_8_bit_from_file_at_offset(file_contents, ptr))
+        sampled_instrument.sample_pcm_data.append(struct.pack("B", read_8_bit_from_file_at_offset(file_contents, ptr))[0])
         ptr = ptr + 1
 
     return sampled_instrument
@@ -180,19 +206,31 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
 
     all_instrument_bytes = bytearray()
 
-    instrument_data_starting_address = instrument_start_offset + song_header.number_of_tracks * 12
+    instrument_data_starting_address = instrument_start_offset + 256 * 12
 
     total_instrument_data_address = instrument_data_starting_address
 
-    for track_idx in range(song_header.number_of_tracks):
+    for track_idx in range(0, 256):#range(song_header.number_of_tracks):
         # Parse instrument definition
         main_track_instrument_def = extract_instrument_def(file_contents, main_instrument_def_address)
+        print("Main instrument address at ", hex(main_instrument_def_address))
         main_instrument_def_address = main_instrument_def_address + 12 # 12 bytes per track instrument def
+
+        print("Instrument " + str(track_idx) + ", Type: " + str(main_track_instrument_def.instrument_type))
+        print("Current total instrument data addr: ", hex(total_instrument_data_address), hex(len(instrument_data_bytes)))
+
+
 
         # Check for special instrument types that require additional handling
         if main_track_instrument_def.instrument_type == 0x00 or main_track_instrument_def.instrument_type == 0x08:
             # Sample instrument
             # Read sampled instrument data from ptr_1
+            print("sample instrument at addr ", hex(main_instrument_def_address - 12))
+            print(hex(main_track_instrument_def.ptr_1), hex(main_track_instrument_def.ptr_2))
+
+            if main_track_instrument_def.ptr_1 <= 0x08000000 or (main_track_instrument_def.ptr_1 - 0x08000000) > len(file_contents):
+                write_instrument_def_to_bytearray(main_track_instrument_def, instrument_defs_bytes)
+                continue
 
             sampled_instrument = extract_sampled_instrument(file_contents,
                                                             main_track_instrument_def.ptr_1 - 0x08000000)
@@ -204,10 +242,28 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
             # Write sample data into bytearray
             write_sampled_instrument_to_bytearray(sampled_instrument, instrument_data_bytes)
 
-            total_instrument_data_address = total_instrument_data_address + 16 * 4 + sampled_instrument.sample_size
+            total_instrument_data_address = total_instrument_data_address + 16 + sampled_instrument.sample_size
+
+            # Pad to aligned 4 bytes if necessary
+            num_padding_bytes = 0x04 - (total_instrument_data_address) & 0x03
+            print("num ", num_padding_bytes)
+            # Not sure if we need the alignment.
+            for i in range(num_padding_bytes):
+                instrument_data_bytes.append(struct.pack("B", 0)[0])
+                total_instrument_data_address = total_instrument_data_address + 1
+                print("padd")
+
+            if (total_instrument_data_address & 0x03) != 0:
+                print(total_instrument_data_address & 0x03)
+                assert (False)
+
             a = 3
         elif main_track_instrument_def.instrument_type == 0x03 or main_track_instrument_def.instrument_type == 0x0B:
             # Programmable Waveform
+
+            if main_track_instrument_def.ptr_1 <= 0x08000000 or (main_track_instrument_def.ptr_1 - 0x08000000) > len(file_contents):
+                write_instrument_def_to_bytearray(main_track_instrument_def, instrument_defs_bytes)
+                continue
 
             programmable_waveform = extract_programmable_waveform(file_contents, main_track_instrument_def.ptr_1 - 0x08000000)
 
@@ -215,13 +271,16 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
             # We start at the current "data" address
             main_track_instrument_def.ptr_1 = total_instrument_data_address + 0x08000000
 
+            print("Remapped programmable ptr to ", hex(main_track_instrument_def.ptr_1), hex(len(instrument_data_bytes)))
+
             write_programmable_waveform_to_bytearray(programmable_waveform, instrument_data_bytes)
+
 
             total_instrument_data_address = total_instrument_data_address + 16
 
-
             b = 3
         elif main_track_instrument_def.instrument_type == 0x40:
+
             # Key split instrument
             key_split_instrument_def_address = main_track_instrument_def.ptr_1 - 0x08000000
             key_split_table_address = main_track_instrument_def.ptr_2 - 0x08000000
@@ -265,6 +324,10 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
                 if key_split_instrument_def.instrument_type == 0x00 or key_split_instrument_def.instrument_type == 0x08:
                     # Read sampled instrument data from ptr_1
 
+                    if key_split_instrument_def.ptr_1 <= 0x08000000 or (key_split_instrument_def.ptr_1 - 0x08000000) > len(file_contents):
+                        write_instrument_def_to_bytearray(key_split_instrument_def, key_split_instruments)
+                        continue
+
                     sampled_instrument = extract_sampled_instrument(file_contents,
                                                                     key_split_instrument_def.ptr_1 - 0x08000000)
 
@@ -272,14 +335,32 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
                     # We start at the current "data" address
                     key_split_instrument_def.ptr_1 = total_instrument_data_address + 0x08000000
 
+
                     # Write sample data into bytearray
                     write_sampled_instrument_to_bytearray(sampled_instrument, key_split_data)
 
-                    total_instrument_data_address = total_instrument_data_address + 16 * 4 + sampled_instrument.sample_size
+                    total_instrument_data_address = total_instrument_data_address + 16 + sampled_instrument.sample_size
+
+                    # Pad to aligned 4 bytes if necessary
+                    num_padding_bytes = 0x04 - (total_instrument_data_address) & 0x03
+                    print("num ", num_padding_bytes)
+                    # Not sure if we need the alignment.
+                    for i in range(num_padding_bytes):
+                        key_split_data.append(struct.pack("B", 0)[0])
+                        total_instrument_data_address = total_instrument_data_address + 1
+                        print("padd")
+
+                    if (total_instrument_data_address & 0x03) != 0:
+                        print(total_instrument_data_address & 0x03)
+                        assert (False)
 
                     a = 3
                 elif key_split_instrument_def.instrument_type == 0x03 or key_split_instrument_def.instrument_type == 0x0B:
                     # Programmable Waveform
+
+                    if key_split_instrument_def.ptr_1 <= 0x08000000 or (key_split_instrument_def.ptr_1 - 0x08000000) > len(file_contents):
+                        write_instrument_def_to_bytearray(key_split_instrument_def, key_split_instruments)
+                        continue
 
                     programmable_waveform = extract_programmable_waveform(file_contents,
                                                                           key_split_instrument_def.ptr_1 - 0x08000000)
@@ -288,16 +369,17 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
                     # We start at the current "data" address
                     key_split_instrument_def.ptr_1 = total_instrument_data_address + 0x08000000
 
+
                     write_programmable_waveform_to_bytearray(programmable_waveform, key_split_data)
 
                     total_instrument_data_address = total_instrument_data_address + 16
 
                     b = 3
-                elif every_key_split_instrument_def.instrument_type == 0x40:
+                elif key_split_instrument_def.instrument_type == 0x40:
                     # Key split instrument, we ignore it.
                     print('ignored key_split instrument while inside every_key_split instrument')
 
-                elif every_key_split_instrument_def.instrument_type == 0x80:
+                elif key_split_instrument_def.instrument_type == 0x80:
                     # Every-key split instrument
                     print('ignored every_key_split instrument while inside every_key_split instrument')
 
@@ -314,6 +396,8 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
             # Therefore, we need to extract 128 instruments (with their respective samples)
             every_key_split_instrument_def_address = main_track_instrument_def.ptr_1 - 0x08000000
 
+            print("every key split instrument at addr ", hex(every_key_split_instrument_def_address))
+
             # Adjust the main_track_instrument_def ptr1 to the new region
             main_track_instrument_def.ptr_1 = total_instrument_data_address + 0x08000000
 
@@ -323,7 +407,10 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
 
             total_instrument_data_address = total_instrument_data_address + 128 * 12
 
+            lulcounter = 0
+
             for every_key_split_index in range(0, 128):
+                print("Current total instrument data addr: ", hex(total_instrument_data_address), hex(len(every_key_split_data)))
                 every_key_split_instrument_def = extract_instrument_def(file_contents, every_key_split_instrument_def_address)
                 every_key_split_instrument_def_address = every_key_split_instrument_def_address + 12
 
@@ -331,6 +418,12 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
 
                 if every_key_split_instrument_def.instrument_type == 0x00 or every_key_split_instrument_def.instrument_type == 0x08:
                     # Read sampled instrument data from ptr_1
+                    print("sample instrument at addr ", hex(every_key_split_instrument_def_address  - 12) )
+                    print(hex(every_key_split_instrument_def.ptr_1), hex(every_key_split_instrument_def.ptr_2))
+
+                    if every_key_split_instrument_def.ptr_1 <= 0x08000000 or (every_key_split_instrument_def.ptr_1 - 0x08000000) > len(file_contents):
+                        write_instrument_def_to_bytearray(every_key_split_instrument_def, every_key_split_instruments)
+                        continue
 
                     sampled_instrument = extract_sampled_instrument(file_contents, every_key_split_instrument_def.ptr_1 - 0x08000000)
 
@@ -339,20 +432,40 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
                     every_key_split_instrument_def.ptr_1 = total_instrument_data_address + 0x08000000
 
 
-
-
                     # Write sample data into bytearray
                     write_sampled_instrument_to_bytearray(sampled_instrument, every_key_split_data)
 
-                    total_instrument_data_address = total_instrument_data_address + 16 * 4 + sampled_instrument.sample_size
 
 
 
+                    total_instrument_data_address = total_instrument_data_address + 16 + sampled_instrument.sample_size
+                    lulcounter = lulcounter + 16 + sampled_instrument.sample_size
+
+                    # Pad to aligned 4 bytes if necessary
+                    num_padding_bytes = 0x04 - (total_instrument_data_address) & 0x03
+                    print("num ", num_padding_bytes)
+                    # Not sure if we need the alignment.
+                    for i in range(num_padding_bytes):
+                        every_key_split_data.append(struct.pack("B", 0)[0])
+                        total_instrument_data_address = total_instrument_data_address + 1
+                        print("padd")
+
+                    if (total_instrument_data_address & 0x03) != 0:
+                        print(total_instrument_data_address & 0x03)
+                        assert (False)
+
+                    print("sample ", hex(total_instrument_data_address), hex(len(every_key_split_data)), hex(lulcounter))
 
 
                     a = 3
                 elif every_key_split_instrument_def.instrument_type == 0x03 or every_key_split_instrument_def.instrument_type == 0x0B:
                     # Programmable Waveform
+
+                    print("Programmable waveform ", hex(every_key_split_instrument_def.ptr_1))
+
+                    if every_key_split_instrument_def.ptr_1 <= 0x08000000 or (every_key_split_instrument_def.ptr_1 - 0x08000000) > len(file_contents):
+                        write_instrument_def_to_bytearray(every_key_split_instrument_def, every_key_split_instruments)
+                        continue
 
                     programmable_waveform = extract_programmable_waveform(file_contents,
                                                                           every_key_split_instrument_def.ptr_1 - 0x08000000)
@@ -365,6 +478,8 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
 
                     total_instrument_data_address = total_instrument_data_address + 16
 
+                    lulcounter = lulcounter + 16
+                    print("programmable waveform ", hex(total_instrument_data_address), hex(len(every_key_split_data)), hex(lulcounter))
                     b = 3
                 elif every_key_split_instrument_def.instrument_type == 0x40:
                     # Key split instrument, we ignore it.
@@ -380,6 +495,8 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
                 # Write every_key_split_instrument_def into bytearray
                 write_instrument_def_to_bytearray(every_key_split_instrument_def, every_key_split_instruments)
 
+            print("pre: ", hex(len(instrument_data_bytes)))
+            print("writing into instrument_data: ", hex(len(every_key_split_instruments) + len(every_key_split_data)))
             # Write sub-instrument into instrument_data_bytes
             instrument_data_bytes.extend(every_key_split_instruments)
             instrument_data_bytes.extend(every_key_split_data)
@@ -400,19 +517,62 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
 # old_track_starting_address is the address stored in the ROM, new_track_starting_address is the address in the patch
 def extract_track(file_contents, old_track_starting_address, new_track_starting_address):
     # TODO: read until B1 is found, which signals end-of-track. Also pad data with zeros to be 4-byte aligned.
-    #       if B2/B3 are found the addresses need to be recomputed
+    # TODO: if B2/B3 are found the addresses need to be recomputed
     a = 3
+    raw_track_data = bytearray()
+    track_working_address = old_track_starting_address - 0x08000000
 
-def extract_track_data(file_contents, song_header, track_data_starting_address):
+    read_byte = 0x00
+
+    while (read_byte != 0xB1):
+
+        read_byte = read_8_bit_from_file_at_offset(file_contents, track_working_address)
+        track_working_address = track_working_address + 1
+
+        raw_track_data.append(struct.pack("B", read_byte)[0])
+
+        if (read_byte == 0xB2 or read_byte == 0xB3):
+            # Jump to address of 4 bytes, needs to be recomputed
+            ptr = read_32_bit_from_file_at_offset(file_contents, track_working_address)
+            track_working_address = track_working_address + 4
+            ptr =  (ptr - old_track_starting_address) + new_track_starting_address + 0x08000000
+            raw_track_data.extend(struct.pack("I", ptr))
+
+
+    # Pad to aligned 4 bytes if necessary
+    num_padding_bytes = 0x04 - ((new_track_starting_address + len(raw_track_data)) & 0x03)
+
+    # Not sure if we need the alignment.
+    for i in range(num_padding_bytes):
+        raw_track_data.append(struct.pack("B", 0)[0])
+
+
+    return raw_track_data
+
+def extract_track_data(file_contents, song_header, track_data_starting_address, track_data_starting_address_relative, out_track_starting_addresses):
     # Iterate over all track ptrs in song_header
     track_base_address = track_data_starting_address
 
+    all_track_data = bytearray()
+
+    out_track_starting_addresses['ptrs'] = []
+
     for track_idx in range(0, len(song_header.track_data_ptrs)):
         a = 3
+        track_data_ptr = song_header.track_data_ptrs[track_idx]
+        raw_track_data = extract_track(file_contents, track_data_ptr, track_data_starting_address)
 
+        song_header.track_data_ptrs[track_idx] = track_data_starting_address + 0x08000000
+        out_track_starting_addresses['ptrs'].append(track_data_starting_address_relative)
 
+        track_data_starting_address = track_data_starting_address + len(raw_track_data)
+        track_data_starting_address_relative = track_data_starting_address_relative + len(raw_track_data)
 
-def extract_song_data(file_contents, song_table, patch_file_song_header_address):
+        all_track_data.extend(raw_track_data)
+
+    return all_track_data
+
+def extract_song_data(file_contents, song_table, patch_file_song_header_address, game_name, first_song_index):
     # TODO:
     # extract song headers
     # extract instrument data
@@ -424,7 +584,7 @@ def extract_song_data(file_contents, song_table, patch_file_song_header_address)
     # This bytearray will contain the final data
     extracted_song_data = bytearray()
 
-    song_number = 1
+    song_number = first_song_index
 
     for song_header_ptr in song_table.song_header_ptrs:
         print("Extracting song header at address " + hex(song_header_ptr))
@@ -432,25 +592,42 @@ def extract_song_data(file_contents, song_table, patch_file_song_header_address)
 
 
         song_header_size = 4 * song_header.number_of_tracks + 8
+
+        if song_header.number_of_tracks == 0:
+            song_number = song_number + 1
+            continue
+
         # Instruments start directly after the song header, which is at patch_file_song_header_address + song_header_size
         raw_instrument_data = extract_instrument_data(file_contents, song_header, patch_file_song_header_address + song_header_size)
 
+
+        song_header.instrument_def_ptr = (patch_file_song_header_address + song_header_size) + 0x08000000
+
         raw_instrument_data_size = len(raw_instrument_data)
 
+        track_starting_offsets = {}
         # TODO: extract_track_data (this also needs to remap the song_header ptrs)
-        raw_track_data = extract_track_data(file_contents, song_header, patch_file_song_header_address + song_header_size + raw_instrument_data_size)
+        raw_track_data = extract_track_data(file_contents,
+                                            song_header,
+                                            patch_file_song_header_address + song_header_size + raw_instrument_data_size,
+                                            song_header_size + raw_instrument_data_size,
+                                            track_starting_offsets)
 
+        game_name = os.path.splitext(game_name)[0]
+        ensure_dir(os.path.join('out', game_name, 'test.abc'))
 
+        folder_path = os.path.join('out', game_name)
 
+        with open(os.path.join(folder_path, str(song_number) + ".offsets"), "wt") as out_file:
+            for ptr in track_starting_offsets['ptrs']:
+                out_file.write(str(ptr) + '\n')
 
-
-
-        with open(str(song_number) + ".songpatch", "wb") as out_file:
+        with open(os.path.join(folder_path, str(song_number) + ".songpatch"), "wb") as out_file:
             raw_song_header = bytearray()
             write_song_header_to_bytearray(song_header, raw_song_header)
             out_file.write(raw_song_header)
             out_file.write(raw_instrument_data)
-            #out_file.write(raw_track_data)
+            out_file.write(raw_track_data)
 
 
         song_number = song_number + 1
@@ -477,7 +654,7 @@ def main():
 
     song_table = extract_song_table(file_contents, song_table_address, first_song_index, last_song_index)
 
-    extract_song_data(file_contents, song_table, patch_file_song_header_address)
+    extract_song_data(file_contents, song_table, patch_file_song_header_address, os.path.basename(rom_path), first_song_index)
 
 
     a = 3

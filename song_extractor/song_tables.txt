@@ -1,5 +1,12 @@
-mmbn3: 0x00148C6C
-mmbn5: 0x00155BF4
-
-
-mmbn3 battle theme offset: 0015BEC4
+Music Table Offsets :
+US MMBN6 Gregar         : 0x159F48
+US MMBN6 Falzar         : 0x1583F8
+US MMBN5 Team Protoman  : 0x155B0C
+US MMBN5 Team Colonel   : 0x155BF4
+J  MMBN4.5              : 0x135214
+US MMBN4 Blue Moon      : 0x15600C
+US MMBN3 Blue           : 0x148C6C
+US MMBN2                : 0x0F3898
+US MMBN                 : 0x0A111C
+US MMBCC                : 0x106DD0
+US Final Fantasy 5      : 0x3F2CB4

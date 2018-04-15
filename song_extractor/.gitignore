@@ -4,6 +4,7 @@
 .idea
 *.songpatch
 *.gba
+*.offsets
 
 # User-specific files
 *.suo
