@@ -3,15 +3,15 @@ local GENERIC_DEFS = require "defs.generic_defs"
 local mmbn3_utils = require "mmbn3_utils"
 
 local base_dir = "song_extractor/out/mmbn4/"
-local song_name = "15"
+local song_name = "17"
 local patch_ext = ".songpatch"
 local offset_ext = ".offsets"
 
 local transpose_offset = 1
 local bpm_offset = 3
 
-local transpose = -5
-local bpm_shift = 0
+local transpose = 4
+local bpm_shift = 10
 
 local patch_file_name = base_dir .. song_name .. patch_ext
 local offset_file_name = base_dir .. song_name .. offset_ext
@@ -133,6 +133,7 @@ local offset = 0
 print("Starting to load music!")
 
 local info_interval = math.floor((#patch_str / 25) + 0.5)
+local yield_interval = math.floor((#patch_str / 1000) + 0.5)
 
 print("Interval: " .. tostring(info_interval))
 
@@ -171,8 +172,12 @@ for i = 1,(#patch_str+1) do
 
     if (offset + 1) % info_interval == 0 then
         print("Music loading " .. tostring(math.floor((offset / (1.0 * #patch_str) * 100.0) + 0.5)) .. "% done.")
-        --emu.yield()
     end
+
+    if (offset + 1) % yield_interval == 0 then
+        emu.yield()
+    end
+
 end
 
 

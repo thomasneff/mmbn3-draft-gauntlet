@@ -44,14 +44,13 @@ function MEMEBOMB:activate(current_round)
 
     local shuffle_indices = {}
 
-    for i = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
+    for i = 1,#gauntlet_data.current_folder do
         shuffle_indices[i] = i
     end
 
     shuffle_indices = shuffle(deepcopy(shuffle_indices))
     
     for chip_idx = 1,NUMBER_OF_BOMBS_ADDED[current_round] do
-        --TODO: randomize the replacement indices.
         gauntlet_data.current_folder[shuffle_indices[chip_idx]] = CHIP.new_chip_with_random_code(CHIP_ID.MiniBomb)
 
     end

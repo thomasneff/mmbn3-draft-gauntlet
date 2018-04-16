@@ -236,8 +236,8 @@ function gui_rendering.render_gauntlet_complete()
 end
 
 -- This function is used to render the current folder for chip replacement.
--- TODO: this currently just renders fixed Cannon *. Should take the folder into account.
-function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gauntlet_data)
+
+function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gauntlet_data, finished_loading)
 
     --print("RENDERING")
     --gui.clearGraphics()
@@ -366,6 +366,17 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
     elseif gauntlet_data.folder_shuffle_state == 3 then
         -- Damage
         drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 30, "ATK", "black", "orange", "transparent", 10, "Arial")
+    end
+
+
+    if finished_loading == 0 then
+        -- Still loading
+        drawTextOutline(new_chip_offset_x, 140, "Loading...", "black", "red", "transparent", 10, "Arial")
+    else
+
+        -- Done loading
+        drawTextOutline(new_chip_offset_x, 130, "Loading", "black", "green", "transparent", 10, "Arial")
+        drawTextOutline(new_chip_offset_x, 140, "Done!", "black", "green", "transparent", 10, "Arial")
     end
 
 

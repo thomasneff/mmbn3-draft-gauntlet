@@ -24,6 +24,7 @@ local LOADOUTS = require "loadouts.loadout_defs"
 local gauntlet_data = require "gauntlet_data"
 local deepcopy = require "deepcopy"
 local CHIP_DROP_METHODS = require "chip_drop_methods.chip_drop_method_defs"
+local MusicLoader = require "music_loader"
 -- TODO: possibly add more states.
 
 local state_logic = {}
@@ -246,6 +247,10 @@ end
 
 function state_logic.on_enter_battle()
     
+    MusicLoader.LoadRandomFile(state_logic.current_battle)
+
+
+
     state_logic.patch_next_battle()
     --state_logic.determine_drops(GAUNTLET_DEFS.NUMBER_OF_DROPPED_CHIPS)
     state_logic.shuffle_folder()
@@ -862,7 +867,7 @@ function state_logic.main_loop()
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_chip_selection(state_logic.dropped_chips, state_logic.dropped_chip_render_index)
             else
-                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data)
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             end
 
 
@@ -938,8 +943,11 @@ function state_logic.main_loop()
 
         
 
+        -- If MusicLoader is still loading, we simply do not handle the event
+        if input_handler.inputs_pressed["A"] == true and MusicLoader.FinishedLoading == 1 then
 
-        if input_handler.inputs_pressed["A"] == true then
+            
+
             -- TODO: add chip to folder!
             --print("A pressed")
           
@@ -993,7 +1001,7 @@ function state_logic.main_loop()
         --print(state_logic.folder_chip_render_index)
 
         if state_logic.should_redraw == 1 then
-            gui_rendering.render_folder(gauntlet_data.current_folder, state_logic.folder_chip_render_index, state_logic.dropped_chip, gauntlet_data)
+            gui_rendering.render_folder(gauntlet_data.current_folder, state_logic.folder_chip_render_index, state_logic.dropped_chip, gauntlet_data, MusicLoader.FinishedLoading)
             gui.DrawFinish()
             memorysavestate.loadcorestate(state_logic.gui_change_savestate)
             state_logic.should_redraw = 0
@@ -1086,7 +1094,7 @@ function state_logic.main_loop()
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_items(state_logic.dropped_buffs, state_logic.dropped_buff_render_index)
             else
-                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data)
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             end
 
             
@@ -1173,7 +1181,7 @@ function state_logic.main_loop()
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_items(LOADOUTS, state_logic.selected_loadout_index)
             else
-                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data)
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             end
 
             
@@ -1238,7 +1246,7 @@ function state_logic.main_loop()
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_items(CHIP_DROP_METHODS, state_logic.selected_drop_method_index)
             else
-                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data)
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             end
 
             
@@ -1322,7 +1330,7 @@ function state_logic.main_loop()
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_chip_selection(state_logic.draft_selection_chips, state_logic.draft_chip_render_index)
             else
-                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data)
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             end
 
 
@@ -1382,6 +1390,12 @@ function state_logic.main_loop()
         
 
     --end
+
+    -- MusicLoader block loading
+
+    if MusicLoader.LoadBlock() == 1 then
+        state_logic.should_redraw = 1
+    end
 
     emu.yield()
 end
