@@ -10,3 +10,6 @@ US MMBN2                : 0x0F3898
 US MMBN                 : 0x0A111C
 US MMBCC                : 0x106DD0
 US Final Fantasy 5      : 0x3F2CB4
+
+
+mmbn3 battle song table offset: 0x0148D34

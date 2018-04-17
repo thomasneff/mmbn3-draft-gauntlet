@@ -3,11 +3,11 @@ local mmbn3_utils = require "mmbn3_utils"
 local randomchoice = require "randomchoice"
 
 local base_dir = "song_extractor/out/"
-local song_name = "17"
 local patch_ext = ".songpatch"
-local offset_ext = ".offsets"
-local transpose_range = 4
-local bpm_shift_range = 10
+local transpose_offset_ext = ".transposeoffsets"
+local bpm_offset_ext = ".bpmoffsets"
+local transpose_range = 8
+local bpm_shift_range = 20
 
 local BattleMusicList = 
 {
@@ -54,6 +54,13 @@ local BattleMusicList =
     "mmbcc/12",     -- battle bgm 1
     "mmbcc/13",     -- battle bgm 2
 } 
+
+
+---local BattleMusicList = 
+--{
+  --  "poke_emerald/299",       -- cool battle theme (Battle 6)
+
+--}
 
 local BossMusicList = 
 {
@@ -131,34 +138,53 @@ function MusicLoader.LoadRandomFile(current_round)
     MusicLoader.patch_str = nil
 
     local patch_file_name = base_dir .. chosen_file .. patch_ext
-    local offset_file_name = base_dir .. chosen_file .. offset_ext
+    local transpose_offset_file_name = base_dir .. chosen_file .. transpose_offset_ext
+    local bpm_offset_file_name = base_dir .. chosen_file .. bpm_offset_ext
 
     local patch_file = assert(io.open(patch_file_name, "rb"))
-    local offset_file = assert(io.open(offset_file_name, "r"))
+
     MusicLoader.patch_str = patch_file:read("*all")
     print(#MusicLoader.patch_str)
     patch_file:close()
 
-    local offset_file = assert(io.open(offset_file_name, "r"))
+    local transpose_offset_file = assert(io.open(transpose_offset_file_name, "r"))
 
-    offset_bytes = {}
-    local offset_string = ""
+    local transpose_offset_string = ""
 
     repeat
-        local str = offset_file:read(20*1024)
+        local str = transpose_offset_file:read(20*1024)
         if str then
-                offset_string = offset_string .. str
+                transpose_offset_string = transpose_offset_string .. str
         end
     until not str
 
-    offset_file:close()
+    transpose_offset_file:close()
 
-    print(#offset_string) 
 
-    offsets_split = mysplit(offset_string, '\n')
-    offsets_split[#offsets_split + 1] = 2147483647
+    transpose_offsets_split = mysplit(transpose_offset_string, '\n')
+    transpose_offsets_split[#transpose_offsets_split + 1] = 2147483647
 
-    print(offsets_split)
+
+    local bpm_offset_file = assert(io.open(bpm_offset_file_name, "r"))
+
+    local bpm_offset_string = ""
+
+    repeat
+        local str = bpm_offset_file:read(20*1024)
+        if str then
+            bpm_offset_string = bpm_offset_string .. str
+        end
+    until not str
+
+    bpm_offset_file:close()
+
+
+    bpm_offsets_split = mysplit(bpm_offset_string, '\n')
+    bpm_offsets_split[#bpm_offsets_split + 1] = 2147483647
+
+
+    print(transpose_offsets_split)
+    print(bpm_offsets_split)
 
     MusicLoader.transpose = math.random(-transpose_range, transpose_range)
     MusicLoader.bpm_shift = math.random(-bpm_shift_range, bpm_shift_range)
@@ -168,15 +194,20 @@ function MusicLoader.LoadRandomFile(current_round)
     MusicLoader.bpm_offsets = {}
 
 
-    for k, offset_str in ipairs(offsets_split) do
+    for k, offset_str in ipairs(transpose_offsets_split) do
         
         local offset = tonumber(offset_str)
-        MusicLoader.transpose_offsets[offset + MusicLoader.transpose_offset] = 1
+        MusicLoader.transpose_offsets[offset] = 1
 
-        if k == 1 then
-            MusicLoader.bpm_offsets[offset + MusicLoader.bpm_offset] = 1
-        end
     end
+
+    for k, offset_str in ipairs(bpm_offsets_split) do
+        
+        local offset = tonumber(offset_str)
+        MusicLoader.bpm_offsets[offset] = 1
+
+    end
+
 
     MusicLoader.StartedLoading = 1
 end
@@ -203,8 +234,8 @@ function MusicLoader.LoadBlock()
     end
 
     local info_interval = math.floor((#MusicLoader.patch_str / 25) + 0.5)
-    local yield_interval = math.floor((#MusicLoader.patch_str / 1000) + 0.5)
-    MusicLoader.BlockSize = yield_interval
+    local yield_interval = MusicLoader.BlockSize
+    --MusicLoader.BlockSize = yield_interval
     
     --print("Interval: " .. tostring(info_interval))
     

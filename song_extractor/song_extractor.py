@@ -190,7 +190,9 @@ def write_song_header_to_bytearray(song_header, arr):
     for track_data_ptr in song_header.track_data_ptrs:
         arr.extend(struct.pack("I", track_data_ptr))
 
-def extract_instrument_data(file_contents, song_header, instrument_start_offset):
+
+
+def extract_instrument_data(file_contents, song_header, instrument_start_offset, used_instruments):
     a = 3
 
     # Iterate over number of tracks (that's the number of main instruments we have)
@@ -206,11 +208,11 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
 
     all_instrument_bytes = bytearray()
 
-    instrument_data_starting_address = instrument_start_offset + 256 * 12
+    instrument_data_starting_address = instrument_start_offset + (used_instruments["max"] + 1) * 12
 
     total_instrument_data_address = instrument_data_starting_address
 
-    for track_idx in range(0, 256):#range(song_header.number_of_tracks):
+    for track_idx in range(0, used_instruments["max"] + 1):#range(song_header.number_of_tracks):
         # Parse instrument definition
         main_track_instrument_def = extract_instrument_def(file_contents, main_instrument_def_address)
         print("Main instrument address at ", hex(main_instrument_def_address))
@@ -220,6 +222,10 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
         print("Current total instrument data addr: ", hex(total_instrument_data_address), hex(len(instrument_data_bytes)))
 
 
+        # If we don't use the instrument, no need to extract samples or programmable synth stuff
+        if track_idx not in used_instruments:
+            write_instrument_def_to_bytearray(main_track_instrument_def, instrument_defs_bytes)
+            continue
 
         # Check for special instrument types that require additional handling
         if main_track_instrument_def.instrument_type == 0x00 or main_track_instrument_def.instrument_type == 0x08:
@@ -513,14 +519,10 @@ def extract_instrument_data(file_contents, song_header, instrument_start_offset)
 
     return all_instrument_bytes
 
+def extract_used_instruments(file_contents, track_starting_address, used_instruments):
+    # Iterate over track, find all instrument change commands (0xBD) and set corresponding flag in used_instruments
 
-# old_track_starting_address is the address stored in the ROM, new_track_starting_address is the address in the patch
-def extract_track(file_contents, old_track_starting_address, new_track_starting_address):
-    # TODO: read until B1 is found, which signals end-of-track. Also pad data with zeros to be 4-byte aligned.
-    # TODO: if B2/B3 are found the addresses need to be recomputed
-    a = 3
-    raw_track_data = bytearray()
-    track_working_address = old_track_starting_address - 0x08000000
+    track_working_address = track_starting_address - 0x08000000
 
     read_byte = 0x00
 
@@ -529,14 +531,60 @@ def extract_track(file_contents, old_track_starting_address, new_track_starting_
         read_byte = read_8_bit_from_file_at_offset(file_contents, track_working_address)
         track_working_address = track_working_address + 1
 
+
+        if (read_byte == 0xBD):
+            # Jump to address of 4 bytes, needs to be recomputed
+            instrument_byte = read_8_bit_from_file_at_offset(file_contents, track_working_address)
+            track_working_address = track_working_address + 1
+            used_instruments[instrument_byte] = 1
+            used_instruments["max"] = max(used_instruments["max"], instrument_byte)
+
+
+# old_track_starting_address is the address stored in the ROM, new_track_starting_address is the address in the patch
+def extract_track(file_contents, old_track_starting_address, new_track_starting_address, out_control_ptrs, track_data_starting_address_relative):
+    a = 3
+    raw_track_data = bytearray()
+    track_working_address = old_track_starting_address - 0x08000000
+
+
+    read_byte = 0x00
+
+    out_control_ptrs['bpm'] = []
+    out_control_ptrs['transpose'] =[]
+
+    num_bytes_read = 0
+
+    while (read_byte != 0xB1):
+
+        read_byte = read_8_bit_from_file_at_offset(file_contents, track_working_address)
+        track_working_address = track_working_address + 1
+        num_bytes_read = num_bytes_read + 1
+
+        # Force-Insert a 'repeat' call to force all tracks to loop
+
+        if read_byte == 0xB1:
+            raw_track_data.append(struct.pack("B", 0xB2)[0])
+            raw_track_data.extend(struct.pack("I", new_track_starting_address))
+            raw_track_data.append(struct.pack("B", 0xB1)[0])
+            break
+
         raw_track_data.append(struct.pack("B", read_byte)[0])
 
         if (read_byte == 0xB2 or read_byte == 0xB3):
             # Jump to address of 4 bytes, needs to be recomputed
             ptr = read_32_bit_from_file_at_offset(file_contents, track_working_address)
             track_working_address = track_working_address + 4
+            num_bytes_read = num_bytes_read + 4
             ptr =  (ptr - old_track_starting_address) + new_track_starting_address + 0x08000000
             raw_track_data.extend(struct.pack("I", ptr))
+
+        if (read_byte == 0xBB):
+            out_control_ptrs['bpm'].append(track_data_starting_address_relative + num_bytes_read)
+
+        if (read_byte == 0xBC):
+            out_control_ptrs['transpose'].append(track_data_starting_address_relative + num_bytes_read)
+
+
 
 
     # Pad to aligned 4 bytes if necessary
@@ -556,11 +604,22 @@ def extract_track_data(file_contents, song_header, track_data_starting_address, 
     all_track_data = bytearray()
 
     out_track_starting_addresses['ptrs'] = []
+    out_track_starting_addresses['transpose'] = []
+    out_track_starting_addresses['bpm'] = []
 
     for track_idx in range(0, len(song_header.track_data_ptrs)):
         a = 3
         track_data_ptr = song_header.track_data_ptrs[track_idx]
-        raw_track_data = extract_track(file_contents, track_data_ptr, track_data_starting_address)
+
+        out_control_ptrs = dict()
+        raw_track_data = extract_track(file_contents, track_data_ptr, track_data_starting_address, out_control_ptrs, track_data_starting_address_relative)
+
+        if 'transpose' in out_control_ptrs:
+            out_track_starting_addresses['transpose'].extend(out_control_ptrs['transpose'])
+
+        if 'bpm' in out_control_ptrs:
+            out_track_starting_addresses['bpm'].extend(out_control_ptrs['bpm'])
+
 
         song_header.track_data_ptrs[track_idx] = track_data_starting_address + 0x08000000
         out_track_starting_addresses['ptrs'].append(track_data_starting_address_relative)
@@ -597,8 +656,18 @@ def extract_song_data(file_contents, song_table, patch_file_song_header_address,
             song_number = song_number + 1
             continue
 
+
+        used_instruments = dict()
+        used_instruments["max"] = -1
+        for track_idx in range(0, len(song_header.track_data_ptrs)):
+            track_data_ptr = song_header.track_data_ptrs[track_idx]
+            extract_used_instruments(file_contents, track_data_ptr, used_instruments)
+
+
+
+
         # Instruments start directly after the song header, which is at patch_file_song_header_address + song_header_size
-        raw_instrument_data = extract_instrument_data(file_contents, song_header, patch_file_song_header_address + song_header_size)
+        raw_instrument_data = extract_instrument_data(file_contents, song_header, patch_file_song_header_address + song_header_size, used_instruments)
 
 
         song_header.instrument_def_ptr = (patch_file_song_header_address + song_header_size) + 0x08000000
@@ -618,8 +687,12 @@ def extract_song_data(file_contents, song_table, patch_file_song_header_address,
 
         folder_path = os.path.join('out', game_name)
 
-        with open(os.path.join(folder_path, str(song_number) + ".offsets"), "wt") as out_file:
-            for ptr in track_starting_offsets['ptrs']:
+        with open(os.path.join(folder_path, str(song_number) + ".bpmoffsets"), "wt") as out_file:
+            for ptr in track_starting_offsets['bpm']:
+                out_file.write(str(ptr) + '\n')
+
+        with open(os.path.join(folder_path, str(song_number) + ".transposeoffsets"), "wt") as out_file:
+            for ptr in track_starting_offsets['transpose']:
                 out_file.write(str(ptr) + '\n')
 
         with open(os.path.join(folder_path, str(song_number) + ".songpatch"), "wb") as out_file:

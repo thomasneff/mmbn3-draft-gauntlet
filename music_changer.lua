@@ -2,16 +2,16 @@ local state_logic = require "state_logic"
 local GENERIC_DEFS = require "defs.generic_defs"
 local mmbn3_utils = require "mmbn3_utils"
 
-local base_dir = "song_extractor/out/mmbn4/"
-local song_name = "17"
+local base_dir = "song_extractor/out/mmbn3/"
+local song_name = "7"
 local patch_ext = ".songpatch"
 local offset_ext = ".offsets"
 
 local transpose_offset = 1
 local bpm_offset = 3
 
-local transpose = 4
-local bpm_shift = 10
+local transpose = 0
+local bpm_shift = 0
 
 local patch_file_name = base_dir .. song_name .. patch_ext
 local offset_file_name = base_dir .. song_name .. offset_ext
@@ -133,7 +133,7 @@ local offset = 0
 print("Starting to load music!")
 
 local info_interval = math.floor((#patch_str / 25) + 0.5)
-local yield_interval = math.floor((#patch_str / 1000) + 0.5)
+local yield_interval =#patch_str-- math.floor((#patch_str / 1000) + 0.5)
 
 print("Interval: " .. tostring(info_interval))
 
@@ -149,21 +149,21 @@ for i = 1,(#patch_str+1) do
     --print(c)
     --emu.yield()
 
-    if bpm_offsets[offset] ~= nil then
+    --if bpm_offsets[offset] ~= nil then
         --print("BPM change " .. tostring(offset))
         --print(c)
         --print(c + bpm_shift)
-        mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c + bpm_shift)
+        --mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c + bpm_shift)
         --print("BPM changed. " .. tostring(offset))
-    elseif transpose_offsets[offset] ~= nil then
+    --elseif transpose_offsets[offset] ~= nil then
         --print("Transpose change " .. tostring(offset))
         --print(c)
         --print(c + transpose)
-        mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c + transpose)
+        --mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c + transpose)
         --print("Transpose changed. " .. tostring(offset))
-    else
+    --else
         mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c)
-    end
+    --end
 
     --mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c)
 

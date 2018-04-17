@@ -5,6 +5,8 @@
 *.songpatch
 *.gba
 *.offsets
+*.transposeoffsets
+*.bpmoffsets
 
 # User-specific files
 *.suo
