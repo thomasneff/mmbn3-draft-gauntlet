@@ -57,7 +57,7 @@ state_logic.loadout_chosen = 0
 state_logic.selected_loadout_index = 2
 state_logic.selected_drop_method_index = 2
 
-gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
+gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
 state_logic.dropped_chip_render_index = 1
 state_logic.draft_chip_render_index = 1
 state_logic.dropped_buff_render_index = 2
@@ -608,7 +608,7 @@ function state_logic.initialize()
     state_logic.update_printable_chip_names_in_folder()
     state_logic.update_argb_chip_icons_in_folder()
     
-    gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
+    gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
 
     client.unpause()
     -- Upon start, initialize the current round:
@@ -699,22 +699,30 @@ function state_logic.patch_before_battle_start()
 
     if gauntlet_data.mega_regen_after_battle_relative_to_max ~= 0 then
 
-        local current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS - 0x02000000, "EWRAM")
+        local current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, "EWRAM")
 
+        
+
+        print("Regenerator current HP before regen " .. tostring(current_hp))
+        
         current_hp = math.floor(current_hp + gauntlet_data.mega_max_hp * gauntlet_data.mega_regen_after_battle_relative_to_max)
+
+        
 
         if current_hp > gauntlet_data.mega_max_hp then
             current_hp = gauntlet_data.mega_max_hp
         end
 
-        mmbn3_utils.change_megaMan_current_hp(current_hp) 
+        print("Regenerator current HP after regen " .. tostring(current_hp))
+
+        memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, current_hp, "EWRAM")
     end
 
-    mmbn3_utils.change_megaMan_max_hp(gauntlet_data.mega_max_hp) 
+    memory.write_u16_le(GENERIC_DEFS.MEGA_MAX_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.mega_max_hp, "EWRAM")
     -- We need to wait a few frames to patch the in-battle HP of megaMan in RAM. Otherwise we would need a hook way before battle, which I don't want to find right now.
     if  gauntlet_data.hp_patch_required == 1 then
-        mmbn3_utils.change_megaMan_max_hp(gauntlet_data.mega_max_hp) 
-        mmbn3_utils.change_megaMan_current_hp(gauntlet_data.mega_max_hp) 
+        memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.mega_max_hp, "EWRAM") 
+        memory.write_u16_le(GENERIC_DEFS.MEGA_MAX_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.mega_max_hp, "EWRAM")
         gauntlet_data.hp_patch_required = 0
         
     end
@@ -775,8 +783,11 @@ function state_logic.main_loop()
     if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
 
         -- Check if mega gets hit for certain buffs
-
-        local current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS - 0x02000000, "EWRAM")
+        
+        local number_of_entities = #(state_logic.battle_data[state_logic.current_battle - 1].ENTITIES)
+        --print("Number of entities in battle: " .. tostring(number_of_entities))
+        
+        local current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[number_of_entities] - 0x02000000, "EWRAM")
         
         if current_hp < gauntlet_data.last_hp and current_hp ~= 0 then
             print("Damage taken! (Previous HP: " .. tostring(gauntlet_data.last_hp) .. ", Current HP: " .. tostring(current_hp) .. ", Max HP: " .. tostring(gauntlet_data.mega_max_hp) .. ")")
@@ -1118,7 +1129,7 @@ function state_logic.main_loop()
         -- Simply load initial state again if we beat all rounds.
         savestate.load(state_logic.initial_state)
         client.unpause()
-        gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
     
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_STARTING_LOADOUT then
         state_logic.gui_change_savestate = memorysavestate.savecorestate()
@@ -1363,7 +1374,7 @@ function state_logic.main_loop()
         
 
     else -- Default state, should never happen
-        gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
     end
 
     

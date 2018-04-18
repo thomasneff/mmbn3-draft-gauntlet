@@ -50,24 +50,24 @@ function mmbn3_utils.writedword(address, value)
 
 end
 
-function mmbn3_utils.change_megaMan_current_hp(new_value)
+--function mmbn3_utils.change_megaMan_current_hp(new_value)
     --local megaMan_current_hp_address = 0x020018A0 -- This is the address before battle.
     -- We need the address just before battle.
-    local megaMan_current_hp_address = defs.MEGA_CURRENT_HP_ADDRESS
-    mmbn3_utils.writeword(megaMan_current_hp_address, new_value)
-    mmbn3_utils.writeword(0x020018A0, new_value)
-    mmbn3_utils.writeword(0x0200F888, new_value)
-end
+    --local megaMan_current_hp_address = defs.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE_3_ENEMIES
+    --mmbn3_utils.writeword(megaMan_current_hp_address, new_value)
+    --mmbn3_utils.writeword(0x020018A0, new_value)
+    --mmbn3_utils.writeword(0x0200F888, new_value)
+--end
 
-function mmbn3_utils.change_megaMan_max_hp(new_value) 
+--function mmbn3_utils.change_megaMan_max_hp(new_value) 
     --local megaMan_max_hp_address = 0x020018A2 -- This is the address before battle.
     -- We need the address IN battle.
-    local megaMan_max_hp_address = defs.MEGA_MAX_HP_ADDRESS
+    --local megaMan_max_hp_address = defs.MEGA_MAX_HP_ADDRESS_DURING_BATTLE_3_ENEMIES
     --print("Patched HP: ", new_value)
-    mmbn3_utils.writeword(megaMan_max_hp_address, new_value)
-    mmbn3_utils.writeword(0x020018A2, new_value)
+    --mmbn3_utils.writeword(megaMan_max_hp_address, new_value)
+    --mmbn3_utils.writeword(0x020018A2, new_value)
 
-end
+--end
 
 function mmbn3_utils.change_megaMan_style(new_style) 
     local megaMan_style_address = defs.STYLE_CHANGE_ADDRESS

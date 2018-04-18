@@ -8,6 +8,8 @@ local transpose_offset_ext = ".transposeoffsets"
 local bpm_offset_ext = ".bpmoffsets"
 local transpose_range = 8
 local bpm_shift_range = 20
+local use_fixed_music = 1
+
 
 local BattleMusicList = 
 {
@@ -55,6 +57,49 @@ local BattleMusicList =
     "mmbcc/13",     -- battle bgm 2
 } 
 
+
+local FixedMusicList = 
+{
+    "mmbn3/25",
+    "mmbn3/25",
+    "mmbn3/25",
+    "mmbn3/25",
+    "mmbn3/26",
+    "mmbn2/27",
+    "mmbn4/21",
+    "mmbn4/17",
+    "mmbn4/17",
+    "poke_emerald/511",
+}
+
+local FixedMusicTransposeRange = 
+{
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    5,
+    0,
+}
+
+local FixedMusicBPMRange = 
+{
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    30,
+    0,
+
+}
 
 ---local BattleMusicList = 
 --{
@@ -131,6 +176,17 @@ function MusicLoader.LoadRandomFile(current_round)
         chosen_file = randomchoice(BossMusicList)
     else
         chosen_file = randomchoice(BattleMusicList)
+    end
+
+    if use_fixed_music == 1 then
+        if FixedMusicList[current_round] ~= nil then
+            chosen_file = FixedMusicList[current_round]
+            transpose_range = FixedMusicTransposeRange[current_round]
+            bpm_shift_range = FixedMusicBPMRange[current_round]
+        else
+            transpose_range = 8
+            bpm_shift_range = 20
+        end
     end
 
     MusicLoader.FinishedLoading = 0

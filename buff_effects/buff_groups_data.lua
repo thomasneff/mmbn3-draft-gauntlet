@@ -85,7 +85,7 @@ end
 --BUFF_GROUPS[1] = {
 --    SWORD_CHIP_DAMAGE_INCREASE,
 --    SNECKO_EYE,
---    MEMEBOMB
+--    REGENERATOR
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

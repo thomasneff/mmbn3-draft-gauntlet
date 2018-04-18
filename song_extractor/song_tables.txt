@@ -10,6 +10,7 @@ US MMBN2                : 0x0F3898
 US MMBN                 : 0x0A111C
 US MMBCC                : 0x106DD0
 US Final Fantasy 5      : 0x3F2CB4
+US Pokemon Emerald      : 0x6B49F0
 
 
 mmbn3 battle song table offset: 0x0148D34

@@ -285,8 +285,136 @@ local POSSIBLE_ENTITIES = {
         "BoomerOmega",
     },
 
+    {
+        "FlashMan",
+        "FlashManAlpha",
+        "FlashManBeta",
+        "FlashManOmega",
+    },
 
+    {
+        "BeastMan",
+        "BeastManAlpha",
+        "BeastManBeta",
+        "BeastManOmega",
+    },
 
+    {
+        "BubbleMan",
+        "BubbleManAlpha",
+        "BubbleManBeta",
+        "BubbleManOmega",
+    },
+
+    {
+        "DesertMan",
+        "DesertManAlpha",
+        "DesertManBeta",
+        "DesertManOmega",
+    },
+
+    {
+        "PlantMan",
+        "PlantManAlpha",
+        "PlantManBeta",
+        "PlantManOmega",
+    },
+
+    {
+        "FlameMan",
+        "FlameManAlpha",
+        "FlameManBeta",
+        "FlameManOmega",
+    },
+
+    {
+        "DrillMan",
+        "DrillManAlpha",
+        "DrillManBeta",
+        "DrillManOmega",
+    },
+
+    {
+        "Alpha",
+        "AlphaOmega",
+    },
+
+    {
+        "GutsMan",
+        "GutsManAlpha",
+        "GutsManBeta",
+        "GutsManOmega",
+    },
+
+    {
+        "ProtoMan",
+        "ProtoManAlpha",
+        "ProtoManBeta",
+        "ProtoManOmega",
+    },
+
+    {
+        "MetalMan",
+        "MetalManAlpha",
+        "MetalManBeta",
+        "MetalManOmega",
+    },
+
+    {
+        "Punk",
+        "PunkAlpha",
+        "PunkBeta",
+        "PunkOmega",
+    },
+
+    {
+        "KingMan",
+        "KingManAlpha",
+        "KingManBeta",
+        "KingManOmega",
+    },
+
+    {
+        "MistMan",
+        "MistManAlpha",
+        "MistManBeta",
+        "MistManOmega",
+    },
+    
+    {
+        "BowlMan",
+        "BowlManAlpha",
+        "BowlManBeta",
+        "BowlManOmega",
+    },
+
+    {
+        "DarkMan",
+        "DarkManAlpha",
+        "DarkManBeta",
+        "DarkManOmega",
+    },
+
+    {
+        "JapanMan",
+        "JapanManAlpha",
+        "JapanManBeta",
+        "JapanManOmega",
+    },
+    
+    {
+        "Serenade",
+        "SerenadeAlpha",
+        "SerenadeBeta",
+        "SerenadeOmega",
+    },
+    
+    {
+        "Bass",
+        "BassGS",
+        "BassOmega",
+    },
+    
 }
 
 
