@@ -22,8 +22,6 @@ local HP_LOSS_VALUES = {
 
 }
 
-local HP_INCREASE_PER_ROUND = {50, 100, 200, 300, 300}
-
 local RARITY_NAMES = {
     [1] = "Rare",
     [2] = "SuperRare",

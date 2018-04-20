@@ -23,7 +23,7 @@ function buff_generator.random_buffs_from_round(current_round, number_of_buffs, 
         buffs[3] = BUFF_GROUPS_DATA.STYLE_CHANGE_BUFF.new()
         return buffs
     end
-
+    
     for i = 1,number_of_buffs do
 
         local buff_idx = math.random(#buff_group)

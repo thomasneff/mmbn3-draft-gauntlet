@@ -554,6 +554,9 @@ function state_logic.initialize()
         [4] = 0, -- UltraRare
     }
 
+    
+    gauntlet_data.force_minibombs_lower_than_ultra_rare = 0
+
     gauntlet_data.snecko_eye_enabled = 0
     gauntlet_data.snecko_eye_number_of_codes = 6
     gauntlet_data.snecko_eye_randomize_asterisk = GAUNTLET_DEFS.SNECKO_RANDOMIZE_ASTERISK

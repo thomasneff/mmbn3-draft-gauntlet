@@ -59,7 +59,7 @@ gauntlet_data.folder_draft_chip_list = {}
 gauntlet_data.folder_draft_chip_generator = {}
 gauntlet_data.chip_drop_method = {}
 gauntlet_data.snecko_eye_enabled = 0
-gauntlet_data.snecko_eye_number_of_codes = 6
+gauntlet_data.snecko_eye_number_of_codes = 8
 gauntlet_data.snecko_eye_randomize_asterisk = 1
 gauntlet_data.has_mega_been_hit = 0
 gauntlet_data.number_of_perfect_fights = 0
@@ -86,5 +86,7 @@ gauntlet_data.rarity_mods = {
     [3] = 0, -- SuperRare
     [4] = 0, -- UltraRare
 }
+
+gauntlet_data.force_minibombs_lower_than_ultra_rare = 0
 
 return gauntlet_data

@@ -7,6 +7,7 @@ local CHIP = require "defs.chip_defs"
 local randomchoice_key = require "randomchoice_key"
 local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 local gauntlet_data = require "gauntlet_data"
+local CHIP_ID = require "defs.chip_id_defs"
 
 function library_chips(library_number)
 
@@ -75,6 +76,12 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
                         --print("Dropping " .. key .. " drop-table chip!")
                         dropped_chips[drop_index] = drop_entry.CHIP_GEN()
                         dropped_chips[drop_index].RARITY = rarity
+
+                        if gauntlet_data.force_minibombs_lower_than_ultra_rare == 1 and rarity < 3 then
+                            -- Replace with MiniBombs
+                            dropped_chips[drop_index] = CHIP.new_chip_with_random_code(CHIP_ID.MiniBomb)
+                        end
+
                         break
                     end
                     rarity = rarity + 1

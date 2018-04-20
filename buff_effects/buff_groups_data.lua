@@ -33,6 +33,8 @@ local SNECKO_EYE = require "buff_effects.snecko_eye"
 local PERFECTIONIST = require "buff_effects.perfectionist"
 local REGENERATOR = require "buff_effects.regenerator"
 local MEMEBOMB    = require "buff_effects.memebomb"
+local RNGESUS = require "buff_effects.rngesus"
+local PAWNMINATOR = require "buff_effects.pawnminator"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -69,7 +71,9 @@ BUFF_GROUPS[1] = {
     SNECKO_EYE,
     PERFECTIONIST,
     REGENERATOR,
-    MEMEBOMB
+    MEMEBOMB,
+    PAWNMINATOR,
+    RNGESUS
 }
 
 
@@ -83,9 +87,9 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    SWORD_CHIP_DAMAGE_INCREASE,
+--    PAWNMINATOR,
 --    SNECKO_EYE,
---    REGENERATOR
+--    RNGESUS,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])
