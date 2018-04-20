@@ -958,7 +958,7 @@ function state_logic.main_loop()
         
 
         -- If MusicLoader is still loading, we simply do not handle the event
-        if input_handler.inputs_pressed["A"] == true and MusicLoader.FinishedLoading == 1 then
+        if input_handler.inputs_pressed["A"] == true and (MusicLoader.FinishedLoading == 1 or GENERIC_DEFS.ENABLE_MUSIC_PATCHING == 0) then
 
             
 
@@ -1005,7 +1005,7 @@ function state_logic.main_loop()
             end
         end
 
-        if input_handler.inputs_pressed["B"] == true then
+        if input_handler.inputs_pressed["B"] == true and (MusicLoader.FinishedLoading == 1 or GENERIC_DEFS.ENABLE_MUSIC_PATCHING == 0)  then
             -- Just skip - we didn't want a chip!
             --print("B pressed")
             gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
