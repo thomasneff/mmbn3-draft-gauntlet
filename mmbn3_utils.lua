@@ -265,7 +265,7 @@ end
 
 -- This function writes a given standard string to mmbn3, using text tables
 -- defined in text_table_defs
-function write_mmbn3_string(start_address, string_arg)
+function mmbn3_utils.write_mmbn3_string(start_address, string_arg)
 
     local current_address = start_address
     for i = 1, #string_arg do
@@ -315,7 +315,7 @@ function mmbn3_utils.patch_entity_data(entities)
 
         -- Patch entity Name
         if new_entity.NAME_ADDRESS ~= nil and new_entity.NAME ~= nil then
-            write_mmbn3_string(new_entity.NAME_ADDRESS, new_entity.NAME)
+            mmbn3_utils.write_mmbn3_string(new_entity.NAME_ADDRESS, new_entity.NAME)
         end
 
         

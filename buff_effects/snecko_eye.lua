@@ -34,7 +34,9 @@ function SneckoEye:get_description(current_round)
 
 end
 
-
+function SneckoEye:get_brief_description()
+    return SneckoEye.NAME .. ": Custom +" .. tostring(CUSTOM_INCREASE) .. ", " .. tostring(gauntlet_data.snecko_eye_number_of_codes) .. " random codes before battle!"
+end
 
 function SneckoEye.new()
 

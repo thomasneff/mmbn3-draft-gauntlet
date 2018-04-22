@@ -56,6 +56,10 @@ function STANDARD_CHIP_DAMAGE_INCREASE:get_description(current_round)
 end
 
 
+function STANDARD_CHIP_DAMAGE_INCREASE:get_brief_description()
+    return STANDARD_CHIP_DAMAGE_INCREASE.NAME .. ": Std Chips +" .. tostring(DAMAGE_INCREASE_STANDARD) .. "%, " 
+        .. " others " .. tostring(DAMAGE_INCREASE_MEGA_GIGA) .. "% dmg!"
+end
 
 
 function STANDARD_CHIP_DAMAGE_INCREASE.new()

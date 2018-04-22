@@ -27,7 +27,9 @@ function CustomPlus:get_description(current_round)
 
 end
 
-
+function CustomPlus:get_brief_description()
+    return CustomPlus.NAME .. ": " .. "Chips in Custom Screen +1!"
+end
 
 function CustomPlus.new()
 

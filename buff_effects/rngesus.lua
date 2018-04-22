@@ -1,12 +1,15 @@
 local gauntlet_data = require "gauntlet_data"
 local CHIP_DATA = require "defs.chip_data_defs"
+local CHIP_NAMES = require "defs.chip_name_defs"
+local CHIP_ID = require "defs.chip_id_defs"
+
 local RARITY_INCREASE = {
 
     NAME = "RNGesus",
     REMOVE_AFTER_ACTIVATION = 1,
 }
 
-local RARITY_INCREASE_VALUE = 10
+local RARITY_INCREASE_VALUE = 9
 
 
 
@@ -59,12 +62,14 @@ end
 function RARITY_INCREASE:get_description(current_round)
 
 
-    return "Increases Drop-Chance of UltraRare-Chips by " .. tostring(RARITY_INCREASE_VALUE) .. "%!\nDrops of other rarities are replaced with MiniBombs."
+    return "Increases Drop-Chance of UltraRare-Chips by " .. tostring(RARITY_INCREASE_VALUE) .. "%!\nDrops of other rarities are replaced with " .. CHIP_NAMES[CHIP_ID.MiniBomb] .. "s!"
 
 
 end
 
-
+function RARITY_INCREASE:get_brief_description()
+    return RARITY_INCREASE.NAME .. ": UltraRare +" .. RARITY_INCREASE_VALUE .. "%, other drops -> ".. CHIP_NAMES[CHIP_ID.MiniBomb] .. "!"
+end
 
 function RARITY_INCREASE.new()
 

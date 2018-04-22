@@ -50,6 +50,65 @@ function STYLE_CHANGE:get_description(current_round)
 end
 
 
+function STYLE_CHANGE:get_brief_description()
+
+    local ret = self.NAME .. ": Chrg = "
+
+
+    if self.STYLE >= 0x31 and self.STYLE <= 0x34 then
+
+        ret = ret .. " Invis, "
+
+    else
+
+        if self.STYLE % 4 == 0 then
+
+            ret = ret .. " WoodTorn, "
+
+        elseif self.STYLE % 4 == 1 then
+
+            ret = ret .. " ZapRing, "
+
+        elseif self.STYLE % 4 == 2 then
+
+            ret = ret .. " FlamThrwr, "
+
+        else
+
+            ret = ret .. " Bubbler, "
+
+        end
+
+    end
+
+    if self.STYLE >= 0x11 and self.STYLE <= 0x14 then
+        ret = ret .. "Custom +1!"
+    end
+
+    if self.STYLE >= 0x21 and self.STYLE <= 0x24 then
+        ret = ret .. "Barrier!"
+    end
+
+    if self.STYLE >= 0x09 and self.STYLE <= 0x0C then
+        ret = ret .. "Gatling-Bstr!"
+    end
+
+    if self.STYLE >= 0x19 and self.STYLE <= 0x1C then
+        ret = ret .. "MegaChips +1!"
+    end
+
+    if self.STYLE >= 0x29 and self.STYLE <= 0x2C then
+        ret = ret .. "Charge breaks!"
+    end
+
+    if self.STYLE >= 0x39 and self.STYLE <= 0x3C then
+        ret = ret .. "Random Bugs!"
+    end
+
+    
+
+    return ret
+end
 
 function STYLE_CHANGE.new()
 

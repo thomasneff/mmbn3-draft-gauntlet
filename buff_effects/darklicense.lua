@@ -29,6 +29,9 @@ function DarkLicense:get_description(current_round)
 end
 
 
+function DarkLicense:get_brief_description()
+    return DarkLicense.NAME .. ": " .. "DarkChips without Hole!"
+end
 
 function DarkLicense.new()
 

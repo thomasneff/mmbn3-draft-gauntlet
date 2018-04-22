@@ -23,6 +23,8 @@ function REGENERATOR:activate(current_round)
         CHIP_DATA[key].DAMAGE = math.floor(CHIP_DATA[key].DAMAGE * ((100.0 + DAMAGE_INCREASE_MULT[current_round]) / 100.0))
     end
 
+    self.current_round = current_round
+
 end
 
 
@@ -46,7 +48,9 @@ function REGENERATOR:get_description(current_round)
 
 end
 
-
+function REGENERATOR:get_brief_description()
+    return REGENERATOR.NAME .. ": HP +" .. REGENERATOR_PER_ROUND[self.current_round] * gauntlet_data.mega_max_hp .. " per battle!"
+end
 
 function REGENERATOR.new()
 

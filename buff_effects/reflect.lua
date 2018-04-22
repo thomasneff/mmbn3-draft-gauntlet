@@ -28,7 +28,9 @@ function Reflect:get_description(current_round)
 
 end
 
-
+function Reflect:get_brief_description()
+    return Reflect.NAME .. ": " .. self.get_description(0)
+end
 
 function Reflect.new()
 

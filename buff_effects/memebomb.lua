@@ -1,6 +1,9 @@
 local gauntlet_data = require "gauntlet_data"
 local CHIP_DATA = require "defs.chip_data_defs"
 local CHIP_ID = require "defs.chip_id_defs"
+local CHIP_NAMES = require "defs.chip_name_defs"
+local CHIP_NAME_ADDRESSES = require "defs.chip_name_address_defs"
+local mmbn3_utils = require "mmbn3_utils"
 local CHIP = require "defs.chip_defs"
 local ELEMENT_DEFS = require "defs.entity_element_defs"
 local GENERIC_DEFS = require "defs.generic_defs"
@@ -49,11 +52,22 @@ function MEMEBOMB:activate(current_round)
     end
 
     shuffle_indices = shuffle(deepcopy(shuffle_indices))
-    
+    self.replaced_chips_string = ""
     for chip_idx = 1,NUMBER_OF_BOMBS_ADDED[current_round] do
-        gauntlet_data.current_folder[shuffle_indices[chip_idx]] = CHIP.new_chip_with_random_code(CHIP_ID.MiniBomb)
 
+        if chip_idx ~= NUMBER_OF_BOMBS_ADDED[current_round] then
+            self.replaced_chips_string = self.replaced_chips_string .. gauntlet_data.current_folder[shuffle_indices[chip_idx]].PRINT_NAME .. ", "
+        else
+            self.replaced_chips_string = self.replaced_chips_string .. gauntlet_data.current_folder[shuffle_indices[chip_idx]].PRINT_NAME
+        end
+        gauntlet_data.current_folder[shuffle_indices[chip_idx]] = CHIP.new_chip_with_random_code(CHIP_ID.MiniBomb)
     end
+
+
+    self.current_round = current_round
+    -- Write name to game and CHIP_NAMES
+    CHIP_NAMES[CHIP_ID.MiniBomb] = "MemeBomb"
+    mmbn3_utils.write_mmbn3_string(CHIP_NAME_ADDRESSES[CHIP_ID.MiniBomb], CHIP_NAMES[CHIP_ID.MiniBomb])
 
 end
 
@@ -70,21 +84,31 @@ function MEMEBOMB:deactivate(current_round)
 
     gauntlet_data.current_folder = deepcopy(self.old_folder)
 
+    -- Write name to game and CHIP_NAMES
+    CHIP_NAMES[CHIP_ID.MiniBomb] = "MiniBomb"
+    mmbn3_utils.write_mmbn3_string(CHIP_NAME_ADDRESSES[CHIP_ID.MiniBomb], CHIP_NAMES[CHIP_ID.MiniBomb])
+
 end
 
 
 function MEMEBOMB:get_description(current_round)
 
 
-    
-    return "Replaces " .. tostring(NUMBER_OF_BOMBS_ADDED[current_round]) .. " Chips in Folder by MiniBombs!\nMiniBombs do +"
+    if NUMBER_OF_BOMBS_ADDED[current_round] ~= 1 then
+        return "Replaces " .. tostring(NUMBER_OF_BOMBS_ADDED[current_round]) .. " Chips in Folder by MemeBombs!\nMemeBombs do +"
                  .. tostring(DAMAGE_INCREASE_ADD[current_round]) .. " damage!"
+    else
+        return "Replaces " .. tostring(NUMBER_OF_BOMBS_ADDED[current_round]) .. " Chip in Folder by MemeBomb!\nMemeBombs do +"
+            .. tostring(DAMAGE_INCREASE_ADD[current_round]) .. " damage!"
+    end
 
-
+    
 end
 
 
-
+function MEMEBOMB:get_brief_description()
+    return MEMEBOMB.NAME .. ": MemeBomb +" .. DAMAGE_INCREASE_ADD[self.current_round] .. ", MemeBombs added ->\n" .. self.replaced_chips_string
+end
 
 function MEMEBOMB.new()
 

@@ -28,7 +28,9 @@ function UnderShirt:get_description(current_round)
 
 end
 
-
+function UnderShirt:get_brief_description()
+    return UnderShirt.NAME .. ": When HP > 1, survive with 1 HP!"
+end
 
 function UnderShirt.new()
 

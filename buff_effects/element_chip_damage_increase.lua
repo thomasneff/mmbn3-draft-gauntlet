@@ -39,6 +39,7 @@ function ELEMENT_CHIP_DAMAGE_INCREASE:activate(current_round)
 
     end
 
+    self.current_round = current_round
 
 end
 
@@ -72,6 +73,20 @@ function ELEMENT_CHIP_DAMAGE_INCREASE:get_description(current_round)
 end
 
 
+function ELEMENT_CHIP_DAMAGE_INCREASE:get_brief_description()
+    local ret = self.NAME .. ": " 
+
+    if self.ADDITIVE == 0 then
+        ret = ret .. ELEMENT_NAMES[self.ELEMENT] .. " Chips +"
+                 .. tostring(DAMAGE_INCREASE_MULT[self.current_round]) .. "%!"
+    else
+
+        ret = ret .. ELEMENT_NAMES[self.ELEMENT] .. " Chips +"
+                 .. tostring(DAMAGE_INCREASE_ADD[self.current_round]) .. "!"
+    end
+
+    return ret
+end
 
 
 function ELEMENT_CHIP_DAMAGE_INCREASE.new()
@@ -83,10 +98,10 @@ function ELEMENT_CHIP_DAMAGE_INCREASE.new()
     new_buff.ADDITIVE = math.random(0, 1)
 
     if new_buff.ADDITIVE == 0 then
-        new_buff.NAME = ELEMENT_NAMES[new_buff.ELEMENT] .. "-Mastery (Multiplicative)"
+        new_buff.NAME = ELEMENT_NAMES[new_buff.ELEMENT] .. "-Mastery (%)"
     else
 
-        new_buff.NAME = ELEMENT_NAMES[new_buff.ELEMENT] .. "-Mastery (Additive)"
+        new_buff.NAME = ELEMENT_NAMES[new_buff.ELEMENT] .. "-Mastery (+)"
     
     end
 

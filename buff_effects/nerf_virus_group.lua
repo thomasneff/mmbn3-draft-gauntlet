@@ -285,135 +285,7 @@ local POSSIBLE_ENTITIES = {
         "BoomerOmega",
     },
 
-    {
-        "FlashMan",
-        "FlashManAlpha",
-        "FlashManBeta",
-        "FlashManOmega",
-    },
-
-    {
-        "BeastMan",
-        "BeastManAlpha",
-        "BeastManBeta",
-        "BeastManOmega",
-    },
-
-    {
-        "BubbleMan",
-        "BubbleManAlpha",
-        "BubbleManBeta",
-        "BubbleManOmega",
-    },
-
-    {
-        "DesertMan",
-        "DesertManAlpha",
-        "DesertManBeta",
-        "DesertManOmega",
-    },
-
-    {
-        "PlantMan",
-        "PlantManAlpha",
-        "PlantManBeta",
-        "PlantManOmega",
-    },
-
-    {
-        "FlameMan",
-        "FlameManAlpha",
-        "FlameManBeta",
-        "FlameManOmega",
-    },
-
-    {
-        "DrillMan",
-        "DrillManAlpha",
-        "DrillManBeta",
-        "DrillManOmega",
-    },
-
-    {
-        "Alpha",
-        "AlphaOmega",
-    },
-
-    {
-        "GutsMan",
-        "GutsManAlpha",
-        "GutsManBeta",
-        "GutsManOmega",
-    },
-
-    {
-        "ProtoMan",
-        "ProtoManAlpha",
-        "ProtoManBeta",
-        "ProtoManOmega",
-    },
-
-    {
-        "MetalMan",
-        "MetalManAlpha",
-        "MetalManBeta",
-        "MetalManOmega",
-    },
-
-    {
-        "Punk",
-        "PunkAlpha",
-        "PunkBeta",
-        "PunkOmega",
-    },
-
-    {
-        "KingMan",
-        "KingManAlpha",
-        "KingManBeta",
-        "KingManOmega",
-    },
-
-    {
-        "MistMan",
-        "MistManAlpha",
-        "MistManBeta",
-        "MistManOmega",
-    },
     
-    {
-        "BowlMan",
-        "BowlManAlpha",
-        "BowlManBeta",
-        "BowlManOmega",
-    },
-
-    {
-        "DarkMan",
-        "DarkManAlpha",
-        "DarkManBeta",
-        "DarkManOmega",
-    },
-
-    {
-        "JapanMan",
-        "JapanManAlpha",
-        "JapanManBeta",
-        "JapanManOmega",
-    },
-    
-    {
-        "Serenade",
-        "SerenadeAlpha",
-        "SerenadeBeta",
-        "SerenadeOmega",
-    },
-    
-    {
-        "Bass",
-        "BassGS",
-        "BassOmega",
-    },
     
 }
 
@@ -432,6 +304,8 @@ function NERF_VIRUS_GROUP:activate(current_round)
         --print("NEW HP: ", ENTITIES[entity].HP_BASE)
     end
     
+    self.current_round = current_round
+
 end
 
 function NERF_VIRUS_GROUP:deactivate(current_round)
@@ -448,9 +322,14 @@ end
 
 function NERF_VIRUS_GROUP:get_description(current_round)
     
-    return "Decreases HP of all \"" .. ENTITIES[self.entity_family[1]].NAME .. "\"-Family \nViruses by " .. tostring((1.0 - HP_MULTIPLIER_PER_ROUND[current_round]) * 100) .. "%."
+    return "Decreases HP of all \"" .. ENTITIES[self.entity_family[1]].NAME .. "\"-Family \nViruses by " .. tostring((1.0 - HP_MULTIPLIER_PER_ROUND[current_round]) * 100) .. "%!"
 
 
+end
+
+function NERF_VIRUS_GROUP:get_brief_description()
+    return self.NAME .. ": " .. ENTITIES[self.entity_family[1]].NAME .. 
+        "-Family MaxHP -" .. tostring((1.0 - HP_MULTIPLIER_PER_ROUND[self.current_round]) * 100) .. "%!"
 end
 
 
@@ -469,6 +348,9 @@ function NERF_VIRUS_GROUP.new()
     --end
 
     new_buff.entity_family = POSSIBLE_ENTITIES[math.random(#POSSIBLE_ENTITIES)]
+
+    --print ("NERF_VIRUS_GROUP: " .. new_buff.entity_family[1])
+
     new_buff.NAME = ENTITIES[new_buff.entity_family[1]].NAME .. "-Master"    
     new_buff.DESCRIPTION = new_buff:get_description(1)
     --print(new_buff)

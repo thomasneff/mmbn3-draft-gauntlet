@@ -2,10 +2,10 @@ local randomchoice = require "randomchoice"
 
 -- NOTHING = 0x00
 local STYLE_DEFS = {
-    ELEC_GUTS   = 0x09,
-    HEAT_GUTS   = 0x0A,
-    AQUA_GUTS   = 0x0B,
-    WOOD_GUTS   = 0x0C,
+    ELEC_GUTS   = 0x09, -- mod 4 == 1
+    HEAT_GUTS   = 0x0A, -- mod 4 == 2
+    AQUA_GUTS   = 0x0B, -- mod 4 == 3
+    WOOD_GUTS   = 0x0C, -- mod 4 == 0
     ELEC_CUST   = 0x11,
     HEAT_CUST   = 0x12,
     AQUA_CUST   = 0x13,

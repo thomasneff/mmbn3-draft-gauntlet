@@ -12,7 +12,7 @@ local PAWNMINATOR = {
 }
 
 local NUMBER_OF_PAWNS_ADDED = {1, 1, 1, 2, 2}
-local RARITY_DECREASE_VALUE = 5
+local RARITY_DECREASE_VALUE = 2
 
 function shuffle(tbl)
     size = #tbl
@@ -45,8 +45,15 @@ function PAWNMINATOR:activate(current_round)
     end
 
     shuffle_indices = shuffle(deepcopy(shuffle_indices))
-    
+    self.replaced_chips_string = ""
     for chip_idx = 1,NUMBER_OF_PAWNS_ADDED[current_round] do
+
+        if chip_idx ~= NUMBER_OF_PAWNS_ADDED[current_round] then
+            self.replaced_chips_string = self.replaced_chips_string .. gauntlet_data.current_folder[shuffle_indices[chip_idx]].PRINT_NAME .. ", "
+        else
+            self.replaced_chips_string = self.replaced_chips_string .. gauntlet_data.current_folder[shuffle_indices[chip_idx]].PRINT_NAME
+        end
+
         gauntlet_data.current_folder[shuffle_indices[chip_idx]] = CHIP.new_chip_with_random_code(CHIP_ID.Pawn)
 
     end
@@ -69,15 +76,19 @@ end
 
 function PAWNMINATOR:get_description(current_round)
 
-
-    
-    return "Replaces " .. tostring(NUMBER_OF_PAWNS_ADDED[current_round]) .. " Chips in Folder by Pawns!\nChip-Rarity decreased by "
+    if NUMBER_OF_PAWNS_ADDED[current_round] ~= 1 then
+        return "Replaces " .. tostring(NUMBER_OF_PAWNS_ADDED[current_round]) .. " Chips in Folder by Pawns!\nChip-Rarity decreased by "
                  .. tostring(RARITY_DECREASE_VALUE) .. "%!"
-
+    else
+        return "Replaces " .. tostring(NUMBER_OF_PAWNS_ADDED[current_round]) .. " Chip in Folder by Pawn!\nChip-Rarity decreased by "
+                 .. tostring(RARITY_DECREASE_VALUE) .. "%!"
+    end   
 
 end
 
-
+function PAWNMINATOR:get_brief_description()
+    return PAWNMINATOR.NAME .. ": Rarity -" .. tostring(RARITY_DECREASE_VALUE) .. "%, Pawn -> " .. self.replaced_chips_string
+end
 
 
 function PAWNMINATOR.new()

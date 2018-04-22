@@ -29,7 +29,9 @@ function SuperArmor:get_description(current_round)
 
 end
 
-
+function SuperArmor:get_brief_description()
+    return SuperArmor.NAME .. ": " .. "Not interrupted upon damage!"
+end
 
 function SuperArmor.new()
 

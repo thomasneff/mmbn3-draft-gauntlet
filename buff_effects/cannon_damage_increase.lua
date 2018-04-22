@@ -21,6 +21,7 @@ function CANNON_DAMAGE_INCREASE:activate(current_round)
     CHIP_DATA[CHIP_ID.ZCanon2].DAMAGE = CHIP_DATA[CHIP_ID.ZCanon2].DAMAGE + DAMAGE_INCREASE_PER_ROUND[current_round]
     CHIP_DATA[CHIP_ID.ZCanon3].DAMAGE = CHIP_DATA[CHIP_ID.ZCanon3].DAMAGE + DAMAGE_INCREASE_PER_ROUND[current_round]
 
+    self.current_round = current_round
 
 end
 
@@ -44,7 +45,9 @@ function CANNON_DAMAGE_INCREASE:get_description(current_round)
 
 end
 
-
+function CANNON_DAMAGE_INCREASE:get_brief_description()
+    return CANNON_DAMAGE_INCREASE.NAME .. ": " .. "Cannon +" .. tostring(DAMAGE_INCREASE_PER_ROUND[self.current_round]) .. "!"
+end
 
 
 function CANNON_DAMAGE_INCREASE.new()

@@ -87,9 +87,10 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    PAWNMINATOR,
---    SNECKO_EYE,
---    RNGESUS,
+--    NERF_VIRUS_GROUP,
+--    NERF_VIRUS_GROUP,
+--    NERF_VIRUS_GROUP,
+--    NERF_VIRUS_GROUP,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

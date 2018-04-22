@@ -28,7 +28,9 @@ function FloatShoes:get_description(current_round)
 
 end
 
-
+function FloatShoes:get_brief_description()
+    return FloatShoes.NAME .. ": " .. "Ignore Ice/Magma/Cracked panels!"
+end
 
 function FloatShoes.new()
 

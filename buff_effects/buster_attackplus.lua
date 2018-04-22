@@ -27,7 +27,9 @@ function AttackPlus:get_description(current_round)
 
 end
 
-
+function AttackPlus:get_brief_description()
+    return AttackPlus.NAME .. ": " .. "Buster Attack +1"
+end
 
 function AttackPlus.new()
 

@@ -64,6 +64,8 @@ function RARITY_INCREASE:activate(current_round)
 
     end
 
+    self.current_round = current_round
+
 end
 
 
@@ -90,7 +92,9 @@ function RARITY_INCREASE:get_description(current_round)
 
 end
 
-
+function RARITY_INCREASE:get_brief_description()
+    return self.NAME .. ": " .. tostring(RARITY_NAMES[self.rarity]) .. " +".. tostring(RARITY_INCREASE_VALUES[self.rarity]) .. "%, MaxHP -" .. HP_LOSS_VALUES[self.rarity][self.current_round] .."!"
+end
 
 function RARITY_INCREASE.new()
 

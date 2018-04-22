@@ -49,7 +49,9 @@ function SET_STAGE:get_description(current_round)
 
 end
 
-
+function SET_STAGE:get_brief_description()
+    return self.NAME .. ": Normal panels -> " .. STAGE_NAMES[self.STAGE] .. "!"
+end
 
 function SET_STAGE.new()
 

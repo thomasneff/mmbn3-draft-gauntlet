@@ -28,7 +28,9 @@ function BreakBuster:get_description(current_round)
 
 end
 
-
+function BreakBuster:get_brief_description()
+    return BreakBuster.NAME .. ": " .. "Buster pierces!"
+end
 
 function BreakBuster.new()
 

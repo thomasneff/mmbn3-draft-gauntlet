@@ -28,7 +28,9 @@ function BreakCharge:get_description(current_round)
 
 end
 
-
+function BreakCharge:get_brief_description()
+    return BreakCharge.NAME .. ": " .. "Charge pierces!"
+end
 
 function BreakCharge.new()
 

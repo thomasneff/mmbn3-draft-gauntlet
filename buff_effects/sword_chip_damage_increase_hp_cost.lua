@@ -73,6 +73,8 @@ function SWORD_CHIP_DAMAGE_INCREASE:activate(current_round)
 
     gauntlet_data.hp_patch_required = 1
 
+    self.current_round = current_round
+
 end
 
 function SWORD_CHIP_DAMAGE_INCREASE:deactivate(current_round)
@@ -120,7 +122,7 @@ function SWORD_CHIP_DAMAGE_INCREASE:deactivate(current_round)
 
     gauntlet_data.hp_patch_required = 1
 
-
+    
 end
 
 
@@ -139,6 +141,20 @@ function SWORD_CHIP_DAMAGE_INCREASE:get_description(current_round)
 
 end
 
+function SWORD_CHIP_DAMAGE_INCREASE:get_brief_description()
+    local ret = self.NAME .. ": " 
+
+    if self.ADDITIVE == 0 then
+        ret = ret .. "Sword" .. " Chips +"
+                 .. tostring(DAMAGE_INCREASE_MULT[self.current_round]) .. "%, MaxHP -" ..  HP_LOSS_VALUES[self.current_round] .."!"
+    else
+
+        ret = ret .. "Sword" .. " Chips +"
+                 .. tostring(DAMAGE_INCREASE_ADD[self.current_round]) .. ", MaxHP -" ..  HP_LOSS_VALUES[self.current_round] .."!"
+    end
+
+    return ret
+end
 
 
 
@@ -150,10 +166,10 @@ function SWORD_CHIP_DAMAGE_INCREASE.new()
     new_buff.ADDITIVE = math.random(0, 1)
 
     if new_buff.ADDITIVE == 0 then
-        new_buff.NAME = "Sword-Mastery (Multiplicative)"
+        new_buff.NAME = "Sword-Mastery (%)"
     else
 
-        new_buff.NAME = "Sword-Mastery (Additive)"
+        new_buff.NAME = "Sword-Mastery (+)"
     
     end
     

@@ -27,7 +27,9 @@ function MegaChipPlus:get_description(current_round)
 
 end
 
-
+function MegaChipPlus:get_brief_description()
+    return MegaChipPlus.NAME .. ": MegaChips +1!"
+end
 
 function MegaChipPlus.new()
 

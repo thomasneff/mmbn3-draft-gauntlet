@@ -12,6 +12,7 @@ function AirShoes:activate(current_round)
 
     self.old_AirShoes = gauntlet_data.mega_AirShoes
     gauntlet_data.mega_AirShoes = 1
+    self.activated_round = current_round
 
 end
 
@@ -28,7 +29,9 @@ function AirShoes:get_description(current_round)
 
 end
 
-
+function AirShoes:get_brief_description()
+    return AirShoes.NAME .. ": " .. "Ignore holes!"
+end
 
 function AirShoes.new()
 

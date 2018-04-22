@@ -235,8 +235,50 @@ function gui_rendering.render_gauntlet_complete()
 
 end
 
--- This function is used to render the current folder for chip replacement.
+function gui_rendering.render_buffs(buffs, finished_loading)
 
+    local num_cols = 1
+    local base_offset_y = 0
+    local base_offset_x = 0
+    local num_chips_per_col = 10
+    local icon_spacing = 2
+
+    local offset_per_col = 90
+    local offset_per_row = 20
+    local x_offset = base_offset_x
+    local y_offset = base_offset_y
+    local chip_counter = 1
+
+    for col_idx = 1, num_cols do
+        y_offset = base_offset_y
+        for row_idx = 1,num_chips_per_col do
+
+            if buffs[chip_counter] ~= nil then
+                drawTextOutline(x_offset, y_offset,  buffs[chip_counter]:get_brief_description(), "black", "lightblue", "transparent", 9, "Arial")
+            end
+
+            y_offset = y_offset + offset_per_row
+            chip_counter = chip_counter + 1
+        end
+        x_offset = x_offset + offset_per_col
+    end
+
+    local new_chip_offset_x = 178
+
+    if finished_loading == 0 then
+        -- Still loading
+        --drawTextOutline(new_chip_offset_x, 140, "Loading...", "black", "red", "transparent", 10, "Arial")
+    else
+
+        -- Done loading
+        --drawTextOutline(new_chip_offset_x, 130, "Loading", "black", "green", "transparent", 10, "Arial")
+        --drawTextOutline(new_chip_offset_x, 140, "Done!", "black", "green", "transparent", 10, "Arial")
+    end
+
+end
+
+
+-- This function is used to render the current folder for chip replacement.
 function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gauntlet_data, finished_loading)
 
     --print("RENDERING")

@@ -27,7 +27,9 @@ function SpeedPlus:get_description(current_round)
 
 end
 
-
+function SpeedPlus:get_brief_description()
+    return SpeedPlus.NAME .. ": " .. "Buster Speed +1"
+end
 
 function SpeedPlus.new()
 

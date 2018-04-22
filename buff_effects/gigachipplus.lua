@@ -27,7 +27,9 @@ function GigaChipPlus:get_description(current_round)
 
 end
 
-
+function GigaChipPlus:get_brief_description()
+    return GigaChipPlus.NAME .. ": GigaChips +1!"
+end
 
 function GigaChipPlus.new()
 

@@ -1,37 +1,5 @@
 Buffs:
 
-HP bugs stemmed from mixing current/maxHP during battle and during loading. Changes during loading should be fixed now.
-
-
-
-HP_INCREASE_PER_ROUND is also bugged.
-
-Regenerator bug:
-
-  - Seems like hp manipulation is still wonky.
-  - Tests (Current HP)
-    - FAA0 <-- seems to work.
-
-
-Mega HP Address for 1 entity: 037369 EWRAM
-Mega HP Address for 2 entities: 03743C EWRAM
-Mega HP Address for 3 entities: 037510 EWRAM
-Mega HP Address for 4 (3 + 1) entities: 037510 EWRAM
-
-
-
-
-
-
-
-
-
-
-Perfectionist bug: sometimes damage taken doesn't count, happened during Twins/Twinner fight (possibly after healing before/after taking damage?)
-  - Test using a mixed recov/plantman folder and forcing twins viruses. 
-    - although I don't think that the twins viruses are the issue, I think it's the hit detection, as it didn't detect a hit afair
-
-ALL BUFFS THAT MANIPULATE HP NEED TO CHECK FOR <0 AND FORCE IT TO 1!
 
 MetalGear is bugged. (doesn't appear in battle)
 

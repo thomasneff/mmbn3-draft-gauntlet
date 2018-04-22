@@ -8,7 +8,7 @@ local transpose_offset_ext = ".transposeoffsets"
 local bpm_offset_ext = ".bpmoffsets"
 local transpose_range = 8
 local bpm_shift_range = 20
-local use_fixed_music = 1
+local use_fixed_music = 0
 
 
 local BattleMusicList = 
@@ -135,7 +135,7 @@ local MusicLoader =
 {
     FinishedLoading = 0,
     StartedLoading = 0,
-    BlockSize = 10000,
+    BlockSize = 5000,
     transpose_offset = 1,
     bpm_offset = 3,
     transpose = 4,

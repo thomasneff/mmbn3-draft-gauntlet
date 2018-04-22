@@ -28,7 +28,9 @@ function FastGauge:get_description(current_round)
 
 end
 
-
+function FastGauge:get_brief_description()
+    return FastGauge.NAME .. ": " .. self.get_description(0)
+end
 
 function FastGauge.new()
 

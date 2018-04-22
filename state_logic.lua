@@ -558,7 +558,7 @@ function state_logic.initialize()
     gauntlet_data.force_minibombs_lower_than_ultra_rare = 0
 
     gauntlet_data.snecko_eye_enabled = 0
-    gauntlet_data.snecko_eye_number_of_codes = 6
+    gauntlet_data.snecko_eye_number_of_codes = 8
     gauntlet_data.snecko_eye_randomize_asterisk = GAUNTLET_DEFS.SNECKO_RANDOMIZE_ASTERISK
 
     gauntlet_data.has_mega_been_hit = 0
@@ -747,10 +747,27 @@ end
 function state_logic.folder_view_switch_and_sort()
 
     if input_handler.inputs_pressed["Select"] == true then
-        gauntlet_data.folder_view = (gauntlet_data.folder_view + 1) % 2
+        if gauntlet_data.folder_view == 1 then
+            gauntlet_data.folder_view = 0
+        else
+            gauntlet_data.folder_view = 1
+        end
         state_logic.shuffle_folder()
         state_logic.should_redraw = 1
     end
+
+    if input_handler.inputs_pressed["L"] == true or input_handler.inputs_pressed["R"] == true then
+
+        if gauntlet_data.folder_view == 2 then
+            gauntlet_data.folder_view = 0
+        else
+            gauntlet_data.folder_view = 2
+        end
+
+        state_logic.shuffle_folder()
+        state_logic.should_redraw = 1
+    end
+
 
     if input_handler.inputs_pressed["Start"] == true then
         gauntlet_data.folder_shuffle_state = (gauntlet_data.folder_shuffle_state + 1) % 4
@@ -880,8 +897,10 @@ function state_logic.main_loop()
             
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_chip_selection(state_logic.dropped_chips, state_logic.dropped_chip_render_index)
-            else
+            elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
+            elseif gauntlet_data.folder_view == 2 then
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading)
             end
 
 
@@ -918,6 +937,18 @@ function state_logic.main_loop()
             gauntlet_data.folder_shuffle_state = (gauntlet_data.folder_shuffle_state + 1) % 4
             state_logic.shuffle_folder()
             
+            state_logic.should_redraw = 1
+        end
+
+        if input_handler.inputs_pressed["L"] == true or input_handler.inputs_pressed["R"] == true then
+
+            if gauntlet_data.folder_view == 2 then
+                gauntlet_data.folder_view = 0
+            else
+                gauntlet_data.folder_view = 2
+            end
+    
+            state_logic.shuffle_folder()
             state_logic.should_redraw = 1
         end
 
@@ -1015,7 +1046,20 @@ function state_logic.main_loop()
         --print(state_logic.folder_chip_render_index)
 
         if state_logic.should_redraw == 1 then
-            gui_rendering.render_folder(gauntlet_data.current_folder, state_logic.folder_chip_render_index, state_logic.dropped_chip, gauntlet_data, MusicLoader.FinishedLoading)
+
+
+            
+            
+            if gauntlet_data.folder_view == 0 then
+                gui_rendering.render_folder(gauntlet_data.current_folder, state_logic.folder_chip_render_index, state_logic.dropped_chip, gauntlet_data, MusicLoader.FinishedLoading)
+            elseif gauntlet_data.folder_view == 1 then
+                gui_rendering.render_folder(gauntlet_data.current_folder, state_logic.folder_chip_render_index, state_logic.dropped_chip, gauntlet_data, MusicLoader.FinishedLoading)
+            elseif gauntlet_data.folder_view == 2 then
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading)
+            end
+            
+            
+            
             gui.DrawFinish()
             memorysavestate.loadcorestate(state_logic.gui_change_savestate)
             state_logic.should_redraw = 0
@@ -1104,11 +1148,14 @@ function state_logic.main_loop()
         end
 
         if state_logic.should_redraw == 1 then
-            
+
+
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_items(state_logic.dropped_buffs, state_logic.dropped_buff_render_index)
-            else
+            elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
+            elseif gauntlet_data.folder_view == 2 then
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading)
             end
 
             
@@ -1194,8 +1241,10 @@ function state_logic.main_loop()
             
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_items(LOADOUTS, state_logic.selected_loadout_index)
-            else
+            elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
+            elseif gauntlet_data.folder_view == 2 then
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading)
             end
 
             
@@ -1256,11 +1305,14 @@ function state_logic.main_loop()
         end
 
         if state_logic.should_redraw == 1 then
-            
+
+
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_items(CHIP_DROP_METHODS, state_logic.selected_drop_method_index)
-            else
+            elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
+            elseif gauntlet_data.folder_view == 2 then
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading)
             end
 
             
@@ -1340,14 +1392,13 @@ function state_logic.main_loop()
 
         if state_logic.should_redraw == 1 then
 
-            
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_chip_selection(state_logic.draft_selection_chips, state_logic.draft_chip_render_index)
-            else
+            elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
+            elseif gauntlet_data.folder_view == 2 then
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading)
             end
-
-
             
             gui.DrawFinish()
             memorysavestate.loadcorestate(state_logic.gui_change_savestate)

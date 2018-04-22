@@ -27,7 +27,9 @@ function ChargePlus:get_description(current_round)
 
 end
 
-
+function ChargePlus:get_brief_description()
+    return ChargePlus.NAME .. ": " .. "Buster Charge +1"
+end
 
 function ChargePlus.new()
 
