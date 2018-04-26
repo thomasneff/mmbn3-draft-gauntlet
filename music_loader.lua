@@ -10,6 +10,11 @@ local transpose_range = 8
 local bpm_shift_range = 20
 local use_fixed_music = 0
 
+function file_exists(name)
+    local f=io.open(name,"r")
+    if f~=nil then io.close(f) return true else return false end
+end
+
 
 local BattleMusicList = 
 {
@@ -196,6 +201,17 @@ function MusicLoader.LoadRandomFile(current_round)
     local patch_file_name = base_dir .. chosen_file .. patch_ext
     local transpose_offset_file_name = base_dir .. chosen_file .. transpose_offset_ext
     local bpm_offset_file_name = base_dir .. chosen_file .. bpm_offset_ext
+
+    if file_exists(patch_file_name) == false or 
+       file_exists(transpose_offset_file_name) == false or
+       file_exists(bpm_offset_file_name) == false then
+
+        print ("Turning off Music Loader, file: " .. chosen_file .. " could not be opened!")
+
+        GENERIC_DEFS.ENABLE_MUSIC_PATCHING = 0
+        MusicLoader.FinishedLoading = 1
+        return
+    end
 
     local patch_file = assert(io.open(patch_file_name, "rb"))
 

@@ -1026,12 +1026,13 @@ function state_logic.main_loop()
                     state_logic.should_redraw = 1
 
                     state_logic.update_folder_mega_giga_chip_counts()
-
+                    gauntlet_data.folder_view = 0
                     
                 end
 
             else
                 gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
+                gauntlet_data.folder_view = 0
                 state_logic.should_redraw = 1
             end
         end
