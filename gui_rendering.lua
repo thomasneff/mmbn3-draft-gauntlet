@@ -278,6 +278,51 @@ function gui_rendering.render_buffs(buffs, finished_loading)
 end
 
 
+function split_boss_name(boss_name)
+
+    if string.find(boss_name, "AlphaOmega") then
+        return "Alpha", "Omega"
+    elseif string.find(boss_name, "SerenadeAlpha") then
+        return "Serenade", "Alpha"
+    elseif string.find(boss_name, "SerenadeBeta") then
+        return "Serenade", "Beta"
+    elseif string.find(boss_name, "SerenadeOmega") then
+        return "Serenade", "Omega"
+    elseif string.find(boss_name, "PunkAlpha") then
+        return "Punk", "Alpha"
+    elseif string.find(boss_name, "PunkBeta") then
+        return "Punk", "Beta"
+    elseif string.find(boss_name, "PunkOmega") then
+        return "Punk", "Omega"
+    elseif string.find(boss_name, "BassGS") then
+        return "Bass", "GS"
+    elseif string.find(boss_name, "BassOmega") then
+        return "Bass", "Omega"
+    end
+
+    if string.len(boss_name) < 10 then
+        return boss_name, ""
+    end
+
+
+    local boss_prefix_name = ""
+    local boss_stage = ""
+
+    -- Find "Man"
+
+    local man_start, man_end = string.find(boss_name, "Man")
+
+    if i == nil then
+        return "No Man xD", "Lol"
+    end
+
+    boss_prefix_name = string.sub(boss_name, 1, man_end)
+    boss_stage = string.sub(boss_name, man_end + 1)
+
+    return boss_prefix_name, boss_stage
+
+end
+
 -- This function is used to render the current folder for chip replacement.
 function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gauntlet_data, finished_loading)
 
@@ -288,7 +333,7 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
     local num_chips_per_col = 15
     local num_cols = num_folder_chips / num_chips_per_col
     local base_offset_y = 0
-    local base_offset_x = 22
+    local base_offset_x = 18
     local icon_spacing = 2
 
     local offset_per_col = 90
@@ -366,7 +411,7 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
     -- Render new chip
 
     local new_chip_offset_x = 178
-    local new_chip_offset_y = 80
+    local new_chip_offset_y = 100
 
     --print(new_chip)
     if new_chip ~= nil and new_chip.PRINT_NAME ~= nil and new_chip.PRINT_NAME ~= "" and new_chip.ID ~= -1 then
@@ -377,6 +422,9 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
         drawTextOutline(new_chip_offset_x, new_chip_offset_y + offset_per_row * 1, "ATK: " .. tostring(CHIP_DATA[new_chip.ID].DAMAGE), "black", "lightblue", "transparent", 9, "Arial")
         drawTextOutline(new_chip_offset_x, new_chip_offset_y + offset_per_row * 2,  "B = Cancel", "black", "red", "transparent", 9, "Arial")
     end
+
+
+
 
     -- Render Mega/GigaChip limits
     new_chip_offset_y = 0
@@ -391,23 +439,23 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
                                                                     .. " / " .. tostring(gauntlet_data.giga_chip_limit) , "black", "white", "transparent", 10, "Arial")
 
     -- Render Sorting mode
-    drawTextOutline(new_chip_offset_x, new_chip_offset_y + 30, "Sort:", "black", "white", "transparent", 10, "Arial")
+    drawTextOutline(new_chip_offset_x, new_chip_offset_y + 20, "Sort:", "black", "white", "transparent", 10, "Arial")
     if gauntlet_data.folder_shuffle_state == 0 then
         -- Alphabetically
-        drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 30, "ABC", "black", "orange", "transparent", 10, "Arial")
+        drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 20, "ABC", "black", "orange", "transparent", 10, "Arial")
 
 
     elseif gauntlet_data.folder_shuffle_state == 1 then
         -- Code
-        drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 30, "Code", "black", "orange", "transparent", 10, "Arial")
+        drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 20, "Code", "black", "orange", "transparent", 10, "Arial")
 
     elseif gauntlet_data.folder_shuffle_state == 2 then
         -- ID
-        drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 30, "ID", "black", "orange", "transparent", 10, "Arial")
+        drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 20, "ID", "black", "orange", "transparent", 10, "Arial")
 
     elseif gauntlet_data.folder_shuffle_state == 3 then
         -- Damage
-        drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 30, "ATK", "black", "orange", "transparent", 10, "Arial")
+        drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 20, "ATK", "black", "orange", "transparent", 10, "Arial")
     end
 
 
@@ -417,12 +465,28 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
     else
 
         -- Done loading
-        drawTextOutline(new_chip_offset_x, 130, "Loading", "black", "green", "transparent", 10, "Arial")
-        drawTextOutline(new_chip_offset_x, 140, "Done!", "black", "green", "transparent", 10, "Arial")
+        drawTextOutline(new_chip_offset_x, 130, "Loading", "black", "lightgreen", "transparent", 10, "Arial")
+        drawTextOutline(new_chip_offset_x, 140, "Done!", "black", "lightgreen", "transparent", 10, "Arial")
     end
 
+    new_chip_offset_y = 40
+    if gauntlet_data.next_boss ~= nil then
+        local boss_name = gauntlet_data.next_boss.ID
 
+        boss_name, boss_stage = split_boss_name(boss_name)
 
+        if boss_stage == "" then
+            drawTextOutline(new_chip_offset_x, new_chip_offset_y,  "Boss: " , "black", "white", "transparent", 10, "Arial")
+            drawTextOutline(new_chip_offset_x, new_chip_offset_y + 10,  boss_name , "black", "lightblue", "transparent", 10, "Arial")
+        else
+            drawTextOutline(new_chip_offset_x, new_chip_offset_y,  "Boss: " , "black", "white", "transparent", 10, "Arial")
+            drawTextOutline(new_chip_offset_x, new_chip_offset_y + 10,  boss_name , "black", "lightblue", "transparent", 10, "Arial")
+            drawTextOutline(new_chip_offset_x, new_chip_offset_y + 20,  "(" .. boss_stage .. ")" , "black", "orange", "transparent", 10, "Arial")
+        end
+
+        
+
+    end
 
 end
 

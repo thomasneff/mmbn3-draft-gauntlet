@@ -89,4 +89,6 @@ gauntlet_data.rarity_mods = {
 
 gauntlet_data.force_minibombs_lower_than_ultra_rare = 0
 
+gauntlet_data.next_boss = nil
+
 return gauntlet_data

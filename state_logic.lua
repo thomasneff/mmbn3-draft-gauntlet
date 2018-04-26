@@ -546,6 +546,8 @@ function state_logic.initialize()
     gauntlet_data.folder_draft_chip_list = {}
     state_logic.draft_selection_chips = {}
     gauntlet_data.folder_draft_chip_generator = {}
+
+    gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     
     gauntlet_data.rarity_mods = {
         [1] = 0, -- Common
@@ -666,9 +668,16 @@ function state_logic.patch_before_battle_start()
 
 
     mmbn3_utils.patch_folder(gauntlet_data.current_folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM)
+
+    local new_battle_data = nil
+
+    if state_logic.current_battle % GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL == 0 then
+        new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle, gauntlet_data.next_boss)
+        gauntlet_data.next_boss = battle_data_generator.random_boss(state_logic.current_battle + GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
+    else
+        new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle, nil)
+    end
     
-        
-    local new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle)
 
     -- This is used to determine drops.
     state_logic.battle_data[state_logic.current_battle] = new_battle_data
