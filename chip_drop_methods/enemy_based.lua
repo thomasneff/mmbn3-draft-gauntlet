@@ -46,9 +46,23 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
 
     --print(virus_entities)
 
+    print("ENEMY BASED, before SKILL_NOT_LUCK")
+    print(gauntlet_data.rarity_mods)
+
+    -- Check for skill_not_luck buff
+    if gauntlet_data.skill_not_luck_active == 1 then
+        for cumulative_rarity_index = 1,3 do
+            gauntlet_data.rarity_mods[cumulative_rarity_index] = gauntlet_data.rarity_mods[cumulative_rarity_index] - gauntlet_data.skill_not_luck_bonus_current
+        end
+    end
+
+    print("ENEMY BASED, after SKILL_NOT_LUCK")
+    print(gauntlet_data.rarity_mods)
+
     -- Now that we got all Virus-entities, we can randomly select one, and roll from its drop table (if it exists)
     local dropped_chips = {}
     local virus_index = 0
+    local dropped_ultra_rare = 0
     for drop_index = 1, number_of_drops do
 
 
@@ -76,6 +90,10 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
                         --print("Dropping " .. key .. " drop-table chip!")
                         dropped_chips[drop_index] = drop_entry.CHIP_GEN()
                         dropped_chips[drop_index].RARITY = rarity
+
+                        if rarity == 3 then
+                            dropped_ultra_rare = 1
+                        end
 
                         if gauntlet_data.force_minibombs_lower_than_ultra_rare == 1 and rarity < 3 then
                             -- Replace with MiniBombs
@@ -123,6 +141,22 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
         
 
     end
+
+    -- Check for skill_not_luck buff
+    if gauntlet_data.skill_not_luck_active == 1 then
+        for cumulative_rarity_index = 1,3 do
+            gauntlet_data.rarity_mods[cumulative_rarity_index] = gauntlet_data.rarity_mods[cumulative_rarity_index] + gauntlet_data.skill_not_luck_bonus_current
+        end
+    end
+    print("ENEMY BASED, after SKILL_NOT_LUCK RESET")
+    print(gauntlet_data.rarity_mods)
+    -- Reset skill_not_luck if UltraRare dropped
+
+    if dropped_ultra_rare == 1 then
+        gauntlet_data.skill_not_luck_bonus_current = 0
+        print("RESET SKILL_NOT_LUCK because ULTRARARE")
+    end
+
 
     return dropped_chips
 

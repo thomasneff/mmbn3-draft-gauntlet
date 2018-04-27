@@ -164,6 +164,12 @@ function state_logic.compute_perfect_fight_bonuses()
     gauntlet_data.has_mega_been_hit = 0
 
     -- TODO: compute buff bonuses depending on perfect fights
+    print("Perfect Fight!")
+
+    if gauntlet_data.skill_not_luck_active == 1 then
+        gauntlet_data.skill_not_luck_bonus_current = gauntlet_data.skill_not_luck_bonus_current + gauntlet_data.skill_not_luck_bonus_per_battle
+        print("Skill not luck active, current bonus: " .. gauntlet_data.skill_not_luck_bonus_current)
+    end
     
     
     local damage_mult =  gauntlet_data.temporary_damage_bonus_mult.BASE +  gauntlet_data.temporary_damage_bonus_mult.PERFECT_FIGHT_INCREASE * gauntlet_data.number_of_perfect_fights
@@ -546,6 +552,9 @@ function state_logic.initialize()
     gauntlet_data.folder_draft_chip_list = {}
     state_logic.draft_selection_chips = {}
     gauntlet_data.folder_draft_chip_generator = {}
+    gauntlet_data.skill_not_luck_active = 0
+    gauntlet_data.skill_not_luck_bonus_per_battle = 5
+    gauntlet_data.skill_not_luck_bonus_current = 0
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     

@@ -26,12 +26,12 @@ end
 
 function Perfectionist:get_description(current_round)
 
-    return "For every fight without damage taken,\nincrease Chip damage by " .. tostring((PERFECTIONIST_DAMAGE_PER_PERFECT_FIGHT_MULT) * 100) .. "%, up to +" .. tostring((PERFECTIONIST_DAMAGE_MULT_LIMIT_INCREASE + gauntlet_data.temporary_damage_bonus_mult.LIMIT - 1.0) * 100) .. "%!"
+    return "For every fight without HP loss, increase Chip\nDamage by " .. tostring((PERFECTIONIST_DAMAGE_PER_PERFECT_FIGHT_MULT) * 100) .. "%, up to +" .. tostring((PERFECTIONIST_DAMAGE_MULT_LIMIT_INCREASE + gauntlet_data.temporary_damage_bonus_mult.LIMIT - 1.0) * 100) .. "% (reset on HP loss)!"
 
 end
 
 function Perfectionist:get_brief_description()
-    return Perfectionist.NAME .. ": No HP Loss -> +" .. tostring(100 *PERFECTIONIST_DAMAGE_PER_PERFECT_FIGHT_MULT) .. "% dmg, up to +" .. tostring((gauntlet_data.temporary_damage_bonus_mult.LIMIT - 1.0) * 100) .. "%!"
+    return Perfectionist.NAME .. ": No HP Loss -> +" .. tostring(100 *PERFECTIONIST_DAMAGE_PER_PERFECT_FIGHT_MULT) .. "% dmg, up to +" .. tostring((gauntlet_data.temporary_damage_bonus_mult.LIMIT - 1.0) * 100) .. "%,\n  HP Loss -> Reset (current: +" .. tostring(100 * (gauntlet_data.temporary_damage_bonus_mult.CURRENT - 1.0)) ..  "%)!"
 end
 
 function Perfectionist.new()

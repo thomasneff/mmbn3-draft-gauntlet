@@ -107,7 +107,7 @@ end
 
 
 function MEMEBOMB:get_brief_description()
-    return MEMEBOMB.NAME .. ": MemeBomb +" .. DAMAGE_INCREASE_ADD[self.current_round] .. ", MemeBombs added ->\n" .. self.replaced_chips_string
+    return MEMEBOMB.NAME .. ": MemeBomb +" .. DAMAGE_INCREASE_ADD[self.current_round] .. ", MemeBombs added ->\n  " .. self.replaced_chips_string
 end
 
 function MEMEBOMB.new()

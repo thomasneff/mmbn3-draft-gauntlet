@@ -35,6 +35,7 @@ local REGENERATOR = require "buff_effects.regenerator"
 local MEMEBOMB    = require "buff_effects.memebomb"
 local RNGESUS = require "buff_effects.rngesus"
 local PAWNMINATOR = require "buff_effects.pawnminator"
+local SKILLNOTLUCK = require "buff_effects.skill_not_luck"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -73,7 +74,8 @@ BUFF_GROUPS[1] = {
     REGENERATOR,
     MEMEBOMB,
     PAWNMINATOR,
-    RNGESUS
+    RNGESUS,
+    SKILLNOTLUCK
 }
 
 
@@ -87,10 +89,10 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    NERF_VIRUS_GROUP,
---    NERF_VIRUS_GROUP,
---    NERF_VIRUS_GROUP,
---    NERF_VIRUS_GROUP,
+--    PERFECTIONIST,
+--    PERFECTIONIST,
+--    SKILLNOTLUCK,
+--    SKILLNOTLUCK,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])
