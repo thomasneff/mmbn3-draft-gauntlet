@@ -3,7 +3,6 @@ local deepcopy = require "deepcopy"
 
 local Perfectionist = {
     NAME = "Perfectionist",
-    REMOVE_AFTER_ACTIVATION = 1,
 }
 
 PERFECTIONIST_DAMAGE_PER_PERFECT_FIGHT_MULT = 0.05

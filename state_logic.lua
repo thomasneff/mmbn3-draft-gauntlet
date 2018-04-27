@@ -25,6 +25,9 @@ local gauntlet_data = require "gauntlet_data"
 local deepcopy = require "deepcopy"
 local CHIP_DROP_METHODS = require "chip_drop_methods.chip_drop_method_defs"
 local MusicLoader = require "music_loader"
+local json = require "json"
+
+
 -- TODO: possibly add more states.
 
 local state_logic = {}
@@ -36,6 +39,8 @@ state_logic.initial_state = "initial.State"
 state_logic.number_of_activated_buffs = 0
 gauntlet_data.current_folder = {}
 gauntlet_data.mega_max_hp = 100
+
+state_logic.hp_loaded = 0
 
 state_logic.initial_chip_amount_flag = 0
 
@@ -219,6 +224,13 @@ function state_logic.on_battle_end()
        gauntlet_data.current_state = gauntlet_data.GAME_STATE.LOAD_INITIAL 
     end  
 
+    -- Compute lost HP
+
+    local current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, "EWRAM")
+    state_logic.stats_lost_hp = state_logic.stats_previous_hp - current_hp
+    state_logic.stats_previous_hp = current_hp
+    
+
     state_logic.compute_perfect_fight_bonuses()
     
     
@@ -292,6 +304,9 @@ function state_logic.on_next_round()
     
     --print ("BEFORE MEGA MAX INCREASE PER ROUND")
     gauntlet_data.mega_max_hp = gauntlet_data.mega_max_hp + GAUNTLET_DEFS.HP_INCREASE_PER_ROUND[state_logic.current_round]
+    state_logic.stats_previous_hp = gauntlet_data.mega_max_hp
+    
+    
     gauntlet_data.hp_patch_required = 1
     --print(" MEGA MAX HP: ", gauntlet_data.mega_max_hp)
     --print ("BEFORE CHANGE MAX HP")
@@ -492,9 +507,28 @@ function state_logic.shuffle_folder()
 
 end
 
-
+function state_logic.export_run_statistics()
+    -- TODO: write statistics JSON based on timestamp to /stats/ folder
+    local filename = "stats/" .. os.date("%Y_%m_%d_%H_%M_%S") .. ".json"
+    local file = assert(io.open(filename, "w"))
+    local stats_json = json.encode(gauntlet_data.statistics_container)
+    file:write(stats_json)
+    file:flush()
+    file:close()
+end
 
 function state_logic.initialize()
+
+
+    -- TODO: check if we had some statistics to save, if we implement statistics
+    if gauntlet_data.statistics_container ~= nil then
+
+        state_logic.export_run_statistics()
+
+    end
+
+
+    gauntlet_data.statistics_container = {}
 
     math.randomseed(os.time())
 
@@ -506,6 +540,8 @@ function state_logic.initialize()
     state_logic.activated_buffs = {}
     gauntlet_data.stage = 0
     gauntlet_data.mega_max_hp = 100
+    state_logic.stats_previous_hp = gauntlet_data.mega_max_hp + GAUNTLET_DEFS.HP_INCREASE_PER_ROUND[1]
+    state_logic.stats_lost_hp = 0
     gauntlet_data.hp_patch_required = 0
     gauntlet_data.folder_shuffle_state = 1
     gauntlet_data.mega_style = 0x00
@@ -553,7 +589,7 @@ function state_logic.initialize()
     state_logic.draft_selection_chips = {}
     gauntlet_data.folder_draft_chip_generator = {}
     gauntlet_data.skill_not_luck_active = 0
-    gauntlet_data.skill_not_luck_bonus_per_battle = 5
+    gauntlet_data.skill_not_luck_bonus_per_battle = GAUNTLET_DEFS.SKILL_NOT_LUCK_RARITY_INCREASE
     gauntlet_data.skill_not_luck_bonus_current = 0
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
@@ -662,11 +698,76 @@ function state_logic.randomize_snecko_folder_codes(folder)
 
 end
 
+function state_logic.update_battle_statistics()
+
+    if state_logic.current_battle < 2 then
+        return
+    end
+
+    local current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, "EWRAM")
+
+    -- Extract only relevant parts
+
+    -- Activated buffs:
+
+    activated_buffs = {}
+    dropped_buffs = {}
+    dropped_chips = {}
+    picked_chip = {}
+    current_folder = {}
+    entities = {}
+
+    for k, v in pairs(state_logic.activated_buffs) do
+        activated_buffs[k] = v.NAME
+    end
+
+    for k, v in pairs(state_logic.dropped_buffs) do
+        dropped_buffs[k] = v.NAME
+    end
+
+    for k, v in pairs(state_logic.dropped_chips) do
+        dropped_chips[k] = v.PRINT_NAME
+    end
+
+    picked_chip = state_logic.dropped_chip.PRINT_NAME
+
+    for k, v in pairs(gauntlet_data.current_folder) do
+        current_folder[k] = v.PRINT_NAME
+    end
+
+    for k, v in pairs(state_logic.battle_data[state_logic.current_battle - 1].ENTITIES) do
+        if k ~= 0 then
+            entities[k] = v.ID
+        end  
+    end
+
+    gauntlet_data.statistics_container[#gauntlet_data.statistics_container + 1] = 
+    {
+        CURRENT_HP = deepcopy(current_hp),
+        ACTIVATED_BUFFS = deepcopy(activated_buffs),
+        DROPPED_BUFFS = deepcopy(dropped_buffs),
+        DROPPED_CHIPS = deepcopy(dropped_chips),
+        PICKED_CHIP = deepcopy(picked_chip),
+        CURRENT_FOLDER = deepcopy(current_folder),
+        ENTITIES = deepcopy(entities),
+        LOST_HP = deepcopy(state_logic.stats_lost_hp),
+        REPLACED_CHIP = deepcopy(state_logic.replaced_chip)
+    }
+
+    --print(gauntlet_data.statistics_container[#gauntlet_data.statistics_container])
+    
+    --print(json.encode(gauntlet_data.statistics_container[#gauntlet_data.statistics_container]))
+
+end
 
 function state_logic.patch_before_battle_start()
 
     -- Patch folder with all new stuff.
     -- state_logic.randomize_folder()
+
+    -- Update statistics for this round
+
+    state_logic.update_battle_statistics()
 
     if gauntlet_data.snecko_eye_enabled == 1 then
 
@@ -822,11 +923,25 @@ function state_logic.main_loop()
 
         -- Check if mega gets hit for certain buffs
         
-        local number_of_entities = #(state_logic.battle_data[state_logic.current_battle - 1].ENTITIES)
+        local number_of_entities = (state_logic.battle_data[state_logic.current_battle - 1].NUM_ENTITIES)
         --print("Number of entities in battle: " .. tostring(number_of_entities))
         
         local current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[number_of_entities] - 0x02000000, "EWRAM")
+
+        if current_hp ~= 0 then
+
+            state_logic.hp_loaded = 1
+
+        end
         
+        -- If we died - reset
+        if current_hp == 0 and state_logic.hp_loaded == 1 then
+
+            state_logic.initialize()
+            return
+
+        end
+
         if current_hp < gauntlet_data.last_hp and current_hp ~= 0 then
             print("Damage taken! (Previous HP: " .. tostring(gauntlet_data.last_hp) .. ", Current HP: " .. tostring(current_hp) .. ", Max HP: " .. tostring(gauntlet_data.mega_max_hp) .. ")")
             state_logic.damage_taken()
@@ -1038,7 +1153,7 @@ function state_logic.main_loop()
                 else        
                     
 
-                    
+                    state_logic.replaced_chip = deepcopy(gauntlet_data.current_folder[state_logic.folder_chip_render_index].PRINT_NAME)
                     gauntlet_data.current_folder[state_logic.folder_chip_render_index] = state_logic.dropped_chip
                     gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
                     state_logic.should_redraw = 1
@@ -1049,6 +1164,7 @@ function state_logic.main_loop()
                 end
 
             else
+                state_logic.replaced_chip = "Skipped Chip"
                 gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
                 gauntlet_data.folder_view = 0
                 state_logic.should_redraw = 1
@@ -1059,6 +1175,7 @@ function state_logic.main_loop()
             -- Just skip - we didn't want a chip!
             --print("B pressed")
             gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
+            state_logic.replaced_chip = "Skipped Chip"
             
             state_logic.should_redraw = 1
         end
@@ -1186,6 +1303,7 @@ function state_logic.main_loop()
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING then
 
         state_logic.patch_before_battle_start()
+        state_logic.hp_loaded = 0
         --mmbn3_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
         
         --print("Patched folder!")

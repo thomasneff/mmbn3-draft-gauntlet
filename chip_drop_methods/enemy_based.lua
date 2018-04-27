@@ -46,8 +46,8 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
 
     --print(virus_entities)
 
-    print("ENEMY BASED, before SKILL_NOT_LUCK")
-    print(gauntlet_data.rarity_mods)
+    --print("ENEMY BASED, before SKILL_NOT_LUCK")
+    --print(gauntlet_data.rarity_mods)
 
     -- Check for skill_not_luck buff
     if gauntlet_data.skill_not_luck_active == 1 then
@@ -56,8 +56,8 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
         end
     end
 
-    print("ENEMY BASED, after SKILL_NOT_LUCK")
-    print(gauntlet_data.rarity_mods)
+    --print("ENEMY BASED, after SKILL_NOT_LUCK")
+    --print(gauntlet_data.rarity_mods)
 
     -- Now that we got all Virus-entities, we can randomly select one, and roll from its drop table (if it exists)
     local dropped_chips = {}
@@ -148,13 +148,13 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
             gauntlet_data.rarity_mods[cumulative_rarity_index] = gauntlet_data.rarity_mods[cumulative_rarity_index] + gauntlet_data.skill_not_luck_bonus_current
         end
     end
-    print("ENEMY BASED, after SKILL_NOT_LUCK RESET")
-    print(gauntlet_data.rarity_mods)
+    --print("ENEMY BASED, after SKILL_NOT_LUCK RESET")
+    --print(gauntlet_data.rarity_mods)
     -- Reset skill_not_luck if UltraRare dropped
 
     if dropped_ultra_rare == 1 then
         gauntlet_data.skill_not_luck_bonus_current = 0
-        print("RESET SKILL_NOT_LUCK because ULTRARARE")
+        --print("RESET SKILL_NOT_LUCK because ULTRARARE")
     end
 
 

@@ -1,5 +1,17 @@
 Buffs:
 
+Find something to check if we died. (Possibly just find out when HP is set, and THEN check for zero)
+
+Statistics:
+for every round: entities, drops, picked chips, folder after replace, current HP
+
+-> list storing these things
+
+upon reset -> store as JSON
+
+write visualizer in C# or whatever?
+
+
 
 MetalGear is bugged. (doesn't appear in battle)
 

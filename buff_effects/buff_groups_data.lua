@@ -36,6 +36,7 @@ local MEMEBOMB    = require "buff_effects.memebomb"
 local RNGESUS = require "buff_effects.rngesus"
 local PAWNMINATOR = require "buff_effects.pawnminator"
 local SKILLNOTLUCK = require "buff_effects.skill_not_luck"
+local SHOOTINGSTARS = require "buff_effects.shooting_stars"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -75,7 +76,8 @@ BUFF_GROUPS[1] = {
     MEMEBOMB,
     PAWNMINATOR,
     RNGESUS,
-    SKILLNOTLUCK
+    SKILLNOTLUCK,
+    SHOOTINGSTARS
 }
 
 
@@ -87,12 +89,11 @@ end
 
 
 
-
 --BUFF_GROUPS[1] = {
---    PERFECTIONIST,
---    PERFECTIONIST,
---    SKILLNOTLUCK,
---    SKILLNOTLUCK,
+--    MEMEBOMB,
+--    MEMEBOMB,
+--    SHOOTINGSTARS,
+--    SHOOTINGSTARS,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

@@ -326,7 +326,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
         
         -- Roll RNG to determine if we get a virus or non-virus entity
         local entity_kind_rng = math.random(1, 100)
-        if entity_kind_rng < GAUNTLET_DEFS.NON_VIRUS_ENTITY_CHANCE then
+        if entity_kind_rng < GAUNTLET_DEFS.NON_VIRUS_ENTITY_CHANCE and specific_entity == nil then
             new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil)
         else
             if specific_entity == nil then
@@ -343,6 +343,27 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
         --print("Added entity: ", entity_idx, "/", number_of_entities)
         --print(battle_entities[entity_idx].BATTLE_DATA.X_POS)
         --print(battle_entities[entity_idx].BATTLE_DATA.Y_POS)
+    end
+
+
+    -- If we have a specific entity, we can roll up to 3 non virus entities
+    if specific_entity ~= nil then
+
+        for entity_idx = 2,4 do
+        
+            -- Roll RNG to determine if we get a virus or non-virus entity
+            local entity_kind_rng = math.random(1, 100)
+            
+            new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil)
+               
+            battle_entities[entity_idx] = new_entity
+    
+    
+            --print("Added entity: ", entity_idx, "/", number_of_entities)
+            --print(battle_entities[entity_idx].BATTLE_DATA.X_POS)
+            --print(battle_entities[entity_idx].BATTLE_DATA.Y_POS)
+        end
+
     end
 
 
@@ -385,7 +406,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
 
     end
 
-
+    new_battle_data.NUM_ENTITIES = number_of_entities
     new_battle_data.ENTITIES = battle_entities
 
     return new_battle_data

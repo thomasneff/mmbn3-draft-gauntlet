@@ -216,7 +216,7 @@ function MusicLoader.LoadRandomFile(current_round)
     local patch_file = assert(io.open(patch_file_name, "rb"))
 
     MusicLoader.patch_str = patch_file:read("*all")
-    print(#MusicLoader.patch_str)
+    --print(#MusicLoader.patch_str)
     patch_file:close()
 
     local transpose_offset_file = assert(io.open(transpose_offset_file_name, "r"))
@@ -255,8 +255,8 @@ function MusicLoader.LoadRandomFile(current_round)
     bpm_offsets_split[#bpm_offsets_split + 1] = 2147483647
 
 
-    print(transpose_offsets_split)
-    print(bpm_offsets_split)
+    --print(transpose_offsets_split)
+    --print(bpm_offsets_split)
 
     MusicLoader.transpose = math.random(-transpose_range, transpose_range)
     MusicLoader.bpm_shift = math.random(-bpm_shift_range, bpm_shift_range)
