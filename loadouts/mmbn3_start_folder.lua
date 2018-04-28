@@ -52,7 +52,7 @@ end
 
 
 MMBN3_START_FOLDER.NAME = "MMBN3 Starting Folder"
-MMBN3_START_FOLDER.DESCRIPTION = "Re-live the nostalgic memories of MMBN3!\n(Cannons, ShotGuns, V-Guns, Swords...)"
+MMBN3_START_FOLDER.DESCRIPTION = "Re-live the nostalgic memories of MMBN3!\n(Cannon, ShotGun, V-Gun, Sword...)"
 
 
 return MMBN3_START_FOLDER

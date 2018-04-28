@@ -52,8 +52,8 @@ function MMBN3_EXTRAFOLDER.activate()
 end
 
 
-MMBN3_EXTRAFOLDER.NAME = "MMBN3 EXTRAFOLDER"
-MMBN3_EXTRAFOLDER.DESCRIPTION = "Like the starting folder, but with better flow!\n(Cannons, ShotGuns, V-Guns, Swords...)"
+MMBN3_EXTRAFOLDER.NAME = "MMBN3 Extra Folder"
+MMBN3_EXTRAFOLDER.DESCRIPTION = "Like the starting folder, but with better flow!\n(Cannon, ShotGun, V-Gun, Sword...)"
 
 
 return MMBN3_EXTRAFOLDER

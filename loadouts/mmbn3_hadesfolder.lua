@@ -54,8 +54,8 @@ function MMBN3_HADESFOLDER.activate()
 end
 
 
-MMBN3_HADESFOLDER.NAME = "MMBN3 HADESFOLDER"
-MMBN3_HADESFOLDER.DESCRIPTION = "Hades Island, even with 2 MegaChips!\n(GutsManV1/V2, Roll, 2x Recov80, Elem Swords...)"
+MMBN3_HADESFOLDER.NAME = "MMBN3 Hades Folder"
+MMBN3_HADESFOLDER.DESCRIPTION = "Elements and Bombs, even with 2 MegaChips!\n(GutsManV1/V2, Roll, Recov80, Elem Swords...)"
 
 
 return MMBN3_HADESFOLDER

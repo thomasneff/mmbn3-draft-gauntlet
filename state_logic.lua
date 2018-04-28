@@ -58,7 +58,7 @@ state_logic.battle_start_frame_counter = 0
 state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
 state_logic.dropped_chip.ID = -1
 state_logic.dropped_chip.PRINT_NAME = ""
-state_logic.loadout_chosen = 0
+gauntlet_data.loadout_chosen = 0
 state_logic.selected_loadout_index = 2
 state_logic.selected_drop_method_index = 2
 
@@ -281,7 +281,7 @@ function state_logic.on_enter_battle()
     end
 
 
-    if state_logic.loadout_chosen == 0 then
+    if gauntlet_data.loadout_chosen == 0 then
 
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_DROP_METHOD
 
@@ -568,7 +568,7 @@ function state_logic.initialize()
     gauntlet_data.folder_view = 0
     gauntlet_data.chip_drop_method = CHIP_DROP_METHODS[1]
     gauntlet_data.chip_drop_method.activate()
-    state_logic.loadout_chosen = 0
+    gauntlet_data.loadout_chosen = 0
     state_logic.selected_loadout_index = 2
     state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
     state_logic.dropped_chip.ID = -1
@@ -1369,7 +1369,7 @@ function state_logic.main_loop()
             state_logic.update_folder_mega_giga_chip_counts()
             --print("Folder after loadout: ", gauntlet_data.current_folder)
             gauntlet_data.folder_view = 0
-            state_logic.loadout_chosen = 1
+            gauntlet_data.loadout_chosen = 1
             state_logic.selected_loadout_index = 2
             
         end

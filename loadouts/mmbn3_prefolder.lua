@@ -14,10 +14,10 @@ function MMBN3_PREFOLDER.activate()
     new_folder = {}
 
 
-    new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.Ratton,       CHIP_CODE.A)
-    new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.Ratton,       CHIP_CODE.A)
-    new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.Ratton,       CHIP_CODE.F)
-    new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.Ratton,       CHIP_CODE.F)
+    new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.Ratton1,      CHIP_CODE.A)
+    new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.Ratton1,      CHIP_CODE.A)
+    new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.Ratton1,      CHIP_CODE.F)
+    new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.Ratton1,      CHIP_CODE.F)
     new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.ShotGun,      CHIP_CODE.F)
     new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.ShotGun,      CHIP_CODE.F)
     new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.ShotGun,      CHIP_CODE.Asterisk)
@@ -52,8 +52,8 @@ function MMBN3_PREFOLDER.activate()
 end
 
 
-MMBN3_PREFOLDER.NAME = "MMBN3 PREFOLDER"
-MMBN3_PREFOLDER.DESCRIPTION = "N1-Preliminaries, even with 2 P.A.s!\n(H-Burst, LifeSwrd, 3x Atk+30, Rattons...)"
+MMBN3_PREFOLDER.NAME = "MMBN3 N1-Preliminaries Folder"
+MMBN3_PREFOLDER.DESCRIPTION = "N1-Preliminaries, even with 2 P.A.s!\n(H-Burst, LifeSwrd, Atk+30, Ratton1...)"
 
 
 return MMBN3_PREFOLDER

@@ -470,7 +470,7 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
     end
 
     new_chip_offset_y = 40
-    if gauntlet_data.next_boss ~= nil then
+    if gauntlet_data.next_boss ~= nil and gauntlet_data.loadout_chosen == 1 then
         local boss_name = gauntlet_data.next_boss.ID
 
         boss_name, boss_stage = split_boss_name(boss_name)
