@@ -25,12 +25,12 @@ end
 
 function SkillNotLuck:get_description(current_round)
 
-    return "For every fight without damage taken,\nincrease Rarity by " .. tostring((gauntlet_data.skill_not_luck_bonus_per_battle)) .. "%, reset on UltraRare drops!"
+    return "For every fight without damage taken, increase\nRarity by " .. tostring((gauntlet_data.skill_not_luck_bonus_per_battle)) .. "%, reset on SuperRare/UltraRare drops!"
 
 end
 
 function SkillNotLuck:get_brief_description()
-    return SkillNotLuck.NAME .. ": No HP Loss -> +" .. tostring((gauntlet_data.skill_not_luck_bonus_per_battle)) .. "% Rarity,\n  UltraRare -> Reset (current: +" .. tostring(gauntlet_data.skill_not_luck_bonus_current) ..  "%)!"
+    return SkillNotLuck.NAME .. ": No HP Loss -> +" .. tostring((gauntlet_data.skill_not_luck_bonus_per_battle)) .. "% Rarity,\n  SuperRare/UltraRare -> Reset (current: +" .. tostring(gauntlet_data.skill_not_luck_bonus_current) ..  "%)!"
 end
 
 function SkillNotLuck.new()

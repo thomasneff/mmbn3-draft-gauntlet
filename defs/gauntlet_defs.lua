@@ -23,7 +23,8 @@ local GAUNTLET_DEFS = {
     SNECKO_RANDOMIZE_ASTERISK = 1,
     STYLE_CHANGE_AFTER_10_BATTLES = 1,
     BOSS_BATTLE_INTERVAL = 5,
-    SKILL_NOT_LUCK_RARITY_INCREASE = 3,
+    SKILL_NOT_LUCK_RARITY_INCREASE = 5,
+    SKILL_NOT_LUCK_RARITY_DISTRIBUTION = {1.0, 0.5, 0.3} -- these are computed so that the rarity is distributed equally on all rarities
 }
 
 

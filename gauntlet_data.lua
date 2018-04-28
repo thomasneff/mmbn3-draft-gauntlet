@@ -87,6 +87,7 @@ gauntlet_data.rarity_mods = {
     [4] = 0, -- UltraRare
 }
 
+
 gauntlet_data.force_minibombs_lower_than_ultra_rare = 0
 
 gauntlet_data.skill_not_luck_active = 0
