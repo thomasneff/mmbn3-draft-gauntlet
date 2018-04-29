@@ -98,4 +98,7 @@ gauntlet_data.next_boss = nil
 
 gauntlet_data.statistics_container = nil
 
+gauntlet_data.collector_duplicate_damage_bonus = 0.0
+gauntlet_data.collector_active = 0
+
 return gauntlet_data

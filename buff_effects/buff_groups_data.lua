@@ -37,6 +37,8 @@ local RNGESUS = require "buff_effects.rngesus"
 local PAWNMINATOR = require "buff_effects.pawnminator"
 local SKILLNOTLUCK = require "buff_effects.skill_not_luck"
 local SHOOTINGSTARS = require "buff_effects.shooting_stars"
+local REDISTRIBUTE = require "buff_effects.redistribute"
+local COLLECTOR = require "buff_effects.collector"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -90,10 +92,10 @@ end
 
 
 BUFF_GROUPS[1] = {
-    SKILLNOTLUCK,
-    SKILLNOTLUCK,
-    SHOOTINGSTARS,
-    SHOOTINGSTARS,
+    COLLECTOR,
+    COLLECTOR,
+    PERFECTIONIST,
+    PERFECTIONIST,
 }
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

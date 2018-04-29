@@ -207,11 +207,39 @@ function state_logic.compute_temporary_chip_changes()
         CHIP_DATA[key] = deepcopy(state_logic.CHIP_DATA_COPY[key])
     end
     
-     
+    
     
     -- Apply temporary buffs
     for key, chip_data in pairs(CHIP_DATA) do 
         CHIP_DATA[key].DAMAGE = (CHIP_DATA[key].DAMAGE * gauntlet_data.temporary_damage_bonus_mult.CURRENT) + gauntlet_data.temporary_damage_bonus_add.CURRENT
+    end
+
+    -- Apply collector temporary buffs
+    if gauntlet_data.collector_active == 1 then
+
+        -- Get a map from CHIP_ID -> number of duplicates
+        local chip_duplicates_map = {}
+
+        for chip_idx = 1,#gauntlet_data.current_folder do
+            local chip = gauntlet_data.current_folder[chip_idx]
+
+            if chip_duplicates_map[chip.ID] == nil then
+                chip_duplicates_map[chip.ID] = 0
+            else
+                chip_duplicates_map[chip.ID] = chip_duplicates_map[chip.ID] + 1
+            end
+        end
+
+        --print("DUPLICATES MAP:")
+        --print(chip_duplicates_map)
+
+        -- Apply buffs
+
+        for chip_id, num_duplicates in pairs(chip_duplicates_map) do
+            --print(chip_id)
+            CHIP_DATA[chip_id].DAMAGE = CHIP_DATA[chip_id].DAMAGE * (1.0 + num_duplicates * gauntlet_data.collector_duplicate_damage_bonus)
+        end
+
     end
 
 
@@ -591,6 +619,8 @@ function state_logic.initialize()
     gauntlet_data.skill_not_luck_active = 0
     gauntlet_data.skill_not_luck_bonus_per_battle = GAUNTLET_DEFS.SKILL_NOT_LUCK_RARITY_INCREASE
     gauntlet_data.skill_not_luck_bonus_current = 0
+    gauntlet_data.collector_duplicate_damage_bonus = 0.0
+    gauntlet_data.collector_active = 0
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     
@@ -764,6 +794,9 @@ function state_logic.patch_before_battle_start()
 
     -- Patch folder with all new stuff.
     -- state_logic.randomize_folder()
+
+    -- TODO: check if this breaks anything. It shouldn't, as we always only copy after a buff is taken.
+    state_logic.compute_temporary_chip_changes()
 
     -- Update statistics for this round
 

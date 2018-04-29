@@ -2,7 +2,7 @@ local gauntlet_data = require "gauntlet_data"
 local deepcopy = require "deepcopy"
 
 local ChargePlus = {
-    NAME = "Charge + 1",
+    NAME = "Charge + 3",
 }
 
 
@@ -10,7 +10,7 @@ local ChargePlus = {
 function ChargePlus:activate(current_round)
 
     self.old_ChargePlus = gauntlet_data.mega_ChargePlus
-    gauntlet_data.mega_ChargePlus = gauntlet_data.mega_ChargePlus + 1
+    gauntlet_data.mega_ChargePlus = gauntlet_data.mega_ChargePlus + 3
 
 end
 
@@ -23,12 +23,12 @@ end
 
 function ChargePlus:get_description(current_round)
 
-    return "Increase Buster Charge by 1!"
+    return "Increase Buster Charge by 3!"
 
 end
 
 function ChargePlus:get_brief_description()
-    return ChargePlus.NAME .. ": " .. "Buster Charge +1"
+    return ChargePlus.NAME .. ": " .. "Buster Charge + 3"
 end
 
 function ChargePlus.new()

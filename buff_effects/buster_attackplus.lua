@@ -2,7 +2,7 @@ local gauntlet_data = require "gauntlet_data"
 local deepcopy = require "deepcopy"
 
 local AttackPlus = {
-    NAME = "Attack + 1",
+    NAME = "Attack + 3",
 }
 
 
@@ -10,7 +10,7 @@ local AttackPlus = {
 function AttackPlus:activate(current_round)
 
     self.old_AttackPlus = gauntlet_data.mega_AttackPlus
-    gauntlet_data.mega_AttackPlus = gauntlet_data.mega_AttackPlus + 1
+    gauntlet_data.mega_AttackPlus = gauntlet_data.mega_AttackPlus + 3
 
 end
 
@@ -23,12 +23,12 @@ end
 
 function AttackPlus:get_description(current_round)
 
-    return "Increase Buster Attack by 1!"
+    return "Increase Buster Attack by 3!"
 
 end
 
 function AttackPlus:get_brief_description()
-    return AttackPlus.NAME .. ": " .. "Buster Attack +1"
+    return AttackPlus.NAME .. ": " .. "Buster Attack + 3"
 end
 
 function AttackPlus.new()

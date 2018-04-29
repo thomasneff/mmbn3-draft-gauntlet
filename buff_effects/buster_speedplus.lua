@@ -2,7 +2,7 @@ local gauntlet_data = require "gauntlet_data"
 local deepcopy = require "deepcopy"
 
 local SpeedPlus = {
-    NAME = "Speed + 1",
+    NAME = "Speed + 3",
 }
 
 
@@ -10,7 +10,7 @@ local SpeedPlus = {
 function SpeedPlus:activate(current_round)
 
     self.old_SpeedPlus = gauntlet_data.mega_SpeedPlus
-    gauntlet_data.mega_SpeedPlus = gauntlet_data.mega_SpeedPlus + 1
+    gauntlet_data.mega_SpeedPlus = gauntlet_data.mega_SpeedPlus + 3
 
 end
 
@@ -23,12 +23,12 @@ end
 
 function SpeedPlus:get_description(current_round)
 
-    return "Increase Buster Speed by 1!"
+    return "Increase Buster Speed by 3!"
 
 end
 
 function SpeedPlus:get_brief_description()
-    return SpeedPlus.NAME .. ": " .. "Buster Speed +1"
+    return SpeedPlus.NAME .. ": " .. "Buster Speed + 3"
 end
 
 function SpeedPlus.new()

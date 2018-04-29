@@ -273,3 +273,18 @@ Perfectionist bug: sometimes damage taken doesn't count, happened during Twins/T
     - although I don't think that the twins viruses are the issue, I think it's the hit detection, as it didn't detect a hit afair
 
 ALL BUFFS THAT MANIPULATE HP NEED TO CHECK FOR <0 AND FORCE IT TO 1!
+
+Find something to check if we died. (Possibly just find out when HP is set, and THEN check for zero)
+
+Statistics:
+for every round: entities, drops, picked chips, folder after replace, current HP
+
+-> list storing these things
+
+upon reset -> store as JSON
+
+write visualizer in C# or whatever?
+
+
+
+MetalGear is bugged. (doesn't appear in battle)
