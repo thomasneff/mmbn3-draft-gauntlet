@@ -249,6 +249,11 @@ function gui_rendering.render_buffs(buffs, finished_loading)
     local y_offset = base_offset_y
     local chip_counter = 1
 
+    if #buffs == 0 then
+        drawTextOutline(0, 0, "No Buffs taken yet!", "black", "orange", "transparent", 10, "Arial")
+        return
+    end
+
     for col_idx = 1, num_cols do
         y_offset = base_offset_y
         for row_idx = 1,num_chips_per_col do
