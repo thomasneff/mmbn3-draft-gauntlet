@@ -1,0 +1,16 @@
+Music Table Offsets :
+US MMBN6 Gregar         : 0x159F48
+US MMBN6 Falzar         : 0x1583F8
+US MMBN5 Team Protoman  : 0x155B0C
+US MMBN5 Team Colonel   : 0x155BF4
+J  MMBN4.5              : 0x135214
+US MMBN4 Blue Moon      : 0x15600C
+US MMBN3 Blue           : 0x148C6C
+US MMBN2                : 0x0F3898
+US MMBN                 : 0x0A111C
+US MMBCC                : 0x106DD0
+US Final Fantasy 5      : 0x3F2CB4
+US Pokemon Emerald      : 0x6B49F0
+
+
+mmbn3 battle song table offset: 0x0148D34

@@ -91,7 +91,7 @@ end
 function SHOOTING_STARS:get_brief_description()
     if self.num_replaced_chips >= 3 then
         return SHOOTING_STARS.NAME .. ": * Code ->\n  " .. self.replaced_chips_string
-    elseif self.num_replaced_chips >= 0 then
+    elseif self.num_replaced_chips > 0 then
         return SHOOTING_STARS.NAME .. ": * Code -> " .. self.replaced_chips_string
     else
         return SHOOTING_STARS.NAME .. ": * Code -> nothing!"

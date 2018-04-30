@@ -1,0 +1,10 @@
+SongExtractor.exe mmbn3.gba 0x148C6C 0 100 800000
+SongExtractor.exe mmbn.gba 0x0A111C 0 300 800000
+SongExtractor.exe mmbn2.gba 0x0F3898 0 300 800000
+SongExtractor.exe mmbn4_5.gba 0x135214 0 300 800000
+SongExtractor.exe mmbn4.gba 0x15600c 0 300 800000
+SongExtractor.exe mmbn5.gba 0x155BF4 0 300 800000
+SongExtractor.exe mmbn6.gba 0x1583F8 0 300 800000
+SongExtractor.exe mmbcc.gba 0x106DD0 0 300 800000
+SongExtractor.exe ff5.gba 0x3F2CB4 0 400 800000
+SongExtractor.exe poke_emerald.gba 0x6B49F0 0 500 800000

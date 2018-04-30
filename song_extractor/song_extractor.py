@@ -103,7 +103,7 @@ def extract_instrument_def(file_contents, instrument_def_address):
 
 def extract_sampled_instrument(file_contents, ptr):
     sampled_instrument = SampledInstrument()
-    print("ptr: ", hex(ptr))
+    #print("ptr: ", hex(ptr))
     sampled_instrument.data_1 = read_32_bit_from_file_at_offset(file_contents, ptr)
 
 
@@ -640,9 +640,6 @@ def extract_song_data(file_contents, song_table, patch_file_song_header_address,
     # concatenate everything for final patching
 
 
-    # This bytearray will contain the final data
-    extracted_song_data = bytearray()
-
     song_number = first_song_index
 
     for song_header_ptr in song_table.song_header_ptrs:
@@ -687,13 +684,6 @@ def extract_song_data(file_contents, song_table, patch_file_song_header_address,
 
         folder_path = os.path.join('out', game_name)
 
-        with open(os.path.join(folder_path, str(song_number) + ".bpmoffsets"), "wt") as out_file:
-            for ptr in track_starting_offsets['bpm']:
-                out_file.write(str(ptr) + '\n')
-
-        with open(os.path.join(folder_path, str(song_number) + ".transposeoffsets"), "wt") as out_file:
-            for ptr in track_starting_offsets['transpose']:
-                out_file.write(str(ptr) + '\n')
 
         with open(os.path.join(folder_path, str(song_number) + ".songpatch"), "wb") as out_file:
             raw_song_header = bytearray()
@@ -701,6 +691,18 @@ def extract_song_data(file_contents, song_table, patch_file_song_header_address,
             out_file.write(raw_song_header)
             out_file.write(raw_instrument_data)
             out_file.write(raw_track_data)
+
+        with open(os.path.join(folder_path, str(song_number) + ".transposeoffsets"), "wt") as out_file:
+            for ptr in track_starting_offsets['transpose']:
+                out_file.write(str(ptr) + '\n')
+
+
+        with open(os.path.join(folder_path, str(song_number) + ".bpmoffsets"), "wt") as out_file:
+            for ptr in track_starting_offsets['bpm']:
+                out_file.write(str(ptr) + '\n')
+
+
+
 
 
         song_number = song_number + 1

@@ -2,13 +2,14 @@ local GENERIC_DEFS = require "defs.generic_defs"
 local mmbn3_utils = require "mmbn3_utils"
 local randomchoice = require "randomchoice"
 
-local base_dir = "song_extractor/out/"
+local base_dir = "song_extractor_cs/out/"
 local patch_ext = ".songpatch"
 local transpose_offset_ext = ".transposeoffsets"
 local bpm_offset_ext = ".bpmoffsets"
 local transpose_range = 8
 local bpm_shift_range = 20
 local use_fixed_music = 0
+GENERIC_DEFS.ENABLE_MUSIC_PATCHING = 1
 
 function file_exists(name)
     local f=io.open(name,"r")
