@@ -258,6 +258,10 @@ function state_logic.on_battle_end()
     state_logic.stats_lost_hp = state_logic.stats_previous_hp - current_hp
     state_logic.stats_previous_hp = current_hp
     
+    if current_hp == 0 then
+        state_logic.initialize()
+        return
+    end
 
     state_logic.compute_perfect_fight_bonuses()
     
