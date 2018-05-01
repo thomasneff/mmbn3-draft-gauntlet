@@ -1,6 +1,5 @@
 Buffs:
 
-In some circumstances, being killed by a Lava Panel when < 50 HP (was around ~34 HP) doesn't trigger the auto reset
 
 Space-Pause-Continuum: every time pause is pressed, lose HP equal to 1% MaxHP, Custom + 2, HP + 100
 

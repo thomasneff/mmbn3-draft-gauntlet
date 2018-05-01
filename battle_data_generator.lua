@@ -311,11 +311,15 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
     -- If we roll number_of_entities == 4, we basically have to roll a virus and a non-virus entity guaranteed.
     local entity_idx_start = 1
 
+  
+    local num_virus_entities = 0
+
     if number_of_entities == 4 then
         --print ("Rolling virus and non-virus first!")
         battle_entities[1] =  roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil)
         --print(battle_entities[1])
         battle_entities[2] =  roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil)
+        num_virus_entities = num_virus_entities + 1
         --print(battle_entities[2])
         entity_idx_start = 3
     end
@@ -329,6 +333,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
         if entity_kind_rng < GAUNTLET_DEFS.NON_VIRUS_ENTITY_CHANCE and specific_entity == nil then
             new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil)
         else
+            num_virus_entities = num_virus_entities + 1
             if specific_entity == nil then
                 new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil)
             else
@@ -372,7 +377,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
         -- When we have only a single virus (Twins miniboss..?),
         -- we simply add another virus, which is forced to be a Twins virus
         battle_entities[#battle_entities + 1] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil)
-
+        num_virus_entities = num_virus_entities + 1
 
     
     elseif number_of_twins_viruses >= 1 and contains_virus_table.VALUE >= 1 then
@@ -402,11 +407,11 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
         else
             battle_entities[4] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, specific_entity)
         end
-        
+        num_virus_entities = num_virus_entities + 1
 
     end
 
-    new_battle_data.NUM_ENTITIES = number_of_entities
+    new_battle_data.NUM_ENTITIES = num_virus_entities
     new_battle_data.ENTITIES = battle_entities
 
     return new_battle_data

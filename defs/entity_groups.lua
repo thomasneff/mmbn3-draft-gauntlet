@@ -24,7 +24,7 @@ function assemble_groups_from_entity_defs()
                     if ENTITY_GROUPS[battle_number] == nil then
                         ENTITY_GROUPS[battle_number] = {}
                     end  
-                    ENTITY_GROUPS[battle_number][#ENTITY_GROUPS[battle_number]+1] = entity_val
+                    ENTITY_GROUPS[battle_number][#ENTITY_GROUPS[battle_number] + 1] = entity_val
                 end
 
             end

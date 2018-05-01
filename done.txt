@@ -285,6 +285,12 @@ upon reset -> store as JSON
 
 write visualizer in C# or whatever?
 
-
-
 MetalGear is bugged. (doesn't appear in battle)
+
+
+In some circumstances, being killed by a Lava Panel when < 50 HP (was around ~34 HP) doesn't trigger the auto reset
+This happened in the battle after a poison stage was picked and I took some poison damage
+
+Happened again. This time the poison damage didn't register, and the death as well. I started with a Guardian on my side, a Spikey and a Dominerd.
+
+-> Fixed, it was caused by counting rolled Guardians and such before the fourth slot as entities for MegaMan's HP address. Only viruses/navis count.
