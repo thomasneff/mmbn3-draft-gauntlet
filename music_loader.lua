@@ -9,7 +9,7 @@ local bpm_offset_ext = ".bpmoffsets"
 local transpose_range = 8
 local bpm_shift_range = 20
 local use_fixed_music = 0
-GENERIC_DEFS.ENABLE_MUSIC_PATCHING = 1
+GENERIC_DEFS.ENABLE_MUSIC_PATCHING = 0
 
 function file_exists(name)
     local f=io.open(name,"r")

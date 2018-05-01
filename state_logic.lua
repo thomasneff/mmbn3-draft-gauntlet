@@ -164,12 +164,13 @@ function state_logic.compute_perfect_fight_bonuses()
 
     if gauntlet_data.has_mega_been_hit == 0 then
         gauntlet_data.number_of_perfect_fights = gauntlet_data.number_of_perfect_fights + 1
+        print("Perfect Fight!")
     end
 
     gauntlet_data.has_mega_been_hit = 0
 
     -- TODO: compute buff bonuses depending on perfect fights
-    print("Perfect Fight!")
+    
 
     if gauntlet_data.skill_not_luck_active == 1 then
         gauntlet_data.skill_not_luck_bonus_current = gauntlet_data.skill_not_luck_bonus_current + gauntlet_data.skill_not_luck_bonus_per_battle
