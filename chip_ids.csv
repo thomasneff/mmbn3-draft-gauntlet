@@ -47,7 +47,7 @@
 71	47	BigWave	=	[0x71]	,		=	"""BigWave"""	,
 2F	48	GutPunch	=	[0x2F]	,		=	"""GutPunch"""	,
 30	49	GutStrgt	=	[0x30]	,		=	"""GutStrgt"""	,
-31	50	GutInpct	=	[0x31]	,		=	"""GutInpct"""	,
+31	50	GutImpct	=	[0x31]	,		=	"""GutImpct"""	,
 35	51	DashAtk	=	[0x35]	,		=	"""DashAtk"""	,
 36	52	Burner	=	[0x36]	,		=	"""Burner"""	,
 73	53	Condor	=	[0x73]	,		=	"""Condor"""	,

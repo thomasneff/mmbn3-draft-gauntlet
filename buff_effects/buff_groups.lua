@@ -38,7 +38,7 @@ function buff_generator.random_buffs_from_round(current_round, number_of_buffs, 
         end
 
         --print("BUFF GROUP RANDVAL: " , buff_idx)
-        buffs[i] = buff_group[buff_idx].new()
+        buffs[i] = buff_group[buff_idx].new(current_round)
         table.remove(buff_group, buff_idx)
         --print("BUFFS[i]", buffs[i])
     end
