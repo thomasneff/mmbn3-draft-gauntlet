@@ -215,14 +215,14 @@ function gui_rendering.render_items(items, selected_item_index)
     if (num_items - selected_item_index) > 1 then
         -- Render down-arrow.
 
-        gui.drawImage(arrow_down_path, 220, 140, 16, 8)
+        gui.drawImage(arrow_down_path, 220, 150, 16, 8)
 
     end
 
     if (selected_item_index) > 2 then
         -- Render down-arrow.
 
-        gui.drawImage(arrow_up_path, 220, 10, 16, 8)
+        gui.drawImage(arrow_up_path, 220, 0, 16, 8)
 
     end
 
@@ -235,18 +235,18 @@ function gui_rendering.render_gauntlet_complete()
 
 end
 
-function gui_rendering.render_buffs(buffs, finished_loading)
+function gui_rendering.render_buffs(buffs, finished_loading, buff_render_offset)
 
     local num_cols = 1
     local base_offset_y = 0
     local base_offset_x = 0
-    local num_chips_per_col = 10
+    local num_chips_per_col = #buffs
     local icon_spacing = 2
 
     local offset_per_col = 90
     local offset_per_row = 20
     local x_offset = base_offset_x
-    local y_offset = base_offset_y
+    local y_offset = base_offset_y - buff_render_offset * offset_per_row
     local chip_counter = 1
 
     if #buffs == 0 then
@@ -255,7 +255,7 @@ function gui_rendering.render_buffs(buffs, finished_loading)
     end
 
     for col_idx = 1, num_cols do
-        y_offset = base_offset_y
+        y_offset = base_offset_y - buff_render_offset * offset_per_row
         for row_idx = 1,num_chips_per_col do
 
             if buffs[chip_counter] ~= nil then
@@ -278,6 +278,21 @@ function gui_rendering.render_buffs(buffs, finished_loading)
         -- Done loading
         --drawTextOutline(new_chip_offset_x, 130, "Loading", "black", "green", "transparent", 10, "Arial")
         --drawTextOutline(new_chip_offset_x, 140, "Done!", "black", "green", "transparent", 10, "Arial")
+    end
+
+    if #buffs > 8 then
+        
+        -- Render arrow guides
+        if buff_render_offset ~= 0 then
+            -- Render up-arrow.
+            gui.drawImage(arrow_up_path, 220, 0, 16, 8)  
+        end
+
+        if  buff_render_offset ~= (#buffs - 8) then
+            -- Render down-arrow.
+            gui.drawImage(arrow_down_path, 220, 150, 16, 8)
+        end
+        
     end
 
 end

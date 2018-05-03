@@ -7,6 +7,7 @@ local RARITY_INCREASE = {
 
     NAME = "RNGesus",
     REMOVE_AFTER_ACTIVATION = 1,
+    DOUBLE_RARITY = 1,
 }
 
 local RARITY_INCREASE_VALUE = 9

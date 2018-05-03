@@ -40,6 +40,7 @@ local SHOOTINGSTARS = require "buff_effects.shooting_stars"
 local REDISTRIBUTE = require "buff_effects.redistribute"
 local COLLECTOR = require "buff_effects.collector"
 local PROGRAMADVANCE = require "buff_effects.program_advance"
+local COPYPASTE = require "buff_effects.copy_paste"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -81,7 +82,8 @@ BUFF_GROUPS[1] = {
     RNGESUS,
     SKILLNOTLUCK,
     SHOOTINGSTARS,
-    PROGRAMADVANCE
+    PROGRAMADVANCE,
+    COPYPASTE
 }
 
 
@@ -94,10 +96,10 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    PROGRAMADVANCE,
---    PROGRAMADVANCE,
---    PROGRAMADVANCE,
---    PROGRAMADVANCE,
+--    COPYPASTE,
+--    COPYPASTE,
+--    COPYPASTE,
+--    COPYPASTE,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

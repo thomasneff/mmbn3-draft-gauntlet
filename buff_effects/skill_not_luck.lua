@@ -1,5 +1,6 @@
 local gauntlet_data = require "gauntlet_data"
 local deepcopy = require "deepcopy"
+local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 
 local SkillNotLuck = {
     NAME = "Skill, Not Luck!",
@@ -12,6 +13,7 @@ function SkillNotLuck:activate(current_round)
 
     gauntlet_data.skill_not_luck_active = 1
     gauntlet_data.skill_not_luck_bonus_current = 0
+    gauntlet_data.skill_not_luck_bonus_per_battle = gauntlet_data.skill_not_luck_bonus_per_battle + GAUNTLET_DEFS.SKILL_NOT_LUCK_RARITY_INCREASE
 
 end
 
@@ -25,12 +27,12 @@ end
 
 function SkillNotLuck:get_description(current_round)
 
-    return "For every fight without damage taken, increase\nRarity by " .. tostring((gauntlet_data.skill_not_luck_bonus_per_battle)) .. "%, reset on SuperRare/UltraRare drops!"
+    return "For every fight without damage taken, increase\nRarity by " .. tostring((GAUNTLET_DEFS.SKILL_NOT_LUCK_RARITY_INCREASE)) .. "%, reset on SuperRare/UltraRare drops!"
 
 end
 
 function SkillNotLuck:get_brief_description()
-    return SkillNotLuck.NAME .. ": No HP Loss -> +" .. tostring((gauntlet_data.skill_not_luck_bonus_per_battle)) .. "% Rarity,\n  SuperRare/UltraRare -> Reset (current: +" .. tostring(gauntlet_data.skill_not_luck_bonus_current) ..  "%)!"
+    return SkillNotLuck.NAME .. ": No HP Loss -> +" .. tostring((GAUNTLET_DEFS.SKILL_NOT_LUCK_RARITY_INCREASE)) .. "% Rarity,\n  SuperRare/UltraRare -> Reset (current: +" .. tostring(gauntlet_data.skill_not_luck_bonus_current) ..  "%)!"
 end
 
 function SkillNotLuck.new()

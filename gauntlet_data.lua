@@ -91,7 +91,7 @@ gauntlet_data.rarity_mods = {
 gauntlet_data.force_minibombs_lower_than_ultra_rare = 0
 
 gauntlet_data.skill_not_luck_active = 0
-gauntlet_data.skill_not_luck_bonus_per_battle = 3
+gauntlet_data.skill_not_luck_bonus_per_battle = 0
 gauntlet_data.skill_not_luck_bonus_current = 0
 
 gauntlet_data.next_boss = nil
@@ -100,5 +100,7 @@ gauntlet_data.statistics_container = nil
 
 gauntlet_data.collector_duplicate_damage_bonus = 0.0
 gauntlet_data.collector_active = 0
+
+gauntlet_data.copy_paste_active_number_of_buffs = 0
 
 return gauntlet_data
