@@ -96,10 +96,10 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    COPYPASTE,
---    COPYPASTE,
---    COPYPASTE,
---    COPYPASTE,
+--    PERFECTIONIST,
+--    PERFECTIONIST,
+--    PERFECTIONIST,
+--    PERFECTIONIST,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

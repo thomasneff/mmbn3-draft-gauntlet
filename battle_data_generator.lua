@@ -4,6 +4,7 @@ local ENTITY_KIND = require "defs.entity_kind_defs"
 local ENTITY_GROUPS = require "defs.entity_groups"
 local ENTITIES = require "defs.entity_defs"
 local GAUNTLET_DEFS = require "defs.gauntlet_defs"
+local BATTLE_STAGE_DEFS = require "defs.battle_stage_defs"
 
 local number_of_twins_viruses = 0
 
@@ -130,7 +131,7 @@ end
 
 -- local ent_cnt = 1
 -- This function takes a game grid, updates it and positions a new entity from a given entity group onto it.
-function roll_entity(grid, entity_group, contains_virus_table, entity_kind, specific_entity)
+function roll_entity(grid, entity_group, contains_virus_table, entity_kind, specific_entity, battle_stage)
 
 
     local new_entity = deepcopy(entity_group[math.random(#entity_group)])
@@ -214,6 +215,10 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind, spec
 
 
     -- Randomize entity position
+    -- TODO: check that BlackBomb is not on Lava Panel (to prevent insta-kill scenarios)
+
+    
+
     local found_random_pos = 1
     local x_pos = 0
     local y_pos = 0
@@ -229,6 +234,10 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind, spec
         end
 
         found_random_pos = grid[x_pos][y_pos]
+
+        if (BATTLE_STAGE_DEFS.is_lava_panel(x_pos, y_pos, battle_stage)) and new_entity.BATTLE_DATA.KIND == ENTITY_KIND.BlackBomb then
+            found_random_pos = 1
+        end
     end
 
 
@@ -265,7 +274,7 @@ function battle_data_generator.random_boss(next_boss_round)
 end
 
 -- This creates new battle data for a given round and battle.
-function battle_data_generator.random_from_battle(current_battle, specific_entity)
+function battle_data_generator.random_from_battle(current_battle, specific_entity, battle_stage)
     --ent_cnt = 1
     -- Goals: Create a rising difficulty from battle 1 to 10, with a sub-boss at round 5, main boss at round 10.
     --        For that, we need to define virus groups and when they can appear, respectively.
@@ -276,6 +285,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
     -- TODO: Improve. For now, get a random entity out of the group of the current difficulty/round
     local number_of_entities = math.random(GAUNTLET_DEFS.MIN_NUMBER_OF_VIRUSES, 4)
     print("Number of entities: ", number_of_entities)
+    print("Stage for battle: ", battle_stage)
 
     -- For special battles, override number of viruses
     if GAUNTLET_DEFS.NUMBER_OF_VIRUSES_OVERRIDE[current_battle] ~= nil then
@@ -287,7 +297,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
     --print(current_battle)
     --print(ENTITY_GROUPS[current_battle])
     local entity_group = deepcopy(ENTITY_GROUPS[current_battle])
-    battle_entities[0] = ENTITIES.MegaMan
+    battle_entities[0] = deepcopy(ENTITIES.MegaMan)
     
 
     -- Create a grid of entity positions so we don't position enemies at the same spot.
@@ -300,8 +310,31 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
         end
     end
 
-    -- Set MegaMan as flagged.
-    grid[2][2] = 1
+    -- Set MegaMan as flagged, if he doesn't start on a lava/poison panel.
+    local found_random_pos = 0
+    local x_pos = 2
+    local y_pos = 2
+
+    if  BATTLE_STAGE_DEFS.is_poison_panel(x_pos, y_pos, battle_stage) or
+        BATTLE_STAGE_DEFS.is_lava_panel(x_pos, y_pos, battle_stage) then
+        found_random_pos = 1
+    end
+        
+    while found_random_pos == 1 do
+        found_random_pos = 0
+        x_pos = math.random(1, 3)
+        y_pos = math.random(1, 3)
+
+        if  BATTLE_STAGE_DEFS.is_poison_panel(x_pos, y_pos, battle_stage) or
+            BATTLE_STAGE_DEFS.is_lava_panel(x_pos, y_pos, battle_stage) then
+            found_random_pos = 1
+        end
+    end
+
+    grid[x_pos][y_pos] = 1
+    battle_entities[0].BATTLE_DATA.X_POS = x_pos
+    battle_entities[0].BATTLE_DATA.Y_POS = y_pos
+    
 
     -- This flag is used to check if we rolled at least one virus.
     local contains_virus_table = {
@@ -316,9 +349,9 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
 
     if number_of_entities == 4 then
         --print ("Rolling virus and non-virus first!")
-        battle_entities[1] =  roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil)
+        battle_entities[1] =  roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil, battle_stage)
         --print(battle_entities[1])
-        battle_entities[2] =  roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil)
+        battle_entities[2] =  roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil, battle_stage)
         num_virus_entities = num_virus_entities + 1
         --print(battle_entities[2])
         entity_idx_start = 3
@@ -331,13 +364,13 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
         -- Roll RNG to determine if we get a virus or non-virus entity
         local entity_kind_rng = math.random(1, 100)
         if entity_kind_rng < GAUNTLET_DEFS.NON_VIRUS_ENTITY_CHANCE and specific_entity == nil then
-            new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil)
+            new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil, battle_stage)
         else
             num_virus_entities = num_virus_entities + 1
             if specific_entity == nil then
-                new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil)
+                new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil, battle_stage)
             else
-                new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, specific_entity)
+                new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, specific_entity, battle_stage)
             end
         end
 
@@ -359,7 +392,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
             -- Roll RNG to determine if we get a virus or non-virus entity
             local entity_kind_rng = math.random(1, 100)
             
-            new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil)
+            new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil, battle_stage)
                
             battle_entities[entity_idx] = new_entity
     
@@ -376,7 +409,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
 
         -- When we have only a single virus (Twins miniboss..?),
         -- we simply add another virus, which is forced to be a Twins virus
-        battle_entities[#battle_entities + 1] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil)
+        battle_entities[#battle_entities + 1] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil, battle_stage)
         num_virus_entities = num_virus_entities + 1
 
     
@@ -389,7 +422,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
             if is_twins_virus(entity) == false and entity.BATTLE_DATA.KIND == ENTITY_KIND.Virus then
 
                 -- We replace the virus with a twins virus.
-                battle_entities[idx] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil)
+                battle_entities[idx] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil, battle_stage)
 
             end
 
@@ -403,9 +436,9 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
     if contains_virus_table.VALUE == 0 then
 
         if specific_entity == nil then
-            battle_entities[4] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil)
+            battle_entities[4] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil, battle_stage)
         else
-            battle_entities[4] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, specific_entity)
+            battle_entities[4] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, specific_entity, battle_stage)
         end
         num_virus_entities = num_virus_entities + 1
 

@@ -26,9 +26,7 @@ local NON_VIRUS_ENTITIES = {
 }
 
 function ENTITY_KIND.random_non_virus_entity_kind()
-
     -- TODO: possibly implement probabilities of each type, as Guardian/BlackBomb can be pretty OP ;-)
-
     return NON_VIRUS_ENTITIES[math.random(#NON_VIRUS_ENTITIES)]
 end
 

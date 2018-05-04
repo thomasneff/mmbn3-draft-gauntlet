@@ -111,6 +111,7 @@ function state_logic.next_round()
     -- print("4")
     for battle_idx = 1, GAUNTLET_DEFS.BATTLES_PER_ROUND do
         local new_pointer_entry = pointer_entry_generator.new_from_template(GAUNTLET_BATTLE_POINTERS[battle_idx] + 4, BACKGROUND_TYPE.random() , BATTLE_STAGE.random())
+        gauntlet_data.battle_stages[(state_logic.current_round - 1) * GAUNTLET_DEFS.BATTLES_PER_ROUND + battle_idx] = new_pointer_entry.BATTLE_STAGE
         mmbn3_utils.change_battle_pointer_data(ptr_table_working_address, new_pointer_entry)
         ptr_table_working_address = ptr_table_working_address - GENERIC_DEFS.OFFSET_BETWEEN_POINTER_TABLE_ENTRIES
     end
@@ -129,11 +130,11 @@ function state_logic.patch_next_battle()
     print("Battle ", state_logic.current_battle, " start")
 
     -- When we finished all gauntlet battles, enter the next round.
-    if state_logic.battle_pointer_index > GAUNTLET_DEFS.BATTLES_PER_ROUND or 
-        state_logic.current_round == 0 then
+    --if state_logic.battle_pointer_index > GAUNTLET_DEFS.BATTLES_PER_ROUND or 
+    --    state_logic.current_round == 0 then
         --print("3")
-        state_logic.next_round()
-    end
+    --    state_logic.next_round()
+    --end
 
     --print("MOD: ", state_logic.current_round % GAUNTLET_DEFS.ROUNDS_PER_BUFF_DROP)
     if (state_logic.current_battle - 1) % GAUNTLET_DEFS.ROUNDS_PER_BUFF_DROP == 0 then
@@ -161,6 +162,28 @@ end
 
 local DEBUG = 0
 
+function state_logic.recompute_perfect_damage_bonuses()
+
+    local damage_mult =  gauntlet_data.temporary_damage_bonus_mult.BASE +  gauntlet_data.temporary_damage_bonus_mult.PERFECT_FIGHT_INCREASE * gauntlet_data.number_of_perfect_fights
+    
+    if damage_mult > gauntlet_data.temporary_damage_bonus_mult.LIMIT then
+        damage_mult = gauntlet_data.temporary_damage_bonus_mult.LIMIT
+    end
+    
+    gauntlet_data.temporary_damage_bonus_mult.CURRENT = damage_mult
+
+    --print("Perfectionist multiplier: " .. gauntlet_data.temporary_damage_bonus_mult.CURRENT)
+    
+    local damage_add =  gauntlet_data.temporary_damage_bonus_add.BASE +  gauntlet_data.temporary_damage_bonus_add.PERFECT_FIGHT_INCREASE * gauntlet_data.number_of_perfect_fights
+    
+    if damage_add > gauntlet_data.temporary_damage_bonus_add.LIMIT then
+        damage_add = gauntlet_data.temporary_damage_bonus_add.LIMIT
+    end
+    
+    gauntlet_data.temporary_damage_bonus_add.CURRENT = damage_add
+
+end
+
 function state_logic.compute_perfect_fight_bonuses()
 
     if gauntlet_data.has_mega_been_hit == 0 then
@@ -170,31 +193,12 @@ function state_logic.compute_perfect_fight_bonuses()
 
     gauntlet_data.has_mega_been_hit = 0
 
-    -- TODO: compute buff bonuses depending on perfect fights
-    
-
     if gauntlet_data.skill_not_luck_active == 1 then
         gauntlet_data.skill_not_luck_bonus_current = gauntlet_data.skill_not_luck_bonus_current + gauntlet_data.skill_not_luck_bonus_per_battle
         print("Skill not luck active, current bonus: " .. gauntlet_data.skill_not_luck_bonus_current)
     end
     
-    
-    local damage_mult =  gauntlet_data.temporary_damage_bonus_mult.BASE +  gauntlet_data.temporary_damage_bonus_mult.PERFECT_FIGHT_INCREASE * gauntlet_data.number_of_perfect_fights
-    
-    if damage_mult > gauntlet_data.temporary_damage_bonus_mult.LIMIT then
-        damage_mult = gauntlet_data.temporary_damage_bonus_mult.LIMIT
-    end
-    
-    gauntlet_data.temporary_damage_bonus_mult.CURRENT = damage_mult
-    
-    local damage_add =  gauntlet_data.temporary_damage_bonus_add.BASE +  gauntlet_data.temporary_damage_bonus_add.PERFECT_FIGHT_INCREASE * gauntlet_data.number_of_perfect_fights
-    
-    if damage_add > gauntlet_data.temporary_damage_bonus_add.LIMIT then
-        damage_add = gauntlet_data.temporary_damage_bonus_add.LIMIT
-    end
-    
-    gauntlet_data.temporary_damage_bonus_add.CURRENT = damage_add
-    
+    state_logic.recompute_perfect_damage_bonuses()
 
 end
 
@@ -566,7 +570,8 @@ function state_logic.initialize()
 
     math.randomseed(os.time())
 
-    savestate.load(state_logic.initial_state)
+    --savestate.load(state_logic.initial_state)
+    
 
     -- Undo all activated buffs
     state_logic.undo_activated_buffs()
@@ -664,6 +669,8 @@ function state_logic.initialize()
 
     }
 
+    gauntlet_data.battle_stages = {}
+
     gauntlet_data.mega_regen_after_battle_relative_to_max = 0
 
     state_logic.buff_render_offset = 0
@@ -698,7 +705,7 @@ function state_logic.initialize()
     state_logic.update_printable_chip_names_in_folder()
     state_logic.update_argb_chip_icons_in_folder()
     
-    gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
+    gauntlet_data.current_state = gauntlet_data.GAME_STATE.LOAD_INITIAL
 
     client.unpause()
     -- Upon start, initialize the current round:
@@ -791,7 +798,8 @@ function state_logic.update_battle_statistics()
         CURRENT_FOLDER = deepcopy(current_folder),
         ENTITIES = deepcopy(entities),
         LOST_HP = deepcopy(state_logic.stats_lost_hp),
-        REPLACED_CHIP = deepcopy(state_logic.replaced_chip)
+        REPLACED_CHIP = deepcopy(state_logic.replaced_chip),
+        BATTLE_STAGE = deepcopy(gauntlet_data.battle_stages[state_logic.current_battle - 1])
     }
 
     --print(gauntlet_data.statistics_container[#gauntlet_data.statistics_container])
@@ -825,10 +833,10 @@ function state_logic.patch_before_battle_start()
     local new_battle_data = nil
 
     if state_logic.current_battle % GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL == 0 then
-        new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle, gauntlet_data.next_boss)
+        new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle, gauntlet_data.next_boss, gauntlet_data.battle_stages[state_logic.current_battle])
         gauntlet_data.next_boss = battle_data_generator.random_boss(state_logic.current_battle + GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     else
-        new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle, nil)
+        new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle, nil, gauntlet_data.battle_stages[state_logic.current_battle])
     end
     
 
@@ -1365,7 +1373,7 @@ function state_logic.main_loop()
                 
                 -- Restore CHIP_DATA to copy so temporary buffs work fine.
                 for key, chip_data in pairs(CHIP_DATA) do
-                    state_logic.CHIP_DATA_COPY[key] = deepcopy(CHIP_DATA[key])
+                    CHIP_DATA[key] = deepcopy(state_logic.CHIP_DATA_COPY[key])
                 end
                 
                 if gauntlet_data.copy_paste_active_number_of_buffs == 0 then
@@ -1403,6 +1411,8 @@ function state_logic.main_loop()
                 --gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT
                 state_logic.should_redraw = 1
                 
+                -- In case we picked another perfectionist - recompute the damage buffs for visualization.
+                state_logic.recompute_perfect_damage_bonuses()
                 state_logic.update_printable_chip_names_in_folder()
                 state_logic.update_argb_chip_icons_in_folder()
                 state_logic.update_folder_mega_giga_chip_counts()
@@ -1442,6 +1452,7 @@ function state_logic.main_loop()
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.LOAD_INITIAL then
         -- Simply load initial state again if we beat all rounds.
         savestate.load(state_logic.initial_state)
+        state_logic.next_round()
         client.unpause()
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
     

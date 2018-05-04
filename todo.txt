@@ -1,5 +1,10 @@
 Buffs:
 
+Perfectionist is broken, if the temporary damage is there when another buff is picked, it gets applied an additional time.
+(e.g. +25% before taking a buff -> +50% after taking a buff, even if it's not Perfectionist again.)
+
+
+maybe define lava panels for stages, such that blackbomb can not spawn on a lava panel
 
 Space-Pause-Continuum: every time pause is pressed, lose HP equal to 1% MaxHP, Custom + 2, HP + 100
 

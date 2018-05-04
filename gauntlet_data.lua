@@ -103,4 +103,6 @@ gauntlet_data.collector_active = 0
 
 gauntlet_data.copy_paste_active_number_of_buffs = 0
 
+gauntlet_data.battle_stages = {}
+
 return gauntlet_data
