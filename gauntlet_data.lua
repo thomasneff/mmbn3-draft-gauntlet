@@ -64,7 +64,7 @@ gauntlet_data.snecko_eye_randomize_asterisk = 1
 gauntlet_data.has_mega_been_hit = 0
 gauntlet_data.number_of_perfect_fights = 0
 gauntlet_data.last_hp = 0
-gauntlet_data.temporary_damage_bonus_mult = {
+gauntlet_data.perfectionist_damage_bonus_mult = {
     CURRENT = 1.0,
     BASE = 1.0,
     LIMIT = 1.0,
@@ -72,7 +72,7 @@ gauntlet_data.temporary_damage_bonus_mult = {
 
 }
 
-gauntlet_data.temporary_damage_bonus_add = {
+gauntlet_data.perfectionist_damage_bonus_add = {
     CURRENT = 0,
     LIMIT = 0,
     BASE = 0,
@@ -93,6 +93,7 @@ gauntlet_data.force_minibombs_lower_than_ultra_rare = 0
 gauntlet_data.skill_not_luck_active = 0
 gauntlet_data.skill_not_luck_bonus_per_battle = 0
 gauntlet_data.skill_not_luck_bonus_current = 0
+gauntlet_data.skill_not_luck_number_of_fights = 0
 
 gauntlet_data.next_boss = nil
 

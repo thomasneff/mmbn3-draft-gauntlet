@@ -164,23 +164,28 @@ local DEBUG = 0
 
 function state_logic.recompute_perfect_damage_bonuses()
 
-    local damage_mult =  gauntlet_data.temporary_damage_bonus_mult.BASE +  gauntlet_data.temporary_damage_bonus_mult.PERFECT_FIGHT_INCREASE * gauntlet_data.number_of_perfect_fights
+    local damage_mult =  gauntlet_data.perfectionist_damage_bonus_mult.BASE +  gauntlet_data.perfectionist_damage_bonus_mult.PERFECT_FIGHT_INCREASE * gauntlet_data.number_of_perfect_fights
     
-    if damage_mult > gauntlet_data.temporary_damage_bonus_mult.LIMIT then
-        damage_mult = gauntlet_data.temporary_damage_bonus_mult.LIMIT
+    if damage_mult > gauntlet_data.perfectionist_damage_bonus_mult.LIMIT then
+        damage_mult = gauntlet_data.perfectionist_damage_bonus_mult.LIMIT
     end
     
-    gauntlet_data.temporary_damage_bonus_mult.CURRENT = damage_mult
+    gauntlet_data.perfectionist_damage_bonus_mult.CURRENT = damage_mult
 
-    --print("Perfectionist multiplier: " .. gauntlet_data.temporary_damage_bonus_mult.CURRENT)
+    --print("Perfectionist multiplier: " .. gauntlet_data.perfectionist_damage_bonus_mult.CURRENT)
     
-    local damage_add =  gauntlet_data.temporary_damage_bonus_add.BASE +  gauntlet_data.temporary_damage_bonus_add.PERFECT_FIGHT_INCREASE * gauntlet_data.number_of_perfect_fights
+    local damage_add =  gauntlet_data.perfectionist_damage_bonus_add.BASE +  gauntlet_data.perfectionist_damage_bonus_add.PERFECT_FIGHT_INCREASE * gauntlet_data.number_of_perfect_fights
     
-    if damage_add > gauntlet_data.temporary_damage_bonus_add.LIMIT then
-        damage_add = gauntlet_data.temporary_damage_bonus_add.LIMIT
+    if damage_add > gauntlet_data.perfectionist_damage_bonus_add.LIMIT then
+        damage_add = gauntlet_data.perfectionist_damage_bonus_add.LIMIT
     end
     
-    gauntlet_data.temporary_damage_bonus_add.CURRENT = damage_add
+    gauntlet_data.perfectionist_damage_bonus_add.CURRENT = damage_add
+
+    if gauntlet_data.skill_not_luck_active == 1 then
+        gauntlet_data.skill_not_luck_bonus_current = gauntlet_data.skill_not_luck_bonus_per_battle * gauntlet_data.skill_not_luck_number_of_fights
+        print("Skill not luck active, current bonus: " .. gauntlet_data.skill_not_luck_bonus_current)
+    end
 
 end
 
@@ -188,15 +193,14 @@ function state_logic.compute_perfect_fight_bonuses()
 
     if gauntlet_data.has_mega_been_hit == 0 then
         gauntlet_data.number_of_perfect_fights = gauntlet_data.number_of_perfect_fights + 1
+        gauntlet_data.skill_not_luck_number_of_fights = gauntlet_data.skill_not_luck_number_of_fights + 1
         print("Perfect Fight!")
     end
 
+
     gauntlet_data.has_mega_been_hit = 0
 
-    if gauntlet_data.skill_not_luck_active == 1 then
-        gauntlet_data.skill_not_luck_bonus_current = gauntlet_data.skill_not_luck_bonus_current + gauntlet_data.skill_not_luck_bonus_per_battle
-        print("Skill not luck active, current bonus: " .. gauntlet_data.skill_not_luck_bonus_current)
-    end
+    
     
     state_logic.recompute_perfect_damage_bonuses()
 
@@ -217,7 +221,7 @@ function state_logic.compute_temporary_chip_changes()
     
     -- Apply temporary buffs
     for key, chip_data in pairs(CHIP_DATA) do 
-        CHIP_DATA[key].DAMAGE = (CHIP_DATA[key].DAMAGE * gauntlet_data.temporary_damage_bonus_mult.CURRENT) + gauntlet_data.temporary_damage_bonus_add.CURRENT
+        CHIP_DATA[key].DAMAGE = (CHIP_DATA[key].DAMAGE * gauntlet_data.perfectionist_damage_bonus_mult.CURRENT) + gauntlet_data.perfectionist_damage_bonus_add.CURRENT
     end
 
     -- Apply collector temporary buffs
@@ -265,6 +269,7 @@ function state_logic.on_battle_end()
     state_logic.stats_previous_hp = current_hp
     
     if current_hp == 0 then
+        print("Reset in on_battle_end(), MEGA HP was 0 during battle end loading")
         state_logic.initialize()
         return
     end
@@ -630,6 +635,7 @@ function state_logic.initialize()
     gauntlet_data.skill_not_luck_active = 0
     gauntlet_data.skill_not_luck_bonus_per_battle = 0
     gauntlet_data.skill_not_luck_bonus_current = 0
+    gauntlet_data.skill_not_luck_number_of_fights = 0
     gauntlet_data.collector_duplicate_damage_bonus = 0.0
     gauntlet_data.collector_active = 0
 
@@ -653,7 +659,7 @@ function state_logic.initialize()
     gauntlet_data.number_of_perfect_fights = 0
     gauntlet_data.last_hp = 0
     
-    gauntlet_data.temporary_damage_bonus_mult = {
+    gauntlet_data.perfectionist_damage_bonus_mult = {
         CURRENT = 1.0,
         LIMIT = 1.0,
         BASE = 1.0,
@@ -661,7 +667,7 @@ function state_logic.initialize()
 
     }
 
-    gauntlet_data.temporary_damage_bonus_add = {
+    gauntlet_data.perfectionist_damage_bonus_add = {
         CURRENT = 0,
         LIMIT = 0,
         BASE = 0,
@@ -723,7 +729,7 @@ function state_logic.check_reset()
         and input_handler.inputs_held["L"]
         and input_handler.inputs_held["R"] then
 
-
+        printf("Soft-Reset!")
         state_logic.initialize()
 
 
@@ -1031,6 +1037,12 @@ function state_logic.main_loop()
         -- If we died - reset
         if current_hp == 0 and state_logic.hp_loaded == 1 then
 
+            print("Reset in GAME_STATE.RUNNING, number_of_virus_entities = " .. number_of_entities)
+            print("MEGA_CURRENT_HP_ADDRESS [NUM_ENTITIES] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[number_of_entities] - 0x02000000, "EWRAM"))
+            print("MEGA_CURRENT_HP_ADDRESS [1] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[1] - 0x02000000, "EWRAM"))
+            print("MEGA_CURRENT_HP_ADDRESS [2] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[2] - 0x02000000, "EWRAM"))
+            print("MEGA_CURRENT_HP_ADDRESS [3] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[3] - 0x02000000, "EWRAM"))
+            print("MEGA_CURRENT_HP_ADDRESS [4] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[4] - 0x02000000, "EWRAM"))
             state_logic.initialize()
             return
 

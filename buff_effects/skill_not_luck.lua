@@ -4,7 +4,7 @@ local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 
 local SkillNotLuck = {
     NAME = "Skill, Not Luck!",
-    REMOVE_AFTER_ACTIVATION = 1,
+    --REMOVE_AFTER_ACTIVATION = 1,
     DOUBLE_RARITY = 1
 }
 
@@ -12,7 +12,7 @@ local SkillNotLuck = {
 function SkillNotLuck:activate(current_round)
 
     gauntlet_data.skill_not_luck_active = 1
-    gauntlet_data.skill_not_luck_bonus_current = 0
+    --gauntlet_data.skill_not_luck_bonus_current = 0
     gauntlet_data.skill_not_luck_bonus_per_battle = gauntlet_data.skill_not_luck_bonus_per_battle + GAUNTLET_DEFS.SKILL_NOT_LUCK_RARITY_INCREASE
 
 end

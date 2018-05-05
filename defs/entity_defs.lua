@@ -4106,7 +4106,7 @@ ENTITIES.DominerdOmega.DROP_TABLE =
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.EverCurse)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.AntiDmg, CHIP_CODE.Asterisk)
   }
 }
 -------------------------------------------------------------------------------

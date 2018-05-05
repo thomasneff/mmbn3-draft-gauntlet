@@ -156,6 +156,7 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
 
     if dropped_super_or_ultra_rare == 1 then
         gauntlet_data.skill_not_luck_bonus_current = 0
+        gauntlet_data.skill_not_luck_number_of_fights = 0
         --print("RESET SKILL_NOT_LUCK because ULTRARARE")
     end
 

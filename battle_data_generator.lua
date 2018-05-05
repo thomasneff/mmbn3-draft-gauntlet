@@ -357,6 +357,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
         entity_idx_start = 3
     end
 
+    
 
 
     for entity_idx = entity_idx_start,number_of_entities do
@@ -422,6 +423,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
             if is_twins_virus(entity) == false and entity.BATTLE_DATA.KIND == ENTITY_KIND.Virus then
 
                 -- We replace the virus with a twins virus.
+                -- This screws up the grid, but we have enough space anyways
                 battle_entities[idx] = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.Virus, nil, battle_stage)
 
             end
@@ -446,6 +448,27 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
 
     new_battle_data.NUM_ENTITIES = num_virus_entities
     new_battle_data.ENTITIES = battle_entities
+
+    --local canodumb2_group = 
+    --{
+    --    ENTITIES.Canodumb2
+    --}
+
+    --local twinner_group = 
+    --{
+    --    ENTITIES.Twinner
+    --}
+
+
+    --battle_entities[1] =  roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.MetalCube, nil, battle_stage)
+        --print(battle_entities[1])
+    --battle_entities[2] =  roll_entity(grid, canodumb2_group, contains_virus_table, ENTITY_KIND.Virus, nil, battle_stage)
+    --battle_entities[2] =  roll_entity(grid, twinner_group, contains_virus_table, ENTITY_KIND.Virus, nil, battle_stage)
+    --battle_entities[3] =  roll_entity(grid, twinner_group, contains_virus_table, ENTITY_KIND.Virus, nil, battle_stage)
+    --battle_entities[4] =  roll_entity(grid, twinner_group, contains_virus_table, ENTITY_KIND.Virus, nil, battle_stage)
+
+    --new_battle_data.NUM_ENTITIES = 3
+    --new_battle_data.ENTITIES = battle_entities
 
     return new_battle_data
 

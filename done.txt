@@ -294,3 +294,10 @@ This happened in the battle after a poison stage was picked and I took some pois
 Happened again. This time the poison damage didn't register, and the death as well. I started with a Guardian on my side, a Spikey and a Dominerd.
 
 -> Fixed, it was caused by counting rolled Guardians and such before the fourth slot as entities for MegaMan's HP address. Only viruses/navis count.
+
+
+Perfectionist is broken, if the temporary damage is there when another buff is picked, it gets applied an additional time.
+(e.g. +25% before taking a buff -> +50% after taking a buff, even if it's not Perfectionist again.)
+
+
+maybe define lava panels for stages, such that blackbomb can not spawn on a lava panel

@@ -5,7 +5,7 @@ local Collector = {
     NAME = "Collector",
 }
 
-COLLECTOR_DAMAGE_PER_DUPLICATE_MULT = 0.05
+COLLECTOR_DAMAGE_PER_DUPLICATE_MULT = 0.10
 
 
 function Collector:activate(current_round)
@@ -30,7 +30,7 @@ function Collector:get_description(current_round)
 end
 
 function Collector:get_brief_description()
-    return Collector.NAME .. ": Chip duplicates -> +" .. tostring(100 * self.collector_duplicate_damage_bonus) .. "% damage!"
+    return Collector.NAME .. ": Chip duplicates -> +" .. tostring(100 * gauntlet_data.collector_duplicate_damage_bonus) .. "% damage / duplicate!"
 end
 
 function Collector.new()
