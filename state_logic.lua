@@ -551,7 +551,7 @@ function state_logic.shuffle_folder()
 end
 
 function state_logic.export_run_statistics()
-    -- TODO: write statistics JSON based on timestamp to /stats/ folder
+   
     local filename = "stats/" .. os.date("%Y_%m_%d_%H_%M_%S") .. ".json"
     local file = assert(io.open(filename, "w"))
     local stats_json = json.encode(gauntlet_data.statistics_container)
@@ -566,6 +566,8 @@ function state_logic.initialize()
     -- TODO: check if we had some statistics to save, if we implement statistics
     if gauntlet_data.statistics_container ~= nil then
 
+        -- Just update it again, don't care if we possibly have duplicate entries.
+        state_logic.update_battle_statistics()
         state_logic.export_run_statistics()
 
     end
@@ -573,7 +575,15 @@ function state_logic.initialize()
 
     gauntlet_data.statistics_container = {}
 
-    math.randomseed(os.time())
+    if gauntlet_data.fixed_random_seed == nil then
+        math.randomseed(os.time())
+        gauntlet_data.random_seed = math.random(2147483647)
+    else
+        gauntlet_data.random_seed = gauntlet_data.fixed_random_seed
+    end
+
+    print("Seed: " .. gauntlet_data.random_seed)
+    math.randomseed(gauntlet_data.random_seed)
 
     --savestate.load(state_logic.initial_state)
     
@@ -638,6 +648,9 @@ function state_logic.initialize()
     gauntlet_data.skill_not_luck_number_of_fights = 0
     gauntlet_data.collector_duplicate_damage_bonus = 0.0
     gauntlet_data.collector_active = 0
+    gauntlet_data.top_tier_active = 0
+    gauntlet_data.top_tier_chance = 0
+
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     
@@ -729,7 +742,7 @@ function state_logic.check_reset()
         and input_handler.inputs_held["L"]
         and input_handler.inputs_held["R"] then
 
-        printf("Soft-Reset!")
+        print("Soft-Reset!")
         state_logic.initialize()
 
 
@@ -796,6 +809,7 @@ function state_logic.update_battle_statistics()
 
     gauntlet_data.statistics_container[#gauntlet_data.statistics_container + 1] = 
     {
+        RANDOM_SEED = deepcopy(gauntlet_data.random_seed),
         CURRENT_HP = deepcopy(current_hp),
         ACTIVATED_BUFFS = deepcopy(activated_buffs),
         DROPPED_BUFFS = deepcopy(dropped_buffs),

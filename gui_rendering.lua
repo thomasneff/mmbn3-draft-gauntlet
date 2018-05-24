@@ -66,7 +66,7 @@ function render_chip_with_background(chip, x_offset, y_offset, width, height, is
     -- Render green selection box
 
     if is_selected == true then
-        gui.drawRectangle(x_offset - 5, y_offset - 5, bg_size_x + 10, bg_size_y, nil, "green")
+        gui.drawRectangle(x_offset - 5, y_offset - 5, bg_size_x + 10, bg_size_y, "darkgreen", "green")
     end
     if chip.RARITY == nil then
         gui.drawImage(chip_image_background_path, x_offset, y_offset)
@@ -103,6 +103,7 @@ end
 
 function gui_rendering.render_chip_selection(chip_list, selected_chip_index)
 
+    gui.drawRectangle(0, 0, 239, 159, "Gray", "Gainsboro")
     -- Assume 3 chips, draw them side by side.
     local num_chips = #chip_list
     --print(chip_list)
@@ -132,6 +133,7 @@ end
 
 function gui_rendering.render_items_non_centered_without_arrow_guides(buff_list, selected_buff_index)
 
+    gui.drawRectangle(0, 0, 239, 159, "Gray", "Gainsboro")
     -- Assume 3 buffs, draw them side by side.
     local num_buffs = #buff_list
     --print(buff_list)
@@ -165,7 +167,7 @@ function render_list_item(item, x_offset, y_offset, is_selected)
     local bg_size_y = 50
 
     if is_selected == true then
-        gui.drawRectangle(x_offset - 5, y_offset - 3, bg_size_x + 9, bg_size_y + 5, nil, "green")
+        gui.drawRectangle(x_offset - 5, y_offset - 3, bg_size_x + 9, bg_size_y + 5, "darkgreen", "green")
     end
 
     gui.drawImage(item_image_background_path, x_offset, y_offset)
@@ -186,6 +188,7 @@ end
 
 function gui_rendering.render_items(items, selected_item_index)
 
+    gui.drawRectangle(0, 0, 239, 159, "Gray", "Gainsboro")
     -- Assume 3 items, draw them side by side.
     local num_items = #items
     --print(items)
@@ -230,12 +233,16 @@ end
 
 function gui_rendering.render_gauntlet_complete()
 
+    gui.drawRectangle(0, 0, 239, 159, "Gray", "Gainsboro")
     drawTextOutline(20, 60,  "Congratulations!", "black", "white", "transparent", 16, "Arial")
     drawTextOutline(20, 100,  "You Win!", "black", "white", "transparent", 16, "Arial")
 
 end
 
 function gui_rendering.render_buffs(buffs, finished_loading, buff_render_offset)
+
+
+    gui.drawRectangle(0, 0, 239, 159, "Gray", "Gainsboro")
 
     local num_cols = 1
     local base_offset_y = 0
@@ -257,6 +264,12 @@ function gui_rendering.render_buffs(buffs, finished_loading, buff_render_offset)
     for col_idx = 1, num_cols do
         y_offset = base_offset_y - buff_render_offset * offset_per_row
         for row_idx = 1,num_chips_per_col do
+
+            if row_idx % 2 == 0 then
+                gui.drawRectangle(0, y_offset, 239, 19, "LightBlue", "LightCyan")
+            else
+                gui.drawRectangle(0, y_offset, 239, 19, "Black", "white")
+            end
 
             if buffs[chip_counter] ~= nil then
                 drawTextOutline(x_offset, y_offset,  buffs[chip_counter]:get_brief_description(), "black", "lightblue", "transparent", 9, "Arial")
@@ -364,6 +377,10 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
 
     local can_replace_chip = true
 
+    -- Folder Rectangle
+    gui.drawRectangle(0, 0, 177, 159, "Gray", "Gainsboro")
+
+
     if new_chip == nil or new_chip.ID == -1 then
     
     else
@@ -431,24 +448,34 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
     -- Render new chip
 
     local new_chip_offset_x = 178
-    local new_chip_offset_y = 100
+    local new_chip_offset_y = 110
+
+    -- Chip rectangle
+    gui.drawRectangle(new_chip_offset_x, new_chip_offset_y + 2 - offset_per_row * 1 - CHIP_ICON.HEIGHT - 2, 61, offset_per_row * 4 + CHIP_ICON.HEIGHT - 2, "Peru", "Beige")
 
     --print(new_chip)
     if new_chip ~= nil and new_chip.PRINT_NAME ~= nil and new_chip.PRINT_NAME ~= "" and new_chip.ID ~= -1 then
         -- Render icon.
-        render_argb_2d_array(new_chip.ARGB_ICON, new_chip_offset_x + 2, new_chip_offset_y - offset_per_row * 1 - CHIP_ICON.HEIGHT - 2, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
-        drawTextOutline(new_chip_offset_x, new_chip_offset_y - offset_per_row * 1,  "New Chip: ", "black", "green", "transparent", 9, "Arial")
+        render_argb_2d_array(new_chip.ARGB_ICON, new_chip_offset_x + 30, new_chip_offset_y - offset_per_row - (CHIP_ICON.HEIGHT / 2) - 5, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
+        drawTextOutline(new_chip_offset_x, new_chip_offset_y - offset_per_row * 2,  "Drop: ", "black", "lightgreen", "transparent", 9, "Arial")
+        new_chip_offset_y = new_chip_offset_y - 2
         drawTextOutline(new_chip_offset_x, new_chip_offset_y,  new_chip.PRINT_NAME, "black", "white", "transparent", 9, "Arial")
         drawTextOutline(new_chip_offset_x, new_chip_offset_y + offset_per_row * 1, "ATK: " .. tostring(CHIP_DATA[new_chip.ID].DAMAGE), "black", "lightblue", "transparent", 9, "Arial")
         drawTextOutline(new_chip_offset_x, new_chip_offset_y + offset_per_row * 2,  "B = Cancel", "black", "red", "transparent", 9, "Arial")
     end
 
 
-
+    
 
     -- Render Mega/GigaChip limits
     new_chip_offset_y = 0
+
+    -- Mega/Giga/Sort Rectangle
+    gui.drawRectangle(new_chip_offset_x, new_chip_offset_y, 61, new_chip_offset_y + 30, "DeepSkyBlue", "SkyBlue")
+
+
     drawTextOutline(new_chip_offset_x, new_chip_offset_y,  "Mega: " , "black", "white", "transparent", 10, "Arial")
+
     
     drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y,  tostring(gauntlet_data.current_number_of_mega_chips) 
                                                                     .. " / " .. tostring(gauntlet_data.mega_chip_limit + gauntlet_data.mega_chip_limit_team) , "black", "white", "transparent", 10, "Arial")
@@ -478,18 +505,26 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
         drawTextOutline(new_chip_offset_x + 32, new_chip_offset_y + 20, "ATK", "black", "orange", "transparent", 10, "Arial")
     end
 
+    -- Loading Rectangle
+    gui.drawRectangle(new_chip_offset_x, 139, 61, 20, "Purple", "Thistle")
+
 
     if finished_loading == 0 then
         -- Still loading
-        drawTextOutline(new_chip_offset_x, 140, "Loading...", "black", "red", "transparent", 10, "Arial")
+        drawTextOutline(new_chip_offset_x, 148, "Loading...", "black", "red", "transparent", 10, "Arial")
     else
 
         -- Done loading
-        drawTextOutline(new_chip_offset_x, 130, "Loading", "black", "lightgreen", "transparent", 10, "Arial")
-        drawTextOutline(new_chip_offset_x, 140, "Done!", "black", "lightgreen", "transparent", 10, "Arial")
+        drawTextOutline(new_chip_offset_x, 138, "Loading", "black", "lightgreen", "transparent", 10, "Arial")
+        drawTextOutline(new_chip_offset_x, 148, "Done!", "black", "lightgreen", "transparent", 10, "Arial")
     end
 
-    new_chip_offset_y = 40
+    new_chip_offset_y = 30
+
+    -- Boss Rectangle
+    gui.drawRectangle(new_chip_offset_x, new_chip_offset_y + 1, 61, 30, "DarkRed", "Crimson")
+
+
     if gauntlet_data.next_boss ~= nil and gauntlet_data.loadout_chosen == 1 then
         local boss_name = gauntlet_data.next_boss.ID
 
@@ -503,9 +538,14 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
             drawTextOutline(new_chip_offset_x, new_chip_offset_y + 10,  boss_name , "black", "lightblue", "transparent", 10, "Arial")
             drawTextOutline(new_chip_offset_x, new_chip_offset_y + 20,  "(" .. boss_stage .. ")" , "black", "orange", "transparent", 10, "Arial")
         end
+    end
 
-        
+    -- Seed Rectangle
+    gui.drawRectangle(new_chip_offset_x, new_chip_offset_y + 31, 61, 22, "DarkGreen", "LightGreen")
 
+    if gauntlet_data.random_seed ~= nil then
+        drawTextOutline(new_chip_offset_x, new_chip_offset_y + 30,  "Seed: " , "black", "white", "transparent", 10, "Arial")
+        drawTextOutline(new_chip_offset_x, new_chip_offset_y + 40,  tostring(gauntlet_data.random_seed) , "black", "lightblue", "transparent", 10, "Arial")
     end
 
 end

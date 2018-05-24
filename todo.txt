@@ -1,5 +1,8 @@
 Bug:
 
+one of the bcc songs crashes
+
+
 Following entity config:
 stage = 27
 MetalCube

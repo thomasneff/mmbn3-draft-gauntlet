@@ -270,6 +270,7 @@ function battle_data_generator.random_boss(next_boss_round)
     local boss_entity = deepcopy(entity_group_of_kind[math.random(#entity_group_of_kind)])
 
     return boss_entity
+    
 
 end
 
@@ -284,13 +285,15 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
 
     -- TODO: Improve. For now, get a random entity out of the group of the current difficulty/round
     local number_of_entities = math.random(GAUNTLET_DEFS.MIN_NUMBER_OF_VIRUSES, 4)
-    print("Number of entities: ", number_of_entities)
-    print("Stage for battle: ", battle_stage)
+    
 
     -- For special battles, override number of viruses
     if GAUNTLET_DEFS.NUMBER_OF_VIRUSES_OVERRIDE[current_battle] ~= nil then
         number_of_entities = GAUNTLET_DEFS.NUMBER_OF_VIRUSES_OVERRIDE[current_battle]
     end
+
+    print("Number of entities: ", number_of_entities)
+    print("Stage for battle: ", battle_stage)
 
     --print("NUM: ", number_of_entities)
     local battle_entities = {}
@@ -309,11 +312,35 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
             grid[i][j] = 0
         end
     end
+    
 
     -- Set MegaMan as flagged, if he doesn't start on a lava/poison panel.
     local found_random_pos = 0
     local x_pos = 2
     local y_pos = 2
+
+
+    local is_metalman = false
+    if specific_entity ~= nil then
+
+        is_metalman = specific_entity.ID == "MetalMan" or specific_entity.ID == "MetalManAlpha" or specific_entity.ID == "MetalManBeta" or specific_entity.ID == "MetalManOmega"
+
+        if is_metalman then
+
+            -- Define places where MetalGear will be spawned
+            grid[1][2] = 1
+            grid[6][2] = 1
+
+            -- Define MetalMan spawn
+            grid[4][2] = 1
+
+            -- Define other default MegaMan spawn
+            x_pos = 3
+            y_pos = 2
+
+        end
+
+    end
 
     if  BATTLE_STAGE_DEFS.is_poison_panel(x_pos, y_pos, battle_stage) or
         BATTLE_STAGE_DEFS.is_lava_panel(x_pos, y_pos, battle_stage) then
@@ -327,6 +354,10 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
 
         if  BATTLE_STAGE_DEFS.is_poison_panel(x_pos, y_pos, battle_stage) or
             BATTLE_STAGE_DEFS.is_lava_panel(x_pos, y_pos, battle_stage) then
+            found_random_pos = 1
+        end
+
+        if grid[x_pos][y_pos] == 1 then
             found_random_pos = 1
         end
     end
@@ -388,19 +419,44 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
     -- If we have a specific entity, we can roll up to 3 non virus entities
     if specific_entity ~= nil then
 
+        
         for entity_idx = 2,4 do
         
             -- Roll RNG to determine if we get a virus or non-virus entity
-            local entity_kind_rng = math.random(1, 100)
-            
-            new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil, battle_stage)
-               
-            battle_entities[entity_idx] = new_entity
-    
+            if not is_metalman then
+                local entity_kind_rng = math.random(1, 100)
+                if entity_kind_rng < GAUNTLET_DEFS.BOSS_NON_VIRUS_ENTITY_CHANCE then
+                    new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil, battle_stage)
+                
+                    battle_entities[#battle_entities + 1] = new_entity
+                end
+            end
     
             --print("Added entity: ", entity_idx, "/", number_of_entities)
             --print(battle_entities[entity_idx].BATTLE_DATA.X_POS)
             --print(battle_entities[entity_idx].BATTLE_DATA.Y_POS)
+        end
+
+        if is_metalman then
+
+            battle_entities[#battle_entities].BATTLE_DATA.X_POS = 4
+            battle_entities[#battle_entities].BATTLE_DATA.Y_POS = 2
+
+            new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.MetalGear, nil, battle_stage)
+            new_entity.BATTLE_DATA.X_POS = 1
+            new_entity.BATTLE_DATA.Y_POS = 2  
+            battle_entities[#battle_entities + 1] = new_entity
+
+            new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.MetalGear, nil, battle_stage)
+            new_entity.BATTLE_DATA.X_POS = 6
+            new_entity.BATTLE_DATA.Y_POS = 2  
+            battle_entities[#battle_entities + 1] = new_entity
+            local entity_kind_rng = math.random(1, 100)
+            if entity_kind_rng < GAUNTLET_DEFS.BOSS_NON_VIRUS_ENTITY_CHANCE then
+                new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil, battle_stage)
+                battle_entities[#battle_entities + 1] = new_entity
+            end
+
         end
 
     end

@@ -58,9 +58,9 @@ local BattleMusicList =
     "mmbn6/19",     -- digital strider
     "mmbn6/21",     -- battle field
     "mmbn6/32",     -- two of braves
-    "mmbcc/1",      -- main theme
-    "mmbcc/12",     -- battle bgm 1
-    "mmbcc/13",     -- battle bgm 2
+    --"mmbcc/1",      -- main theme
+    --"mmbcc/12",     -- battle bgm 1
+    --"mmbcc/13",     -- battle bgm 2
 } 
 
 
@@ -132,7 +132,7 @@ local BossMusicList =
     "mmbn6/22",     -- surge of power!
     "mmbn6/23",     -- decisive battle, cyber beasts!
     "mmbn6/34",     -- ??? (seriously, I didn't find this in the rockman.exe sound box)
-    "mmbcc/14",     -- battle bgm 3
+    --"mmbcc/14",     -- battle bgm 3
 
 } 
 

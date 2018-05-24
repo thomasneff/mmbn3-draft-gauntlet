@@ -6,7 +6,7 @@ local HP_INCREASE = {
 
 }
 
-local HP_INCREASE_PER_ROUND = {50, 100, 200, 300, 400}
+local HP_INCREASE_PER_ROUND = {75, 150, 300, 400, 500}
 local DAMAGE_INCREASE_MULT = {-0, -5, -5, -10, -10}
 
 

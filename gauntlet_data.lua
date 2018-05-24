@@ -106,4 +106,9 @@ gauntlet_data.copy_paste_active_number_of_buffs = 0
 
 gauntlet_data.battle_stages = {}
 
+gauntlet_data.top_tier_active = 0
+gauntlet_data.top_tier_chance = 0
+gauntlet_data.random_seed = nil
+gauntlet_data.fixed_random_seed = nil
+
 return gauntlet_data

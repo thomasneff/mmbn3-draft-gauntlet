@@ -2274,7 +2274,7 @@ ENTITIES.Twins.AI_BYTES                     = {}
 ENTITIES.Twins.AI_BYTES[0x00]               = 0xB4                              -- (??). Probably some kind of delay.
 ENTITIES.Twins.AI_BYTES[0x01]               = 0x1E                              -- Damage.
 ENTITIES.Twins.AI_BYTES[0x02]               = 0x78                              -- (??). Probably some kind of delay.
-ENTITIES.Twins.BATTLE_NUMBERS               = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+--ENTITIES.Twins.BATTLE_NUMBERS               = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.Twinner                            = new_base_entity(ENTITY_KIND.Virus, "Twinner")
 ENTITIES.Twinner.NAME                       = "Twinner"
@@ -2284,7 +2284,7 @@ ENTITIES.Twinner.AI_BYTES                   = {}
 ENTITIES.Twinner.AI_BYTES[0x00]             = 0x8C                              -- (??). Probably some kind of delay.
 ENTITIES.Twinner.AI_BYTES[0x01]             = 0x3C                              -- Damage.
 ENTITIES.Twinner.AI_BYTES[0x02]             = 0x64                              -- (??). Probably some kind of delay.
-ENTITIES.Twinner.BATTLE_NUMBERS             = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+--ENTITIES.Twinner.BATTLE_NUMBERS             = TIER_2_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.Twinnest                           = new_base_entity(ENTITY_KIND.Virus, "Twinnest")
 ENTITIES.Twinnest.NAME                      = "Twinnest"
@@ -2294,7 +2294,7 @@ ENTITIES.Twinnest.AI_BYTES                  = {}
 ENTITIES.Twinnest.AI_BYTES[0x00]            = 0x64                              -- (??). Probably some kind of delay.
 ENTITIES.Twinnest.AI_BYTES[0x01]            = 0x5A                              -- Damage.
 ENTITIES.Twinnest.AI_BYTES[0x02]            = 0x50                              -- (??). Probably some kind of delay.
-ENTITIES.Twinnest.BATTLE_NUMBERS            = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+--ENTITIES.Twinnest.BATTLE_NUMBERS            = TIER_3_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ENTITIES.TwinsOmega                         = new_base_entity(ENTITY_KIND.Virus, "TwinsOmega")
 ENTITIES.TwinsOmega.NAME                    = "Twins\003"
@@ -2304,7 +2304,7 @@ ENTITIES.TwinsOmega.AI_BYTES                = {}
 ENTITIES.TwinsOmega.AI_BYTES[0x00]          = 0x3C                              -- (??). Probably some kind of delay.
 ENTITIES.TwinsOmega.AI_BYTES[0x01]          = 0x96                              -- Damage.
 ENTITIES.TwinsOmega.AI_BYTES[0x02]          = 0x3C                              -- (??). Probably some kind of delay.
-ENTITIES.TwinsOmega.BATTLE_NUMBERS          = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
+--ENTITIES.TwinsOmega.BATTLE_NUMBERS          = TIER_4_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2376,7 +2376,7 @@ ENTITIES.BoomerOmega.BATTLE_NUMBERS         = TIER_4_BATTLES_WITHOUT_BOSSES     
 
 ENTITIES.FlashMan                           = new_base_entity(ENTITY_KIND.Virus, "FlashMan")
 ENTITIES.FlashMan.NAME                      = "FlashMan"
-ENTITIES.FlashMan.HP_BASE                   = 300
+ENTITIES.FlashMan.HP_BASE                   = 500
 ENTITIES.FlashMan.ELEMENT                   = ENTITY_ELEMENT_DEFS.ELEMENT_ELEC
 ENTITIES.FlashMan.AI_BYTES                  = {}
 ENTITIES.FlashMan.AI_BYTES[0x00]            = 0x0A                              -- (??).
@@ -2415,6 +2415,7 @@ ENTITIES.FlashManOmega.BATTLE_NUMBERS       = TIER_4_MINIBOSS_BATTLES           
 
 ENTITIES.BeastMan                           = new_base_entity(ENTITY_KIND.Virus, "BeastMan")
 ENTITIES.BeastMan.BATTLE_NUMBERS            = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.BeastMan.HP_BASE                   = 500
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2455,6 +2456,7 @@ ENTITIES.BubbleManOmega.BATTLE_NUMBERS      = TIER_4_MINIBOSS_BATTLES           
 
 ENTITIES.DesertMan                          = new_base_entity(ENTITY_KIND.Virus, "DesertMan")
 ENTITIES.DesertMan.BATTLE_NUMBERS           = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.DesertMan.HP_BASE                  = 500
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2545,6 +2547,7 @@ ENTITIES.AlphaOmega.BATTLE_NUMBERS          = TIER_4_BOSS_BATTLES               
 
 ENTITIES.GutsMan                            = new_base_entity(ENTITY_KIND.Virus, "GutsMan")
 ENTITIES.GutsMan.BATTLE_NUMBERS             = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.GutsMan.HP_BASE                    = 500
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2585,6 +2588,7 @@ ENTITIES.ProtoManOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               
 
 ENTITIES.MetalMan                           = new_base_entity(ENTITY_KIND.Virus, "MetalMan")
 ENTITIES.MetalMan.BATTLE_NUMBERS            = TIER_1_MINIBOSS_BATTLES           -- Battles in which this entity can appear.
+ENTITIES.MetalMan.HP_BASE                   = 500
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 

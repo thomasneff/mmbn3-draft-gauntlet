@@ -2,12 +2,15 @@
 local ENEMY_BASED = {}
 local ENTITIES = require "defs.entity_defs"
 local ENTITY_KIND = require "defs.entity_kind_defs"
+local ENTITY_TYPE = require "defs.entity_type_defs"
+local ENTITY_TYPE_LAST_ENTITY = require "defs.entity_type_defs_last_entity"
 local CHIP_DATA = require "defs.chip_data_defs"
 local CHIP = require "defs.chip_defs"
 local randomchoice_key = require "randomchoice_key"
 local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 local gauntlet_data = require "gauntlet_data"
 local CHIP_ID = require "defs.chip_id_defs"
+local deepcopy = require "deepcopy"
 
 function library_chips(library_number)
 
@@ -20,6 +23,33 @@ function library_chips(library_number)
     end
 
     return library_chip_data
+end
+
+function get_next_entity_tier(entity)
+
+    --print("get_next_entity_tier " .. entity.ID)
+    -- If this entity is the last of its family, just return it, we can't increase the tier
+    if ENTITY_TYPE_LAST_ENTITY[entity.ID] ~= nil then
+        return entity
+    end
+
+    -- Find position in ENTITY_TYPE, increase it by one
+    local new_entity_type = ENTITY_TYPE[entity.ID] + 1
+
+    -- Find ID of new entity
+    local new_entity_id = entity.ID
+
+    for id, type in pairs(ENTITY_TYPE) do
+        if type == new_entity_type then
+            new_entity_id = id
+            break
+        end
+    end
+
+    --print("found new entity " .. new_entity_id)
+    -- Return a copy of the new entity
+    return deepcopy(ENTITIES[new_entity_id])
+    
 end
 
 
@@ -39,6 +69,7 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
 
         if value.BATTLE_DATA.KIND == ENTITY_KIND.Virus then
             virus_entities[counter] = value
+            
             counter = counter + 1
         end
 
@@ -84,6 +115,18 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
 
                 local rng = math.random(100)
                 local rarity = 0
+
+                -- TODO: (for Top-Tier): find entity type with ID + 1 (except LAST_ENTITY)
+
+                if gauntlet_data.top_tier_active == 1 then
+                    local top_tier_rng = math.random(100)
+                    
+                    if gauntlet_data.top_tier_active < gauntlet_data.top_tier_chance then
+
+                        -- Find next virus "tier" and replace virus_entity data with it
+                        virus_entity_data = get_next_entity_tier(virus_entity_data)
+                    end
+                end
 
                 for key, drop_entry in ipairs(virus_entity_data.DROP_TABLE) do
 

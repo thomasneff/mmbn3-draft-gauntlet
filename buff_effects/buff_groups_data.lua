@@ -41,6 +41,7 @@ local REDISTRIBUTE = require "buff_effects.redistribute"
 local COLLECTOR = require "buff_effects.collector"
 local PROGRAMADVANCE = require "buff_effects.program_advance"
 local COPYPASTE = require "buff_effects.copy_paste"
+local TOPTIER = require "buff_effects.top_tier"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -85,7 +86,8 @@ BUFF_GROUPS[1] = {
     REDISTRIBUTE,
     COLLECTOR,
     PROGRAMADVANCE,
-    COPYPASTE
+    COPYPASTE,
+    TOPTIER
 }
 
 
@@ -98,10 +100,10 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    COLLECTOR,
---    COLLECTOR,
---    COLLECTOR,
---    COLLECTOR,
+--    TOPTIER,
+--    TOPTIER,
+--    TOPTIER,
+--    TOPTIER,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

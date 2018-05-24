@@ -52,6 +52,8 @@ For this to work, you need to do the following:
 
 Patch the ROM to increase its size to contain the additional music, using the "RomPatcher" tool found in the "rom_patch" directory. Keep in mind that using the patched rom without Music Patching enabled / used will result in missing battle music. If you don't want to use Music Patching, simply use the regular Megaman Battle Network 3: Blue [US] rom.
 
+(If you want to use your own music without the ingame battle music, simply patch the ROM and disable the music patching, then you will just hear sound effects and the victory fanfare, but no battle music.)
+
 (From now on, to use Music Patching, use the patched ROM with BizHawk.)
 
 To extract music, the "SongExtractor" tool can be used when the "Song Table Address" is known. This address can be found out by using the "Sappy2006" tool, which you can find on romhacking sites.
