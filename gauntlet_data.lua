@@ -111,4 +111,8 @@ gauntlet_data.top_tier_chance = 0
 gauntlet_data.random_seed = nil
 gauntlet_data.fixed_random_seed = nil
 
+gauntlet_data.damage_reduction_additive = 0
+
+gauntlet_data.healing_increase_mult = 0
+
 return gauntlet_data

@@ -650,6 +650,8 @@ function state_logic.initialize()
     gauntlet_data.collector_active = 0
     gauntlet_data.top_tier_active = 0
     gauntlet_data.top_tier_chance = 0
+    gauntlet_data.damage_reduction_additive = 0
+    gauntlet_data.healing_increase_mult = 0
 
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
@@ -1062,10 +1064,37 @@ function state_logic.main_loop()
 
         end
 
-        if current_hp < gauntlet_data.last_hp and current_hp ~= 0 then
+
+        if current_hp < gauntlet_data.last_hp and current_hp ~= 0 then      
             print("Damage taken! (Previous HP: " .. tostring(gauntlet_data.last_hp) .. ", Current HP: " .. tostring(current_hp) .. ", Max HP: " .. tostring(gauntlet_data.mega_max_hp) .. ")")
             state_logic.damage_taken()
 
+        end
+
+        -- Check for healing
+
+        if current_hp > gauntlet_data.last_hp and current_hp ~= 0 then
+            -- Compute healing difference
+            local heal_diff = current_hp - gauntlet_data.last_hp
+            current_hp = current_hp + math.floor(heal_diff * (gauntlet_data.healing_increase_mult))
+
+            if current_hp > gauntlet_data.mega_max_hp then
+                current_hp = gauntlet_data.mega_max_hp
+            end
+
+            memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[number_of_entities] - 0x02000000, current_hp, "EWRAM")
+
+        end
+
+        -- Damage heal
+        if current_hp < gauntlet_data.last_hp and current_hp ~= 0 then
+            current_hp = current_hp + math.floor(gauntlet_data.damage_reduction_additive * (gauntlet_data.healing_increase_mult + 1.0))
+            
+            if current_hp > gauntlet_data.last_hp then
+                current_hp = gauntlet_data.last_hp
+            end
+
+            memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[number_of_entities] - 0x02000000, current_hp, "EWRAM")
         end
 
         gauntlet_data.last_hp = current_hp

@@ -1,6 +1,13 @@
+Buffs:
+
+
+Increase healing by 50%
+
+
 Bug:
 
 one of the bcc songs crashes
+
 
 
 Following entity config:

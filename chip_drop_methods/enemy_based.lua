@@ -121,7 +121,7 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
                 if gauntlet_data.top_tier_active == 1 then
                     local top_tier_rng = math.random(100)
                     
-                    if gauntlet_data.top_tier_active < gauntlet_data.top_tier_chance then
+                    if top_tier_rng < gauntlet_data.top_tier_chance then
 
                         -- Find next virus "tier" and replace virus_entity data with it
                         virus_entity_data = get_next_entity_tier(virus_entity_data)

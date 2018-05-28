@@ -7006,11 +7006,11 @@ ENTITIES.AlphaOmega.DROP_TABLE =
   },
   [2] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.AlphArmSigma, CHIP_CODE.Asterisk)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.AlphArmS, CHIP_CODE.Asterisk)
   },
   [3] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.AlphArmOmega, CHIP_CODE.Asterisk)
+    CHIP_GEN = CHIP_DEFS.new_chip_generator(CHIP_ID.AlphArmO, CHIP_CODE.Asterisk)
   },
   [4] = {
     CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,

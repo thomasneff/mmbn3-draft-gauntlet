@@ -301,3 +301,9 @@ Perfectionist is broken, if the temporary damage is there when another buff is p
 
 
 maybe define lava panels for stages, such that blackbomb can not spawn on a lava panel
+
+
+new buff: upgrade 2 (3?) random chips in folder (chip id + 1, possibly make a list of "fully upgraded chips" and don't pick them?)
+
+
+Reduce all damage by 10 (add this to reflect)

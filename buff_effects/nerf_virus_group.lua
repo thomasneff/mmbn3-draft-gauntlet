@@ -262,12 +262,12 @@ local POSSIBLE_ENTITIES = {
         "TotemOmega",
     },
 
-    {
-        "Twins",
-        "Twinner",
-        "Twinnest",
-        "TwinsOmega",
-    },
+    --{
+    --    "Twins",
+    --    "Twinner",
+    --    "Twinnest",
+    --    "TwinsOmega",
+    --},
 
     {
         "Scutz",

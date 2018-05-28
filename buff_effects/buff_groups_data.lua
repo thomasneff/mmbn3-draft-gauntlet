@@ -42,6 +42,8 @@ local COLLECTOR = require "buff_effects.collector"
 local PROGRAMADVANCE = require "buff_effects.program_advance"
 local COPYPASTE = require "buff_effects.copy_paste"
 local TOPTIER = require "buff_effects.top_tier"
+local LEVELUP = require "buff_effects.level_up"
+local MEDIC = require "buff_effects.medic"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -100,10 +102,10 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    TOPTIER,
---    TOPTIER,
---    TOPTIER,
---    TOPTIER,
+--    MEDIC,
+--    REFLECT,
+--    REFLECT,
+--    MEDIC,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])
