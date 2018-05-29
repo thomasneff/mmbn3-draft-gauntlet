@@ -10,7 +10,7 @@ local SET_STAGE = require "buff_effects.set_stage"
 local BUSTER_SPEEDPLUS = require "buff_effects.buster_speedplus"
 local BUSTER_ATTACKPLUS = require "buff_effects.buster_attackplus"
 local STYLE_WEAPONLEVELPLUS = require "buff_effects.style_weaponlevelplus"
-local BUSTER_SPEEDPLUS = require "buff_effects.buster_speedplus"
+local BUSTER_CHARGEPLUS = require "buff_effects.buster_chargeplus"
 local CUSTOMPLUS = require "buff_effects.customplus"
 local SUPERARMOR = require "buff_effects.superarmor"
 local UNDERSHIRT = require "buff_effects.undershirt"
@@ -44,6 +44,8 @@ local COPYPASTE = require "buff_effects.copy_paste"
 local TOPTIER = require "buff_effects.top_tier"
 local LEVELUP = require "buff_effects.level_up"
 local MEDIC = require "buff_effects.medic"
+local SPIKEDARMOR = require "buff_effects.spiked_armor"
+local FOLDERBAK = require "buff_effects.folderbak"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -53,11 +55,12 @@ local BUFF_GROUPS = {
 
 BUFF_GROUPS[1] = {
     HP_INCREASE,
+    NERF_VIRUS_GROUP,
     SET_STAGE,
     BUSTER_SPEEDPLUS,
     BUSTER_ATTACKPLUS,
     STYLE_WEAPONLEVELPLUS,
-    BUSTER_SPEEDPLUS,
+    BUSTER_CHARGEPLUS,
     CUSTOMPLUS,
     SUPERARMOR,
     UNDERSHIRT,
@@ -71,7 +74,6 @@ BUFF_GROUPS[1] = {
     FLOATSHOES,
     REFLECT,
     ELEMENT_CHIP_DAMAGE_INCREASE,
-    NERF_VIRUS_GROUP,
     SWORD_CHIP_DAMAGE_INCREASE,
     STANDARD_CHIP_DAMAGE_INCREASE,
     DROP_RARITY_INCREASE,
@@ -81,15 +83,19 @@ BUFF_GROUPS[1] = {
     PERFECTIONIST,
     REGENERATOR,
     MEMEBOMB,
-    PAWNMINATOR,
     RNGESUS,
+    PAWNMINATOR,
     SKILLNOTLUCK,
     SHOOTINGSTARS,
     REDISTRIBUTE,
     COLLECTOR,
     PROGRAMADVANCE,
     COPYPASTE,
-    TOPTIER
+    TOPTIER,
+    LEVELUP,
+    MEDIC,
+    SPIKEDARMOR,
+    FOLDERBAK
 }
 
 
@@ -102,10 +108,10 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    MEDIC,
---    REFLECT,
---    REFLECT,
---    MEDIC,
+--    SPIKEDARMOR,
+--    SPIKEDARMOR,
+--    SPIKEDARMOR,
+--    SPIKEDARMOR,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

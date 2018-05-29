@@ -26,6 +26,7 @@ local deepcopy = require "deepcopy"
 local CHIP_DROP_METHODS = require "chip_drop_methods.chip_drop_method_defs"
 local MusicLoader = require "music_loader"
 local json = require "json"
+local randomchoice_key = require "randomchoice_key"
 
 
 -- TODO: possibly add more states.
@@ -82,6 +83,9 @@ state_logic.battle_data = {}
 
 state_logic.CHIP_DATA_COPY = {}
 state_logic.INITIAL_CHIP_DATA = nil
+
+state_logic.in_battle_rng_values = nil
+
 
 function state_logic.next_round()
 
@@ -585,6 +589,14 @@ function state_logic.initialize()
     print("Seed: " .. gauntlet_data.random_seed)
     math.randomseed(gauntlet_data.random_seed)
 
+    -- Generate initial random values for in-battle rng (e.g. random reflect)
+    -- This is so that the draft is not changed when damage is taken using these buffs.
+    state_logic.in_battle_rng_values = {}
+    for i = 1, 1000 do 
+        state_logic.in_battle_rng_values[#state_logic.in_battle_rng_values + 1] = math.random()
+    end
+    state_logic.in_battle_rng_count = 0
+
     --savestate.load(state_logic.initial_state)
     
 
@@ -652,6 +664,10 @@ function state_logic.initialize()
     gauntlet_data.top_tier_chance = 0
     gauntlet_data.damage_reduction_additive = 0
     gauntlet_data.healing_increase_mult = 0
+    gauntlet_data.damage_reflect_all_percent = 0
+    gauntlet_data.damage_reflect_random_percent = 0
+    gauntlet_data.enemies_hp_regen_per_frame = 0
+    gauntlet_data.enemies_hp_regen_accum = 0
 
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
@@ -784,6 +800,7 @@ function state_logic.update_battle_statistics()
     picked_chip = {}
     current_folder = {}
     entities = {}
+    buff_descriptions = {}
 
     for k, v in pairs(state_logic.activated_buffs) do
         activated_buffs[k] = v.NAME
@@ -809,6 +826,12 @@ function state_logic.update_battle_statistics()
         end  
     end
 
+    for k, v in pairs(state_logic.activated_buffs) do
+        buff_descriptions[#buff_descriptions + 1] = v:get_brief_description()
+    end
+
+
+    
     gauntlet_data.statistics_container[#gauntlet_data.statistics_container + 1] = 
     {
         RANDOM_SEED = deepcopy(gauntlet_data.random_seed),
@@ -821,7 +844,8 @@ function state_logic.update_battle_statistics()
         ENTITIES = deepcopy(entities),
         LOST_HP = deepcopy(state_logic.stats_lost_hp),
         REPLACED_CHIP = deepcopy(state_logic.replaced_chip),
-        BATTLE_STAGE = deepcopy(gauntlet_data.battle_stages[state_logic.current_battle - 1])
+        BATTLE_STAGE = deepcopy(gauntlet_data.battle_stages[state_logic.current_battle - 1]),
+        ACTIVATED_BUFF_DESCRIPTIONS = deepcopy(buff_descriptions)
     }
 
     --print(gauntlet_data.statistics_container[#gauntlet_data.statistics_container])
@@ -1066,13 +1090,12 @@ function state_logic.main_loop()
 
 
         if current_hp < gauntlet_data.last_hp and current_hp ~= 0 then      
-            print("Damage taken! (Previous HP: " .. tostring(gauntlet_data.last_hp) .. ", Current HP: " .. tostring(current_hp) .. ", Max HP: " .. tostring(gauntlet_data.mega_max_hp) .. ")")
+            --print("Damage taken! (Previous HP: " .. tostring(gauntlet_data.last_hp) .. ", Current HP: " .. tostring(current_hp) .. ", Max HP: " .. tostring(gauntlet_data.mega_max_hp) .. ")")
             state_logic.damage_taken()
 
         end
 
         -- Check for healing
-
         if current_hp > gauntlet_data.last_hp and current_hp ~= 0 then
             -- Compute healing difference
             local heal_diff = current_hp - gauntlet_data.last_hp
@@ -1086,8 +1109,82 @@ function state_logic.main_loop()
 
         end
 
-        -- Damage heal
+        -- Damage heal and damage reflect
         if current_hp < gauntlet_data.last_hp and current_hp ~= 0 then
+
+            local damage_taken = gauntlet_data.last_hp - current_hp
+            -- Compute reflect damage
+            local reflected_damage = damage_taken * gauntlet_data.damage_reflect_random_percent
+            
+
+            if gauntlet_data.damage_reflect_random_percent ~= 0 then
+                -- Compute a random enemy, make sure to use a different rng here
+                local rng_val = state_logic.in_battle_rng_values[(state_logic.in_battle_rng_count + 1)]
+                state_logic.in_battle_rng_count = state_logic.in_battle_rng_count + 1
+                if state_logic.in_battle_rng_count > #state_logic.in_battle_rng_values then
+                    state_logic.in_battle_rng_count = 0
+                end
+                local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[number_of_entities]
+
+                local enemy_hp_values = {}
+                local enemy_ewram_addresses = {}
+
+                for key, address in pairs(enemy_addresses) do
+                    local ewram_address = address - 0x02000000
+                    local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
+                    if enemy_hp_value ~= 0 then
+                        enemy_hp_values[#enemy_hp_values + 1] = enemy_hp_value
+                        enemy_ewram_addresses[#enemy_ewram_addresses + 1] = ewram_address
+                    end
+                end
+
+                -- Choose a random one
+                local chosen_rng_index = math.floor((rng_val * (#enemy_hp_values))) + 1.0
+                if chosen_rng_index == 0 then
+                    chosen_rng_index = 1
+                end
+
+                local chosen_ewram_address = enemy_ewram_addresses[chosen_rng_index]
+
+                
+
+                local new_enemy_hp_value = enemy_hp_values[chosen_rng_index] - reflected_damage
+
+                if new_enemy_hp_value < 0 then
+                    new_enemy_hp_value = 0
+                end
+
+                -- Write back new HP
+                memory.write_u16_le(chosen_ewram_address, new_enemy_hp_value, "EWRAM")
+            end
+
+            if gauntlet_data.damage_reflect_all_percent ~= 0 then
+
+                local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[number_of_entities]
+
+                for key, address in pairs(enemy_addresses) do
+                    local ewram_address = address - 0x02000000
+                    local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
+                    if enemy_hp_value ~= 0 then
+                        -- Compute reflect damage
+                        local reflected_damage = damage_taken * gauntlet_data.damage_reflect_all_percent
+
+                        local new_enemy_hp_value = enemy_hp_value - reflected_damage
+
+                        if new_enemy_hp_value < 0 then
+                            new_enemy_hp_value = 0
+                        end
+
+                        -- Write back new HP
+                        memory.write_u16_le(ewram_address, new_enemy_hp_value, "EWRAM")
+
+                    end
+                end
+
+
+                
+            end
+
             current_hp = current_hp + math.floor(gauntlet_data.damage_reduction_additive * (gauntlet_data.healing_increase_mult + 1.0))
             
             if current_hp > gauntlet_data.last_hp then
@@ -1095,6 +1192,43 @@ function state_logic.main_loop()
             end
 
             memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[number_of_entities] - 0x02000000, current_hp, "EWRAM")
+
+            
+            
+        end
+
+        -- Check enemy HP regen
+        if gauntlet_data.enemies_hp_regen_per_frame ~= 0 then
+
+            gauntlet_data.enemies_hp_regen_accum = gauntlet_data.enemies_hp_regen_accum + gauntlet_data.enemies_hp_regen_per_frame
+
+            if gauntlet_data.enemies_hp_regen_accum > 1 then
+
+                gauntlet_data.enemies_hp_regen_accum = 0
+                
+            
+                local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[number_of_entities]
+
+                for key, address in pairs(enemy_addresses) do
+                    local ewram_address = address - 0x02000000
+                    local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
+                    local enemy_max_hp_value = memory.read_u16_le(ewram_address + 2, "EWRAM")
+                    if enemy_hp_value ~= 0 then
+
+                        local new_enemy_hp_value = enemy_hp_value + 1
+
+                        if new_enemy_hp_value > enemy_max_hp_value then
+                            new_enemy_hp_value = enemy_max_hp_value
+                        end
+
+                        -- Write back new HP
+                        memory.write_u16_le(ewram_address, new_enemy_hp_value, "EWRAM")
+
+                    end
+                end
+
+            end
+
         end
 
         gauntlet_data.last_hp = current_hp

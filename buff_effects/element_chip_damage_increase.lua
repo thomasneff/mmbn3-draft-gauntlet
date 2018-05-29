@@ -18,7 +18,7 @@ local ELEMENT_NAMES =
 }
 
 local DAMAGE_INCREASE_ADD = {10, 20, 30, 40, 50}
-local DAMAGE_INCREASE_MULT = {10, 20, 30, 40, 50}
+local DAMAGE_INCREASE_MULT = {20, 30, 40, 50, 60}
 
 function ELEMENT_CHIP_DAMAGE_INCREASE:activate(current_round)
 

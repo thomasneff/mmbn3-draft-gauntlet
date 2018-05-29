@@ -2748,7 +2748,7 @@ ENTITIES.SerenadeOmega.BATTLE_NUMBERS       = TIER_4_BOSS_BATTLES               
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ENTITIES.Bass                               = new_base_entity(ENTITY_KIND.Virus, "Bass")
-ENTITIES.Bass.BATTLE_NUMBERS                = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
+--ENTITIES.Bass.BATTLE_NUMBERS                = TIER_3_BOSS_BATTLES               -- Battles in which this entity can appear.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 

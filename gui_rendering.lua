@@ -266,9 +266,9 @@ function gui_rendering.render_buffs(buffs, finished_loading, buff_render_offset)
         for row_idx = 1,num_chips_per_col do
 
             if row_idx % 2 == 0 then
-                gui.drawRectangle(0, y_offset, 239, 19, "LightBlue", "LightCyan")
+                gui.drawRectangle(0, y_offset, 239, 19, "DarkBlue", "LightCyan")
             else
-                gui.drawRectangle(0, y_offset, 239, 19, "Black", "white")
+                gui.drawRectangle(0, y_offset, 239, 19, "Maroon", "MistyRose")
             end
 
             if buffs[chip_counter] ~= nil then

@@ -115,4 +115,10 @@ gauntlet_data.damage_reduction_additive = 0
 
 gauntlet_data.healing_increase_mult = 0
 
+gauntlet_data.damage_reflect_all_percent = 0
+gauntlet_data.damage_reflect_random_percent = 0
+
+gauntlet_data.enemies_hp_regen_per_frame = 0
+gauntlet_data.enemies_hp_regen_accum = 0
+
 return gauntlet_data

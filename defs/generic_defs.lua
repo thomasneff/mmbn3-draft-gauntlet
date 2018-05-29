@@ -22,6 +22,27 @@ local defs = {
         0x02037510,
         0x02037510
     },
+    ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE =
+    {
+        [1] = {
+            0x02037294
+        },
+        [2] = {
+            0x02037294,
+            0x02037368
+        },
+        [3] = {
+            0x02037294,
+            0x02037368,
+            0x0203743C,
+        },
+        [4] = {
+            0x02037294,
+            0x02037368,
+            0x0203743C,
+            0x02037510
+        }
+    },
     MEGA_CURRENT_HP_ADDRESS_DURING_LOADING = 0x020018A0,
     MEGA_MAX_HP_ADDRESS_DURING_BATTLE_3_ENEMIES = 0x02037512, 
     MEGA_MAX_HP_ADDRESS_DURING_LOADING = 0x020018A2,
