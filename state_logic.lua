@@ -1829,28 +1829,31 @@ function state_logic.main_loop()
         
 
         --print("Transition to draft folder!")
-        
-
-        for draft_chip_idx = 1,GAUNTLET_DEFS.NUMBER_OF_DRAFT_CHIPS do
-            --print("idx ", draft_chip_idx)
-            state_logic.draft_selection_chips[draft_chip_idx] = gauntlet_data.folder_draft_chip_generator(#gauntlet_data.current_folder + 1)
-            --print("idxx ", draft_chip_idx)
-            state_logic.draft_selection_chips[draft_chip_idx].PRINT_NAME = state_logic.get_printable_chip_name(state_logic.draft_selection_chips[draft_chip_idx])
-        end
 
         --print("After folder draft generator")
         state_logic.update_argb_chip_icons_in_folder()
-        state_logic.update_dropped_chips_pictures(state_logic.draft_selection_chips)
+        
         --print("Folder:", gauntlet_data.current_folder)
 
         if #gauntlet_data.current_folder == 30 then
-
             gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT
-
+        else
+            for draft_chip_idx = 1,GAUNTLET_DEFS.NUMBER_OF_DRAFT_CHIPS do
+                --print("idx ", draft_chip_idx)
+                state_logic.draft_selection_chips[draft_chip_idx] = gauntlet_data.folder_draft_chip_generator(#gauntlet_data.current_folder + 1)
+                --print("idxx ", draft_chip_idx)
+                state_logic.draft_selection_chips[draft_chip_idx].PRINT_NAME = state_logic.get_printable_chip_name(state_logic.draft_selection_chips[draft_chip_idx])
+            end
+            state_logic.update_dropped_chips_pictures(state_logic.draft_selection_chips)
         end
         
+        state_logic.update_argb_chip_icons_in_folder()
         memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         client.pause()
+        
+
+        
+        
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.DRAFT_FOLDER then
         

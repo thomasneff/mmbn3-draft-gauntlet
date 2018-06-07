@@ -17,7 +17,7 @@ function Medic:deactivate(current_round)
 end
 
 function Medic:get_description(current_round)
-    return "Healing +" .. tostring(HEALING_INCREASE_MULT * 100) .. "% more effective!"
+    return "Healing is +" .. tostring(HEALING_INCREASE_MULT * 100) .. "% more effective!"
 end
 
 function Medic:get_brief_description()

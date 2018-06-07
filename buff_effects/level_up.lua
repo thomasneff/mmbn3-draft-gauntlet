@@ -102,7 +102,7 @@ end
 function is_chip_id_last_chip(chip_id)
 
     for k, v in pairs(CHIP_ID_LAST) do
-
+        --print("id = " .. tostring(chip_id) .. ", v = " .. tostring(v) .. " eq = " .. tostring(v == chip_id))
         if v == chip_id then
             return true
         end
@@ -133,8 +133,8 @@ function LEVEL_UP:activate(current_round)
 
         local chip = gauntlet_data.current_folder[shuffle_indices[chip_idx]]
 
-        -- Check if chip is the last of its range
-        if is_chip_id_last_chip(chip_id) then
+        -- Check if chip is not the last of its range
+        if not is_chip_id_last_chip(chip.ID) then
             
             self.num_replaced_chips = self.num_replaced_chips + 1
 

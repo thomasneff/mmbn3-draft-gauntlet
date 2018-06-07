@@ -97,7 +97,7 @@ function CHIP.new_chip_with_random_code_from_list_generator(chip_id, chip_codes)
 end
 
 
-function CHIP.new_chip_generator(chip_id, chip_code)
+function CHIP.new_chip_generator(chip_id, chip_code, chip_rarity)
 
     function gen()
         new_chip = deepcopy(CHIP_TEMPLATE)
@@ -108,6 +108,13 @@ function CHIP.new_chip_generator(chip_id, chip_code)
         else
             new_chip.CODE = randomchoice(CHIP_CODE)
         end
+
+        if chip_rarity ~= nil then
+            new_chip.RARITY = chip_rarity
+        else
+            new_chip.RARITY = 0
+        end
+
         new_chip.ID = chip_id
 
 

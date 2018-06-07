@@ -108,10 +108,10 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    UNDERSHIRT,
---    UNDERSHIRT,
---    UNDERSHIRT,
---    REFLECT,
+--    LEVELUP,
+--    LEVELUP,
+--    LEVELUP,
+--    LEVELUP,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])
