@@ -4,6 +4,7 @@ local deepcopy = require "deepcopy"
 local Reflect = {
     NAME = "Reflect",
     REMOVE_AFTER_ACTIVATION = 1,
+    REMOVE_OTHER_BUFF_NAME = "UnderShirt"
 }
 
 local DAMAGE_REDUCTION_ADDITIVE = 10

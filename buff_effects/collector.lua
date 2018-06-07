@@ -5,7 +5,7 @@ local Collector = {
     NAME = "Collector",
 }
 
-COLLECTOR_DAMAGE_PER_DUPLICATE_MULT = 0.10
+COLLECTOR_DAMAGE_PER_DUPLICATE_MULT = 0.25
 
 
 function Collector:activate(current_round)

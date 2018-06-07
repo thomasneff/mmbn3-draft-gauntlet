@@ -14,21 +14,33 @@ function JUST_MONIKA.activate()
     new_folder = {}
 
 
-    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER/3 do
+    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER/5 do
 
         new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.ProtoMnV5, CHIP_CODE.Asterisk)
 
     end
 
-    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER/3 do
+    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER/5 do
 
         new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.PlantMnV5, CHIP_CODE.Asterisk)
 
     end
 
-    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER/3 do
+    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER/5 do
 
         new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.FlashMnV5, CHIP_CODE.Asterisk)
+
+    end
+
+    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER/5 do
+
+        new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.FoldrBak, CHIP_CODE.Asterisk)
+
+    end
+
+    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER/5 do
+
+        new_folder[#new_folder + 1] = CHIP.new_chip_with_code(CHIP_ID.BassGS, CHIP_CODE.Asterisk)
 
     end
     

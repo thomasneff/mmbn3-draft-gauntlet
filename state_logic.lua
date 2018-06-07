@@ -85,6 +85,7 @@ state_logic.CHIP_DATA_COPY = {}
 state_logic.INITIAL_CHIP_DATA = nil
 
 state_logic.in_battle_rng_values = nil
+state_logic.battle_enter_lock = 0
 
 
 function state_logic.next_round()
@@ -266,6 +267,9 @@ function state_logic.on_battle_end()
        gauntlet_data.current_state = gauntlet_data.GAME_STATE.LOAD_INITIAL 
     end  
 
+    -- Reset battle enter lock
+    state_logic.battle_enter_lock = 0
+
     -- Compute lost HP
 
     local current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, "EWRAM")
@@ -311,6 +315,25 @@ function state_logic.determine_drops(number_of_drops)
 end
 
 function state_logic.on_enter_battle()
+    
+    -- Check if this is really the battle start or just a use of FoldrBak
+    -- If in the future, somehow, our check with battle_start and battle_end doesn't work, we can use this to check for FoldrBak
+    --local r9_val = emu.getregister("R9")
+    --local r6_val = emu.getregister("R6")
+
+    --print("r6 = " .. tostring(r6_val) .. ", r9 = " .. tostring(r9_val))
+
+    --if r6_val ~= 1 or r9_val ~= 0x0200AB90 then
+    --    return
+    --end
+
+    -- We simply check if we are in battle, because then it's guaranteed to be FoldrBak
+
+    if state_logic.battle_enter_lock == 1 then
+        return
+    end
+
+    state_logic.battle_enter_lock = 1
     
     MusicLoader.LoadRandomFile(state_logic.current_battle)
 
@@ -613,7 +636,7 @@ function state_logic.initialize()
     gauntlet_data.mega_style = 0x00
     gauntlet_data.mega_AirShoes = 0
     gauntlet_data.mega_FastGauge = 0
-    gauntlet_data.mega_UnderShirt = 0
+    gauntlet_data.mega_UnderShirt = 1
     gauntlet_data.mega_SuperArmor = 0
     gauntlet_data.mega_AttackPlus = 0
     gauntlet_data.mega_ChargePlus = 0
@@ -668,6 +691,7 @@ function state_logic.initialize()
     gauntlet_data.damage_reflect_random_percent = 0
     gauntlet_data.enemies_hp_regen_per_frame = 0
     gauntlet_data.enemies_hp_regen_accum = 0
+    state_logic.battle_enter_lock = 0
 
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)

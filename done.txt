@@ -311,3 +311,48 @@ Reduce all damage by 10 (add this to reflect?)
 Increase healing by 50%
 
 Spiked Armor -> would require having in-battle HP offsets...
+
+BublSide shouldn't be upgraded? <-- levelup bug
+
+UnderShirt + Reflect? <-- removed the other from the pool if one is picked
+
+Merge WeaponLevel+1 and Attack? (Attack+2 WeaponLevel+1)
+
+Collector increase bonus
+
+folderbak fucks everything:
+investigate with no$gba:
+
+    -   On battle start (1a) : r0=0, r1=1E, r2=0, r3=02001880, r4=1, r5=0, r6=1, r7=080004c0, r8=0203E902,
+                              r9=0200ab90, r10=080004c0, r11=0, r12=0, r13=03007ba8, r14=08011469, r15=080114d4
+                              cpsr=8000003F, spsr=0
+
+    -   On battle start (1b) : r0=0, r1=1E, r2=0, r3=02001880, r4=1, r5=0, r6=0, r7=080004c0, r8=0203E902,
+                              r9=0200ab90, r10=080004c0, r11=0, r12=0, r13=03007ba8, r14=08011469, r15=080114d4
+                              cpsr=8000003F, spsr=0
+
+    -   On battle start (2a) : r0=0, r1=1E, r2=0, r3=02001880, r4=1, r5=0, r6=1, r7=080004c0, r8=0203E91E,
+                              r9=0200ab90, r10=080004c0, r11=0, r12=0, r13=03007ba8, r14=08011469, r15=080114d4
+                              cpsr=8000003F, spsr=0
+
+    it seems r6 is different between the first and second ones, maybe this is also the case for folderbak!
+
+    -   On FolderBak (1a)    : r0=0, r1=1E, r2=0, r3=02001880, r4=1, r5=0, r6=1, r7=080FC50D, r8=0201CC32,
+                              r9=0203757C, r10=080004c0, r11=0, r12=0, r13=03007b94, r14=08011469, r15=080114d4
+                              cpsr=8000003F, spsr=0
+
+    -   On FolderBak (1b)    : r0=0, r1=1E, r2=0, r3=02001880, r4=1, r5=0, r6=0, r7=080FC50D, r8=0201CC32,
+                              r9=0203757C, r10=080004c0, r11=0, r12=0, r13=03007b94, r14=08011469, r15=080114d4
+                              cpsr=8000003F, spsr=0
+
+    -   On FolderBak (2a)    : r0=0, r1=1E, r2=0, r3=02001880, r4=1, r5=0, r6=1, r7=080FC50D, r8=0201CCFA,
+                              r9=0203757C, r10=080004c0, r11=0, r12=0, r13=03007b94, r14=08011469, r15=080114d4
+                              cpsr=8000003F, spsr=0
+
+    -   On FolderBak (2b)    : r0=0, r1=1E, r2=0, r3=02001880, r4=1, r5=0, r6=1, r7=080FC50D, r8=0201CCFA,
+                              r9=0203757C, r10=080004c0, r11=0, r12=0, r13=03007b94, r14=08011469, r15=080114d4
+                              cpsr=8000003F, spsr=0
+
+
+    is seems r9 is ALWAYS 0200AB90 for our gauntlet battle starts!
+    however, it is simply much simpler to check if we are already in battle xD

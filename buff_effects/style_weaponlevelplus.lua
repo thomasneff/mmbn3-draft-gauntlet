@@ -28,7 +28,7 @@ function WeaponLevelPlus:get_description(current_round)
 end
 
 function WeaponLevelPlus:get_brief_description()
-    return WeaponLevelPlus.NAME .. ": " .. "Style Weapon +1!"
+    return WeaponLevelPlus.NAME .. ": " .. "Style Weapon + 1!"
 end
 
 function WeaponLevelPlus.new()

@@ -2,6 +2,10 @@ Buffs:
 
 
 
+
+
+
+
 Buff: something awesome -> enemies regenerate 1 HP per second
 
 Add buff description to statistics container for every round, just for information

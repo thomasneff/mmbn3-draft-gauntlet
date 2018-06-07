@@ -2,7 +2,7 @@ local gauntlet_data = require "gauntlet_data"
 local deepcopy = require "deepcopy"
 
 local GigaChipPlus = {
-    NAME = "GigaChips + 1",
+    NAME = "GigaChips + 2",
 }
 
 
@@ -10,7 +10,7 @@ local GigaChipPlus = {
 function GigaChipPlus:activate(current_round)
 
     self.old_GigaChipPlus = gauntlet_data.giga_chip_limit
-    gauntlet_data.giga_chip_limit = gauntlet_data.giga_chip_limit + 1
+    gauntlet_data.giga_chip_limit = gauntlet_data.giga_chip_limit + 2
 
 end
 
@@ -23,12 +23,12 @@ end
 
 function GigaChipPlus:get_description(current_round)
 
-    return "Increase number of possible\nGigaChips in Folder by 1!"
+    return "Increase number of possible\nGigaChips in Folder by 2!"
 
 end
 
 function GigaChipPlus:get_brief_description()
-    return GigaChipPlus.NAME .. ": GigaChips +1!"
+    return GigaChipPlus.NAME .. ": GigaChips + 2!"
 end
 
 function GigaChipPlus.new()

@@ -80,6 +80,10 @@ function buff_generator.activate_buff(buff, current_round)
         buff_generator.remove_buff(buff.NAME)
     end
 
+    if buff.REMOVE_OTHER_BUFF_NAME ~= nil then
+        buff_generator.remove_buff(buff.REMOVE_OTHER_BUFF_NAME)
+    end
+
 end
 
 
