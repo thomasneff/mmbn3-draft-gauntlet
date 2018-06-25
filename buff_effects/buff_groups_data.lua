@@ -46,6 +46,7 @@ local LEVELUP = require "buff_effects.level_up"
 local MEDIC = require "buff_effects.medic"
 local SPIKEDARMOR = require "buff_effects.spiked_armor"
 local FOLDERBAK = require "buff_effects.folderbak"
+local ILLUSIONOFCHOICE = require "buff_effects.illusion_of_choice"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -95,7 +96,8 @@ BUFF_GROUPS[1] = {
     LEVELUP,
     MEDIC,
     SPIKEDARMOR,
-    FOLDERBAK
+    FOLDERBAK,
+    ILLUSIONOFCHOICE
 }
 
 
@@ -108,10 +110,10 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    LEVELUP,
---    LEVELUP,
---    LEVELUP,
---    LEVELUP,
+--    ILLUSIONOFCHOICE,
+--    ILLUSIONOFCHOICE,
+--    ILLUSIONOFCHOICE,
+--    ILLUSIONOFCHOICE,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

@@ -547,6 +547,12 @@ end
 function state_logic.shuffle_folder()
     -- This shuffles the folder according to the currently chosen sorting mode
 
+    -- Mark the highlighted chip so we can find it later
+
+    if gauntlet_data.current_folder[state_logic.folder_chip_render_index] ~= nil then
+        gauntlet_data.current_folder[state_logic.folder_chip_render_index].SPECIAL_SORT_MARK = 1
+    end
+
     if gauntlet_data.folder_shuffle_state == 0 then
         -- Alphabetically
         table.sort(gauntlet_data.current_folder, function(a, b)
@@ -572,8 +578,14 @@ function state_logic.shuffle_folder()
           end)
     end
 
-    
-    
+    if gauntlet_data.current_folder[state_logic.folder_chip_render_index] ~= nil then
+        for k,v in pairs(gauntlet_data.current_folder) do
+            if v.SPECIAL_SORT_MARK == 1 then
+                state_logic.folder_chip_render_index = k
+                v.SPECIAL_SORT_MARK = nil
+            end
+        end
+    end
 
 end
 
@@ -636,11 +648,11 @@ function state_logic.initialize()
     gauntlet_data.mega_style = 0x00
     gauntlet_data.mega_AirShoes = 0
     gauntlet_data.mega_FastGauge = 0
-    gauntlet_data.mega_UnderShirt = 1
+    gauntlet_data.mega_UnderShirt = 0
     gauntlet_data.mega_SuperArmor = 0
     gauntlet_data.mega_AttackPlus = 0
-    gauntlet_data.mega_ChargePlus = 0
-    gauntlet_data.mega_SpeedPlus = 0
+    gauntlet_data.mega_ChargePlus = 0 -- this is capped at 5, but 50 is instant-charge...?
+    gauntlet_data.mega_SpeedPlus = 0 -- this is capped at 6 (Level 7) ingame
     gauntlet_data.mega_FloatShoes = 0
     gauntlet_data.mega_BreakBuster = 0
     gauntlet_data.mega_BreakCharge = 0
@@ -691,6 +703,7 @@ function state_logic.initialize()
     gauntlet_data.damage_reflect_random_percent = 0
     gauntlet_data.enemies_hp_regen_per_frame = 0
     gauntlet_data.enemies_hp_regen_accum = 0
+    gauntlet_data.illusion_of_choice_active = 0
     state_logic.battle_enter_lock = 0
 
 
@@ -1027,6 +1040,51 @@ function state_logic.damage_taken()
 
 end
 
+function state_logic.illusion_of_choice_randomize_selected_chip()
+
+    local can_replace = false
+
+    while can_replace == false do
+        
+        state_logic.folder_chip_render_index = math.random(1, #gauntlet_data.current_folder)
+
+        if state_logic.dropped_chip.ID == -1 then
+            print("Dropped chip ID == -1")
+            return
+        end
+
+        local dropped_chip_data = CHIP_DATA[state_logic.dropped_chip.ID]
+
+        if dropped_chip_data == nil then
+            print("Dropped chip data == nil")
+            return
+        end
+
+        local is_dropped_chip_mega = (dropped_chip_data.CHIP_RANKING % 4) == 1
+        local is_dropped_chip_giga = (dropped_chip_data.CHIP_RANKING % 4) == 2
+        local folder_chip_data = CHIP_DATA[gauntlet_data.current_folder[state_logic.folder_chip_render_index].ID]
+        local is_folder_chip_mega = (folder_chip_data.CHIP_RANKING % 4) == 1
+        local is_folder_chip_giga = (folder_chip_data.CHIP_RANKING % 4) == 2
+
+        local replaces_mega_chip = is_folder_chip_mega and is_dropped_chip_mega
+
+        local replaces_giga_chip = is_folder_chip_giga and is_dropped_chip_giga
+
+        if (((dropped_chip_data.CHIP_RANKING % 4) == 1 and gauntlet_data.current_number_of_mega_chips >= gauntlet_data.mega_chip_limit + gauntlet_data.mega_chip_limit_team) 
+            or ((dropped_chip_data.CHIP_RANKING % 4) == 2 and gauntlet_data.current_number_of_giga_chips >= gauntlet_data.giga_chip_limit))
+            and replaces_mega_chip == false and replaces_giga_chip == false
+            then
+            -- We do nothing if we can't pick due to Mega/GigaChip limits. We check for replacement of Mega/Giga chips.
+            can_replace = false
+            --print("Can not replace: " .. tostring(gauntlet_data.current_folder[state_logic.folder_chip_render_index].NAME))
+        else       
+            can_replace = true
+            --print("Can replace: " .. tostring(gauntlet_data.current_folder[state_logic.folder_chip_render_index].NAME))
+        end
+
+    end
+end
+
 function state_logic.check_buff_render_offset()
 
     
@@ -1120,7 +1178,7 @@ function state_logic.main_loop()
         end
 
         -- Check for healing
-        if current_hp > gauntlet_data.last_hp and current_hp ~= 0 then
+        if current_hp > gauntlet_data.last_hp and current_hp ~= 0 and gauntlet_data.last_hp ~= nil and gauntlet_data.last_hp ~= 0 then
             -- Compute healing difference
             local heal_diff = current_hp - gauntlet_data.last_hp
             current_hp = current_hp + math.floor(heal_diff * (gauntlet_data.healing_increase_mult))
@@ -1255,8 +1313,9 @@ function state_logic.main_loop()
 
         end
 
-        gauntlet_data.last_hp = current_hp
-
+        if current_hp ~= nil and current_hp ~= 0 then
+            gauntlet_data.last_hp = current_hp
+        end
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT then
         -- We pause here and make a savestate.
@@ -1363,11 +1422,19 @@ function state_logic.main_loop()
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_REPLACE then
         state_logic.gui_change_savestate = memorysavestate.savecorestate()
         memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-        -- print(state_logic.dropped_chip)
+        --print(state_logic.dropped_chip)
         --print("Transition to chip replace.")
+        if gauntlet_data.illusion_of_choice_active == 1 then
+            state_logic.illusion_of_choice_randomize_selected_chip()
+        end
+        
+
         state_logic.shuffle_folder()
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.CHIP_REPLACE
         state_logic.should_redraw = 1
+
+        -- TODO: special case when no chip has dropped yet for gauntlet_data.illusion_of_choice_active
+        -- TODO: keep cursor when sorting
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.CHIP_REPLACE then
         --print("IN CHIP_REPLACE")
@@ -1392,8 +1459,10 @@ function state_logic.main_loop()
             state_logic.should_redraw = 1
         end
 
+
         if gauntlet_data.folder_view == 0 or gauntlet_data.folder_view == 1 then
 
+            
             if input_handler.inputs_pressed["Start"] == true then
                 -- Shuffle folder according to Alpha/Code/ID/Attack
                 gauntlet_data.folder_shuffle_state = (gauntlet_data.folder_shuffle_state + 1) % 4
@@ -1402,40 +1471,41 @@ function state_logic.main_loop()
                 state_logic.should_redraw = 1
             end
 
-            --print (input_handler.inputs_pressed["A"])
-            if input_handler.inputs_pressed["Left"] == true then
-                state_logic.folder_chip_render_index = (state_logic.folder_chip_render_index - num_chips_per_col) % (num_chips_per_folder)
-                if state_logic.folder_chip_render_index == 0 then
-                    state_logic.folder_chip_render_index = 30
+            if gauntlet_data.illusion_of_choice_active == 0 then
+                --print (input_handler.inputs_pressed["A"])
+                if input_handler.inputs_pressed["Left"] == true then
+                    state_logic.folder_chip_render_index = (state_logic.folder_chip_render_index - num_chips_per_col) % (num_chips_per_folder)
+                    if state_logic.folder_chip_render_index == 0 then
+                        state_logic.folder_chip_render_index = 30
+                    end
+                    state_logic.should_redraw = 1
                 end
-                state_logic.should_redraw = 1
-            end
 
-            if input_handler.inputs_pressed["Right"] == true then
-                state_logic.folder_chip_render_index = (state_logic.folder_chip_render_index + num_chips_per_col) % (num_chips_per_folder)
-                if state_logic.folder_chip_render_index == 0 then
-                    state_logic.folder_chip_render_index = 30
+                if input_handler.inputs_pressed["Right"] == true then
+                    state_logic.folder_chip_render_index = (state_logic.folder_chip_render_index + num_chips_per_col) % (num_chips_per_folder)
+                    if state_logic.folder_chip_render_index == 0 then
+                        state_logic.folder_chip_render_index = 30
+                    end
+                    state_logic.should_redraw = 1
                 end
-                state_logic.should_redraw = 1
-            end
 
-            if input_handler.inputs_pressed["Up"] == true then
-                state_logic.folder_chip_render_index = (state_logic.folder_chip_render_index - 1) % (num_chips_per_folder + 1)
-                --print ("UP PRESSED")
-                if state_logic.folder_chip_render_index == 0 then
-                    state_logic.folder_chip_render_index = 30
+                if input_handler.inputs_pressed["Up"] == true then
+                    state_logic.folder_chip_render_index = (state_logic.folder_chip_render_index - 1) % (num_chips_per_folder + 1)
+                    --print ("UP PRESSED")
+                    if state_logic.folder_chip_render_index == 0 then
+                        state_logic.folder_chip_render_index = 30
+                    end
+                    state_logic.should_redraw = 1
                 end
-                state_logic.should_redraw = 1
-            end
 
-            if input_handler.inputs_pressed["Down"] == true then
-                state_logic.folder_chip_render_index = (state_logic.folder_chip_render_index + 1) % (num_chips_per_folder + 1)
-                if state_logic.folder_chip_render_index == 0 then
-                    state_logic.folder_chip_render_index = 1
+                if input_handler.inputs_pressed["Down"] == true then
+                    state_logic.folder_chip_render_index = (state_logic.folder_chip_render_index + 1) % (num_chips_per_folder + 1)
+                    if state_logic.folder_chip_render_index == 0 then
+                        state_logic.folder_chip_render_index = 1
+                    end
+                    state_logic.should_redraw = 1
                 end
-                state_logic.should_redraw = 1
             end
-
             
 
             -- If MusicLoader is still loading, we simply do not handle the event
@@ -1487,14 +1557,15 @@ function state_logic.main_loop()
                     state_logic.should_redraw = 1
                 end
             end
-
-            if input_handler.inputs_pressed["B"] == true and (MusicLoader.FinishedLoading == 1 or GENERIC_DEFS.ENABLE_MUSIC_PATCHING == 0)  then
-                -- Just skip - we didn't want a chip!
-                --print("B pressed")
-                gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
-                state_logic.replaced_chip = "Skipped Chip"
-                
-                state_logic.should_redraw = 1
+            if gauntlet_data.illusion_of_choice_active == 0 and state_logic.dropped_chip.ID ~= -1 then
+                if input_handler.inputs_pressed["B"] == true and (MusicLoader.FinishedLoading == 1 or GENERIC_DEFS.ENABLE_MUSIC_PATCHING == 0)  then
+                    -- Just skip - we didn't want a chip!
+                    --print("B pressed")
+                    gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
+                    state_logic.replaced_chip = "Skipped Chip"
+                    
+                    state_logic.should_redraw = 1
+                end
             end
         end
         --print(state_logic.folder_chip_render_index)
@@ -1534,24 +1605,8 @@ function state_logic.main_loop()
         client.pause()
 
         -- Determine number of Mega/Giga chips in folder.
-        if state_logic.initial_chip_amount_flag == 0 then
+        state_logic.update_folder_mega_giga_chip_counts()
 
-            for key, chip in pairs(gauntlet_data.current_folder) do
-
-                if (CHIP_DATA[chip.ID].CHIP_RANKING % 4) == 1 then
-        
-                    gauntlet_data.current_number_of_mega_chips = gauntlet_data.current_number_of_mega_chips + 1
-        
-                elseif (CHIP_DATA[chip.ID].CHIP_RANKING % 4) == 2 then
-        
-                    gauntlet_data.current_number_of_giga_chips = gauntlet_data.current_number_of_giga_chips + 1
-        
-                end
-            
-            end
-
-            state_logic.initial_chip_amount_flag = 1
-        end
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.BUFF_SELECT then
         --print ("IN BUFF_SELECT")
 

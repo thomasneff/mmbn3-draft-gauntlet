@@ -141,7 +141,7 @@ local MusicLoader =
 {
     FinishedLoading = 0,
     StartedLoading = 0,
-    BlockSize = 5000,
+    BlockSize = 2000,
     transpose_offset = 1,
     bpm_offset = 3,
     transpose = 4,

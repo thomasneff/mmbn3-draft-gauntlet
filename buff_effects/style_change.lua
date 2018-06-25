@@ -15,7 +15,7 @@ function STYLE_CHANGE:activate(current_round)
     gauntlet_data.mega_style = self.STYLE
 
     if self.STYLE >= 0x11 and self.STYLE <= 0x14 then
-        gauntlet_data.cust_style_number_of_chips = 1
+        gauntlet_data.cust_style_number_of_chips = gauntlet_data.cust_style_number_of_chips + 1
     else
         gauntlet_data.cust_style_number_of_chips = 0
     end
@@ -57,25 +57,25 @@ function STYLE_CHANGE:get_brief_description()
 
     if self.STYLE >= 0x31 and self.STYLE <= 0x34 then
 
-        ret = ret .. " Invis, "
+        ret = ret .. "Invis, "
 
     else
 
         if self.STYLE % 4 == 0 then
 
-            ret = ret .. " WoodTorn, "
+            ret = ret .. "WoodTorn, "
 
         elseif self.STYLE % 4 == 1 then
 
-            ret = ret .. " ZapRing, "
+            ret = ret .. "ZapRing, "
 
         elseif self.STYLE % 4 == 2 then
 
-            ret = ret .. " FlamThrwr, "
+            ret = ret .. "FlamThrwr, "
 
         else
 
-            ret = ret .. " Bubbler, "
+            ret = ret .. "Bubbler, "
 
         end
 

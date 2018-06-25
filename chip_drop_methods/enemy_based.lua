@@ -203,7 +203,7 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
         --print("RESET SKILL_NOT_LUCK because ULTRARARE")
     end
 
-
+    
     return dropped_chips
 
 end

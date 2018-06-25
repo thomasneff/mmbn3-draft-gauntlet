@@ -1112,6 +1112,11 @@ function DRAFT_BALANCED_RARITY.random_chip_generator(chip_index)
         chip.CODE = randomchoice(random_codes)
     end
 
+    -- Make sure that no common rarity chip has asterisk code
+    while chip.RARITY == 0 and chip.CODE == CHIP_CODE.Asterisk do
+        chip.CODE = randomchoice(random_codes)
+    end
+
     --print("Before return")
     return chip
 end
@@ -1148,7 +1153,15 @@ function DRAFT_BALANCED_RARITY.activate()
     random_codes[8] = math.random(18, 21)
     random_codes[9] = math.random(22, 23)
     random_codes[10] = math.random(24, 25)
-    random_codes[11] = 26
+    
+    -- Make asterisk code more unlikely
+    for i = 11,30 do
+      random_codes[i] = random_codes[i - 10]
+    end
+
+
+
+    random_codes[31] = 26
 
 
 

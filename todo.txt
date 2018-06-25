@@ -1,8 +1,16 @@
 Buffs:
 
 
+why does GelRain (MetaGel 1 Q/R/S not work?)
 
 
+
+
+A buff that increases the number of dropped chips (change dropped chip rendering to be able to handle more than 3)
+A buff that increases the number of dropped buffs (dropped buff rendering is already able to do this)
+
+-- TODO: special case when no chip has dropped yet for gauntlet_data.illusion_of_choice_active
+-- TODO: keep cursor when sorting (is nice anyways, but illusion of choice NEEDS it)
 
 
 

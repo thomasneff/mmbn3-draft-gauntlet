@@ -12,6 +12,10 @@ function ChargePlus:activate(current_round)
     self.old_ChargePlus = gauntlet_data.mega_ChargePlus
     gauntlet_data.mega_ChargePlus = gauntlet_data.mega_ChargePlus + 3
 
+    if gauntlet_data.mega_ChargePlus > 4 then
+        gauntlet_data.mega_ChargePlus = 4
+    end
+
 end
 
 

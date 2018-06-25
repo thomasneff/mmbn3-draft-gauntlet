@@ -11,6 +11,10 @@ function SpeedPlus:activate(current_round)
 
     self.old_SpeedPlus = gauntlet_data.mega_SpeedPlus
     gauntlet_data.mega_SpeedPlus = gauntlet_data.mega_SpeedPlus + 3
+    
+    if gauntlet_data.mega_SpeedPlus > 6 then
+        gauntlet_data.mega_SpeedPlus = 6
+    end
 
 end
 

@@ -17,6 +17,10 @@ function BreakBuster:activate(current_round)
     self.old_SpeedPlus = gauntlet_data.mega_SpeedPlus
     gauntlet_data.mega_SpeedPlus = gauntlet_data.mega_SpeedPlus + 1
 
+    if gauntlet_data.mega_SpeedPlus > 4 then
+        gauntlet_data.mega_SpeedPlus = 4
+    end
+
 end
 
 
