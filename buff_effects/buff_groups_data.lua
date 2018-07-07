@@ -47,6 +47,7 @@ local MEDIC = require "buff_effects.medic"
 local SPIKEDARMOR = require "buff_effects.spiked_armor"
 local FOLDERBAK = require "buff_effects.folderbak"
 local ILLUSIONOFCHOICE = require "buff_effects.illusion_of_choice"
+local REWIND = require "buff_effects.rewind"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -97,7 +98,8 @@ BUFF_GROUPS[1] = {
     MEDIC,
     SPIKEDARMOR,
     FOLDERBAK,
-    ILLUSIONOFCHOICE
+    ILLUSIONOFCHOICE,
+    REWIND
 }
 
 
@@ -110,10 +112,10 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    ILLUSIONOFCHOICE,
---    ILLUSIONOFCHOICE,
---    ILLUSIONOFCHOICE,
---    ILLUSIONOFCHOICE,
+--    REWIND,
+--    REWIND,
+--    REWIND,
+--    REWIND,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

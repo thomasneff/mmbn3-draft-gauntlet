@@ -40,6 +40,7 @@ state_logic.initial_state = "initial.State"
 state_logic.number_of_activated_buffs = 0
 gauntlet_data.current_folder = {}
 gauntlet_data.mega_max_hp = 100
+state_logic.stats_file_name = ""
 
 state_logic.hp_loaded = 0
 state_logic.buff_render_offset = 0
@@ -590,9 +591,7 @@ function state_logic.shuffle_folder()
 end
 
 function state_logic.export_run_statistics()
-   
-    local filename = "stats/" .. os.date("%Y_%m_%d_%H_%M_%S") .. ".json"
-    local file = assert(io.open(filename, "w"))
+    local file = assert(io.open(state_logic.stats_file_name, "w"))
     local stats_json = json.encode(gauntlet_data.statistics_container)
     file:write(stats_json)
     file:flush()
@@ -632,9 +631,10 @@ function state_logic.initialize()
     end
     state_logic.in_battle_rng_count = 0
 
+    MusicLoader.generateRNGValues()
     --savestate.load(state_logic.initial_state)
     
-
+    state_logic.stats_file_name = "stats/" .. os.date("%Y_%m_%d_%H_%M_%S") .. ".json"
     -- Undo all activated buffs
     state_logic.undo_activated_buffs()
     state_logic.number_of_activated_buffs = 0
@@ -705,6 +705,8 @@ function state_logic.initialize()
     gauntlet_data.enemies_hp_regen_accum = 0
     gauntlet_data.illusion_of_choice_active = 0
     state_logic.battle_enter_lock = 0
+    gauntlet_data.number_of_rewinds = 0
+    state_logic.rewind_savestate = nil
 
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
@@ -990,8 +992,11 @@ function state_logic.patch_before_battle_start()
     mmbn3_utils.change_megaMan_style(gauntlet_data.mega_style)
 
     mmbn3_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
+    state_logic.export_run_statistics()
 
 
+
+    state_logic.rewind_savestate = memorysavestate.savecorestate()
 
 
 end
@@ -1128,6 +1133,11 @@ function state_logic.check_buff_render_offset()
 
 end
 
+function state_logic.on_exit()
+    print ("Exiting gauntlet!")
+    state_logic.export_run_statistics()
+end
+
 function state_logic.main_loop()
 
     if DEBUG == 1 then
@@ -1158,6 +1168,13 @@ function state_logic.main_loop()
         
         -- If we died - reset
         if current_hp == 0 and state_logic.hp_loaded == 1 then
+            if gauntlet_data.number_of_rewinds > 0 and state_logic.rewind_savestate ~= nil then
+                state_logic.hp_loaded = 0
+                gauntlet_data.number_of_rewinds = gauntlet_data.number_of_rewinds - 1
+                memorysavestate.loadcorestate(state_logic.rewind_savestate)
+                print("Rewind!")
+                return
+            end
 
             print("Reset in GAME_STATE.RUNNING, number_of_virus_entities = " .. number_of_entities)
             print("MEGA_CURRENT_HP_ADDRESS [NUM_ENTITIES] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[number_of_entities] - 0x02000000, "EWRAM"))
@@ -1557,7 +1574,8 @@ function state_logic.main_loop()
                     state_logic.should_redraw = 1
                 end
             end
-            if gauntlet_data.illusion_of_choice_active == 0 and state_logic.dropped_chip.ID ~= -1 then
+            
+            if (gauntlet_data.illusion_of_choice_active == 0) or (gauntlet_data.illusion_of_choice_active and state_logic.dropped_chip.ID == -1) then
                 if input_handler.inputs_pressed["B"] == true and (MusicLoader.FinishedLoading == 1 or GENERIC_DEFS.ENABLE_MUSIC_PATCHING == 0)  then
                     -- Just skip - we didn't want a chip!
                     --print("B pressed")

@@ -356,3 +356,26 @@ investigate with no$gba:
 
     is seems r9 is ALWAYS 0200AB90 for our gauntlet battle starts!
     however, it is simply much simpler to check if we are already in battle xD
+
+
+save statistics every battle
+
+1420991722
+NLua.Exceptions.LuaScriptException: .\state_logic.lua:1151: attempt to perform arithmetic on field '?' (a nil value)
+    - it showed a single mettaur, which I think might be the "default" battle data? so it probably has not patched it, therefor leading to NUM_ENTITIES being undefined
+    - check battle data generator for round > 40
+    - I unfortunately can't reproduce this as we had "skill, not luck", which changes rng depending on how your battles go.
+    - try writing a test function that simply tests random fights of round 41 until something weird happens
+
+can't "cancel" the first initial folder screen with B?
+
+
+music RNG should have its own seed
+
+
+
+
+Rewind
+    -   once *per gauntlet*, if you would die, you instead re-load the beginning of the battle
+
+

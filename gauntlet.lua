@@ -14,7 +14,7 @@ event.onmemoryexecute(state_logic.on_enter_battle, GENERIC_DEFS.BATTLE_START_ADD
 
 event.onmemoryexecute(state_logic.on_battle_end, GENERIC_DEFS.END_OF_GAUNTLET_BATTLE_ADDRESS)
 
-
+event.onexit(state_logic.on_exit)
 -- Dump Entity drop table templates.
 
 

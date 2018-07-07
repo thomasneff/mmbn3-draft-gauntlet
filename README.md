@@ -11,7 +11,7 @@ Download BizHawk from https://github.com/TASVideos/BizHawk/releases
 
 Download the latest release of the Gauntlet files in the release section ( https://github.com/thomasneff/mmbn3-draft-gauntlet/releases )
 
-Extract all files of this repository to a directory of your choice (I will refer to that directory from now on as GAUNTLET_FOLDER)
+Extract all files to a directory of your choice (I will refer to that directory from now on as GAUNTLET_FOLDER)
 
 Get "gbabios.rom" and make sure to put it in the "Firmware" directory inside your BizHawk directory
 

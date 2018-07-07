@@ -4,6 +4,12 @@ Buffs:
 why does GelRain (MetaGel 1 Q/R/S not work?)
 
 
+new buff which copies a chip from your folder
+    -   either shows which chip is replaced
+    -   or which chip is duplicated
+
+
+
 
 
 A buff that increases the number of dropped chips (change dropped chip rendering to be able to handle more than 3)

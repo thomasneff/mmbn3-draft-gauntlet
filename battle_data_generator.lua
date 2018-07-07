@@ -281,6 +281,8 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
     --        For that, we need to define virus groups and when they can appear, respectively.
     local new_battle_data = battle_data_generator.new_from_template()
 
+
+
     number_of_twins_viruses = 0
 
     -- TODO: Improve. For now, get a random entity out of the group of the current difficulty/round

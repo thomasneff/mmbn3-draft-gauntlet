@@ -123,4 +123,6 @@ gauntlet_data.enemies_hp_regen_accum = 0
 
 gauntlet_data.illusion_of_choice_active = 0
 
+gauntlet_data.number_of_rewinds = 0
+
 return gauntlet_data
