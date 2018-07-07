@@ -87,6 +87,8 @@ state_logic.INITIAL_CHIP_DATA = nil
 
 state_logic.in_battle_rng_values = nil
 state_logic.battle_enter_lock = 0
+state_logic.main_loop_frame_count = 0
+state_logic.time_compression_savestates = {}
 
 
 function state_logic.next_round()
@@ -707,6 +709,9 @@ function state_logic.initialize()
     state_logic.battle_enter_lock = 0
     gauntlet_data.number_of_rewinds = 0
     state_logic.rewind_savestate = nil
+    state_logic.main_loop_frame_count = 0
+    state_logic.time_compression_savestates = {}
+    gauntlet_data.number_of_time_compressions = 0
 
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
@@ -998,6 +1003,8 @@ function state_logic.patch_before_battle_start()
 
     state_logic.rewind_savestate = memorysavestate.savecorestate()
 
+    state_logic.main_loop_frame_count = 0
+
 
 end
 
@@ -1150,9 +1157,19 @@ function state_logic.main_loop()
 
 
     
+
     --print ("Current state: " .. gauntlet_data.current_state)
     if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
 
+        if gauntlet_data.number_of_time_compressions > 0 then
+            -- We compute the savestate only every x frames to save computing power
+            if (state_logic.main_loop_frame_count % gauntlet_data.time_compression_frame_interval) == 0 then
+                state_logic.time_compression_savestates[(state_logic.main_loop_frame_count % gauntlet_data.time_compression_delay) + 1] = memorysavestate.savecorestate()
+            else
+                state_logic.time_compression_savestates[(state_logic.main_loop_frame_count % gauntlet_data.time_compression_delay) + 1] = state_logic.time_compression_savestates[((state_logic.main_loop_frame_count - 1) % gauntlet_data.time_compression_delay) + 1]
+            end
+        end
+        
         -- Check if mega gets hit for certain buffs
         
         local number_of_entities = (state_logic.battle_data[state_logic.current_battle - 1].NUM_ENTITIES)
@@ -1168,6 +1185,17 @@ function state_logic.main_loop()
         
         -- If we died - reset
         if current_hp == 0 and state_logic.hp_loaded == 1 then
+
+            if gauntlet_data.number_of_time_compressions > 0 and gauntlet_data.main_loop_frame_count > gauntlet_data.time_compression_delay then
+                state_logic.hp_loaded = 0
+                state_logic.damage_taken()
+                gauntlet_data.number_of_time_compressions = gauntlet_data.number_of_time_compressions - 1
+                memorysavestate.loadcorestate(state_logic.time_compression_savestates[((state_logic.main_loop_frame_count + 1) % gauntlet_data.time_compression_delay) + 1])
+                print("Time compression saved the death!")
+                return
+            end
+
+
             if gauntlet_data.number_of_rewinds > 0 and state_logic.rewind_savestate ~= nil then
                 state_logic.hp_loaded = 0
                 gauntlet_data.number_of_rewinds = gauntlet_data.number_of_rewinds - 1
@@ -1188,9 +1216,19 @@ function state_logic.main_loop()
         end
 
 
-        if current_hp < gauntlet_data.last_hp and current_hp ~= 0 then      
+        if current_hp < gauntlet_data.last_hp and current_hp ~= 0 then 
+
             --print("Damage taken! (Previous HP: " .. tostring(gauntlet_data.last_hp) .. ", Current HP: " .. tostring(current_hp) .. ", Max HP: " .. tostring(gauntlet_data.mega_max_hp) .. ")")
             state_logic.damage_taken()
+
+
+            if gauntlet_data.number_of_time_compressions > 0 and state_logic.main_loop_frame_count > gauntlet_data.time_compression_delay then
+                state_logic.hp_loaded = 0
+                gauntlet_data.number_of_time_compressions = gauntlet_data.number_of_time_compressions - 1
+                memorysavestate.loadcorestate(state_logic.time_compression_savestates[((state_logic.main_loop_frame_count + 1) % gauntlet_data.time_compression_delay) + 1])
+                print("Time compression saved the damage!")
+                return
+            end
 
         end
 
@@ -1333,6 +1371,9 @@ function state_logic.main_loop()
         if current_hp ~= nil and current_hp ~= 0 then
             gauntlet_data.last_hp = current_hp
         end
+
+
+        state_logic.main_loop_frame_count = state_logic.main_loop_frame_count + 1
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT then
         -- We pause here and make a savestate.

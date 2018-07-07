@@ -125,4 +125,8 @@ gauntlet_data.illusion_of_choice_active = 0
 
 gauntlet_data.number_of_rewinds = 0
 
+gauntlet_data.number_of_time_compressions = 0
+gauntlet_data.time_compression_delay = 60
+gauntlet_data.time_compression_frame_interval = 4
+
 return gauntlet_data

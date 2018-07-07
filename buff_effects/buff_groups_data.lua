@@ -48,6 +48,7 @@ local SPIKEDARMOR = require "buff_effects.spiked_armor"
 local FOLDERBAK = require "buff_effects.folderbak"
 local ILLUSIONOFCHOICE = require "buff_effects.illusion_of_choice"
 local REWIND = require "buff_effects.rewind"
+local TIMECOMPRESSION = require "buff_effects.time_compression"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -99,7 +100,8 @@ BUFF_GROUPS[1] = {
     SPIKEDARMOR,
     FOLDERBAK,
     ILLUSIONOFCHOICE,
-    REWIND
+    REWIND,
+    TIMECOMPRESSION
 }
 
 
@@ -112,10 +114,10 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    REWIND,
---    REWIND,
---    REWIND,
---    REWIND,
+--    NERF_VIRUS_GROUP,
+--    NERF_VIRUS_GROUP,
+--    NERF_VIRUS_GROUP,
+--    NERF_VIRUS_GROUP,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

@@ -18,9 +18,9 @@ end
 
 function Rewind:get_description(current_round)
     if NUMBER_OF_REWINDS == 1 then
-        return "Upon death, reload at the beginning of the fight!\n(" .. tostring(NUMBER_OF_REWINDS) .. " time per run!)"
+        return "Upon death, reload at the beginning of the fight!\n( + " .. tostring(NUMBER_OF_REWINDS) .. " time per run!)"
     else
-        return "Upon death, reload at the beginning of the fight!\n(" .. tostring(NUMBER_OF_REWINDS) .. " times per run!)"
+        return "Upon death, reload at the beginning of the fight!\n( + " .. tostring(NUMBER_OF_REWINDS) .. " times per run!)"
     end
 end
 

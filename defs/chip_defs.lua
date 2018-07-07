@@ -38,7 +38,6 @@ end
 function CHIP.new_chip_with_random_code(chip_id)
 
     new_chip = deepcopy(CHIP_TEMPLATE)
-
     new_chip.CODE = randomchoice(CHIP_CODE)
     new_chip.ID = chip_id
 
