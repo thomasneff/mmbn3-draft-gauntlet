@@ -1718,6 +1718,7 @@ function state_logic.main_loop()
                     local dropped_buff = deepcopy(state_logic.dropped_buffs[state_logic.dropped_buff_render_index])
                     local dropped_buff_copy = deepcopy(dropped_buff)
                     BUFF_GENERATOR.activate_buff(dropped_buff, state_logic.current_round)
+                    state_logic.update_printable_chip_names_in_folder()
                     BUFF_GENERATOR.activate_buff(dropped_buff_copy, state_logic.current_round)
 
                     -- Copy (potentially new) CHIP_DATA to copy so temporary buffs work fine.

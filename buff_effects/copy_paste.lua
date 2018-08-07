@@ -28,7 +28,7 @@ function CopyPaste:get_description(current_round)
 end
 
 function CopyPaste:get_brief_description()
-    return CopyPaste.NAME .. ": Double next " .. NUMBER_OF_BUFFS_DOUBLED .. " buffs!"
+    return CopyPaste.NAME .. ": Double next " .. NUMBER_OF_BUFFS_DOUBLED .. " buffs! (" .. tostring(gauntlet_data.copy_paste_active_number_of_buffs) .. " left)"
 end
 
 function CopyPaste.new()

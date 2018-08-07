@@ -379,3 +379,6 @@ Rewind
     -   once *per gauntlet*, if you would die, you instead re-load the beginning of the battle
 
 
+
+copy paste display how much is left
+
