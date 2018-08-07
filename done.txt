@@ -382,3 +382,17 @@ Rewind
 
 copy paste display how much is left
 
+
+
+- refactor the "random damage" code into function
+- refactor the "all damage" code into function
+- refactor the "heal" code into function
+
+Testing TODO:
+test all reflect and heal interactions.
+    - Rewind: working
+    - Regenerator: working
+    - Spiked Armor (both): working
+    - Reflect : working after being broken.
+    - Time Compression: working
+    - Medic: working
