@@ -406,3 +406,6 @@ why does GelRain (MetaGel 1 Q/R/S not work?)
     -   this is because BN3 does PAs differently, and stores a *fixed* starting chip code for every consecutive PA.
     -   I can change this dynamically, by simply patching the ROM data the PA gets loaded from.
         *   I can do this in a single PA slot and simply adjust the PA data according to which chips were picked. 
+
+"Speedrunner - Beat the next boss in X minutes, + something"
+    - reward: FullCust * for now. Might reg it, might do a custom fastgauge.

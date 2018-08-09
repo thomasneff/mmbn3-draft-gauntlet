@@ -50,6 +50,7 @@ local ILLUSIONOFCHOICE = require "buff_effects.illusion_of_choice"
 local REWIND = require "buff_effects.rewind"
 local TIMECOMPRESSION = require "buff_effects.time_compression"
 local CHIP_USE_BUFF = require "buff_effects.chip_use_buff_template"
+local SPEEDRUNNER = require "buff_effects.speedrunner"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -114,12 +115,12 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    CHIP_USE_BUFF,
---    CHIP_USE_BUFF,
---    CHIP_USE_BUFF,
---    CHIP_USE_BUFF,
---    CHIP_USE_BUFF,
---    CHIP_USE_BUFF,
+--    SPEEDRUNNER,
+--    SPEEDRUNNER,
+--    SPEEDRUNNER,
+--    SPEEDRUNNER,
+--    SPEEDRUNNER,
+--    SPEEDRUNNER,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

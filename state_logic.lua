@@ -73,6 +73,7 @@ state_logic.dropped_buff_render_index = 2
 state_logic.folder_chip_render_index = 1
 state_logic.pause_frame_counter = 0
 
+
 state_logic.gui_change_savestate = nil
 
 gauntlet_data.mega_chip_limit = GAUNTLET_DEFS.INITIAL_MEGA_CHIP_LIMIT
@@ -313,6 +314,8 @@ function state_logic.on_cust_screen_confirm()
             v:on_cust_screen_confirm(state_logic, gauntlet_data)
         end
     end
+    state_logic.update_printable_chip_names_in_folder()
+    state_logic.update_argb_chip_icons_in_folder()
 end
 
 function state_logic.on_chip_use()
@@ -327,7 +330,8 @@ function state_logic.on_chip_use()
         end
     end
 
-
+    state_logic.update_printable_chip_names_in_folder()
+    state_logic.update_argb_chip_icons_in_folder()
     gauntlet_data.current_battle_chip_index = gauntlet_data.current_battle_chip_index + 1
 
 end
@@ -489,9 +493,14 @@ function state_logic.on_battle_end()
 
     state_logic.compute_perfect_fight_bonuses()
     
-    
-    
-    
+    -- Compute buff effects that depend on battle ending
+    for k, v in pairs(state_logic.activated_buffs) do
+        if v.FINISH_BATTLE_CALLBACK ~= nil then
+            v:on_finish_battle(state_logic, gauntlet_data)
+        end
+    end
+    state_logic.update_printable_chip_names_in_folder()
+    state_logic.update_argb_chip_icons_in_folder()
     
 end
 
@@ -914,6 +923,7 @@ function state_logic.initialize()
     state_logic.main_loop_frame_count = 0
     state_logic.time_compression_savestates = {}
     gauntlet_data.number_of_time_compressions = 0
+    gauntlet_data.total_frame_count = 0
 
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
@@ -1349,7 +1359,7 @@ end
 
 
 function state_logic.on_mega_death()
-    if gauntlet_data.number_of_time_compressions > 0 and gauntlet_data.main_loop_frame_count > gauntlet_data.time_compression_delay then
+    if gauntlet_data.number_of_time_compressions > 0 and state_logic.main_loop_frame_count > gauntlet_data.time_compression_delay then
         state_logic.hp_loaded = 0
         state_logic.damage_taken()
         gauntlet_data.number_of_time_compressions = gauntlet_data.number_of_time_compressions - 1
@@ -1543,7 +1553,7 @@ end
 
 
 function state_logic.main_loop()
-
+    gauntlet_data.total_frame_count = gauntlet_data.total_frame_count + 1
     if DEBUG == 1 then
         print ("DEBUG: STATE: ", gauntlet_data.current_state)
     end

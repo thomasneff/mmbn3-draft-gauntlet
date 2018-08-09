@@ -8,6 +8,7 @@ Necessary Hooks:
 
 Buffs:
 
+
 I think for the chip use effects, i might use a function that passes the used chip, state_logic, current frame and does everything itself?
 
 for all hand/chip use manip effects:
