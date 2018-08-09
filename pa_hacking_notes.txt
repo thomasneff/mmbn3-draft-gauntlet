@@ -1,0 +1,216 @@
+metagel B
+85 00 00 01
+85 00 00 02
+85 00 00 03
+
+9C is GelRain
+
+
+colonel pa pointers:
+08028020
+
+first ptr:
+08027de4
+
+
+mstrstyle possible chip lookups:
+08 57 20 56 -> 08 46 66 57 possible hook address
+08 7f f4 ec
+08 7f f8 f6
+
+
+metagel offset in ROM: 08 01 25 B0
+
+gelrain name offset: 087051c2
+
+first occurance of gelrain address in r0: 080286DC 
+possibly interesting address: 08704e14 : seems to be some kind of offset table.
+08704ec0 is the "offset" addr for gelrain
+
+(potentially easier possibility to find PA stuff: library text listing.)
+
+
+idea: try to follow up what r1 is doing... 
+
+new idea: look at held chips (might make fun buffs :) )
+address for held chips = EWRAM 34060, might not be start, might be offset by number of viruses.
+
+num chips held (cust screem): EWRAM F7F6, 
+
+codes of chips held (during cust screen): EWRAM F851
+
+index of selected chips: f842
+
+indices of cust gauge displayed chips: 34040 ewram
+
+find accesses to indices
+[0200f842..0200f846]?
+
+progress - address that is executed at the start of program advance timefreeze text display: 0800e7e0
+start of one of the timefreeze program advance subfunctions: 0800e7c0
+function call at 0800e7aa
+function before "program advance is written": 0800e79e
+function after screen darkened: 0800e778
+function just after submitting the cust screen: 0800d828
+
+IMPORTANT: 0800e6f8 is ONLY called when a P.A. was actually chosen.
+
+to find this: 0800d82a, r1=0800e6f9 (this does NOT break when not choosing a pa)
+
+r0 seems to be 20 when this happens (?)
+
+r0 is loaded from 0200f7f1
+
+r1 is then loaded from r1 (0800d838, seems to be a pointer table) + r0 (20) -> 08 00 e6 f9
+
+that means that r5 is of interest. -> is loaded from 0200f7f1, seems to be either 20 (when calling PA timefreeze) or 4 (during cust screen)
+
+it doesn't seem to be called when NOT having a PA?
+
+0800df5e writes 0x20 into that address (this does NOT happen when not having a PA!)
+
+08007cde has a beq that jumps to 7cf4 (this is probably a red herring)
+
+0800df5e writes 0x20 into that address (this does NOT happen when not having a PA!)
+
+-> trace back by tracing r0 = d22e
+
+found address 08007d1c that only is called when pa is formed
+
+-> up to 08007d0e
+-> 08007d0c is a loop branch of some sort
+-> 08007cfc is again a loop branch
+
+
+
+08007cde has a beq that jumps to 7cf4 -> this is also only called when having a pa
+
+08007cc8 is called when having a pa
+
+-> follow r2 = 0200035A
+
+-> 08021CFA is only called with PA
+-> 08021CF4 is only called with PA
+
+follow r1 = 00001940 -> 0800DF52
+
+-> 0800DF4C : we have 0x156 (GelRain) in r0! success!
+
+08007bcc loads the PA from the stack into r0.
+
+08007bb4 is called when having pa
+
+
+
+0200f858 ++ seems to contain temp chip ids
+
+-> 08007ba2
+
+-> 08007b80 (interesting: r3 contains 85, r4 contains 1, r5 contains 3, r6 contains 2, which would be metagel1 b, c, and d!)
+
+follow with r3 = 85 -> 08007af6
+
+-> 08007AE8
+
+r0 contains 0200f858
+85 02 85 34 85 06 <-- these are chip ID plus 2x the chip code (??)
+
+follow r0, -> 0800f7AE, this is the first address that is executed for both branches
+
+0800F7D8: when all chips were iterated on (also happens for both)
+
+0800e15c: -> ret from previous
+08007974: another func for both
+
+interesting: 08007986 seems to compare a value to the number of chosen chips, possibly to check for the number of chips of the PA
+
+IMPORTANT: we have to test with mis-matching codes and the same number of chips here, otherwise we will die in this branch
+
+I should have done this all along -> I already passed the check logic.
+
+it seems to be that the part starting from 08007b80 is related to checking codes.
+
+08007BA6 allows for asterisk code in PAs
+
+0800d740 reads something that is compared to 85
+
+08007B68 seems to happen when the correct chip id has been "found"
+
+loads 00000356 from 0800d744 for GelRain
+
+left shift 17h -> right shift 17h throws away 0x00000200
+-> r2 = 0x356, r3 = 0x156 (-> GelRain ID!)
+
+this means that the format packs 23 bits for the chip ID and 9 bits for the code! 
+
+right shift r2 by 9h -> only "1" survives, and signifies the initial chip!
+
+
+TODO: load chosen chips on choosing the cust screen (find one of the offsets before PAs are checked) -> check chips, if PA is possible, patch the PA codes
+
+
+
+PAs seem to start at around 0800D685, not sure yet what the other 2 byte per PA do.
+
+
+0800F7CC adds the chip id + code to 0200f858
+idea -> follow that path until after the loop that added the chips so we can directly read everything asap
+
+
+Hook FOUND: 0800F7D8 for pre-pa (custom confirmed!) code :D
+
+
+testing held chip hacking: we have the offset of the chip IDs, but the chip icon is not updated.
+
+TODO: debug write access to 34060, try to find if anything else is written?
+
+ADDRESS FOUND: chip damage during battle. 34070 (2 bytes) <-- this actually starts earlier (at 3406C, each chip damage is stored there in a row!)
+
+08000B8E writes FF into 34060
+0800F846 writes chip ID into 34060
+need to find where icon is pulled from
+
+37270 seems to be interesting (?)
+
+during folder edit: c0f1 contains chip icon addresses, that seem to be re-set when changing cursor. metagel is: B4A86A08
+
+c1e0 might be interesting, contains addresses that are very close?
+
+-> idea: debug with no$gba to check for read access to folder chip icon addresses (?)
+better idea: check which routine reads from the palette data somehow? (something has to access the icon)
+
+in cust screen: c110 contains the address of some things (c0c0 seems to be the base for this)
+
+
+060175C0 contains the data for the metagel icon sprite
+  - we can manually patch this with our chip icon patch/extract routines for "adding" chips
+  - not sure how easy "adding chips" even will be, given that sprite data might be missing and such?
+  - we would have to check if the "logic" for adding works, and then deal with sprite patching later.
+  - the offsets for chip sprites could be anywhere, I guess.
+  
+whatever. the PA stuff is fixable, new events can be added based on chip usage conditions. 
+  
+080009E0 writes chip icon into sprite region
+ 
+ 
+chip usage hook: we check for the number of held chips in no$gba
+
+3728A seems to contain the number of chips during battle
+HOOK: 080B4880 seems to be hookable for chip use! (r0 contains the used chip ID)
+
+now we got all hooks, we can tinker around. hooks definitely are independent of number of entities, but ewram might not be.
+
+
+
+
+testing: how to "add" a chip back by memory manip.
+  - 3728A: adding 1 here doesn't add another chip. adding id/damage also doesn't do that.
+  - -> need to find how a chip is "deleted"
+  
+384D0 might be interesting, it is set in the same block that sets the number of chips
+
+current conclusion: "adding" new chips in battle might be very tough.
+  
+  
+other PA research: at d564 some pointers are stored to
+d57c, d640, d674, d680, d750, d754

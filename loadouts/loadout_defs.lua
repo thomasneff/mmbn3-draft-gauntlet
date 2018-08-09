@@ -17,6 +17,7 @@ local MMBN3_N1FOLDER_C = require "loadouts.mmbn3_n1folder_c"
 local MMBN3_N1FOLDER_D = require "loadouts.mmbn3_n1folder_d"
 local MMBN3_FAMFOLDER = require "loadouts.mmbn3_famfolder"
 local MMBN3_APPRENTICEFOLDER = require "loadouts.mmbn3_apprenticefolder"
+local PA_TEST_FOLDER = require "loadouts.pa_test_folder"
 
 
 local JUST_MONIKA = require "loadouts.just_monika"
@@ -38,6 +39,7 @@ local LIST_OF_LOADOUTS = {
     MMBN3_N1FOLDER_D,
     MMBN3_FAMFOLDER,
     MMBN3_APPRENTICEFOLDER,
+    PA_TEST_FOLDER,
     COMPLETELY_RANDOM,
     RANDOMIZED_1_STAR,
     RANDOMIZED_2_STAR,   

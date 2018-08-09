@@ -27,6 +27,7 @@ local CHIP_DROP_METHODS = require "chip_drop_methods.chip_drop_method_defs"
 local MusicLoader = require "music_loader"
 local json = require "json"
 local randomchoice_key = require "randomchoice_key"
+local PA_DEFS = require "defs.pa_defs"
 
 
 -- TODO: possibly add more states.
@@ -133,6 +134,175 @@ end
 
 function state_logic.on_cust_screen_confirm()
     print("Cust screen confirmed!")
+
+
+    --CUST_SCREEN_CONFIRM_ADDRESS = 0x0800F7D8,
+    --CHIP_USE_ADDRESS = 0x080B4880,
+    --IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS = 0x0203728A,
+    --CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS = 0x0200F7F6,
+    --IN_BATTLE_HELD_CHIP_IDS_ADDRESS = 0x02034060,
+    --IN_BATTLE_HELD_CHIP_DAMAGES_ADDRESS = 0x0203406C,
+    --CUST_SCREEN_SELECTED_CHIP_INDICES_ADDRESS = 0x0200F842,
+    --IN_BATTLE_CURRENT_CHIP_DAMAGE = 0x02034070,
+
+
+    -- Read out selected chip indices
+    gauntlet_data.selected_chips = {}
+
+    local num_chips = memory.readbyte(GENERIC_DEFS.CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS - 0x02000000, "EWRAM")
+
+    for chip_idx = 1, num_chips do
+        local folder_index = memory.readbyte(GENERIC_DEFS.CUST_SCREEN_SELECTED_CHIP_INDICES_ADDRESS + chip_idx - 1 - 0x02000000, "EWRAM")
+        gauntlet_data.selected_chips[chip_idx] = {}
+        
+        -- As we now have the folder index, we can read chip code and ID.
+        gauntlet_data.selected_chips[chip_idx].ID = memory.read_u16_le(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4) - 0x02000000, "EWRAM")
+        gauntlet_data.selected_chips[chip_idx].CODE = memory.readbyte(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4) + 2 - 0x02000000, "EWRAM")
+        gauntlet_data.selected_chips[chip_idx].NAME = deepcopy(CHIP_NAME[gauntlet_data.selected_chips[chip_idx].ID])
+    end
+
+   
+
+    -- For patching consecutive PAs, we need to:
+        -- Check if we have a PA (needs a table to lookup everything, including asterisk code chips and stuff)
+        -- Simply patch the 3 PA slots
+            -- This has the format of 7 bits starting code, 9 bits PA "chip ID", followed by 1 byte "component" ID.
+            -- Therefore we need to patch all of this according to the PA we want to execute.
+
+    -- (For other PAs, this seems to be working fine anyways.)
+
+    -- To patch the correct PA slots, we actually need to sort our first 3 chips by ID, and then patch an according slot since
+        -- BN3 performs a search on the stored PAs...
+
+    -- We could simply check if the initial search location is constant, then patch this and the one before/after, and overwrite all the others with min/max?
+
+    -- initial location seems to be 0800D6E8
+
+
+    -- sort first 3 selected chips according to chip index
+
+    for chip_idx = 1, #gauntlet_data.selected_chips do
+
+        -- Debug print
+        print("Selected Chip " .. tostring(chip_idx) .. ": " .. gauntlet_data.selected_chips[chip_idx].NAME ..
+         " (ID: " .. tostring(gauntlet_data.selected_chips[chip_idx].ID) .. ", Code: " .. tostring(gauntlet_data.selected_chips[chip_idx].CODE) .. ")")
+
+
+    end
+
+    local sorted_chips = {}
+
+    for chip_idx = 1, #gauntlet_data.selected_chips do
+       
+        if chip_idx < 4 then
+            sorted_chips[chip_idx] = deepcopy(gauntlet_data.selected_chips[chip_idx])
+            sorted_chips[chip_idx].pa_chip = PA_DEFS[sorted_chips[chip_idx].ID]
+            if sorted_chips[chip_idx].pa_chip ~= nil then
+                if sorted_chips[chip_idx].CODE == CHIP_CODE.Asterisk then
+                    if gauntlet_data.selected_chips[chip_idx + 1] ~= nil then
+                        --print("Asterisk chip followup")
+
+                        -- If the next chip also has asterisk code, we don't do anything and set our ID to something invalid.
+                        if gauntlet_data.selected_chips[chip_idx + 1].CODE == CHIP_CODE.Asterisk then
+                            sorted_chips[chip_idx].ID = 0
+                            sorted_chips[chip_idx].CODE = 1
+                        else
+                            -- This is a workaround for asterisk chips to correctly set the "initial" PA stuff. 
+                            -- TODO: check if this is even working in vanilla (*, B, C for example)
+                            sorted_chips[chip_idx].CODE = gauntlet_data.selected_chips[chip_idx + 1].CODE - 1
+                        end
+                        
+                        --print(sorted_chips[chip_idx].CODE)
+                    end
+                end
+                sorted_chips[chip_idx].shifted_code = bit.lshift(sorted_chips[chip_idx].CODE, 9)
+                sorted_chips[chip_idx].combined_pa_chip_and_code = bit.bor(sorted_chips[chip_idx].shifted_code, sorted_chips[chip_idx].pa_chip)
+            end
+        end
+        
+    end
+    
+    table.sort(sorted_chips, function(a, b)
+        return a.ID < b.ID
+      end)
+
+    -- Patch all locations from start until end and overwrite them such that the bn3 search algorithm finds our patched PAs
+
+    local num_pas = math.floor((GENERIC_DEFS.PA_CONSECUTIVE_END_ADDRESS - GENERIC_DEFS.PA_CONSECUTIVE_START_ADDRESS) / 4)
+
+    for pa_idx = 0, num_pas do
+
+
+        local pa_address = GENERIC_DEFS.PA_CONSECUTIVE_START_ADDRESS + 4 * pa_idx
+
+        
+        local selected_chip_id = 0
+        local combined_pa_chip_and_code = 0
+        
+        if (pa_address < GENERIC_DEFS.PA_CONSECUTIVE_CENTER_ADDRESS) then
+            selected_chip_id = 0
+            
+
+            if #sorted_chips > 0 then
+                selected_chip_id = sorted_chips[1].ID
+                combined_pa_chip_and_code = sorted_chips[1].combined_pa_chip_and_code
+            end
+            
+            if combined_pa_chip_and_code == nil then
+                combined_pa_chip_and_code = 0
+            end
+
+            if selected_chip_id == nil then
+                selected_chip_id = 0
+            end
+            
+        elseif (pa_address == GENERIC_DEFS.PA_CONSECUTIVE_CENTER_ADDRESS) then
+            selected_chip_id = 128
+
+            if #sorted_chips == 1 then
+                selected_chip_id = sorted_chips[1].ID
+                combined_pa_chip_and_code = sorted_chips[1].combined_pa_chip_and_code
+            elseif #sorted_chips > 1 then
+                selected_chip_id = sorted_chips[2].ID
+                combined_pa_chip_and_code = sorted_chips[2].combined_pa_chip_and_code
+            end
+
+            if combined_pa_chip_and_code == nil then
+                combined_pa_chip_and_code = 128
+            end
+
+            if selected_chip_id == nil then
+                selected_chip_id = 128
+            end
+        else
+            selected_chip_id = 255
+
+            if #sorted_chips == 2 then
+                selected_chip_id = sorted_chips[2].ID
+                combined_pa_chip_and_code = sorted_chips[2].combined_pa_chip_and_code
+            elseif #sorted_chips == 3 then
+                selected_chip_id = sorted_chips[3].ID
+                combined_pa_chip_and_code = sorted_chips[3].combined_pa_chip_and_code
+            end
+
+            if combined_pa_chip_and_code == nil then
+                combined_pa_chip_and_code = 255
+            end
+
+            if selected_chip_id == nil then
+                selected_chip_id = 255
+            end
+        end
+
+        --print(combined_pa_chip_and_code)
+        --print(selected_chip_id)
+        --print("Forged PA data: " .. bizstring.hex(combined_pa_chip_and_code))
+        -- Write PA chip ID + starting code
+        memory.write_u16_le(pa_address - 0x08000000, combined_pa_chip_and_code, "ROM")
+ 
+        -- Write component ID
+        memory.writebyte(pa_address + 2 - 0x08000000, selected_chip_id, "ROM")
+    end
 end
 
 function state_logic.on_chip_use()
