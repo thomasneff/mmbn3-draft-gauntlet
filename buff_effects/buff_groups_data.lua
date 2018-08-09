@@ -49,6 +49,7 @@ local FOLDERBAK = require "buff_effects.folderbak"
 local ILLUSIONOFCHOICE = require "buff_effects.illusion_of_choice"
 local REWIND = require "buff_effects.rewind"
 local TIMECOMPRESSION = require "buff_effects.time_compression"
+local CHIP_USE_BUFF = require "buff_effects.chip_use_buff_template"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -113,12 +114,12 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    MEDIC,
---    SPIKEDARMOR,
---    REGENERATOR,
---    REFLECT,
---    REWIND,
---    TIMECOMPRESSION,
+--    CHIP_USE_BUFF,
+--    CHIP_USE_BUFF,
+--    CHIP_USE_BUFF,
+--    CHIP_USE_BUFF,
+--    CHIP_USE_BUFF,
+--    CHIP_USE_BUFF,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

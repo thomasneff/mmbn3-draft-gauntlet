@@ -134,7 +134,7 @@ end
 
 function state_logic.on_cust_screen_confirm()
     print("Cust screen confirmed!")
-
+    gauntlet_data.current_battle_chip_index = 1
 
     --CUST_SCREEN_CONFIRM_ADDRESS = 0x0800F7D8,
     --CHIP_USE_ADDRESS = 0x080B4880,
@@ -160,6 +160,8 @@ function state_logic.on_cust_screen_confirm()
         gauntlet_data.selected_chips[chip_idx].CODE = memory.readbyte(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4) + 2 - 0x02000000, "EWRAM")
         gauntlet_data.selected_chips[chip_idx].NAME = deepcopy(CHIP_NAME[gauntlet_data.selected_chips[chip_idx].ID])
     end
+
+
 
    
 
@@ -303,10 +305,31 @@ function state_logic.on_cust_screen_confirm()
         -- Write component ID
         memory.writebyte(pa_address + 2 - 0x08000000, selected_chip_id, "ROM")
     end
+
+
+    -- Fire events for buffs
+    for k, v in pairs(state_logic.activated_buffs) do
+        if v.IN_BATTLE_CALLBACKS ~= nil then
+            v:on_cust_screen_confirm(state_logic, gauntlet_data)
+        end
+    end
 end
 
 function state_logic.on_chip_use()
     print("Chip used!")
+
+    for k, v in pairs(state_logic.activated_buffs) do
+        if v.IN_BATTLE_CALLBACKS ~= nil then
+            v:on_chip_use(gauntlet_data.selected_chips[gauntlet_data.current_battle_chip_index], 
+                state_logic.main_loop_frame_count, 
+                state_logic, 
+                gauntlet_data)
+        end
+    end
+
+
+    gauntlet_data.current_battle_chip_index = gauntlet_data.current_battle_chip_index + 1
+
 end
 
 
