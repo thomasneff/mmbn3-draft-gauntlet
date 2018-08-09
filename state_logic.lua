@@ -131,6 +131,15 @@ function state_logic.next_round()
 
 end
 
+function state_logic.on_cust_screen_confirm()
+    print("Cust screen confirmed!")
+end
+
+function state_logic.on_chip_use()
+    print("Chip used!")
+end
+
+
 function state_logic.patch_next_battle()
 
     -- This function changes viruses, stage, AI, basically anything related to the fight when

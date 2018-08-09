@@ -1,3 +1,11 @@
+Necessary Hooks:
+    -   when cust screen is confirmed -> this should be tracable, hopefully, as this is necessary for PA patching. 0800F7D8
+    -   when chip is used -> this is easy by looking into the RAM address during battle. Still needs investigation with different kinds of battle scenarios / number of entities
+    -   find custgauge value address, if exists
+    -   find current chip damage value, if exists
+
+
+
 Buffs:
 
 
@@ -15,11 +23,13 @@ for all hand/chip use manip effects:
             - has as effect: add the used/first chip again
             - gauntlet data needs to have a list of those buffs, and they implement onRoundStart and onChipUse
 
-new buff that sets a random chip as "reg" (with corresponding highlight in rendering)
-new buff that adds airshot/heatshot/zapring/bubbler to the "hand" upon certain circumstances
+new buff that sets a random chip as "reg" (with corresponding highlight in rendering) (needs lots of code)
+ x new buff that adds airshot/heatshot/zapring/bubbler to the "hand" upon certain circumstances
 new buff that heals upon hand/use condition (?)
 new buff that deals damage (random/all) upon hand/use condition
-new buff that allows the first chip in battle to be used twice
+ x new buff that allows the first chip in battle to be used twice
+e.g. buff that deals 100 damage if 5 chips are used in 5 seconds
+e.g. buff that fills cust gauge if chips of 3 different elements are used
 
 if possible to read current chip damage IN BATTLE:
     -   small muramasa effect
@@ -33,14 +43,14 @@ new buff which copies a chip from your folder
 
 
 
-
-
+something crazy to think about: a slay the spire mode -> folder is unlimited (by dynamically patching indices and chips during battle), 
+  draft starting deck, and then just add/skip chips. would probably need UI adjustments as well and make sure that all folder stuff isn't hardcoded to 30
+  however, I think this would make the game way too easy, and would therefore require tons of balance changes.
+  (imagine a folder containing lots of heal chips -> it's almost impossible to die)
 
 A buff that increases the number of dropped chips (change dropped chip rendering to be able to handle more than 3)
 A buff that increases the number of dropped buffs (dropped buff rendering is already able to do this)
 
--- TODO: special case when no chip has dropped yet for gauntlet_data.illusion_of_choice_active
--- TODO: keep cursor when sorting (is nice anyways, but illusion of choice NEEDS it)
 
 
 

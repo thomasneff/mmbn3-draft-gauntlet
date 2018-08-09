@@ -112,14 +112,14 @@ end
 
 
 
-BUFF_GROUPS[1] = {
-    MEDIC,
-    SPIKEDARMOR,
-    REGENERATOR,
-    REFLECT,
-    REWIND,
-    TIMECOMPRESSION,
-}
+--BUFF_GROUPS[1] = {
+--    MEDIC,
+--    SPIKEDARMOR,
+--    REGENERATOR,
+--    REFLECT,
+--    REWIND,
+--    TIMECOMPRESSION,
+--}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])
 BUFF_GROUPS[3] = deepcopy(BUFF_GROUPS[1])
