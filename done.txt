@@ -409,3 +409,23 @@ why does GelRain (MetaGel 1 Q/R/S not work?)
 
 "Speedrunner - Beat the next boss in X minutes, + something"
     - reward: FullCust * for now. Might reg it, might do a custom fastgauge.
+
+Necessary Hooks:
+    -   when cust screen is confirmed -> this should be tracable, hopefully, as this is necessary for PA patching. 0800F7D8
+    -   when chip is used -> this is easy by looking into the RAM address during battle. Still needs investigation with different kinds of battle scenarios / number of entities
+    -   find custgauge value address, if exists (6CCD EWRAM for bar, 6CAC for "can open cust screen flag")
+    -   find current chip damage value, if exists (done!)
+
+new buff that sets a random chip as "reg" (with corresponding highlight in rendering) (needs lots of code)
+    - implement reg-chip attribute to folder chips that rendering takes into account, 
+
+e.g. buff that damages random enemy if healing chip is used
+
+e.g. buff that fills cust gauge if chips of 3 different elements are used
+
+e.g. buff that deals 100 damage if 5 chips are used in same turn
+
+new buff which copies a chip from your folder
+    -   either shows which chip is replaced
+    -   or which chip is duplicated
+

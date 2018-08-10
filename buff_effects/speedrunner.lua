@@ -7,6 +7,7 @@ local CHIP = require "defs.chip_defs"
 
 local SpeedRunner = {
     NAME = "SpeedRunner",
+    DOUBLE_RARITY = 1,
 }
 
 local TIME_LIMIT_SECONDS = 60 * 15 -- 15 Minutes
@@ -104,12 +105,12 @@ end
 
 function SpeedRunner:on_finish_battle(state_logic, gauntlet_data)
     
-    print("on_finish_battle a")
+   
     if self.is_beaten ~= 0 then
         return
     end
 
-    print("on_finish_battle b")
+   
     local current_time = os.clock()
 
     local time_left = (self.starting_time + TIME_LIMIT_SECONDS) - current_time
@@ -118,7 +119,7 @@ function SpeedRunner:on_finish_battle(state_logic, gauntlet_data)
         self.is_beaten = -1
         return
     end
-    print("Current battle: " .. state_logic.current_battle)
+
     if (state_logic.current_battle - 1) % GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL == 0 and is_beaten ~= 1 then
         self.finishing_time = current_time
         self.is_beaten = 1

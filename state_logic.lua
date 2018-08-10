@@ -133,38 +133,73 @@ function state_logic.next_round()
 
 end
 
-function state_logic.on_cust_screen_confirm()
-    print("Cust screen confirmed!")
-    gauntlet_data.current_battle_chip_index = 1
+function state_logic.patch_consecutive_program_advances()
 
-    --CUST_SCREEN_CONFIRM_ADDRESS = 0x0800F7D8,
-    --CHIP_USE_ADDRESS = 0x080B4880,
-    --IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS = 0x0203728A,
-    --CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS = 0x0200F7F6,
-    --IN_BATTLE_HELD_CHIP_IDS_ADDRESS = 0x02034060,
-    --IN_BATTLE_HELD_CHIP_DAMAGES_ADDRESS = 0x0203406C,
-    --CUST_SCREEN_SELECTED_CHIP_INDICES_ADDRESS = 0x0200F842,
-    --IN_BATTLE_CURRENT_CHIP_DAMAGE = 0x02034070,
+    -- early out checks if we can even possibly get a PA: we have to have 3 consecutive chips that are listed in the PA defs
 
+    if (#gauntlet_data.selected_chips < 3) then
+        return
+    end
 
-    -- Read out selected chip indices
-    gauntlet_data.selected_chips = {}
+    local is_pa_chip_ids = {}
+    local is_pa_chip_codes = {}
+    local can_contain_a_pa = false
 
-    local num_chips = memory.readbyte(GENERIC_DEFS.CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS - 0x02000000, "EWRAM")
+    for chip_idx = 1, (#gauntlet_data.selected_chips - 2) do
 
-    for chip_idx = 1, num_chips do
-        local folder_index = memory.readbyte(GENERIC_DEFS.CUST_SCREEN_SELECTED_CHIP_INDICES_ADDRESS + chip_idx - 1 - 0x02000000, "EWRAM")
-        gauntlet_data.selected_chips[chip_idx] = {}
-        
-        -- As we now have the folder index, we can read chip code and ID.
-        gauntlet_data.selected_chips[chip_idx].ID = memory.read_u16_le(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4) - 0x02000000, "EWRAM")
-        gauntlet_data.selected_chips[chip_idx].CODE = memory.readbyte(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4) + 2 - 0x02000000, "EWRAM")
-        gauntlet_data.selected_chips[chip_idx].NAME = deepcopy(CHIP_NAME[gauntlet_data.selected_chips[chip_idx].ID])
+        local pa_buffer_ids = {}
+        local pa_buffer_codes = {}
+        local num_codes = 0
+        local num_ids = 0
+        for pa_idx = 1,3 do
+
+            local total_idx = chip_idx + pa_idx - 1
+
+            local selected_chip = gauntlet_data.selected_chips[total_idx]
+
+            if selected_chip == nil then
+                break
+            end
+
+            local pa_chip = PA_DEFS[gauntlet_data.selected_chips[total_idx].ID]
+
+            -- If any of those 3 chips don't form a PA, we're done.
+            if pa_chip == nil then
+                break
+            end
+
+            -- If we have a PA chip, we need to check if the previous chip is same ID and ascending code (except asterisk)
+           
+
+            if pa_idx > 1 then
+                if pa_buffer_ids[pa_idx - 1] ~= selected_chip.ID then
+                    break
+                end
+
+                if (pa_buffer_codes[pa_idx - 1] ~= CHIP_CODE.Asterisk) and pa_buffer_codes[pa_idx - 1] >= selected_chip.CODE then
+                    break
+                end
+            end
+
+            pa_buffer_ids[pa_idx] = selected_chip.ID
+            pa_buffer_codes[pa_idx] = selected_chip.CODE
+            num_codes = num_codes + 1
+            num_ids = num_ids + 1
+
+        end
+
+        if num_codes == 3 and num_codes == 3 then
+            can_contain_a_pa = true
+            break
+        end
+
     end
 
 
-
-   
+    if can_contain_a_pa == false then
+        return
+    end
+    
 
     -- For patching consecutive PAs, we need to:
         -- Check if we have a PA (needs a table to lookup everything, including asterisk code chips and stuff)
@@ -184,16 +219,18 @@ function state_logic.on_cust_screen_confirm()
 
     -- sort first 3 selected chips according to chip index
 
-    for chip_idx = 1, #gauntlet_data.selected_chips do
+    --for chip_idx = 1, #gauntlet_data.selected_chips do
 
         -- Debug print
-        print("Selected Chip " .. tostring(chip_idx) .. ": " .. gauntlet_data.selected_chips[chip_idx].NAME ..
-         " (ID: " .. tostring(gauntlet_data.selected_chips[chip_idx].ID) .. ", Code: " .. tostring(gauntlet_data.selected_chips[chip_idx].CODE) .. ")")
+        --print("Selected Chip " .. tostring(chip_idx) .. ": " .. gauntlet_data.selected_chips[chip_idx].NAME ..
+        -- " (ID: " .. tostring(gauntlet_data.selected_chips[chip_idx].ID) .. ", Code: " .. tostring(gauntlet_data.selected_chips[chip_idx].CODE) .. ")")
 
 
-    end
+    --end
 
     local sorted_chips = {}
+
+    local contains_pa_chip = 0
 
     for chip_idx = 1, #gauntlet_data.selected_chips do
        
@@ -201,6 +238,7 @@ function state_logic.on_cust_screen_confirm()
             sorted_chips[chip_idx] = deepcopy(gauntlet_data.selected_chips[chip_idx])
             sorted_chips[chip_idx].pa_chip = PA_DEFS[sorted_chips[chip_idx].ID]
             if sorted_chips[chip_idx].pa_chip ~= nil then
+                contains_pa_chip = contains_pa_chip + 1
                 if sorted_chips[chip_idx].CODE == CHIP_CODE.Asterisk then
                     if gauntlet_data.selected_chips[chip_idx + 1] ~= nil then
                         --print("Asterisk chip followup")
@@ -225,12 +263,22 @@ function state_logic.on_cust_screen_confirm()
         
     end
     
+    
+
+
+    -- TODO: this patching has to be optimized - it leads to audible stuttering upon cust screen confirmation.
+    if contains_pa_chip == 0 then
+        print(contains_pa_chip)
+        print("Return G")
+        return
+    end
+
     table.sort(sorted_chips, function(a, b)
         return a.ID < b.ID
-      end)
-
+    end)
+    
     -- Patch all locations from start until end and overwrite them such that the bn3 search algorithm finds our patched PAs
-
+    
     local num_pas = math.floor((GENERIC_DEFS.PA_CONSECUTIVE_END_ADDRESS - GENERIC_DEFS.PA_CONSECUTIVE_START_ADDRESS) / 4)
 
     for pa_idx = 0, num_pas do
@@ -238,19 +286,19 @@ function state_logic.on_cust_screen_confirm()
 
         local pa_address = GENERIC_DEFS.PA_CONSECUTIVE_START_ADDRESS + 4 * pa_idx
 
-        
+            
         local selected_chip_id = 0
         local combined_pa_chip_and_code = 0
-        
+            
         if (pa_address < GENERIC_DEFS.PA_CONSECUTIVE_CENTER_ADDRESS) then
             selected_chip_id = 0
-            
+                
 
             if #sorted_chips > 0 then
                 selected_chip_id = sorted_chips[1].ID
                 combined_pa_chip_and_code = sorted_chips[1].combined_pa_chip_and_code
             end
-            
+                
             if combined_pa_chip_and_code == nil then
                 combined_pa_chip_and_code = 0
             end
@@ -258,7 +306,7 @@ function state_logic.on_cust_screen_confirm()
             if selected_chip_id == nil then
                 selected_chip_id = 0
             end
-            
+                
         elseif (pa_address == GENERIC_DEFS.PA_CONSECUTIVE_CENTER_ADDRESS) then
             selected_chip_id = 128
 
@@ -297,29 +345,66 @@ function state_logic.on_cust_screen_confirm()
             end
         end
 
-        --print(combined_pa_chip_and_code)
-        --print(selected_chip_id)
-        --print("Forged PA data: " .. bizstring.hex(combined_pa_chip_and_code))
-        -- Write PA chip ID + starting code
+            --print(combined_pa_chip_and_code)
+            --print(selected_chip_id)
+            --print("Forged PA data: " .. bizstring.hex(combined_pa_chip_and_code))
+            -- Write PA chip ID + starting code
         memory.write_u16_le(pa_address - 0x08000000, combined_pa_chip_and_code, "ROM")
- 
-        -- Write component ID
+    
+            -- Write component ID
         memory.writebyte(pa_address + 2 - 0x08000000, selected_chip_id, "ROM")
+        
     end
 
+end
 
+function state_logic.on_cust_screen_confirm()
+    --print("Cust screen confirmed!")
+    gauntlet_data.current_battle_chip_index = 1
+  
+    
+
+    --CUST_SCREEN_CONFIRM_ADDRESS = 0x0800F7D8,
+    --CHIP_USE_ADDRESS = 0x080B4880,
+    --IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS = 0x0203728A,
+    --CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS = 0x0200F7F6,
+    --IN_BATTLE_HELD_CHIP_IDS_ADDRESS = 0x02034060,
+    --IN_BATTLE_HELD_CHIP_DAMAGES_ADDRESS = 0x0203406C,
+    --CUST_SCREEN_SELECTED_CHIP_INDICES_ADDRESS = 0x0200F842,
+    --IN_BATTLE_CURRENT_CHIP_DAMAGE = 0x02034070,
+
+
+    -- Read out selected chip indices
+    gauntlet_data.selected_chips = {}
+
+    local num_chips = memory.readbyte(GENERIC_DEFS.CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS - 0x02000000, "EWRAM")
+
+    for chip_idx = 1, num_chips do
+        local folder_index = memory.readbyte(GENERIC_DEFS.CUST_SCREEN_SELECTED_CHIP_INDICES_ADDRESS + chip_idx - 1 - 0x02000000, "EWRAM")
+        gauntlet_data.selected_chips[chip_idx] = {}
+        
+        -- As we now have the folder index, we can read chip code and ID.
+        gauntlet_data.selected_chips[chip_idx].ID = memory.read_u16_le(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4) - 0x02000000, "EWRAM")
+        gauntlet_data.selected_chips[chip_idx].CODE = memory.readbyte(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4) + 2 - 0x02000000, "EWRAM")
+        gauntlet_data.selected_chips[chip_idx].NAME = deepcopy(CHIP_NAME[gauntlet_data.selected_chips[chip_idx].ID])
+    end
+
+      
     -- Fire events for buffs
     for k, v in pairs(state_logic.activated_buffs) do
         if v.IN_BATTLE_CALLBACKS ~= nil then
             v:on_cust_screen_confirm(state_logic, gauntlet_data)
         end
     end
-    state_logic.update_printable_chip_names_in_folder()
-    state_logic.update_argb_chip_icons_in_folder()
+   
+    
+    state_logic.patch_consecutive_program_advances()
+
+    
 end
 
 function state_logic.on_chip_use()
-    print("Chip used!")
+    --print("Chip used!")
 
     for k, v in pairs(state_logic.activated_buffs) do
         if v.IN_BATTLE_CALLBACKS ~= nil then
@@ -330,8 +415,8 @@ function state_logic.on_chip_use()
         end
     end
 
-    state_logic.update_printable_chip_names_in_folder()
-    state_logic.update_argb_chip_icons_in_folder()
+    --state_logic.update_printable_chip_names_in_folder()
+    --state_logic.update_argb_chip_icons_in_folder()
     gauntlet_data.current_battle_chip_index = gauntlet_data.current_battle_chip_index + 1
 
 end
@@ -1387,6 +1472,12 @@ function state_logic.on_mega_death()
 end
 
 
+function state_logic.set_cust_gauge_value(value)
+
+    memory.writebyte(GENERIC_DEFS.CUST_GAUGE_VALUE_ADDRESS - 0x02000000, value, "EWRAM")
+
+end
+
 function state_logic.damage_random_enemy(damage)
 
     -- Compute a random enemy, make sure to use a different rng here
@@ -1461,7 +1552,7 @@ function state_logic.on_mega_damage_taken()
         state_logic.hp_loaded = 0
         gauntlet_data.number_of_time_compressions = gauntlet_data.number_of_time_compressions - 1
         memorysavestate.loadcorestate(state_logic.time_compression_savestates[((state_logic.main_loop_frame_count + 1) % gauntlet_data.time_compression_delay) + 1])
-        print("Time compression saved the damage!")
+        --print("Time compression saved the damage!")
         return
     end
 

@@ -52,6 +52,11 @@ local TIMECOMPRESSION = require "buff_effects.time_compression"
 local CHIP_USE_BUFF = require "buff_effects.chip_use_buff_template"
 local SPEEDRUNNER = require "buff_effects.speedrunner"
 local REGCHIP = require "buff_effects.reg_chip"
+local AGGRESSIVEHEALING = require "buff_effects.aggressive_healing"
+local ELEMENTALIST = require "buff_effects.elementalist"
+local COMBOSTACKER = require "buff_effects.combo_stacker"
+local ELEMENTALOVERFLOW = require "buff_effects.elemental_overflow"
+local DUPLICATOR = require "buff_effects.duplicator"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -106,7 +111,11 @@ BUFF_GROUPS[1] = {
     TIMECOMPRESSION,
     SPEEDRUNNER,
     REGCHIP,
-
+    AGGRESSIVEHEALING,
+    ELEMENTALIST,
+    COMBOSTACKER,
+    ELEMENTALOVERFLOW,
+    DUPLICATOR
 }
 
 
@@ -119,12 +128,12 @@ end
 
 
 --BUFF_GROUPS[1] = {
---    SPEEDRUNNER,
---    SPEEDRUNNER,
---    SPEEDRUNNER,
---    SPEEDRUNNER,
---    SPEEDRUNNER,
---    SPEEDRUNNER,
+--    DUPLICATOR,
+--    DUPLICATOR,
+--    DUPLICATOR,
+--    DUPLICATOR,
+--    DUPLICATOR,
+--    DUPLICATOR,
 --}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

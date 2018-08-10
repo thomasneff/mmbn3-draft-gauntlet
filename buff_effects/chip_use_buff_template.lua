@@ -27,7 +27,7 @@ function ChipUseBuff:get_description(current_round)
 end
 
 function ChipUseBuff:get_brief_description()
-    return ChipUseBuff.NAME .. ": " .. "Charge pierces, Attack + 1, Charge + 1!"
+    return ChipUseBuff.NAME .. ": " .. " NULL "
 end
 
 function ChipUseBuff:on_chip_use(chip, current_frame, state_logic, gauntlet_data)
@@ -46,6 +46,7 @@ function ChipUseBuff:on_chip_use(chip, current_frame, state_logic, gauntlet_data
     if (#self.used_chips == 5) then
         print("Used 5 chips in this battle phase - 100 damage to all!")
         state_logic.damage_all_enemies(100)
+        self.used_chips = {}
     end
 
 end
