@@ -11,7 +11,7 @@ local SpeedRunner = {
 
 local TIME_LIMIT_SECONDS = 60 * 15 -- 15 Minutes
 
-local REWARD_STRING = "FullCust *"
+local REWARD_STRING = "FullCust * (Reg!)"
 
 function SpeedRunner:activate(current_round)
 
@@ -64,11 +64,11 @@ function SpeedRunner:get_brief_description()
 
     if time_left < 0 then
         self.is_beaten = -1
-        ret_string = ret_string .. " Boss not beaten in time!\n(Missed reward: " .. REWARD_STRING .. ")"
+        ret_string = ret_string .. "Boss not beaten in time!\n(Missed reward: " .. REWARD_STRING .. ")"
     elseif self.is_beaten == 0 then
-        ret_string = ret_string .. " Beat the next Boss in " .. tostring(minutes_left) .. ":" .. tostring(seconds_left) .. "!\n(Reward: " .. REWARD_STRING .. ")"
+        ret_string = ret_string .. "Beat the next Boss in " .. tostring(minutes_left) .. ":" .. tostring(seconds_left) .. "!\n(Reward: " .. REWARD_STRING .. ")"
     elseif self.is_beaten == 1 then
-        ret_string = ret_string .. " Boss beaten in " .. tostring(minutes_left) .. ":" .. tostring(seconds_left) .. "!\n(" .. self.replaced_chips_string  .. " -> " .. REWARD_STRING .. ")"
+        ret_string = ret_string .. "Boss beaten in " .. tostring(minutes_left) .. ":" .. tostring(seconds_left) .. "!\n(" .. self.replaced_chips_string  .. " -> " .. REWARD_STRING .. ")"
     end
 
 
@@ -97,7 +97,7 @@ function SpeedRunner:compute_reward(state_logic, gauntlet_data)
         end
 
         gauntlet_data.current_folder[shuffle_indices[chip_idx]] = CHIP.new_chip_with_code(CHIP_ID.FullCust, CHIP_CODE.Asterisk)
-
+        gauntlet_data.current_folder[shuffle_indices[chip_idx]].REG = 1
     end
 
 end

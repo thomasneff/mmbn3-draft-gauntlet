@@ -1,0 +1,90 @@
+local gauntlet_data = require "gauntlet_data"
+local CHIP_DATA = require "defs.chip_data_defs"
+local CHIP_ID = require "defs.chip_id_defs"
+local CHIP = require "defs.chip_defs"
+local ELEMENT_DEFS = require "defs.entity_element_defs"
+local GENERIC_DEFS = require "defs.generic_defs"
+
+local REGCHIP = {
+    NAME = "Reg-Chip",
+}
+
+function shuffle(tbl)
+    size = #tbl
+    for i = size, 1, -1 do
+      local rand = math.random(size)
+      tbl[i], tbl[rand] = tbl[rand], tbl[i]
+    end
+    return tbl
+end
+
+function REGCHIP:activate(current_round)
+
+    self.old_folder = deepcopy(gauntlet_data.current_folder)
+
+    if self.regchip_random_index == -1 then
+        return
+    end
+    
+    
+    gauntlet_data.current_folder[self.regchip_random_index].REG = 1
+
+
+end
+
+function REGCHIP:deactivate(current_round)
+
+    gauntlet_data.current_folder = deepcopy(self.old_folder)
+
+
+end
+
+
+function REGCHIP:get_description(current_round)
+
+    return "Sets \"" .. self.replaced_chips_string .. "\" as a regular chip!\n(Will be drawn at the start of battle!)"
+
+end
+
+function REGCHIP:get_brief_description()
+    return REGCHIP.NAME .. ": Reg-Chip -> " .. self.replaced_chips_string .. "!"
+end
+
+
+function REGCHIP.new()
+
+    local new_buff = deepcopy(REGCHIP)
+    
+    local all_non_regged_chips_indices = {}
+
+    for chip_idx = 1,#gauntlet_data.current_folder do
+
+        if gauntlet_data.current_folder[chip_idx].REG == nil then
+            all_non_regged_chips_indices[#all_non_regged_chips_indices + 1] = chip_idx
+        end
+
+    end
+
+    
+    if #all_non_regged_chips_indices ~= 0 then
+        local random_idx = all_non_regged_chips_indices[math.random(1, #all_non_regged_chips_indices)] 
+
+        new_buff.regchip_random_index = random_idx
+        
+        new_buff.replaced_chips_string = gauntlet_data.current_folder[new_buff.regchip_random_index].PRINT_NAME
+    else
+        new_buff.regchip_random_index = -1
+        new_buff.replaced_chips_string = "nothing"
+    end
+
+
+    
+    new_buff.DESCRIPTION = new_buff:get_description(1)
+
+
+    return deepcopy(new_buff)
+
+end
+
+
+return REGCHIP

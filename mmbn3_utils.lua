@@ -212,11 +212,35 @@ function mmbn3_utils.patch_folder(folder, folder_address)
     -- We shuffle before patching to prevent issues with fixed RNG due to loading from the same savestate.
     local shuffled_folder = shuffle(deepcopy(folder))
 
+    -- If we have chips set as regular chips, they should appear in front.
+
+    local reg_indices = {}
+    local shuffled_reg_folder = {}
+
+    for chip_index = 1,folder_length do
+        if shuffled_folder[chip_index].REG ~= nil then
+            shuffled_reg_folder[#shuffled_reg_folder + 1] = deepcopy(shuffled_folder[chip_index])
+            reg_indices[chip_index] = 1
+        end
+    end
+
     for chip_index = 1,folder_length do
 
-        working_address = write_folder_chip_to_address(working_address, shuffled_folder[chip_index])
+        if reg_indices[chip_index] ~= 1 then
+            shuffled_reg_folder[#shuffled_reg_folder + 1] = deepcopy(shuffled_folder[chip_index])
+        end
+       
+    end
 
-        patch_chip_data(shuffled_folder[chip_index])
+    
+
+    for chip_index = 1,folder_length do
+         -- Now we need to patch the indices in RAM such that the chips come in order the first time around
+        mmbn3_utils.writebyte(defs.SHUFFLED_FOLDER_INDICES_RAM_ADDRESS + (chip_index - 1), chip_index - 1)
+    
+        working_address = write_folder_chip_to_address(working_address, shuffled_reg_folder[chip_index])
+
+        patch_chip_data(shuffled_reg_folder[chip_index])
 
     end
 

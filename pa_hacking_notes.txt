@@ -41,7 +41,7 @@ codes of chips held (during cust screen): EWRAM F851
 
 index of selected chips: f842
 
-indices of cust gauge displayed chips: 34040 ewram
+indices of shuffled folder indices: 34040 ewram
 
 find accesses to indices
 [0200f842..0200f846]?

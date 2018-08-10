@@ -425,16 +425,22 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
            
                 -- Render icon.
                 render_argb_2d_array(folder[chip_counter].ARGB_ICON, x_offset - CHIP_ICON.WIDTH - 2, y_offset, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
+                -- If this chip is set as a reg-chip, the background of the icon is set to a different color
+
+                local text_color = "white"
+                if folder[chip_counter].REG ~= nil then
+                    text_color = "LightCoral"
+                end
 
                 if chip_counter == selected_chip_index then
                     -- Render red background if we can't add a new megachip.
                     if can_replace_chip == false then
-                        drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", "white", "red", 10, "Arial")
+                        drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", text_color, "red", 10, "Arial")
                     else
-                        drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", "white", "green", 10, "Arial")
+                        drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", text_color, "green", 10, "Arial")
                     end
                 else
-                    drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", "white", "transparent", 10, "Arial")
+                    drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", text_color, "transparent", 10, "Arial")
                 end
 
             end

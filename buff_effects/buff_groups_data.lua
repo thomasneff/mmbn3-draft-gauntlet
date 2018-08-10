@@ -51,6 +51,7 @@ local REWIND = require "buff_effects.rewind"
 local TIMECOMPRESSION = require "buff_effects.time_compression"
 local CHIP_USE_BUFF = require "buff_effects.chip_use_buff_template"
 local SPEEDRUNNER = require "buff_effects.speedrunner"
+local REGCHIP = require "buff_effects.reg_chip"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -102,7 +103,10 @@ BUFF_GROUPS[1] = {
     FOLDERBAK,
     ILLUSIONOFCHOICE,
     REWIND,
-    TIMECOMPRESSION
+    TIMECOMPRESSION,
+    SPEEDRUNNER,
+    REGCHIP,
+
 }
 
 
