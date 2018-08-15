@@ -7,6 +7,7 @@ local GENERIC_DEFS = require "defs.generic_defs"
 
 local ElementalOverflow = {
     NAME = "Elemental-Overflow",
+    REMOVE_AFTER_ACTIVATION = 1,
 }
 
 local ELEMENT_NAMES =
@@ -19,9 +20,6 @@ local ELEMENT_NAMES =
 }
 
 
-
-
-local HEAL_PER_ROUND = {50, 100, 150, 200, 300}
 
 function ElementalOverflow:activate(current_round)
 
@@ -37,12 +35,12 @@ end
 
 function ElementalOverflow:get_description(current_round)
 
-    return "Using 3 " .. ELEMENT_NAMES[self.ELEMENT] .. "-Chips in 1 battle phase\nheals you for " .. HEAL_PER_ROUND[current_round] .. " HP!"
+    return "Using 3 " .. ELEMENT_NAMES[self.ELEMENT] .. "-Chips in 1 battle phase\nheals you for 1/3 of your Max HP!"
 
 end
 
 function ElementalOverflow:get_brief_description()
-    return ElementalOverflow.NAME .. ": " .. "3 " ..  ELEMENT_NAMES[self.ELEMENT] .. "-Chips in turn -> +" .. HEAL_PER_ROUND[self.current_round] .. "HP!"
+    return ElementalOverflow.NAME .. ": " .. "3 " ..  ELEMENT_NAMES[self.ELEMENT] .. "-Chips in turn -> heal 1/3 Max HP!"
 end
 
 function ElementalOverflow:on_chip_use(chip, current_frame, state_logic, gauntlet_data)
@@ -57,7 +55,7 @@ function ElementalOverflow:on_chip_use(chip, current_frame, state_logic, gauntle
         self.used_chip_elements[used_element] = self.used_chip_elements[used_element] + 1
         if self.used_chip_elements[used_element] >= 3 and used_element == self.ELEMENT then
             self.used_chip_elements[used_element] = 0
-            gauntlet_data.current_hp = gauntlet_data.current_hp + HEAL_PER_ROUND[self.current_round]
+            gauntlet_data.current_hp = math.floor(gauntlet_data.current_hp + gauntlet_data.mega_max_hp / 3)
             if gauntlet_data.current_hp > gauntlet_data.mega_max_hp then
                 gauntlet_data.current_hp = gauntlet_data.mega_max_hp
             end

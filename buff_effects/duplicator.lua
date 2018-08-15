@@ -43,9 +43,9 @@ end
 function Duplicator:get_description(current_round)
 
     if self.show_replacement == 1 then
-        return "Replaces \"" .. self.replaced_chips_string .. "\" with a copy of a random\nother chip in your folder!" 
+        return "Replaces \"" .. self.replaced_chips_string .. "\" in your folder\nwith a copy of a random other chip in your folder!" 
     else
-        return "Copies \"" .. self.copied_chips_string .. "\" and replaces a random\nother chip in your folder!" 
+        return "Copies \"" .. self.copied_chips_string .. "\" in your folder\nand replaces a random other chip in your folder!" 
     end
     
 

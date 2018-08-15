@@ -7,7 +7,7 @@ local REGENERATOR = {
 }
 
 local REGENERATOR_PER_ROUND = {0.05, 0.05, 0.05, 0.05, 0.05}
-local DAMAGE_INCREASE_MULT = {-10, -10, -10, -10, -10}
+local DAMAGE_INCREASE_MULT = {-0, -0, -0, -0, -0}
 
 
 function REGENERATOR:activate(current_round)
@@ -43,13 +43,20 @@ end
 
 function REGENERATOR:get_description(current_round)
 
-    return "Regenerate " .. tostring(REGENERATOR_PER_ROUND[current_round] * 100)  .. "% of MaxHP after every battle!\nDecreases Chip Damage by " .. -DAMAGE_INCREASE_MULT[current_round] .."%!"
-
+    if DAMAGE_INCREASE_MULT[current_round] ~= 0 then
+        return "Regenerate " .. tostring(REGENERATOR_PER_ROUND[current_round] * 100)  .. "% of MaxHP after every battle!\nDecreases Chip Damage by " .. -DAMAGE_INCREASE_MULT[current_round] .."%!"
+    else
+        return "Regenerate " .. tostring(REGENERATOR_PER_ROUND[current_round] * 100)  .. "% of MaxHP after every battle!"
+    end
 
 end
 
 function REGENERATOR:get_brief_description()
-    return REGENERATOR.NAME .. ": HP +" .. REGENERATOR_PER_ROUND[self.current_round] * gauntlet_data.mega_max_hp .. " per battle, " .. DAMAGE_INCREASE_MULT[self.current_round] .. "% chip dmg!"
+    if DAMAGE_INCREASE_MULT[current_round] ~= 0 then
+        return REGENERATOR.NAME .. ": HP +" .. REGENERATOR_PER_ROUND[self.current_round] * gauntlet_data.mega_max_hp .. " per battle, " .. DAMAGE_INCREASE_MULT[self.current_round] .. "% chip dmg!"
+    else
+        return REGENERATOR.NAME .. ": HP +" .. REGENERATOR_PER_ROUND[self.current_round] * gauntlet_data.mega_max_hp .. " per battle!"
+    end
 end
 
 function REGENERATOR.new()

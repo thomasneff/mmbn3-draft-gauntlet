@@ -69,9 +69,11 @@ function REGCHIP.new()
     if #all_non_regged_chips_indices ~= 0 then
         local random_idx = all_non_regged_chips_indices[math.random(1, #all_non_regged_chips_indices)] 
 
+
+
         -- Re-roll megachips/gigachips for reduced chance of regging them.
-        local chip_data = CHIP_DATA[gauntlet_data.current_folder[random_idx]]
-        
+        local chip_data = CHIP_DATA[gauntlet_data.current_folder[random_idx].ID]
+
         local is_chip_mega = (chip_data.CHIP_RANKING % 4) == 1
         local is_chip_giga = (chip_data.CHIP_RANKING % 4) == 2
 
@@ -79,7 +81,7 @@ function REGCHIP.new()
             random_idx = all_non_regged_chips_indices[math.random(1, #all_non_regged_chips_indices)] 
         end
 
-        chip_data = CHIP_DATA[gauntlet_data.current_folder[random_idx]]
+        chip_data = CHIP_DATA[gauntlet_data.current_folder[random_idx].ID]
         is_chip_giga = (chip_data.CHIP_RANKING % 4) == 2
 
         if is_chip_giga then

@@ -403,6 +403,38 @@ function state_logic.on_cust_screen_confirm()
     
 end
 
+function state_logic.on_battle_phase_start()
+
+    -- Extract held chip IDs and damage values
+
+    local held_chip_id_addr = GENERIC_DEFS.IN_BATTLE_HELD_CHIP_IDS_ADDRESS - 0x02000000
+    local held_chip_damage_addr =  GENERIC_DEFS.IN_BATTLE_HELD_CHIP_DAMAGES_ADDRESS - 0x02000000
+
+    gauntlet_data.held_chips = {}
+    gauntlet_data.custgauge_last_frames_storage = 0
+
+    for chip_idx = 1,5 do 
+
+        local chip_id = memory.read_u16_le(held_chip_id_addr + ((chip_idx - 1) * 2), "EWRAM")
+
+        if (chip_id ~= 0xFFFF) then
+            
+            local chip_damage = memory.read_u16_le(held_chip_damage_addr + ((chip_idx - 1) * 2), "EWRAM")
+
+            local chip = {}
+            chip.ID = chip_id
+            chip.DAMAGE = chip_damage
+
+            gauntlet_data.held_chips[chip_idx] = deepcopy(chip)
+
+            --print("Chip " .. tostring(chip_idx) .. ": NAME = " .. CHIP_NAME[chip.ID] ..  ", ID = " .. tostring(chip.ID) .. ", DAMAGE = " .. tostring(chip.DAMAGE))
+        end
+
+    end
+
+
+end
+
 function state_logic.on_chip_use()
     --print("Chip used!")
 
@@ -899,7 +931,6 @@ end
 function state_logic.initialize()
 
 
-    -- TODO: check if we had some statistics to save, if we implement statistics
     if gauntlet_data.statistics_container ~= nil then
 
         -- Just update it again, don't care if we possibly have duplicate entries.
@@ -1009,7 +1040,22 @@ function state_logic.initialize()
     state_logic.time_compression_savestates = {}
     gauntlet_data.number_of_time_compressions = 0
     gauntlet_data.total_frame_count = 0
-
+    gauntlet_data.muramasa_damage_additive = 0
+    gauntlet_data.muramasa_damage_multiplicative = 0
+    gauntlet_data.masamune_damage_additive = 0
+    gauntlet_data.masamune_damage_multiplicative = 0
+    gauntlet_data.cust_damage_additive = 0
+    gauntlet_data.cust_damage_multiplicative = 0
+    gauntlet_data.reverse_cust_damage_additive = 0
+    gauntlet_data.reverse_cust_damage_multiplicative = 0
+    gauntlet_data.custgauge_per_frame_change = 0
+    gauntlet_data.current_custgauge_value = 0
+    gauntlet_data.custgauge_last_frames_storage = 0
+    gauntlet_data.custgauge_per_enemy_count = {[0] = 0, [1] = 0, [2] = 0.0, [3] = 0, [4] = 0}
+    gauntlet_data.damage_per_enemy_count_multiplicative = {[0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0}
+    gauntlet_data.damage_per_enemy_count_additive = {[0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0}
+    gauntlet_data.held_chips = nil
+    gauntlet_data.battle_paused = 0
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     
@@ -1642,6 +1688,196 @@ function state_logic.enemy_hp_regen()
 
 end
 
+function state_logic.in_battle_chip_effects()
+
+    if gauntlet_data.held_chips == nil then
+        return
+    end
+
+    if #gauntlet_data.held_chips == 0 then
+        return
+    end
+
+    local additive_damage_increase = 0
+    local multiplicative_damage_increase = 0
+
+    -- Muramasa
+    additive_damage_increase = additive_damage_increase + math.floor(gauntlet_data.muramasa_damage_additive * (1 - (gauntlet_data.current_hp / gauntlet_data.mega_max_hp)))
+    multiplicative_damage_increase = multiplicative_damage_increase + (gauntlet_data.muramasa_damage_multiplicative * (1 - (gauntlet_data.current_hp / gauntlet_data.mega_max_hp)))
+    --print("Add1: " .. tostring(additive_damage_increase))
+    -- Masamune
+    additive_damage_increase = additive_damage_increase + math.floor(gauntlet_data.masamune_damage_additive * ((gauntlet_data.current_hp / gauntlet_data.mega_max_hp)))
+    multiplicative_damage_increase = multiplicative_damage_increase + (gauntlet_data.masamune_damage_multiplicative * ((gauntlet_data.current_hp / gauntlet_data.mega_max_hp)))
+    --print("Add2: " .. tostring(additive_damage_increase))
+    -- OverCust (Works similar to CustSwrd)
+    local cust_value = gauntlet_data.current_custgauge_value
+    if cust_value == GENERIC_DEFS.MAX_CUST_GAUGE_VALUE then
+        cust_value = 0
+    end
+
+    --print("Current Cust val: " .. tostring(cust_value))
+    --print("Max Cust val: " .. tostring(GENERIC_DEFS.MAX_CUST_GAUGE_VALUE))
+    --print("First comp: " .. tostring((cust_value / GENERIC_DEFS.MAX_CUST_GAUGE_VALUE)))
+    --print("Second comp: " .. tostring(gauntlet_data.cust_damage_additive * ((cust_value / GENERIC_DEFS.MAX_CUST_GAUGE_VALUE))))
+    --print("Third comp: " .. tostring(math.floor(gauntlet_data.cust_damage_additive * ((cust_value / GENERIC_DEFS.MAX_CUST_GAUGE_VALUE)))))
+
+
+    additive_damage_increase = additive_damage_increase + math.floor(gauntlet_data.cust_damage_additive * ((cust_value / (GENERIC_DEFS.MAX_CUST_GAUGE_VALUE - 1))))
+    multiplicative_damage_increase = multiplicative_damage_increase + (gauntlet_data.cust_damage_multiplicative * ((cust_value / (GENERIC_DEFS.MAX_CUST_GAUGE_VALUE - 1))))
+    --print("Add3: " .. tostring(additive_damage_increase))
+    cust_value = gauntlet_data.current_custgauge_value
+
+    -- AntiCust (Reverse CustSwrd)
+    additive_damage_increase = additive_damage_increase + math.floor(gauntlet_data.reverse_cust_damage_additive * (1 - (cust_value / (GENERIC_DEFS.MAX_CUST_GAUGE_VALUE))))
+    multiplicative_damage_increase = multiplicative_damage_increase + (gauntlet_data.reverse_cust_damage_multiplicative * (1 - (cust_value / (GENERIC_DEFS.MAX_CUST_GAUGE_VALUE))))
+    --print("Add4: " .. tostring(additive_damage_increase))
+    -- Duelist / Damage based on number of enemies
+    additive_damage_increase = additive_damage_increase + math.floor(gauntlet_data.damage_per_enemy_count_additive[gauntlet_data.number_enemies_alive])
+    multiplicative_damage_increase = multiplicative_damage_increase + gauntlet_data.damage_per_enemy_count_multiplicative[gauntlet_data.number_enemies_alive]
+
+    --print("Add5: " .. tostring(additive_damage_increase))
+    --print("Mul: " .. tostring(multiplicative_damage_increase))
+
+    -- Now we can patch the current and next chip based on the held chip index
+    local held_chip_damage_addr =  GENERIC_DEFS.IN_BATTLE_HELD_CHIP_DAMAGES_ADDRESS - 0x02000000
+
+    local chip_idx = gauntlet_data.current_battle_chip_index
+
+    for chip_idx = gauntlet_data.current_battle_chip_index, (gauntlet_data.current_battle_chip_index + 1) do
+        local chip = gauntlet_data.held_chips[chip_idx]
+
+        if (chip ~= nil) then
+
+            local current_chip_damage = chip.DAMAGE
+            if (current_chip_damage ~= 0) then
+
+                -- NOTE: this might need changing because of balancing reasons, as this is the ideal order
+                local new_chip_damage = (current_chip_damage + additive_damage_increase) * (1.0 + multiplicative_damage_increase)
+
+
+                -- Patch new chip damage
+                --if new_chip_damage ~= current_chip_damage then
+                memory.write_u16_le(held_chip_damage_addr + ((chip_idx - 1) * 2), new_chip_damage, "EWRAM")
+                --end
+
+            end
+
+        end
+
+    end
+
+end
+
+function state_logic.get_number_of_alive_enemies()
+
+    local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]
+
+    local enemy_hp_values = {}
+    local enemy_ewram_addresses = {}
+
+
+    gauntlet_data.number_enemies_alive = 0
+
+    for key, address in pairs(enemy_addresses) do
+        local ewram_address = address - 0x02000000
+        local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
+        if enemy_hp_value ~= 0 then
+            gauntlet_data.number_enemies_alive = gauntlet_data.number_enemies_alive + 1
+        end
+    end
+end
+
+function state_logic.get_current_custgauge_value()
+
+    gauntlet_data.current_custgauge_value = memory.readbyte(GENERIC_DEFS.CUST_GAUGE_VALUE_ADDRESS - 0x02000000, "EWRAM")
+
+end
+
+function state_logic.in_battle_custgauge_effects()
+
+    if gauntlet_data.battle_paused ~= 0 then
+        return
+    end
+
+    local old_custgauge_value = gauntlet_data.current_custgauge_value
+
+    -- Get new value
+    state_logic.get_current_custgauge_value()
+
+    -- Don't do anything when we had zero (the first tick)
+    if gauntlet_data.current_custgauge_value == 0 then
+        return
+    end
+
+    -- Don't jitter around on full cust gauge
+    if old_custgauge_value >= GENERIC_DEFS.MAX_CUST_GAUGE_VALUE then
+        return
+    end
+
+    gauntlet_data.custgauge_last_frames_storage = gauntlet_data.custgauge_last_frames_storage + gauntlet_data.custgauge_per_frame_change
+    gauntlet_data.custgauge_last_frames_storage = gauntlet_data.custgauge_last_frames_storage + gauntlet_data.custgauge_per_enemy_count[gauntlet_data.number_enemies_alive]
+    local integer_custgauge_part = 0
+    
+    if gauntlet_data.custgauge_last_frames_storage >= 0 then
+        integer_custgauge_part = math.floor(gauntlet_data.custgauge_last_frames_storage)
+    else
+        integer_custgauge_part = math.ceil(gauntlet_data.custgauge_last_frames_storage)
+    end
+
+    
+
+    -- If we can't add anything this frame, return
+    if math.abs(integer_custgauge_part) < 1 then
+        return
+    end
+
+
+    gauntlet_data.custgauge_last_frames_storage = gauntlet_data.custgauge_last_frames_storage - integer_custgauge_part
+    
+
+
+    gauntlet_data.current_custgauge_value = gauntlet_data.current_custgauge_value + integer_custgauge_part
+
+    --if gauntlet_data.current_custgauge_value <= old_custgauge_value then
+        -- We can not get a "locked" or frozen custgauge.
+    --    gauntlet_data.current_custgauge_value = old_custgauge_value + 1
+    --end
+
+    if gauntlet_data.current_custgauge_value > GENERIC_DEFS.MAX_CUST_GAUGE_VALUE then
+        gauntlet_data.current_custgauge_value = GENERIC_DEFS.MAX_CUST_GAUGE_VALUE
+    end
+
+    if gauntlet_data.current_custgauge_value ~= old_custgauge_value then
+        memory.writebyte(GENERIC_DEFS.CUST_GAUGE_VALUE_ADDRESS - 0x02000000, gauntlet_data.current_custgauge_value, "EWRAM")
+    end
+
+end
+
+function state_logic.check_pause_screen()
+
+    gauntlet_data.battle_paused = memory.readbyte(GENERIC_DEFS.IN_BATTLE_PAUSE_ADDRESS - 0x02000000, "EWRAM")
+    gauntlet_data.battle_paused = gauntlet_data.battle_paused + memory.readbyte(GENERIC_DEFS.IN_BATTLE_TIMEFREEZE_ADDRESS - 0x02000000, "EWRAM")
+    gauntlet_data.battle_paused = gauntlet_data.battle_paused + memory.readbyte(GENERIC_DEFS.IN_BATTLE_TIMEFREEZE_ADDRESS2 - 0x02000000, "EWRAM")
+
+end
+
+function state_logic.check_in_battle_effects()
+
+    state_logic.get_number_of_alive_enemies()
+
+    state_logic.check_pause_screen()
+    
+
+    state_logic.in_battle_custgauge_effects()
+
+    
+
+    state_logic.in_battle_chip_effects()
+
+    
+
+
+end
 
 function state_logic.main_loop()
     gauntlet_data.total_frame_count = gauntlet_data.total_frame_count + 1
@@ -1692,15 +1928,19 @@ function state_logic.main_loop()
 
        
 
-        -- Check enemy HP regen
-        if gauntlet_data.enemies_hp_regen_per_frame ~= 0 then
-            state_logic.enemy_hp_regen()
-        end
-
+       
         -- Set last HP for next frame
         if gauntlet_data.current_hp ~= nil and gauntlet_data.current_hp ~= 0 then
             gauntlet_data.last_hp = gauntlet_data.current_hp
         end
+
+        state_logic.check_in_battle_effects()
+
+        -- Check enemy HP regen
+        if gauntlet_data.enemies_hp_regen_per_frame ~= 0 and gauntlet_data.battle_paused ~= 0 then
+            state_logic.enemy_hp_regen()
+        end
+
 
 
         state_logic.main_loop_frame_count = state_logic.main_loop_frame_count + 1
@@ -1988,6 +2228,7 @@ function state_logic.main_loop()
         --print("TRANSITION TO BUFF SELECT")
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.BUFF_SELECT
         state_logic.should_redraw = 1
+        state_logic.shuffle_folder()
         state_logic.dropped_buffs = BUFF_GENERATOR.random_buffs_from_round(state_logic.current_round, GAUNTLET_DEFS.NUMBER_OF_DROPPED_BUFFS, state_logic.current_battle)
         state_logic.update_buff_discriptions()
         memorysavestate.loadcorestate(state_logic.gui_change_savestate)
@@ -1995,6 +2236,8 @@ function state_logic.main_loop()
 
         -- Determine number of Mega/Giga chips in folder.
         state_logic.update_folder_mega_giga_chip_counts()
+        
+        
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.BUFF_SELECT then
         --print ("IN BUFF_SELECT")

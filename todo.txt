@@ -2,6 +2,7 @@
 
 Buffs:
 
+implement all the new mechanics as buffs :)
 
 I think for the chip use effects, i might use a function that passes the used chip, state_logic, current frame and does everything itself?
 
@@ -21,11 +22,25 @@ new buff that deals damage (random/all) upon hand/use condition
 e.g. buff that temporarily increases buster damage/weaponlevel if 3 elements are used (need buster address in battle...)
 
 if possible to read current chip damage IN BATTLE:
-    -   small muramasa effect
-    -   reverse muramasa effect
-    -   custswrd effect
-    -   reverse custswrd effect
+    * TODO: maybe we need a new hook that signifies the start of turn after cust screen?
+    *       otherwise upon first frame we store our in-battle chip damage, and then compute additional damage based off of that.
+    *       we compute additive before multiplicative
+    *       we need to test how PAs affect the in-battle held chips
+    -   muramasa effect (additive and multiplicative variants)
+        * + damage based on missing HP (less -> more), up to 30% / 30 flat 
+    -   reverse muramasa effect (additive and multiplicative variants)
+        * + damage based on missing HP (more -> more), up to 30% / 30 flat 
+    -   custswrd effect (additive and multiplicative variants)
+        * + damage based on cust% (more is more, 0x40 -> 0), up to 30% / 30 flat 
+    -   reverse custswrd effect (additive and multiplicative variants)
+        * + damage based on cust% (less is more, 0x40 -> 0), up to 30% / 30 flat 
 
+
+buff that checks for number of enemies and applies buffs
+    * 1 enemy: +30% damage, more: -20% damage
+    * 1 enemy: "fastgauge", more: "slowgauge"
+
+buff that turns a random chip in your starting hand into * code (this battle only)
 
 
 something crazy to think about: a slay the spire mode -> folder is unlimited (by dynamically patching indices and chips during battle), 

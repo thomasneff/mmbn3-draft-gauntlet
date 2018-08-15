@@ -54,12 +54,10 @@ function Elementalist:on_chip_use(chip, current_frame, state_logic, gauntlet_dat
         -- Reset storage
         self.used_chip_elements = {}
 
-
         -- Fill cust gauge
         state_logic.set_cust_gauge_value(0x40)
     end
     
-
 end
 
 function Elementalist:on_cust_screen_confirm(state_logic, gauntlet_data)

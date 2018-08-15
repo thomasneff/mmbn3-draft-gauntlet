@@ -7,7 +7,7 @@ local HP_INCREASE = {
 }
 
 local HP_INCREASE_PER_ROUND = {75, 150, 300, 400, 500}
-local DAMAGE_INCREASE_MULT = {-0, -5, -5, -10, -10}
+local DAMAGE_INCREASE_MULT = {-0, -0, -0, -0, -0}
 
 
 function HP_INCREASE:activate(current_round)

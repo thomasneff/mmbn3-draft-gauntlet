@@ -779,7 +779,7 @@ DRAFT_TABLES.Standard =
         },
         [3] = {
           CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_SUPER_RARE_CUMULATIVE_CHANCE,
-          CHIP_GEN = CHIP.new_chip_generator(CHIP_ID.Totem1, nil, 2)
+          CHIP_GEN = CHIP.new_chip_generator(CHIP_ID.HeatShot, CHIP_CODE.Asterisk, 2)
         },
         [4] = {
           CUMULATIVE_RARITY = GAUNTLET_DEFS.DROP_ULTRA_RARE_CUMULATIVE_CHANCE,

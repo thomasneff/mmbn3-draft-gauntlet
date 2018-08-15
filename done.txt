@@ -429,3 +429,9 @@ new buff which copies a chip from your folder
     -   either shows which chip is replaced
     -   or which chip is duplicated
 
+duplicator after drafting is weird?
+
+
+fix custgauge pause bug -> also fix for timefreeze chips
+it seems weird that it "jitters" multiple times every 10 frames (?) -> seems to be "normal" actually
+
