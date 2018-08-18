@@ -359,7 +359,7 @@ function state_logic.patch_consecutive_program_advances()
 end
 
 function state_logic.on_cust_screen_confirm()
-    --print("Cust screen confirmed!")
+    print("Cust screen confirmed!")
     gauntlet_data.current_battle_chip_index = 1
   
     
@@ -397,6 +397,7 @@ function state_logic.on_cust_screen_confirm()
         end
     end
    
+    --gauntlet_data.num_chips_in_battle = num_chips
     
     state_logic.patch_consecutive_program_advances()
 
@@ -405,7 +406,11 @@ end
 
 function state_logic.on_battle_phase_start()
 
+
+    print("Battle phase start!")
+
     -- Extract held chip IDs and damage values
+    gauntlet_data.battle_phase = 1
 
     local held_chip_id_addr = GENERIC_DEFS.IN_BATTLE_HELD_CHIP_IDS_ADDRESS - 0x02000000
     local held_chip_damage_addr =  GENERIC_DEFS.IN_BATTLE_HELD_CHIP_DAMAGES_ADDRESS - 0x02000000
@@ -436,7 +441,7 @@ function state_logic.on_battle_phase_start()
 end
 
 function state_logic.on_chip_use()
-    --print("Chip used!")
+    print("Chip used!")
 
     for k, v in pairs(state_logic.activated_buffs) do
         if v.IN_BATTLE_CALLBACKS ~= nil then
@@ -589,6 +594,8 @@ end
 
 function state_logic.on_battle_end()
 
+    event.unregisterbyname("on_battle_end")
+
     if state_logic.battle_pointer_index > GAUNTLET_DEFS.BATTLES_PER_ROUND then
        gauntlet_data.current_state = gauntlet_data.GAME_STATE.LOAD_INITIAL 
     end  
@@ -618,7 +625,14 @@ function state_logic.on_battle_end()
     end
     state_logic.update_printable_chip_names_in_folder()
     state_logic.update_argb_chip_icons_in_folder()
+
     
+    event.onmemoryexecute(state_logic.on_enter_battle, GENERIC_DEFS.BATTLE_START_ADDRESS + 4, "on_enter_battle")
+    gauntlet_data.num_chips_in_battle = 0
+    gauntlet_data.battle_phase = 0
+    gauntlet_data.is_cust_screen = 0
+    state_logic.hp_loaded = 0
+    gauntlet_data.cust_screen_was_opened = 0
 end
 
 function state_logic.determine_drops(number_of_drops)
@@ -659,6 +673,7 @@ function state_logic.on_enter_battle()
     --end
 
     -- We simply check if we are in battle, because then it's guaranteed to be FoldrBak
+    event.unregisterbyname("on_enter_battle")
 
     if state_logic.battle_enter_lock == 1 then
         return
@@ -695,8 +710,13 @@ function state_logic.on_enter_battle()
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_GAUNTLET_COMPLETE
 
     end
-    
+
+    event.onmemoryexecute(state_logic.on_battle_end, GENERIC_DEFS.END_OF_GAUNTLET_BATTLE_ADDRESS, "on_battle_end")
     --gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT
+    gauntlet_data.num_chips_in_battle = 0
+    gauntlet_data.battle_phase = 0
+    gauntlet_data.is_cust_screen = 0
+    state_logic.hp_loaded = 0
 
 end
 
@@ -714,6 +734,7 @@ function state_logic.on_next_round()
     
     --print ("BEFORE TRANSITION TO BUFF SELECT")
     gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT
+    gauntlet_data.cust_screen_was_opened = 0
 
 end
 
@@ -921,7 +942,11 @@ function state_logic.shuffle_folder()
 end
 
 function state_logic.export_run_statistics()
-    local file = assert(io.open(state_logic.stats_file_name, "w"))
+    local file = io.open(state_logic.stats_file_name, "w")
+    if file == nil then
+        print("Could not save statistics, please create the \"stats\" folder inside the gauntlet folder!")
+        return
+    end
     local stats_json = json.encode(gauntlet_data.statistics_container)
     file:write(stats_json)
     file:flush()
@@ -929,6 +954,23 @@ function state_logic.export_run_statistics()
 end
 
 function state_logic.initialize()
+
+    event.unregisterbyname("on_enter_battle")
+    event.unregisterbyname("on_battle_end")
+    event.unregisterbyname("on_cust_screen_confirm")
+    event.unregisterbyname("on_chip_use")
+    --event.unregisterbyname("on_battle_phase_start")
+
+    event.unregisterbyname("main_frame_loop")
+    event.onframestart(state_logic.main_frame_loop, "main_frame_loop")
+    --event.onframeend(state_logic.main_loop, "main_loop2")
+
+    event.onmemoryexecute(state_logic.on_enter_battle, GENERIC_DEFS.BATTLE_START_ADDRESS + 4, "on_enter_battle")
+    --event.onmemoryexecute(state_logic.on_battle_end, GENERIC_DEFS.END_OF_GAUNTLET_BATTLE_ADDRESS, "on_battle_end")
+    event.onmemoryexecute(state_logic.on_cust_screen_confirm, GENERIC_DEFS.CUST_SCREEN_CONFIRM_ADDRESS + 2, "on_cust_screen_confirm")
+    --event.onmemoryexecute(state_logic.on_chip_use, GENERIC_DEFS.CHIP_USE_ADDRESS + 2, "on_chip_use")
+    --event.onmemoryexecute(state_logic.on_battle_phase_start, GENERIC_DEFS.BATTLE_PHASE_START_CHIP_IDS_ADDRESS + 2, "on_battle_phase_start")
+
 
 
     if gauntlet_data.statistics_container ~= nil then
@@ -1056,6 +1098,11 @@ function state_logic.initialize()
     gauntlet_data.damage_per_enemy_count_additive = {[0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0}
     gauntlet_data.held_chips = nil
     gauntlet_data.battle_paused = 0
+    gauntlet_data.rising_star_count = 0
+    gauntlet_data.num_chips_in_battle = 0
+    gauntlet_data.battle_phase = 0
+    gauntlet_data.is_cust_screen = 0
+    gauntlet_data.cust_screen_was_opened = 0
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     
@@ -1261,7 +1308,7 @@ function state_logic.patch_before_battle_start()
     end
 
 
-    mmbn3_utils.patch_folder(gauntlet_data.current_folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM)
+    mmbn3_utils.patch_folder(gauntlet_data.current_folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM, gauntlet_data)
 
     local new_battle_data = nil
 
@@ -1502,6 +1549,10 @@ function state_logic.on_mega_death()
 
     if gauntlet_data.number_of_rewinds > 0 and state_logic.rewind_savestate ~= nil then
         state_logic.hp_loaded = 0
+        gauntlet_data.battle_phase = 0
+        gauntlet_data.is_cust_screen = 0
+        gauntlet_data.num_chips_in_battle = 0
+        gauntlet_data.cust_screen_was_opened = 0
         gauntlet_data.number_of_rewinds = gauntlet_data.number_of_rewinds - 1
         memorysavestate.loadcorestate(state_logic.rewind_savestate)
         print("Rewind!")
@@ -1754,6 +1805,10 @@ function state_logic.in_battle_chip_effects()
                 -- NOTE: this might need changing because of balancing reasons, as this is the ideal order
                 local new_chip_damage = (current_chip_damage + additive_damage_increase) * (1.0 + multiplicative_damage_increase)
 
+                if new_chip_damage < 0 then
+                    new_chip_damage = 0
+                end
+
 
                 -- Patch new chip damage
                 --if new_chip_damage ~= current_chip_damage then
@@ -1879,23 +1934,85 @@ function state_logic.check_in_battle_effects()
 
 end
 
-function state_logic.main_loop()
-    gauntlet_data.total_frame_count = gauntlet_data.total_frame_count + 1
-    if DEBUG == 1 then
-        print ("DEBUG: STATE: ", gauntlet_data.current_state)
+
+function state_logic.on_cust_screen_open()
+    gauntlet_data.num_chips_in_battle = 0
+    gauntlet_data.battle_phase = 0
+    gauntlet_data.cust_screen_was_opened = 1
+    print("Cust screen opened")
+end
+
+function state_logic.on_cust_screen_closed()
+    --gauntlet_data.num_chips_in_battle = memory.readbyte(GENERIC_DEFS.IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM")
+    print("Cust screen closed")
+end
+
+
+
+function state_logic.check_frame_events()
+
+    -- Here, we check for events that can easily be polled every frame to save expensive event.onmemoryexecute hooks
+    -- Check if we are in cust screen
+
+    local is_cust_screen = memory.readbyte(GENERIC_DEFS.IN_BATTLE_IS_CUSTSCREEN_OPEN - 0x02000000, "EWRAM")
+
+    if is_cust_screen == 1 and gauntlet_data.is_cust_screen == 0 then
+        state_logic.on_cust_screen_open()
+        gauntlet_data.is_cust_screen = is_cust_screen
     end
-    input_handler.handle_inputs()
 
-
-    state_logic.check_reset()
-
+    if is_cust_screen == 0 and gauntlet_data.is_cust_screen == 1 then
+        state_logic.on_cust_screen_closed()
+        gauntlet_data.is_cust_screen = is_cust_screen
+    end
 
     
 
+    
+    -- Check difference to gauntlet_data.num_chips
+    -- TODO: refactor into "on_chip_use parts"
+    if gauntlet_data.is_cust_screen == 0 and gauntlet_data.cust_screen_was_opened ~= 0 then 
+        -- Check for "on_chip_use"
+        local num_chips = memory.readbyte(GENERIC_DEFS.IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM")
+
+        if gauntlet_data.battle_phase == 0 and num_chips ~= 0 then
+            state_logic.on_battle_phase_start()
+            gauntlet_data.num_chips_in_battle = num_chips
+        else
+            if num_chips < gauntlet_data.num_chips_in_battle then
+
+                state_logic.on_chip_use()
+                -- TODO: what happens if we e.g. have 3 chips, enter the cust screen and then select 0 ?
+                --       we need a variable that tells us if we are in the cust screen.
+                --       00C0C9 is a flag that's 1 if the cust screen gfx are shown
+                --       34420 or 34432 are probably good candidates, they togggle immediately after pressing L/R
+                --       we *might* be able to use them for detecting cust confirm
+                --       00A5C8, 00A5D8, 00A5E8 seem to be possible candidates for detecting battle phase start
+                --       otherwise we can detect battle phase start by checking when 006CAC goes from 1 -> 0
+                gauntlet_data.num_chips_in_battle = num_chips
+            end
+        end
+
+        
+    end
+
+    
+
+    
+
+end
+
+function state_logic.main_frame_loop()
+
+    -- This loop runs at the GBA framerate. 
     --print ("Current state: " .. gauntlet_data.current_state)
     if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
 
-        if gauntlet_data.number_of_time_compressions > 0 then
+        gauntlet_data.number_of_entities = (state_logic.battle_data[state_logic.current_battle - 1].NUM_ENTITIES)
+
+        state_logic.check_frame_events()
+
+        if gauntlet_data.number_of_time_compressions > 0 and gauntlet_data.battle_phase ~= 0 then
             -- We compute the savestate only every x frames to save computing power
             if (state_logic.main_loop_frame_count % gauntlet_data.time_compression_frame_interval) == 0 then
                 state_logic.time_compression_savestates[(state_logic.main_loop_frame_count % gauntlet_data.time_compression_delay) + 1] = memorysavestate.savecorestate()
@@ -1906,12 +2023,12 @@ function state_logic.main_loop()
         
         -- Check if mega gets hit for certain buffs
         
-        gauntlet_data.number_of_entities = (state_logic.battle_data[state_logic.current_battle - 1].NUM_ENTITIES)
+        
         --print("Number of entities in battle: " .. tostring(gauntlet_data.number_of_entities))
         
         gauntlet_data.current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM")
 
-        if gauntlet_data.current_hp ~= 0 then
+        if gauntlet_data.current_hp ~= 0 and gauntlet_data.battle_phase ~= 0 then
             state_logic.hp_loaded = 1
         end
         
@@ -1945,7 +2062,28 @@ function state_logic.main_loop()
 
         state_logic.main_loop_frame_count = state_logic.main_loop_frame_count + 1
 
-    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT then
+    end
+
+    if MusicLoader.LoadBlock() == 1 then
+        state_logic.should_redraw = 1
+    end
+end
+
+function state_logic.main_loop()
+    gauntlet_data.total_frame_count = gauntlet_data.total_frame_count + 1
+    if DEBUG == 1 then
+        print ("DEBUG: STATE: ", gauntlet_data.current_state)
+    end
+    input_handler.handle_inputs()
+
+
+    state_logic.check_reset()
+
+    --state_logic.main_frame_loop()
+    
+
+   
+    if gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT then
         -- We pause here and make a savestate.
         --print("Transition to chip select.")
         state_logic.gui_change_savestate = memorysavestate.savecorestate()
@@ -2624,7 +2762,9 @@ function state_logic.main_loop()
         end
         
 
-    else -- Default state, should never happen
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
+        
+    else-- Default state, should never happen
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
     end
 
@@ -2659,7 +2799,7 @@ function state_logic.main_loop()
         state_logic.should_redraw = 1
     end
 
-    emu.yield()
+    --emu.yield()
 end
 
 return state_logic

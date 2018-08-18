@@ -2,7 +2,43 @@
 
 Buffs:
 
+Rewind might be bugged? I swear it didn't trigger when it should have and mis-triggered before ...?
+chip used is bugged -> right now I ended the fight with a chip left, and the next battle instantly fired chip used and killed mega (because battle phase was on, apparently)
+    - fixed by creating a "was custscreen opened flag" to prevent hp from being read from the last battle
+
+
+We need optimization. (It only runs with 40-50FPS on my bad/old laptop).
+
+Idea: disable all hooks during battle that are not necessary, and try to poll the ones that are necessary? maybe we can find a very easy flag that is pollable in the main loop?
+
+(TODO: checkout the event.onframestart for the main loop instead of the yield infinite loop)
+
+optimization:
+
+on_enter_battle can be disabled as soon as it fires, is reenabled in on_battle_end
+on_battle_end can be disabled as soon as it fires, is reenabled in on_enter_battle
+
+^--- this is 1 event that is permanently on_battle_end
+
+on_cust_screen_confirm has to be on :( -> try replacing it with a custom polling based hook? We found this by looking through memory and shit, there has to be a flag that triggers upon doing this (?) maybe even registers or stuff
+
+on_chip_use -> has to be on, but can probably be polled easily in a frame based loop
+
+on_battle_phase_start -> has to be on, but can probably be polled easily in a frame-based loop
+ 
+
+we IDEALLY want to have a maximum of 2 onmemoryexecute events running during battle. I think this is easily doable.
+
+TODOOOOOO: current build is really buggy. seems to reset upon finishing a battle (?), on_chip_use might be tough, as the address changes all the time :/
+it's probably an address on the stack (?)
+
+for now, test with on_chip_use as a hook
+(time compression / rewind might be broken with the new optimized shit)
+
+
 implement all the new mechanics as buffs :)
+
+possibly make all brief descriptions consistent so they show either individuals or totals
 
 I think for the chip use effects, i might use a function that passes the used chip, state_logic, current frame and does everything itself?
 

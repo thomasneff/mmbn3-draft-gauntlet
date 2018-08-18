@@ -57,6 +57,14 @@ local ELEMENTALIST = require "buff_effects.elementalist"
 local COMBOSTACKER = require "buff_effects.combo_stacker"
 local ELEMENTALOVERFLOW = require "buff_effects.elemental_overflow"
 local DUPLICATOR = require "buff_effects.duplicator"
+local MURAMASA = require "buff_effects.muramasa"
+local MASAMUNE = require "buff_effects.masamune"
+local OVERCUST = require "buff_effects.overcust"
+local ANTICUST = require "buff_effects.anticust"
+local DUELIST = require "buff_effects.duelist"
+local CROWDFAVORITE = require "buff_effects.crowd_favorite"
+local TIMEHUNTER = require "buff_effects.time_hunter"
+local RISINGSTAR = require "buff_effects.rising_star"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -87,8 +95,8 @@ BUFF_GROUPS[1] = {
     SWORD_CHIP_DAMAGE_INCREASE,
     STANDARD_CHIP_DAMAGE_INCREASE,
     DROP_RARITY_INCREASE,
-    ELEMENT_CHIP_DAMAGE_INCREASE_HP_COST,
-    SWORD_CHIP_DAMAGE_INCREASE_HP_COST,
+    --ELEMENT_CHIP_DAMAGE_INCREASE_HP_COST,
+    --SWORD_CHIP_DAMAGE_INCREASE_HP_COST,
     SNECKO_EYE,
     PERFECTIONIST,
     REGENERATOR,
@@ -115,7 +123,15 @@ BUFF_GROUPS[1] = {
     ELEMENTALIST,
     COMBOSTACKER,
     ELEMENTALOVERFLOW,
-    DUPLICATOR
+    DUPLICATOR,
+    MURAMASA,
+    MASAMUNE,
+    OVERCUST,
+    ANTICUST,
+    DUELIST,
+    CROWDFAVORITE,
+    TIMEHUNTER,
+    RISINGSTAR,
 }
 
 
@@ -127,14 +143,16 @@ end
 
 
 
---BUFF_GROUPS[1] = {
---    ELEMENTALOVERFLOW,
---    ELEMENTALOVERFLOW,
---    ELEMENTALOVERFLOW,
---    ELEMENTALOVERFLOW,
---    ELEMENTALOVERFLOW,
---    ELEMENTALOVERFLOW,
---}
+BUFF_GROUPS[1] = {
+    --MURAMASA,
+    --MASAMUNE,
+    --OVERCUST,
+    --ANTICUST,
+    --DUELIST,
+    --OVERCUST,
+    --COMBOSTACKER,
+    --DUELIST,
+}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])
 BUFF_GROUPS[3] = deepcopy(BUFF_GROUPS[1])

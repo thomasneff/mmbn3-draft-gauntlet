@@ -8,8 +8,8 @@ local SWORD_CHIP_DAMAGE_INCREASE = {
 
 }
 
-local DAMAGE_INCREASE_ADD = {20, 40, 60, 80, 100}
-local DAMAGE_INCREASE_MULT = {20, 40, 60, 80, 100}
+local DAMAGE_INCREASE_ADD = {20, 30, 40, 50, 60}
+local DAMAGE_INCREASE_MULT = {20, 30, 40, 50, 60}
 
 function SWORD_CHIP_DAMAGE_INCREASE:activate(current_round)
 

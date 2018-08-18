@@ -4,6 +4,7 @@ local TEXT_TABLE = require "defs.text_table_defs"
 local ENTITY_PALETTE_DEFS = require "defs.entity_palette_defs"
 local CHIP_DATA_ADDRESS = require "defs.chip_data_address_defs"
 local CHIP_DATA = require "defs.chip_data_defs"
+local CHIP_CODE = require "defs.chip_code_defs"
 local deepcopy = require "deepcopy"
 local mmbn3_utils = {}
 
@@ -201,10 +202,7 @@ function shuffle(tbl)
   end
 
 -- This changes all chips for the given folder_address to the chips contained in "folder".
-function mmbn3_utils.patch_folder(folder, folder_address)
-
-
-
+function mmbn3_utils.patch_folder(folder, folder_address, gauntlet_data)
 
     local folder_length = #folder
     local working_address = folder_address
@@ -233,11 +231,15 @@ function mmbn3_utils.patch_folder(folder, folder_address)
     end
 
     
-
     for chip_index = 1,folder_length do
          -- Now we need to patch the indices in RAM such that the chips come in order the first time around
         mmbn3_utils.writebyte(defs.SHUFFLED_FOLDER_INDICES_RAM_ADDRESS + (chip_index - 1), chip_index - 1)
     
+        -- "Rising Star" buff (first N chips are Asterisk Code)
+        if gauntlet_data.rising_star_count >= chip_index then
+            shuffled_reg_folder[chip_index].CODE = CHIP_CODE.Asterisk
+        end
+
         working_address = write_folder_chip_to_address(working_address, shuffled_reg_folder[chip_index])
 
         patch_chip_data(shuffled_reg_folder[chip_index])

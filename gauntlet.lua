@@ -10,14 +10,8 @@ local CHIP_DEFS = require "defs.chip_defs"
 state_logic.initialize()
 
 --For some reason, BizHawk with VBA-Next requires an address that's 4 bytes larger. Whatever.
-event.onmemoryexecute(state_logic.on_enter_battle, GENERIC_DEFS.BATTLE_START_ADDRESS + 4)
 
-event.onmemoryexecute(state_logic.on_battle_end, GENERIC_DEFS.END_OF_GAUNTLET_BATTLE_ADDRESS)
-event.onmemoryexecute(state_logic.on_cust_screen_confirm, GENERIC_DEFS.CUST_SCREEN_CONFIRM_ADDRESS + 2)
-event.onmemoryexecute(state_logic.on_chip_use, GENERIC_DEFS.CHIP_USE_ADDRESS + 2)
-event.onmemoryexecute(state_logic.on_battle_phase_start, GENERIC_DEFS.BATTLE_PHASE_START_CHIP_IDS_ADDRESS + 2)
-
-event.onexit(state_logic.on_exit)
+-- event.onexit(state_logic.on_exit)
 -- Dump Entity drop table templates.
 
 
@@ -95,6 +89,7 @@ for _, key in pairs(sorted_entity_types) do
 end 
 
 testfile:close()--]]
+
 
 
 

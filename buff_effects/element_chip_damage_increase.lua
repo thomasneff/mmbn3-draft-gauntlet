@@ -17,7 +17,7 @@ local ELEMENT_NAMES =
     [ELEMENT_DEFS.ELEMENT_AQUA] = "Aqua",
 }
 
-local DAMAGE_INCREASE_ADD = {10, 20, 30, 40, 50}
+local DAMAGE_INCREASE_ADD = {20, 30, 40, 50, 60}
 local DAMAGE_INCREASE_MULT = {20, 30, 40, 50, 60}
 
 function ELEMENT_CHIP_DAMAGE_INCREASE:activate(current_round)
