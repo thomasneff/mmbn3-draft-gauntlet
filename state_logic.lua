@@ -268,8 +268,6 @@ function state_logic.patch_consecutive_program_advances()
 
     -- TODO: this patching has to be optimized - it leads to audible stuttering upon cust screen confirmation.
     if contains_pa_chip == 0 then
-        print(contains_pa_chip)
-        print("Return G")
         return
     end
 
@@ -359,7 +357,7 @@ function state_logic.patch_consecutive_program_advances()
 end
 
 function state_logic.on_cust_screen_confirm()
-    print("Cust screen confirmed!")
+    --print("Cust screen confirmed!")
     gauntlet_data.current_battle_chip_index = 1
   
     
@@ -407,7 +405,7 @@ end
 function state_logic.on_battle_phase_start()
 
 
-    print("Battle phase start!")
+    --print("Battle phase start!")
 
     -- Extract held chip IDs and damage values
     gauntlet_data.battle_phase = 1
@@ -441,7 +439,7 @@ function state_logic.on_battle_phase_start()
 end
 
 function state_logic.on_chip_use()
-    print("Chip used!")
+    --print("Chip used!")
 
     for k, v in pairs(state_logic.activated_buffs) do
         if v.IN_BATTLE_CALLBACKS ~= nil then
@@ -1939,12 +1937,12 @@ function state_logic.on_cust_screen_open()
     gauntlet_data.num_chips_in_battle = 0
     gauntlet_data.battle_phase = 0
     gauntlet_data.cust_screen_was_opened = 1
-    print("Cust screen opened")
+    --print("Cust screen opened")
 end
 
 function state_logic.on_cust_screen_closed()
     --gauntlet_data.num_chips_in_battle = memory.readbyte(GENERIC_DEFS.IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM")
-    print("Cust screen closed")
+    --print("Cust screen closed")
 end
 
 
