@@ -2,6 +2,9 @@
 
 Buffs:
 
+DONE: optimization was successful so far - Laptop runs at 70-80 FPS unthrottled, so this should be fine regarding the "headroom" of FPS for even weaker machines.
+still, even removing the cust_screen_confirm hook would be amazing.
+
 Rewind might be bugged? I swear it didn't trigger when it should have and mis-triggered before ...?
 chip used is bugged -> right now I ended the fight with a chip left, and the next battle instantly fired chip used and killed mega (because battle phase was on, apparently)
     - fixed by creating a "was custscreen opened flag" to prevent hp from being read from the last battle

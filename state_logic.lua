@@ -136,7 +136,7 @@ end
 function state_logic.patch_consecutive_program_advances()
 
     -- early out checks if we can even possibly get a PA: we have to have 3 consecutive chips that are listed in the PA defs
-
+    
     if (#gauntlet_data.selected_chips < 3) then
         return
     end
@@ -375,9 +375,14 @@ function state_logic.on_cust_screen_confirm()
     -- Read out selected chip indices
     gauntlet_data.selected_chips = {}
 
-    local num_chips = memory.readbyte(GENERIC_DEFS.CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS - 0x02000000, "EWRAM")
+    --if gauntlet_data.number_of_chosen_cust_chips == 0xFF then
+    --    print("gauntlet_data.number_of_chosen_cust_chips == 0xFF")
+    --    assert(nil)
+    --end
+    
+    gauntlet_data.number_of_chosen_cust_chips = memory.readbyte(GENERIC_DEFS.CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS - 0x02000000, "EWRAM")
 
-    for chip_idx = 1, num_chips do
+    for chip_idx = 1, gauntlet_data.number_of_chosen_cust_chips do
         local folder_index = memory.readbyte(GENERIC_DEFS.CUST_SCREEN_SELECTED_CHIP_INDICES_ADDRESS + chip_idx - 1 - 0x02000000, "EWRAM")
         gauntlet_data.selected_chips[chip_idx] = {}
         
@@ -399,7 +404,7 @@ function state_logic.on_cust_screen_confirm()
     
     state_logic.patch_consecutive_program_advances()
 
-    
+    event.unregisterbyname("on_cust_screen_confirm")
 end
 
 function state_logic.on_battle_phase_start()
@@ -956,7 +961,7 @@ function state_logic.initialize()
     event.unregisterbyname("on_enter_battle")
     event.unregisterbyname("on_battle_end")
     event.unregisterbyname("on_cust_screen_confirm")
-    event.unregisterbyname("on_chip_use")
+    --event.unregisterbyname("on_chip_use")
     --event.unregisterbyname("on_battle_phase_start")
 
     event.unregisterbyname("main_frame_loop")
@@ -965,7 +970,7 @@ function state_logic.initialize()
 
     event.onmemoryexecute(state_logic.on_enter_battle, GENERIC_DEFS.BATTLE_START_ADDRESS + 4, "on_enter_battle")
     --event.onmemoryexecute(state_logic.on_battle_end, GENERIC_DEFS.END_OF_GAUNTLET_BATTLE_ADDRESS, "on_battle_end")
-    event.onmemoryexecute(state_logic.on_cust_screen_confirm, GENERIC_DEFS.CUST_SCREEN_CONFIRM_ADDRESS + 2, "on_cust_screen_confirm")
+    --event.onmemoryexecute(state_logic.on_cust_screen_confirm, GENERIC_DEFS.CUST_SCREEN_CONFIRM_ADDRESS + 2, "on_cust_screen_confirm")
     --event.onmemoryexecute(state_logic.on_chip_use, GENERIC_DEFS.CHIP_USE_ADDRESS + 2, "on_chip_use")
     --event.onmemoryexecute(state_logic.on_battle_phase_start, GENERIC_DEFS.BATTLE_PHASE_START_CHIP_IDS_ADDRESS + 2, "on_battle_phase_start")
 
@@ -1101,6 +1106,7 @@ function state_logic.initialize()
     gauntlet_data.battle_phase = 0
     gauntlet_data.is_cust_screen = 0
     gauntlet_data.cust_screen_was_opened = 0
+    gauntlet_data.number_of_chosen_cust_chips = 0xFF
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     
@@ -1937,12 +1943,19 @@ function state_logic.on_cust_screen_open()
     gauntlet_data.num_chips_in_battle = 0
     gauntlet_data.battle_phase = 0
     gauntlet_data.cust_screen_was_opened = 1
+    -- This is a canary value to make sure we can detect the cust screen confirm
+    --memory.writebyte(GENERIC_DEFS.CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS - 0x02000000, 0xFF, "EWRAM")
+    gauntlet_data.number_of_chosen_cust_chips = 0xFF
+
+    event.onmemoryexecute(state_logic.on_cust_screen_confirm, GENERIC_DEFS.CUST_SCREEN_CONFIRM_ADDRESS + 2, "on_cust_screen_confirm")
+
     --print("Cust screen opened")
 end
 
 function state_logic.on_cust_screen_closed()
     --gauntlet_data.num_chips_in_battle = memory.readbyte(GENERIC_DEFS.IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM")
     --print("Cust screen closed")
+
 end
 
 
@@ -1965,6 +1978,19 @@ function state_logic.check_frame_events()
     end
 
     
+    -- Check for cust screen confirm (this is commented out because it doesn't work with PA patching unfortunately, may need to look into it again)
+    --if gauntlet_data.is_cust_screen == 1 and gauntlet_data.cust_screen_was_opened ~= 0 then
+
+    --   local num_chips = memory.readbyte(GENERIC_DEFS.CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS - 0x02000000, "EWRAM")
+
+        
+    --    if num_chips ~= 0xFF and gauntlet_data.number_of_chosen_cust_chips == 0xFF then
+            --print("ON CUST SCREEN CONFIRM")
+    --        gauntlet_data.number_of_chosen_cust_chips = num_chips
+    --        state_logic.on_cust_screen_confirm()
+    --    end
+
+    --end
 
     
     -- Check difference to gauntlet_data.num_chips
@@ -1986,6 +2012,8 @@ function state_logic.check_frame_events()
                 --       34420 or 34432 are probably good candidates, they togggle immediately after pressing L/R
                 --       we *might* be able to use them for detecting cust confirm
                 --       00A5C8, 00A5D8, 00A5E8 seem to be possible candidates for detecting battle phase start
+                --       00A588, 00A598, 00A5A8, 00A5B8
+                --       00F802 seems like a good candidate for cust confirm, contains number of selected chips directly after confirming
                 --       otherwise we can detect battle phase start by checking when 006CAC goes from 1 -> 0
                 gauntlet_data.num_chips_in_battle = num_chips
             end
@@ -2052,7 +2080,7 @@ function state_logic.main_frame_loop()
         state_logic.check_in_battle_effects()
 
         -- Check enemy HP regen
-        if gauntlet_data.enemies_hp_regen_per_frame ~= 0 and gauntlet_data.battle_paused ~= 0 then
+        if gauntlet_data.enemies_hp_regen_per_frame ~= 0 and gauntlet_data.battle_paused == 0 then
             state_logic.enemy_hp_regen()
         end
 
