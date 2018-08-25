@@ -11,9 +11,9 @@ local DAMAGE_BUFF_MULTIPLICATIVE = 0.2
 function AntiCust:activate(current_round)
 
     if self.ADDITIVE == 0 then
-        gauntlet_data.reverse_cust_damage_additive = gauntlet_data.reverse_cust_damage_additive + DAMAGE_BUFF_ADDITIVE
-    else
         gauntlet_data.reverse_cust_damage_multiplicative = gauntlet_data.reverse_cust_damage_multiplicative + DAMAGE_BUFF_MULTIPLICATIVE
+    else
+        gauntlet_data.reverse_cust_damage_additive = gauntlet_data.reverse_cust_damage_additive + DAMAGE_BUFF_ADDITIVE
     end
 
 end
@@ -22,9 +22,9 @@ end
 function AntiCust:deactivate(current_round)
 
     if self.ADDITIVE == 0 then
-        gauntlet_data.reverse_cust_damage_additive = gauntlet_data.reverse_cust_damage_additive - DAMAGE_BUFF_ADDITIVE
-    else
         gauntlet_data.reverse_cust_damage_multiplicative = gauntlet_data.reverse_cust_damage_multiplicative - DAMAGE_BUFF_MULTIPLICATIVE
+    else
+        gauntlet_data.reverse_cust_damage_additive = gauntlet_data.reverse_cust_damage_additive - DAMAGE_BUFF_ADDITIVE
     end
 
 end

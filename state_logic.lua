@@ -440,6 +440,8 @@ function state_logic.on_battle_phase_start()
 
     end
 
+    state_logic.check_in_battle_effects()
+
 
 end
 
@@ -1943,6 +1945,7 @@ function state_logic.on_cust_screen_open()
     gauntlet_data.num_chips_in_battle = 0
     gauntlet_data.battle_phase = 0
     gauntlet_data.cust_screen_was_opened = 1
+    gauntlet_data.current_custgauge_value = 0
     -- This is a canary value to make sure we can detect the cust screen confirm
     --memory.writebyte(GENERIC_DEFS.CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS - 0x02000000, 0xFF, "EWRAM")
     gauntlet_data.number_of_chosen_cust_chips = 0xFF

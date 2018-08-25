@@ -143,16 +143,17 @@ end
 
 
 
---BUFF_GROUPS[1] = {
+BUFF_GROUPS[1] = {
     --MURAMASA,
     --MASAMUNE,
     --OVERCUST,
+    --TIMEHUNTER,
     --ANTICUST,
     --DUELIST,
     --OVERCUST,
     --COMBOSTACKER,
     --DUELIST,
---}
+}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])
 BUFF_GROUPS[3] = deepcopy(BUFF_GROUPS[1])

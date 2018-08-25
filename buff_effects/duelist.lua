@@ -13,15 +13,15 @@ local DAMAGE_BUFF_MULTIPLICATIVE = 0.2
 function Duelist:activate(current_round)
 
     if self.ADDITIVE == 0 then
-        gauntlet_data.damage_per_enemy_count_additive[1] = gauntlet_data.damage_per_enemy_count_additive[1] + DAMAGE_BUFF_ADDITIVE
-        gauntlet_data.damage_per_enemy_count_additive[2] = gauntlet_data.damage_per_enemy_count_additive[2] + DAMAGE_NERF_ADDITIVE
-        gauntlet_data.damage_per_enemy_count_additive[3] = gauntlet_data.damage_per_enemy_count_additive[3] + DAMAGE_NERF_ADDITIVE
-        gauntlet_data.damage_per_enemy_count_additive[4] = gauntlet_data.damage_per_enemy_count_additive[4] + DAMAGE_NERF_ADDITIVE
-    else
         gauntlet_data.damage_per_enemy_count_multiplicative[1] = gauntlet_data.damage_per_enemy_count_multiplicative[1] + DAMAGE_BUFF_MULTIPLICATIVE
         gauntlet_data.damage_per_enemy_count_multiplicative[2] = gauntlet_data.damage_per_enemy_count_multiplicative[2] + DAMAGE_NERF_MULTIPLICATIVE
         gauntlet_data.damage_per_enemy_count_multiplicative[3] = gauntlet_data.damage_per_enemy_count_multiplicative[3] + DAMAGE_NERF_MULTIPLICATIVE
         gauntlet_data.damage_per_enemy_count_multiplicative[4] = gauntlet_data.damage_per_enemy_count_multiplicative[4] + DAMAGE_NERF_MULTIPLICATIVE
+    else
+        gauntlet_data.damage_per_enemy_count_additive[1] = gauntlet_data.damage_per_enemy_count_additive[1] + DAMAGE_BUFF_ADDITIVE
+        gauntlet_data.damage_per_enemy_count_additive[2] = gauntlet_data.damage_per_enemy_count_additive[2] + DAMAGE_NERF_ADDITIVE
+        gauntlet_data.damage_per_enemy_count_additive[3] = gauntlet_data.damage_per_enemy_count_additive[3] + DAMAGE_NERF_ADDITIVE
+        gauntlet_data.damage_per_enemy_count_additive[4] = gauntlet_data.damage_per_enemy_count_additive[4] + DAMAGE_NERF_ADDITIVE
     end
 
 end
@@ -30,15 +30,15 @@ end
 function Duelist:deactivate(current_round)
 
     if self.ADDITIVE == 0 then
-        gauntlet_data.damage_per_enemy_count_additive[1] = gauntlet_data.damage_per_enemy_count_additive[1] - DAMAGE_BUFF_ADDITIVE
-        gauntlet_data.damage_per_enemy_count_additive[2] = gauntlet_data.damage_per_enemy_count_additive[2] - DAMAGE_NERF_ADDITIVE
-        gauntlet_data.damage_per_enemy_count_additive[3] = gauntlet_data.damage_per_enemy_count_additive[3] - DAMAGE_NERF_ADDITIVE
-        gauntlet_data.damage_per_enemy_count_additive[4] = gauntlet_data.damage_per_enemy_count_additive[4] - DAMAGE_NERF_ADDITIVE
-    else
         gauntlet_data.damage_per_enemy_count_multiplicative[1] = gauntlet_data.damage_per_enemy_count_multiplicative[1] - DAMAGE_BUFF_MULTIPLICATIVE
         gauntlet_data.damage_per_enemy_count_multiplicative[2] = gauntlet_data.damage_per_enemy_count_multiplicative[2] - DAMAGE_NERF_MULTIPLICATIVE
         gauntlet_data.damage_per_enemy_count_multiplicative[3] = gauntlet_data.damage_per_enemy_count_multiplicative[3] - DAMAGE_NERF_MULTIPLICATIVE
         gauntlet_data.damage_per_enemy_count_multiplicative[4] = gauntlet_data.damage_per_enemy_count_multiplicative[4] - DAMAGE_NERF_MULTIPLICATIVE
+    else
+        gauntlet_data.damage_per_enemy_count_additive[1] = gauntlet_data.damage_per_enemy_count_additive[1] - DAMAGE_BUFF_ADDITIVE
+        gauntlet_data.damage_per_enemy_count_additive[2] = gauntlet_data.damage_per_enemy_count_additive[2] - DAMAGE_NERF_ADDITIVE
+        gauntlet_data.damage_per_enemy_count_additive[3] = gauntlet_data.damage_per_enemy_count_additive[3] - DAMAGE_NERF_ADDITIVE
+        gauntlet_data.damage_per_enemy_count_additive[4] = gauntlet_data.damage_per_enemy_count_additive[4] - DAMAGE_NERF_ADDITIVE
     end
 
 end

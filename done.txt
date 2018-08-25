@@ -435,3 +435,6 @@ duplicator after drafting is weird?
 fix custgauge pause bug -> also fix for timefreeze chips
 it seems weird that it "jitters" multiple times every 10 frames (?) -> seems to be "normal" actually
 
+
+
+on first frame anticust doesn't work
