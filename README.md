@@ -146,7 +146,7 @@ Changing / adding entries to this list will add the possibility for these songs 
 7. Modify GAUNTLET_FOLDER/music_loader.lua to use your extracted songs or change music randomization!
 8. Open the BizHawk Lua Console (Tools -> Lua Console)
 9. Open the script "gauntlet.lua" (Script -> Open Script -> open GAUNTLET_FOLDER/gauntlet.lua)
-(10. If not started automatically: Doubleclick the "gauntlet" script in the Lua Console list of scripts)
+10. ( If not started automatically: Doubleclick the "gauntlet" script in the Lua Console list of scripts )
 
 # Recap of all things necessary to play WITHOUT Music Patching
 1. Download BizHawk ( https://github.com/TASVideos/BizHawk/releases )
@@ -155,4 +155,4 @@ Changing / adding entries to this list will add the possibility for these songs 
 4. Switch BizHawk to VBA-Next (Config -> Cores -> GBA -> "VBA-Next")
 5. Open the BizHawk Lua Console (Tools -> Lua Console)
 6. Open the script "gauntlet.lua" (Script -> Open Script -> open GAUNTLET_FOLDER/gauntlet.lua)
-(7. If not started automatically: Doubleclick the "gauntlet" script in the Lua Console list of scripts)
+7. ( If not started automatically: Doubleclick the "gauntlet" script in the Lua Console list of scripts )
