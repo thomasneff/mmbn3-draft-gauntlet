@@ -129,4 +129,6 @@ gauntlet_data.number_of_time_compressions = 0
 gauntlet_data.time_compression_delay = 60
 gauntlet_data.time_compression_frame_interval = 4
 
+gauntlet_data.backstab_percentage_damage = 0
+
 return gauntlet_data

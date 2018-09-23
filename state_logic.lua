@@ -723,6 +723,9 @@ function state_logic.on_enter_battle()
     gauntlet_data.is_cust_screen = 0
     state_logic.hp_loaded = 0
 
+
+    
+
 end
 
 
@@ -1109,6 +1112,7 @@ function state_logic.initialize()
     gauntlet_data.is_cust_screen = 0
     gauntlet_data.cust_screen_was_opened = 0
     gauntlet_data.number_of_chosen_cust_chips = 0xFF
+    gauntlet_data.backstab_percentage_damage = 0
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     
@@ -1940,10 +1944,41 @@ function state_logic.check_in_battle_effects()
 
 end
 
+function state_logic.on_first_cust_screen()
+
+    --print ("First cust screen: " .. tostring(gauntlet_data.backstab_percentage_damage) .. ", " .. tostring(state_logic.current_battle - 1))
+
+    if gauntlet_data.backstab_percentage_damage ~= 0 and (state_logic.current_battle - 1 ) % GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL == 0 then
+
+        local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]
+
+        local enemy_hp_values = {}
+        local enemy_ewram_addresses = {}
+
+        for key, address in pairs(enemy_addresses) do
+            local ewram_address = address - 0x02000000
+            local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
+            if enemy_hp_value ~= 0 then
+                enemy_hp_values[#enemy_hp_values + 1] = enemy_hp_value
+                enemy_ewram_addresses[#enemy_ewram_addresses + 1] = ewram_address
+            end
+        end
+
+        --print ("damaging random enemy: " .. tostring(enemy_hp_values[1] * gauntlet_data.backstab_percentage_damage))
+        -- Get enemy address
+        state_logic.damage_random_enemy(enemy_hp_values[1] * gauntlet_data.backstab_percentage_damage)
+    end
+
+end
 
 function state_logic.on_cust_screen_open()
     gauntlet_data.num_chips_in_battle = 0
     gauntlet_data.battle_phase = 0
+
+    if gauntlet_data.cust_screen_was_opened == nil or gauntlet_data.cust_screen_was_opened == 0 then
+        state_logic.on_first_cust_screen()
+    end
+
     gauntlet_data.cust_screen_was_opened = 1
     gauntlet_data.current_custgauge_value = 0
     -- This is a canary value to make sure we can detect the cust screen confirm
