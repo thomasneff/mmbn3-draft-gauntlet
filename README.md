@@ -42,7 +42,7 @@ The paused icon should change to a running icon, and the gauntlet will load
 
 # Controls during Menus / between Battles
 
-Directions: Cursor / Highlighted Object
+Directions/D-Pad: Cursor / Highlighted Object
 
 A: Confirm
 
