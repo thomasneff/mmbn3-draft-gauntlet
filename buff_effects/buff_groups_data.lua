@@ -67,6 +67,7 @@ local TIMEHUNTER = require "buff_effects.time_hunter"
 local RISINGSTAR = require "buff_effects.rising_star"
 local BACKSTAB = require "buff_effects.backstab"
 local PENNIB = require "buff_effects.pen_nib"
+local TACTICIAN = require "buff_effects.tactician"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -135,7 +136,8 @@ BUFF_GROUPS[1] = {
     TIMEHUNTER,
     RISINGSTAR,
     BACKSTAB,
-    PENNIB
+    PENNIB,
+    TACTICIAN
 }
 
 
@@ -156,8 +158,8 @@ BUFF_GROUPS[1] = {
     --DUELIST,
     --OVERCUST,
     PENNIB,
-    DUELIST,
-    BACKSTAB,
+    TACTICIAN,
+    DUPLICATOR,
 }
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])

@@ -26,8 +26,16 @@ function REGCHIP:activate(current_round)
         return
     end
     
+    for chip_idx = 1,#gauntlet_data.current_folder do
+
+        if gauntlet_data.current_folder[chip_idx].REGCHIP_FLAG ~= nil then
+            gauntlet_data.current_folder[chip_idx].REGCHIP_FLAG = nil
+            gauntlet_data.current_folder[chip_idx].REG = 1
+        end
+
+    end
     
-    gauntlet_data.current_folder[self.regchip_random_index].REG = 1
+    
 
 
 end
@@ -59,7 +67,7 @@ function REGCHIP.new()
 
     for chip_idx = 1,#gauntlet_data.current_folder do
 
-        if gauntlet_data.current_folder[chip_idx].REG == nil then
+        if gauntlet_data.current_folder[chip_idx].TACTICIAN == nil and gauntlet_data.current_folder[chip_idx].REG == nil then
             all_non_regged_chips_indices[#all_non_regged_chips_indices + 1] = chip_idx
         end
 
@@ -92,6 +100,7 @@ function REGCHIP.new()
         new_buff.regchip_random_index = random_idx
         
         new_buff.replaced_chips_string = gauntlet_data.current_folder[new_buff.regchip_random_index].PRINT_NAME
+        gauntlet_data.current_folder[new_buff.regchip_random_index].REGCHIP_FLAG = 1
     else
         new_buff.regchip_random_index = -1
         new_buff.replaced_chips_string = "nothing"

@@ -438,3 +438,13 @@ it seems weird that it "jitters" multiple times every 10 frames (?) -> seems to 
 
 
 on first frame anticust doesn't work
+
+
+Pen Nib: every 10th chip used deals 1.5x damage (keeps track across battles)
+
+
+Tactician: a chip in folder is marked, when it is removed/replaced -> +25% damage for next fight
+    - careful with other buffs that replace chips -> the best way is to simply check number of tactician chips at buff-pick *and* end of battle, and check before patching battle
+    - This rolls a new tactician chip every time
+    - can not stack with REG chips (for highlighting reasons)
+

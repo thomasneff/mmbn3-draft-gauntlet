@@ -559,10 +559,12 @@ function state_logic.compute_temporary_chip_changes()
     end
     
     
+    -- Tactician
+    local multiplicative_damage_increase = gauntlet_data.tactician_damage + gauntlet_data.perfectionist_damage_bonus_mult.CURRENT
     
     -- Apply temporary buffs
     for key, chip_data in pairs(CHIP_DATA) do 
-        CHIP_DATA[key].DAMAGE = (CHIP_DATA[key].DAMAGE * gauntlet_data.perfectionist_damage_bonus_mult.CURRENT) + gauntlet_data.perfectionist_damage_bonus_add.CURRENT
+        CHIP_DATA[key].DAMAGE = (CHIP_DATA[key].DAMAGE * multiplicative_damage_increase) + gauntlet_data.perfectionist_damage_bonus_add.CURRENT
     end
 
     -- Apply collector temporary buffs
@@ -592,6 +594,8 @@ function state_logic.compute_temporary_chip_changes()
         end
 
     end
+
+
 
 
 end
@@ -1114,6 +1118,8 @@ function state_logic.initialize()
     gauntlet_data.number_of_chosen_cust_chips = 0xFF
     gauntlet_data.backstab_percentage_damage = 0
     gauntlet_data.pen_nib_bonus_damage = 0
+    gauntlet_data.tactician_unique_id = 0
+    gauntlet_data.tactician_damage = 0
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     
@@ -1303,6 +1309,13 @@ function state_logic.patch_before_battle_start()
 
     -- Patch folder with all new stuff.
     -- state_logic.randomize_folder()
+
+    -- Fire events for buffs
+    for k, v in pairs(state_logic.activated_buffs) do
+        if v.ON_PATCH_BEFORE_BATTLE_START_CALLBACK ~= nil then
+            v:on_patch_before_battle_start(state_logic, gauntlet_data)
+        end
+    end
 
     -- TODO: check if this breaks anything. It shouldn't, as we always only copy after a buff is taken.
     state_logic.compute_temporary_chip_changes()
@@ -1797,7 +1810,10 @@ function state_logic.in_battle_chip_effects()
     additive_damage_increase = additive_damage_increase + math.floor(gauntlet_data.damage_per_enemy_count_additive[gauntlet_data.number_enemies_alive])
     multiplicative_damage_increase = multiplicative_damage_increase + gauntlet_data.damage_per_enemy_count_multiplicative[gauntlet_data.number_enemies_alive]
 
+    -- Pen Nib
     multiplicative_damage_increase = multiplicative_damage_increase + gauntlet_data.pen_nib_bonus_damage
+
+    
 
     --print("Add5: " .. tostring(additive_damage_increase))
     --print("Mul: " .. tostring(multiplicative_damage_increase))

@@ -132,4 +132,9 @@ gauntlet_data.time_compression_frame_interval = 4
 gauntlet_data.backstab_percentage_damage = 0
 gauntlet_data.pen_nib_bonus_damage = 0
 
+gauntlet_data.tactician_damage_per_chip = 0.25
+gauntlet_data.tactician_unique_id = 0
+
+gauntlet_data.tactician_damage = 0
+
 return gauntlet_data

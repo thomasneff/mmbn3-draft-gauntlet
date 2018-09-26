@@ -25,10 +25,26 @@ function Duplicator:activate(current_round)
     if self.Duplicator_random_index == -1 then
         return
     end
-    
+
+    local replaced_idx = nil
+    local copied_idx = nil
+
+    for chip_idx = 1,#gauntlet_data.current_folder do
+
+        if gauntlet_data.current_folder[chip_idx].COPY_FLAG ~= nil then
+            gauntlet_data.current_folder[chip_idx].COPY_FLAG = nil
+            copied_idx = chip_idx
+        end
+
+        if gauntlet_data.current_folder[chip_idx].REPLACE_FLAG ~= nil then
+            gauntlet_data.current_folder[chip_idx].REPLACE_FLAG = nil
+            replaced_idx = chip_idx
+        end
+
+    end
     
     --gauntlet_data.current_folder[self.Duplicator_random_index].REG = 1
-    gauntlet_data.current_folder[self.replaced_idx] = deepcopy(gauntlet_data.current_folder[self.copied_idx])
+    gauntlet_data.current_folder[replaced_idx] = deepcopy(gauntlet_data.current_folder[copied_idx])
 
 end
 
@@ -93,6 +109,9 @@ function Duplicator.new()
 
         new_buff.replaced_chips_string = gauntlet_data.current_folder[new_buff.replaced_idx].PRINT_NAME
 
+        gauntlet_data.current_folder[new_buff.copied_idx].COPY_FLAG = 1
+        gauntlet_data.current_folder[new_buff.replaced_idx].REPLACE_FLAG = 1
+
     else
         new_buff.replaced_idx = math.random(1, #gauntlet_data.current_folder)
         new_buff.replaced_chips_string = gauntlet_data.current_folder[new_buff.replaced_idx].PRINT_NAME
@@ -103,6 +122,9 @@ function Duplicator.new()
         end
 
         new_buff.copied_chips_string = gauntlet_data.current_folder[new_buff.copied_idx].PRINT_NAME
+
+        gauntlet_data.current_folder[new_buff.copied_idx].COPY_FLAG = 1
+        gauntlet_data.current_folder[new_buff.replaced_idx].REPLACE_FLAG = 1
     end
 
 

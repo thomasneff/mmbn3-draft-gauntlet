@@ -432,6 +432,10 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
                     text_color = "LightCoral"
                 end
 
+                if folder[chip_counter].TACTICIAN ~= nil then
+                    text_color = "LightGreen"
+                end
+
                 if chip_counter == selected_chip_index then
                     -- Render red background if we can't add a new megachip.
                     if can_replace_chip == false then
