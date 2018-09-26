@@ -395,7 +395,7 @@ function state_logic.on_cust_screen_confirm()
       
     -- Fire events for buffs
     for k, v in pairs(state_logic.activated_buffs) do
-        if v.IN_BATTLE_CALLBACKS ~= nil then
+        if v.ON_CUST_SCREEN_CONFIRM_CALLBACK ~= nil then
             v:on_cust_screen_confirm(state_logic, gauntlet_data)
         end
     end
@@ -449,7 +449,7 @@ function state_logic.on_chip_use()
     --print("Chip used!")
 
     for k, v in pairs(state_logic.activated_buffs) do
-        if v.IN_BATTLE_CALLBACKS ~= nil then
+        if v.ON_CHIP_USE_CALLBACK ~= nil then
             v:on_chip_use(gauntlet_data.selected_chips[gauntlet_data.current_battle_chip_index], 
                 state_logic.main_loop_frame_count, 
                 state_logic, 

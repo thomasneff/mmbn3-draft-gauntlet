@@ -52,7 +52,8 @@ function ComboStacker.new()
 
     local new_ComboStacker = deepcopy(ComboStacker)
     new_ComboStacker.DESCRIPTION = new_ComboStacker:get_description(1)
-    new_ComboStacker.IN_BATTLE_CALLBACKS = 1
+    new_ComboStacker.ON_CUST_SCREEN_CONFIRM_CALLBACK = 1
+    new_ComboStacker.ON_CHIP_USE_CALLBACK = 1
 
     return deepcopy(new_ComboStacker)
 

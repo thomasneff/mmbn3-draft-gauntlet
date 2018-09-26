@@ -78,7 +78,8 @@ function ElementalOverflow.new()
     new_ElementalOverflow.ELEMENT = math.random(1, 4)
     new_ElementalOverflow.NAME = ELEMENT_NAMES[new_ElementalOverflow.ELEMENT] .. "-Overflow"
     new_ElementalOverflow.DESCRIPTION = new_ElementalOverflow:get_description(1)
-    new_ElementalOverflow.IN_BATTLE_CALLBACKS = 1
+    new_ElementalOverflow.ON_CUST_SCREEN_CONFIRM_CALLBACK = 1
+    new_ElementalOverflow.ON_CHIP_USE_CALLBACK = 1
     
 
     return deepcopy(new_ElementalOverflow)

@@ -62,7 +62,9 @@ function ChipUseBuff.new()
 
     local new_ChipUseBuff = deepcopy(ChipUseBuff)
     new_ChipUseBuff.DESCRIPTION = new_ChipUseBuff:get_description(1)
-    new_ChipUseBuff.IN_BATTLE_CALLBACKS = 1
+    new_ChipUseBuff.ON_CHIP_USE_CALLBACK = 1
+    new_ChipUseBuff.ON_CUST_SCREEN_CONFIRM_CALLBACK = 1
+    
 
     return deepcopy(new_ChipUseBuff)
 

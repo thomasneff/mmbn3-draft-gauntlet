@@ -64,15 +64,12 @@ function AggressiveHealing:on_chip_use(chip, current_frame, state_logic, gauntle
     state_logic.damage_random_enemy(damage)
 end
 
-function AggressiveHealing:on_cust_screen_confirm(state_logic, gauntlet_data)
-
-end
 
 function AggressiveHealing.new()
 
     local new_AggressiveHealing = deepcopy(AggressiveHealing)
     new_AggressiveHealing.DESCRIPTION = new_AggressiveHealing:get_description(1)
-    new_AggressiveHealing.IN_BATTLE_CALLBACKS = 1
+    new_AggressiveHealing.ON_CHIP_USE_CALLBACK = 1
 
     return deepcopy(new_AggressiveHealing)
 
