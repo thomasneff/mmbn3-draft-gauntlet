@@ -66,6 +66,7 @@ local CROWDFAVORITE = require "buff_effects.crowd_favorite"
 local TIMEHUNTER = require "buff_effects.time_hunter"
 local RISINGSTAR = require "buff_effects.rising_star"
 local BACKSTAB = require "buff_effects.backstab"
+local PENNIB = require "buff_effects.pen_nib"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -134,6 +135,7 @@ BUFF_GROUPS[1] = {
     TIMEHUNTER,
     RISINGSTAR,
     BACKSTAB,
+    PENNIB
 }
 
 
@@ -145,7 +147,7 @@ end
 
 
 
---BUFF_GROUPS[1] = {
+BUFF_GROUPS[1] = {
     --MURAMASA,
     --MASAMUNE,
     --OVERCUST,
@@ -153,10 +155,10 @@ end
     --ANTICUST,
     --DUELIST,
     --OVERCUST,
-    --COMBOSTACKER,
-    --DUELIST,
-    --BACKSTAB,
---}
+    PENNIB,
+    DUELIST,
+    BACKSTAB,
+}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])
 BUFF_GROUPS[3] = deepcopy(BUFF_GROUPS[1])

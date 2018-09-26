@@ -2,6 +2,56 @@
 
 Buffs:
 
+After using mega/heat/giga/N chips/enter cust gauge/..., deal +X buster damage on next shot
+    - requires buster damage logic in battle
+
+Some kind of bonus for N different codes (10 different codes seems reasonable)
+    - either rarity up, or a certain number of chips is converted to star code before each battle randomly
+
+A buff that hides your folder view (and make sure sorting also randomizes stuff accordingly), with some kind of bonus
+
+Skipping chip rewards progressively builds up a bonus until a chip is picked
+
+Tactician: a chip in folder is marked, when it is removed/replaced -> +25% damage for next fight
+    - careful with other buffs that replace chips -> the best way is to simply check number of tactician chips at buff-pick *and* end of battle, and check before patching battle
+    - This rolls a new tactician chip every time
+    - can not stack with REG chips (for highlighting reasons)
+
+More damage based on panel you're standing on
+    - requires panel detection logic
+
+More damage based on which row you're standing on
+    - requires panel detection logic
+
+Pen Nib: every 10th chip used deals 1.5x damage (keeps track across battles)
+
+Bounties: 
+Stay below 20% MaxHP for 5 consecutive battles
+Don't heal for 5 consecutive battles
+Don't take damage for 5 consecutive battles
+Finish 5 fights in under 20 seconds
+Finish 5 fights using less than 5 chips
+Defeat a boss without taking damage
+
+    - Bounties influence the next dropped chips after completion
+        - need callback for chip drop of all buffs to manip dropped chips
+        - could e.g. drop a MegaChip according to the current "level" of the gauntlet, or just a good utility/situational chip that's hard to come by
+    - Bounties also increase drop rarity by X %
+    - Bounties show their current state in brief_description
+        - Simply log this until they are completed
+
+
+
+Low-prio: on chip drop event refactor of top tier.
+
+Could track folder chip use statistics and force a very strong buff to replace your most used chip?
+
+
+
+
+
+
+
 DONE: optimization was successful so far - Laptop runs at 70-80 FPS unthrottled, so this should be fine regarding the "headroom" of FPS for even weaker machines.
 still, even removing the cust_screen_confirm hook would be amazing.
 

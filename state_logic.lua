@@ -1113,6 +1113,7 @@ function state_logic.initialize()
     gauntlet_data.cust_screen_was_opened = 0
     gauntlet_data.number_of_chosen_cust_chips = 0xFF
     gauntlet_data.backstab_percentage_damage = 0
+    gauntlet_data.pen_nib_bonus_damage = 0
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     
@@ -1795,6 +1796,8 @@ function state_logic.in_battle_chip_effects()
     -- Duelist / Damage based on number of enemies
     additive_damage_increase = additive_damage_increase + math.floor(gauntlet_data.damage_per_enemy_count_additive[gauntlet_data.number_enemies_alive])
     multiplicative_damage_increase = multiplicative_damage_increase + gauntlet_data.damage_per_enemy_count_multiplicative[gauntlet_data.number_enemies_alive]
+
+    multiplicative_damage_increase = multiplicative_damage_increase + gauntlet_data.pen_nib_bonus_damage
 
     --print("Add5: " .. tostring(additive_damage_increase))
     --print("Mul: " .. tostring(multiplicative_damage_increase))
