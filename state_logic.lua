@@ -659,6 +659,13 @@ function state_logic.determine_drops(number_of_drops)
         --state_logic.randomize_dropped_chips(number_of_drops)
         state_logic.dropped_chips = gauntlet_data.chip_drop_method.generate_drops(state_logic.battle_data[state_logic.current_battle - 1], state_logic.current_round, number_of_drops)--CHIP_DROP_UTILS.dropped_chips_from_battle(state_logic.battle_data[state_logic.current_battle - 1], state_logic.current_round, number_of_drops)
 
+        -- Compute buff effects that depend on battle ending
+        for k, v in pairs(state_logic.activated_buffs) do
+            if v.ON_CHIP_DROP_CALLBACK ~= nil then
+                v:on_chip_drop(state_logic, gauntlet_data)
+            end
+        end
+
         state_logic.update_dropped_chips_pictures(state_logic.dropped_chips)
         
 
@@ -2144,6 +2151,13 @@ function state_logic.main_frame_loop()
 
 
         state_logic.main_loop_frame_count = state_logic.main_loop_frame_count + 1
+
+        -- Fire events for buffs
+        for k, v in pairs(state_logic.activated_buffs) do
+            if v.UPDATE_CALLBACK ~= nil then
+                v:update(state_logic, gauntlet_data)
+            end
+        end
 
     end
 
