@@ -72,6 +72,7 @@ local BOUNTY_YOLO = require "buff_effects.bounty_yolo"
 local GAUNTLET = require "buff_effects.gauntlet"
 local ALPHABETSOUP = require "buff_effects.alphabet_soup"
 local BOUNTY_YUNOHEAL = require "buff_effects.bounty_y_u_no_heal"
+local BOUNTY_PROGAMER = require "buff_effects.bounty_pro_gamer"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -145,7 +146,8 @@ BUFF_GROUPS[1] = {
     BOUNTY_YOLO,
     GAUNTLET,
     ALPHABETSOUP,
-    BOUNTY_YUNOHEAL
+    BOUNTY_YUNOHEAL,
+    BOUNTY_PROGAMER
 }
 
 
@@ -166,7 +168,7 @@ BUFF_GROUPS[1] = {
     --DUELIST,
     BOUNTY_YUNOHEAL,
     GAUNTLET,
-    ALPHABETSOUP,
+    BOUNTY_PROGAMER,
     BOUNTY_YOLO,
 }
 

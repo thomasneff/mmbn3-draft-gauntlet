@@ -451,7 +451,7 @@ Tactician: a chip in folder is marked, when it is removed/replaced -> +25% damag
 
 Bounties:
 Stay below 20% MaxHP for 5 consecutive battles
-
+Don't heal for 5 consecutive battles
 
 
 Next 5 fights are bosses - +5 MegaChip limit
@@ -461,3 +461,5 @@ TODO: everything that replaces a random chip (and actually shows you what it rep
 
 Some kind of bonus for N different codes (10 different codes seems reasonable)
     - either rarity up, or a certain number of chips is converted to star code before each battle randomly
+
+

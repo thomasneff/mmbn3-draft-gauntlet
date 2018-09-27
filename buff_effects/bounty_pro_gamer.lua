@@ -6,8 +6,8 @@ local CHIP = require "defs.chip_defs"
 local ELEMENT_DEFS = require "defs.entity_element_defs"
 local GENERIC_DEFS = require "defs.generic_defs"
 
-local BOUNTY_Y_U_NO_HEAL = {
-    NAME = "Bounty: Y U NO HEAL",
+local BOUNTY_PRO_GAMER = {
+    NAME = "Bounty: Pro-Gamer",
     REMOVE_AFTER_ACTIVATION = 1,
     DOUBLE_RARITY = 1
 }
@@ -22,34 +22,35 @@ function shuffle(tbl)
     return tbl
 end
 
-local REWARD_STRING = "AntiDmg * (Drop)"
+local REWARD_STRING = "LootBox (Drop)"
 local NUM_CONSECUTIVE_BATTLES = 5
 local HP_RATIO = 0.2
 
-function BOUNTY_Y_U_NO_HEAL:activate(current_round)
+function BOUNTY_PRO_GAMER:activate(current_round)
     self.fight_hp_string = ""
     self.last_known_hp = nil
+    self.last_max_hp = 0
     self.fight_counter = 0
     self.total_fight_counter = 0
-    self.healed_string_list = {}
+    self.damage_string_list = {}
 end
 
-function BOUNTY_Y_U_NO_HEAL:deactivate(current_round)
-
-end
-
-
-function BOUNTY_Y_U_NO_HEAL:get_description(current_round)
-
-    return "Don't heal for  " .. tostring(NUM_CONSECUTIVE_BATTLES) .. " consecutive battles:\nReward: " .. REWARD_STRING
+function BOUNTY_PRO_GAMER:deactivate(current_round)
 
 end
 
-function BOUNTY_Y_U_NO_HEAL:get_brief_description()
+
+function BOUNTY_PRO_GAMER:get_description(current_round)
+
+    return "Take no damage for  " .. tostring(NUM_CONSECUTIVE_BATTLES) .. " consecutive battles:\nReward: " .. REWARD_STRING
+
+end
+
+function BOUNTY_PRO_GAMER:get_brief_description()
     if self.total_fight_counter ~= 0 then
-        return BOUNTY_Y_U_NO_HEAL.NAME .. ": don't heal for  " .. tostring(NUM_CONSECUTIVE_BATTLES) .. " consecutive\nbattles -> " .. REWARD_STRING .. " (Heal: " .. self.fight_hp_string .. ")"
+        return BOUNTY_PRO_GAMER.NAME .. ": no damage for  " .. tostring(NUM_CONSECUTIVE_BATTLES) .. " consecutive\nbattles -> " .. REWARD_STRING .. " (Dmg: " .. self.fight_hp_string .. ")"
     else
-        return BOUNTY_Y_U_NO_HEAL.NAME .. ": don't heal for  " .. tostring(NUM_CONSECUTIVE_BATTLES) .. " consecutive\nbattles -> " .. REWARD_STRING
+        return BOUNTY_PRO_GAMER.NAME .. ": no damage for  " .. tostring(NUM_CONSECUTIVE_BATTLES) .. " consecutive\nbattles -> " .. REWARD_STRING
     end
 end
 
@@ -57,7 +58,7 @@ end
 
 
 
-function BOUNTY_Y_U_NO_HEAL:on_patch_before_battle_start(state_logic, gauntlet_data)
+function BOUNTY_PRO_GAMER:on_patch_before_battle_start(state_logic, gauntlet_data)
 
     self.last_round_over_limit = nil
     self.last_known_hp = nil
@@ -65,34 +66,34 @@ function BOUNTY_Y_U_NO_HEAL:on_patch_before_battle_start(state_logic, gauntlet_d
 end
 
 
-function BOUNTY_Y_U_NO_HEAL:on_finish_battle(state_logic, gauntlet_data)
+function BOUNTY_PRO_GAMER:on_finish_battle(state_logic, gauntlet_data)
     
     if self.last_round_over_limit ~= nil then
         self.fight_counter = 0
-        self.healed = "yes"
+        self.damage = "yes"
     else
         self.fight_counter = self.fight_counter + 1
-        self.healed = "no"
+        self.damage = "no"
     end
 
     if (self.total_fight_counter + 1) > NUM_CONSECUTIVE_BATTLES then
         -- Just shift all entries backwards and add the new entry
 
-        for idx = 1, (#self.healed_string_list - 1) do
-            self.healed_string_list[idx] = self.healed_string_list[idx + 1]
+        for idx = 1, (#self.damage_string_list - 1) do
+            self.damage_string_list[idx] = self.damage_string_list[idx + 1]
         end
 
-        self.healed_string_list[NUM_CONSECUTIVE_BATTLES] = self.healed
+        self.damage_string_list[NUM_CONSECUTIVE_BATTLES] = self.damage
     else
-        self.healed_string_list[self.total_fight_counter + 1] = self.healed
+        self.damage_string_list[self.total_fight_counter + 1] = self.damage
     end
 
     self.fight_hp_string = ""
-    for idx = 1, #self.healed_string_list do
-        if idx == #self.healed_string_list then
-            self.fight_hp_string = self.fight_hp_string .. self.healed_string_list[idx] .. ""
+    for idx = 1, #self.damage_string_list do
+        if idx == #self.damage_string_list then
+            self.fight_hp_string = self.fight_hp_string .. self.damage_string_list[idx] .. ""
         else
-            self.fight_hp_string = self.fight_hp_string .. self.healed_string_list[idx] .. ", "
+            self.fight_hp_string = self.fight_hp_string .. self.damage_string_list[idx] .. ", "
         end
     end
 
@@ -108,23 +109,23 @@ function BOUNTY_Y_U_NO_HEAL:on_finish_battle(state_logic, gauntlet_data)
 
 end
 
-function BOUNTY_Y_U_NO_HEAL:update(state_logic, gauntlet_data)
+function BOUNTY_PRO_GAMER:update(state_logic, gauntlet_data)
 
     if gauntlet_data.current_hp == nil or gauntlet_data.current_hp == 0 or self.last_round_over_limit ~= nil then
         return
     end
-
+  
     if self.last_known_hp == nil then
         self.last_known_hp = gauntlet_data.current_hp
     else
-        if gauntlet_data.current_hp > self.last_known_hp then
+        if gauntlet_data.current_hp < self.last_known_hp then
             self.last_round_over_limit = 1
         end
         self.last_known_hp = gauntlet_data.current_hp
     end
 end
 
-function BOUNTY_Y_U_NO_HEAL:on_chip_drop(state_logic, gauntlet_data)
+function BOUNTY_PRO_GAMER:on_chip_drop(state_logic, gauntlet_data)
 
     if self.reward_chip == nil then
         return
@@ -132,17 +133,26 @@ function BOUNTY_Y_U_NO_HEAL:on_chip_drop(state_logic, gauntlet_data)
 
     self.ON_CHIP_DROP_CALLBACK = nil
 
-    local random_idx = math.random(1, #state_logic.dropped_chips)
 
-    state_logic.dropped_chips[random_idx] = CHIP.new_chip_with_code(CHIP_ID.AntiDmg, CHIP_CODE.Asterisk)
-    state_logic.dropped_chips[random_idx].RARITY = 3
+    local lootbox = CHIP.lootbox_chips()
+
+    for chip_idx = 1, #state_logic.dropped_chips do
+        
+        if lootbox[chip_idx] == nil then
+            break
+        end
+
+        state_logic.dropped_chips[chip_idx] = lootbox[chip_idx]
+        state_logic.dropped_chips[chip_idx].RARITY = 3
+
+    end
 
 end
 
 
-function BOUNTY_Y_U_NO_HEAL.new()
+function BOUNTY_PRO_GAMER.new()
 
-    local new_buff = deepcopy(BOUNTY_Y_U_NO_HEAL)
+    local new_buff = deepcopy(BOUNTY_PRO_GAMER)
     
     
     new_buff.DESCRIPTION = new_buff:get_description(1)
@@ -156,4 +166,4 @@ function BOUNTY_Y_U_NO_HEAL.new()
 end
 
 
-return BOUNTY_Y_U_NO_HEAL
+return BOUNTY_PRO_GAMER

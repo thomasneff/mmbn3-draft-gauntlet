@@ -20,7 +20,6 @@ More damage based on which row you're standing on
 
 
 Bounties: 
-Don't heal for 5 consecutive battles
 Don't take damage for 5 consecutive battles
 Finish 5 fights in under 20 seconds
 Finish 5 fights using less than 5 chips
