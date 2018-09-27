@@ -139,4 +139,6 @@ gauntlet_data.tactician_damage = 0
 
 gauntlet_data.next_boss_override_counter = 0
 
+gauntlet_data.add_random_star_code_before_battle = 0
+
 return gauntlet_data

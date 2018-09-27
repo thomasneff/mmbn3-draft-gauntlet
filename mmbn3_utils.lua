@@ -214,13 +214,19 @@ function mmbn3_utils.patch_folder(folder, folder_address, gauntlet_data)
 
     local reg_indices = {}
     local shuffled_reg_folder = {}
+    local shuffle_indices = {}
+
 
     for chip_index = 1,folder_length do
         if shuffled_folder[chip_index].REG ~= nil then
             shuffled_reg_folder[#shuffled_reg_folder + 1] = deepcopy(shuffled_folder[chip_index])
             reg_indices[chip_index] = 1
         end
+
+        shuffle_indices[chip_index] = chip_index
     end
+
+    shuffle_indices = shuffle(deepcopy(shuffle_indices))
 
     for chip_index = 1,folder_length do
 
@@ -229,6 +235,26 @@ function mmbn3_utils.patch_folder(folder, folder_address, gauntlet_data)
         end
        
     end
+
+
+    -- Alphabet Soup
+    local num_replaced_chips = 0
+
+    for i = 1,folder_length do
+        
+        if shuffled_reg_folder[shuffle_indices[i]].CODE ~= CHIP_CODE.Asterisk then
+            shuffled_reg_folder[shuffle_indices[i]].CODE = CHIP_CODE.Asterisk
+            num_replaced_chips = num_replaced_chips + 1
+        end
+        
+        if num_replaced_chips >= gauntlet_data.add_random_star_code_before_battle then
+            break
+        end
+
+    end
+
+    
+
 
     
     for chip_index = 1,folder_length do

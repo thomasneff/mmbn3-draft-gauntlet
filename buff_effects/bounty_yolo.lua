@@ -23,6 +23,8 @@ function shuffle(tbl)
 end
 
 local REWARD_STRING = "AntiDmg * (Drop)"
+local NUM_CONSECUTIVE_BATTLES = 5
+local HP_RATIO = 0.2
 
 function BOUNTY_YOLO:activate(current_round)
     self.fight_hp_string = ""
@@ -40,15 +42,15 @@ end
 
 function BOUNTY_YOLO:get_description(current_round)
 
-    return "Stay <= 20% of MaxHP for  5 consecutive battles:\nReward: " .. REWARD_STRING
+    return "Stay <= 20% of MaxHP for  " .. tostring(NUM_CONSECUTIVE_BATTLES) .. " consecutive battles:\nReward: " .. REWARD_STRING
 
 end
 
 function BOUNTY_YOLO:get_brief_description()
     if self.total_fight_counter ~= 0 then
-        return BOUNTY_YOLO.NAME .. ": 5 consecutive battles <= 20% MaxHP\n-> " .. REWARD_STRING .. " (" .. self.fight_hp_string .. ")"
+        return BOUNTY_YOLO.NAME .. ": " .. tostring(NUM_CONSECUTIVE_BATTLES) .. " consecutive battles <= " .. tostring(math.floor((HP_RATIO * gauntlet_data.mega_max_hp))) .. " HP\n-> " .. REWARD_STRING .. " (" .. self.fight_hp_string .. ")"
     else
-        return BOUNTY_YOLO.NAME .. ": 5 consecutive battles <= 20% MaxHP\n-> " .. REWARD_STRING
+        return BOUNTY_YOLO.NAME .. ": " .. tostring(NUM_CONSECUTIVE_BATTLES) .. " consecutive battles <= " .. tostring(math.floor((HP_RATIO * gauntlet_data.mega_max_hp))) .. " HP\n-> " .. REWARD_STRING
     end
 end
 
@@ -73,14 +75,14 @@ function BOUNTY_YOLO:on_finish_battle(state_logic, gauntlet_data)
         self.fight_counter = self.fight_counter + 1
     end
 
-    if (self.total_fight_counter + 1) > 5 then
+    if (self.total_fight_counter + 1) > NUM_CONSECUTIVE_BATTLES then
         -- Just shift all entries backwards and add the new entry
 
         for idx = 1, (#self.fights_hp_list - 1) do
             self.fights_hp_list[idx] = self.fights_hp_list[idx + 1]
         end
 
-        self.fights_hp_list[5] = self.last_max_hp / gauntlet_data.mega_max_hp
+        self.fights_hp_list[NUM_CONSECUTIVE_BATTLES] = self.last_max_hp / gauntlet_data.mega_max_hp
     else
         self.fights_hp_list[self.total_fight_counter + 1] = self.last_max_hp / gauntlet_data.mega_max_hp
     end
@@ -94,7 +96,7 @@ function BOUNTY_YOLO:on_finish_battle(state_logic, gauntlet_data)
         end
     end
 
-    if self.fight_counter == 5 then
+    if self.fight_counter == NUM_CONSECUTIVE_BATTLES then
         self.ON_PATCH_BEFORE_BATTLE_START_CALLBACK = nil
         self.FINISH_BATTLE_CALLBACK = nil
         self.UPDATE_CALLBACK = nil
@@ -114,7 +116,7 @@ function BOUNTY_YOLO:update(state_logic, gauntlet_data)
     end
 
 
-    if gauntlet_data.current_hp > math.floor(gauntlet_data.mega_max_hp * 0.2) then
+    if gauntlet_data.current_hp > math.floor(gauntlet_data.mega_max_hp * HP_RATIO) then
         self.last_round_over_limit = 1
     end
 

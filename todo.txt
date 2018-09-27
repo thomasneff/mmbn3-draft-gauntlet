@@ -21,7 +21,6 @@ More damage based on panel you're standing on
 More damage based on which row you're standing on
     - requires panel detection logic
 
-Next 5 fights are bosses - +5 MegaChip limit
 
 Bounties: 
 Don't heal for 5 consecutive battles

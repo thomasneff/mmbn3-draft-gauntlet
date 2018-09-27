@@ -1128,6 +1128,7 @@ function state_logic.initialize()
     gauntlet_data.tactician_unique_id = 0
     gauntlet_data.tactician_damage = 0
     gauntlet_data.next_boss_override_counter = 0
+    gauntlet_data.add_random_star_code_before_battle = 0
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     

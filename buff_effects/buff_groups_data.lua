@@ -70,6 +70,7 @@ local PENNIB = require "buff_effects.pen_nib"
 local TACTICIAN = require "buff_effects.tactician"
 local BOUNTY_YOLO = require "buff_effects.bounty_yolo"
 local GAUNTLET = require "buff_effects.gauntlet"
+local ALPHABETSOUP = require "buff_effects.alphabet_soup"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -141,7 +142,8 @@ BUFF_GROUPS[1] = {
     PENNIB,
     TACTICIAN,
     BOUNTY_YOLO,
-    GAUNTLET
+    GAUNTLET,
+    ALPHABETSOUP
 }
 
 
@@ -160,9 +162,9 @@ BUFF_GROUPS[1] = {
     --TIMEHUNTER,
     --ANTICUST,
     --DUELIST,
-    --OVERCUST,
+    OVERCUST,
     GAUNTLET,
-    TACTICIAN,
+    ALPHABETSOUP,
     BOUNTY_YOLO,
 }
 
