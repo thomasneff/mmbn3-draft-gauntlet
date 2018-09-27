@@ -448,3 +448,6 @@ Tactician: a chip in folder is marked, when it is removed/replaced -> +25% damag
     - This rolls a new tactician chip every time
     - can not stack with REG chips (for highlighting reasons)
 
+
+Bounties:
+Stay below 20% MaxHP for 5 consecutive battles

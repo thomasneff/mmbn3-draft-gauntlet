@@ -57,9 +57,9 @@ function TACTICIAN:select_tactician_chip()
 
     local all_non_regged_chips_indices = {}
 
-    for chip_idx = 1,#gauntlet_data.current_folder do
+    for chip_idx = 1,#self.folder_copy do
 
-        if gauntlet_data.current_folder[chip_idx].TACTICIAN == nil and gauntlet_data.current_folder[chip_idx].REG == nil then
+        if self.folder_copy[chip_idx].TACTICIAN == nil and self.folder_copy[chip_idx].REG == nil then
             all_non_regged_chips_indices[#all_non_regged_chips_indices + 1] = chip_idx
         end
 
@@ -71,9 +71,9 @@ function TACTICIAN:select_tactician_chip()
 
         self.tactician_random_index = random_idx
         
-        self.replaced_chips_string = gauntlet_data.current_folder[self.tactician_random_index].PRINT_NAME
+        self.replaced_chips_string = self.folder_copy[self.tactician_random_index].PRINT_NAME
 
-        gauntlet_data.current_folder[self.tactician_random_index].TACTICIAN_FLAG = 1
+        self.folder_copy[self.tactician_random_index].TACTICIAN_FLAG = 1
     else
         self.tactician_random_index = -1
         self.replaced_chips_string = "nothing"
@@ -85,14 +85,14 @@ function TACTICIAN:activate_tactician_chip()
 
     for chip_idx = 1,#gauntlet_data.current_folder do
 
-        if gauntlet_data.current_folder[chip_idx].TACTICIAN_FLAG ~= nil then
+        if self.folder_copy[chip_idx].TACTICIAN_FLAG ~= nil then
             gauntlet_data.current_folder[chip_idx].TACTICIAN = 1
             gauntlet_data.current_folder[chip_idx].TACTICIAN_ID = gauntlet_data.tactician_unique_id
 
             self.tactician_id = gauntlet_data.tactician_unique_id
 
             gauntlet_data.tactician_unique_id = gauntlet_data.tactician_unique_id + 1
-            gauntlet_data.current_folder[chip_idx].TACTICIAN_FLAG = nil
+            self.folder_copy[chip_idx].TACTICIAN_FLAG = nil
         end
 
     end
@@ -134,6 +134,8 @@ end
 function TACTICIAN.new()
 
     local new_buff = deepcopy(TACTICIAN)
+
+    new_buff.folder_copy = deepcopy(gauntlet_data.current_folder)
     
     new_buff:select_tactician_chip()
     

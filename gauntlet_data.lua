@@ -137,4 +137,6 @@ gauntlet_data.tactician_unique_id = 0
 
 gauntlet_data.tactician_damage = 0
 
+gauntlet_data.next_boss_override_counter = 0
+
 return gauntlet_data

@@ -1127,6 +1127,7 @@ function state_logic.initialize()
     gauntlet_data.pen_nib_bonus_damage = 0
     gauntlet_data.tactician_unique_id = 0
     gauntlet_data.tactician_damage = 0
+    gauntlet_data.next_boss_override_counter = 0
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     
@@ -1345,9 +1346,16 @@ function state_logic.patch_before_battle_start()
 
     if state_logic.current_battle % GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL == 0 then
         new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle, gauntlet_data.next_boss, gauntlet_data.battle_stages[state_logic.current_battle])
-        gauntlet_data.next_boss = battle_data_generator.random_boss(state_logic.current_battle + GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
+        gauntlet_data.next_boss = battle_data_generator.random_boss(math.floor((state_logic.current_battle + GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL) / GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL) * GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
     else
-        new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle, nil, gauntlet_data.battle_stages[state_logic.current_battle])
+        if gauntlet_data.next_boss_override_counter > 0 then
+            gauntlet_data.next_boss_override_counter = gauntlet_data.next_boss_override_counter - 1
+            new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle, gauntlet_data.next_boss, gauntlet_data.battle_stages[state_logic.current_battle])
+            gauntlet_data.next_boss = battle_data_generator.random_boss(math.floor((state_logic.current_battle + GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL) / GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL) * GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
+        else
+            new_battle_data = battle_data_generator.random_from_battle(state_logic.current_battle, nil, gauntlet_data.battle_stages[state_logic.current_battle])
+        end
+
     end
     
 

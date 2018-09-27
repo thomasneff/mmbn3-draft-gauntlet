@@ -294,6 +294,10 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
         number_of_entities = GAUNTLET_DEFS.NUMBER_OF_VIRUSES_OVERRIDE[current_battle]
     end
 
+    if specific_entity ~= nil then
+        number_of_entities = 1
+    end
+
     print("Number of entities: ", number_of_entities)
     print("Stage for battle: ", battle_stage)
 

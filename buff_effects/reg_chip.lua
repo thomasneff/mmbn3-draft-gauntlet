@@ -26,10 +26,10 @@ function REGCHIP:activate(current_round)
         return
     end
     
-    for chip_idx = 1,#gauntlet_data.current_folder do
+    for chip_idx = 1,#new_buff.folder_copy do
 
-        if gauntlet_data.current_folder[chip_idx].REGCHIP_FLAG ~= nil then
-            gauntlet_data.current_folder[chip_idx].REGCHIP_FLAG = nil
+        if new_buff.folder_copy[chip_idx].REGCHIP_FLAG ~= nil then
+            new_buff.folder_copy[chip_idx].REGCHIP_FLAG = nil
             gauntlet_data.current_folder[chip_idx].REG = 1
         end
 
@@ -62,12 +62,13 @@ end
 function REGCHIP.new()
 
     local new_buff = deepcopy(REGCHIP)
+    new_buff.folder_copy = deepcopy(gauntlet_data.current_folder)
     
     local all_non_regged_chips_indices = {}
 
-    for chip_idx = 1,#gauntlet_data.current_folder do
+    for chip_idx = 1,#new_buff.folder_copy do
 
-        if gauntlet_data.current_folder[chip_idx].TACTICIAN == nil and gauntlet_data.current_folder[chip_idx].REG == nil then
+        if new_buff.folder_copy[chip_idx].TACTICIAN == nil and new_buff.folder_copy[chip_idx].REG == nil then
             all_non_regged_chips_indices[#all_non_regged_chips_indices + 1] = chip_idx
         end
 
@@ -80,7 +81,7 @@ function REGCHIP.new()
 
 
         -- Re-roll megachips/gigachips for reduced chance of regging them.
-        local chip_data = CHIP_DATA[gauntlet_data.current_folder[random_idx].ID]
+        local chip_data = CHIP_DATA[new_buff.folder_copy[random_idx].ID]
 
         local is_chip_mega = (chip_data.CHIP_RANKING % 4) == 1
         local is_chip_giga = (chip_data.CHIP_RANKING % 4) == 2
@@ -100,7 +101,7 @@ function REGCHIP.new()
         new_buff.regchip_random_index = random_idx
         
         new_buff.replaced_chips_string = gauntlet_data.current_folder[new_buff.regchip_random_index].PRINT_NAME
-        gauntlet_data.current_folder[new_buff.regchip_random_index].REGCHIP_FLAG = 1
+        new_buff.folder_copy[new_buff.regchip_random_index].REGCHIP_FLAG = 1
     else
         new_buff.regchip_random_index = -1
         new_buff.replaced_chips_string = "nothing"
