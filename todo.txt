@@ -1,14 +1,11 @@
 
-TODO: everything that replaces a random chip (and actually shows you what it replaces) might be bugged because of shuffle!
-
 
 Buffs:
 
 After using mega/heat/giga/N chips/enter cust gauge/..., deal +X buster damage on next shot
     - requires buster damage logic in battle
 
-Some kind of bonus for N different codes (10 different codes seems reasonable)
-    - either rarity up, or a certain number of chips is converted to star code before each battle randomly
+
 
 A buff that hides your folder view (and make sure sorting also randomizes stuff accordingly), with some kind of bonus
 

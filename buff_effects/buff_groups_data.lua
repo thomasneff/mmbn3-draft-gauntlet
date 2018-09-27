@@ -71,6 +71,7 @@ local TACTICIAN = require "buff_effects.tactician"
 local BOUNTY_YOLO = require "buff_effects.bounty_yolo"
 local GAUNTLET = require "buff_effects.gauntlet"
 local ALPHABETSOUP = require "buff_effects.alphabet_soup"
+local BOUNTY_YUNOHEAL = require "buff_effects.bounty_y_u_no_heal"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -143,7 +144,8 @@ BUFF_GROUPS[1] = {
     TACTICIAN,
     BOUNTY_YOLO,
     GAUNTLET,
-    ALPHABETSOUP
+    ALPHABETSOUP,
+    BOUNTY_YUNOHEAL
 }
 
 
@@ -162,7 +164,7 @@ BUFF_GROUPS[1] = {
     --TIMEHUNTER,
     --ANTICUST,
     --DUELIST,
-    OVERCUST,
+    BOUNTY_YUNOHEAL,
     GAUNTLET,
     ALPHABETSOUP,
     BOUNTY_YOLO,
