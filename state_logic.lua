@@ -2004,6 +2004,13 @@ function state_logic.on_first_cust_screen()
         state_logic.damage_random_enemy(enemy_hp_values[1] * gauntlet_data.backstab_percentage_damage)
     end
 
+    -- Fire events for buffs
+    for k, v in pairs(state_logic.activated_buffs) do
+        if v.ON_FIRST_CUST_SCREEN_CALLBACK ~= nil then
+            v:on_first_cust_screen(state_logic, gauntlet_data)
+        end
+    end
+
 end
 
 function state_logic.on_cust_screen_open()

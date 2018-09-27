@@ -73,6 +73,7 @@ local GAUNTLET = require "buff_effects.gauntlet"
 local ALPHABETSOUP = require "buff_effects.alphabet_soup"
 local BOUNTY_YUNOHEAL = require "buff_effects.bounty_y_u_no_heal"
 local BOUNTY_PROGAMER = require "buff_effects.bounty_pro_gamer"
+local BOUNTY_FRAMEPERFECT = require "buff_effects.bounty_frame_perfect"
 
 local BUFF_GROUPS_DATA = {}
 
@@ -147,7 +148,8 @@ BUFF_GROUPS[1] = {
     GAUNTLET,
     ALPHABETSOUP,
     BOUNTY_YUNOHEAL,
-    BOUNTY_PROGAMER
+    BOUNTY_PROGAMER,
+    BOUNTY_FRAMEPERFECT
 }
 
 
@@ -158,19 +160,19 @@ else
 end
 
 
-
-BUFF_GROUPS[1] = {
+-- Buff groups for testing.
+--BUFF_GROUPS[1] = {
     --MURAMASA,
     --MASAMUNE,
     --OVERCUST,
     --TIMEHUNTER,
     --ANTICUST,
     --DUELIST,
-    BOUNTY_YUNOHEAL,
-    GAUNTLET,
-    BOUNTY_PROGAMER,
-    BOUNTY_YOLO,
-}
+    --BOUNTY_YUNOHEAL,
+    --GAUNTLET,
+    --BOUNTY_PROGAMER,
+    --BOUNTY_FRAMEPERFECT,
+--}
 
 BUFF_GROUPS[2] = deepcopy(BUFF_GROUPS[1])
 BUFF_GROUPS[3] = deepcopy(BUFF_GROUPS[1])

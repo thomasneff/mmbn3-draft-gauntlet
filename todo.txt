@@ -20,9 +20,8 @@ More damage based on which row you're standing on
 
 
 Bounties: 
-Don't take damage for 5 consecutive battles
-Finish 5 fights in under 20 seconds
-Finish 5 fights using less than 5 chips
+Finish 10 fights in under 20 seconds
+Finish 10 fights using less than 5 chips
 Defeat a boss without taking damage
 
     - Bounties influence the next dropped chips after completion
