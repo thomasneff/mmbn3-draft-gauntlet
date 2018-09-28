@@ -20,9 +20,7 @@ More damage based on which row you're standing on
 
 
 Bounties: 
-Finish 10 fights in under 20 seconds
-Finish 10 fights using less than 5 chips
-Defeat a boss without taking damage
+Defeat a boss without taking damage <-- pretty stupid when the lootbox replaces the drops...
 
     - Bounties influence the next dropped chips after completion
         - need callback for chip drop of all buffs to manip dropped chips

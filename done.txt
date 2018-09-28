@@ -453,6 +453,9 @@ Bounties:
 Stay below 20% MaxHP for 5 consecutive battles
 Don't heal for 5 consecutive battles
 Don't take damage for 5 consecutive battles
+Finish 10 fights in under 20 seconds
+Finish 10 fights using less than 5 chips (something with efficiency in the name)
+
 
 
 Next 5 fights are bosses - +5 MegaChip limit

@@ -6,8 +6,8 @@ local CHIP = require "defs.chip_defs"
 local ELEMENT_DEFS = require "defs.entity_element_defs"
 local GENERIC_DEFS = require "defs.generic_defs"
 
-local BOUNTY_FRAME_PERFECT = {
-    NAME = "Bounty: Frame Perfect",
+local BOUNTY_EFFICIENCY = {
+    NAME = "Bounty: Efficiency",
     REMOVE_AFTER_ACTIVATION = 1,
     DOUBLE_RARITY = 1
 }
@@ -23,34 +23,35 @@ function shuffle(tbl)
 end
 
 local REWARD_STRING = "LootBox (Drop)"
-local NUM_SECONDS = 40
+local NUM_CHIPS = 5
 local NUM_BATTLES = 10
 local HP_RATIO = 0.2
 
-function BOUNTY_FRAME_PERFECT:activate(current_round)
+function BOUNTY_EFFICIENCY:activate(current_round)
     self.fight_hp_string = ""
     self.last_known_hp = nil
     self.last_max_hp = 0
     self.fight_counter = 0
     self.total_fight_counter = 0
+    self.damage_string_list = {}
 end
 
-function BOUNTY_FRAME_PERFECT:deactivate(current_round)
-
-end
-
-
-function BOUNTY_FRAME_PERFECT:get_description(current_round)
-
-    return "Finish " .. tostring(NUM_BATTLES) .. " battles in under  " .. tostring(NUM_SECONDS) .. " seconds:\nReward: " .. REWARD_STRING
+function BOUNTY_EFFICIENCY:deactivate(current_round)
 
 end
 
-function BOUNTY_FRAME_PERFECT:get_brief_description()
+
+function BOUNTY_EFFICIENCY:get_description(current_round)
+
+    return "Finish " .. tostring(NUM_BATTLES) .. " battles using <= " .. tostring(NUM_CHIPS) .. " Chips:\nReward: " .. REWARD_STRING
+
+end
+
+function BOUNTY_EFFICIENCY:get_brief_description()
     if self.total_fight_counter ~= 0 then
-        return BOUNTY_FRAME_PERFECT.NAME .. ": " .. tostring(NUM_BATTLES) .. " battles under " ..tostring(NUM_SECONDS)  .. "s\n-> " .. REWARD_STRING .. " (Total: " .. self.fight_hp_string .. " / " .. tostring(NUM_BATTLES) .. ", Last: " .. self.last_time_string .. "s)"
+        return BOUNTY_EFFICIENCY.NAME .. ": " .. tostring(NUM_BATTLES) .. " battles <= " ..tostring(NUM_CHIPS)  .. " Chips\n-> " .. REWARD_STRING .. " (Total: " .. self.fight_hp_string .. " / " .. tostring(NUM_BATTLES) .. ", Last: " .. self.last_chips_string .. ")"
     else
-        return BOUNTY_FRAME_PERFECT.NAME .. ": " .. tostring(NUM_BATTLES) .. " battles under " ..tostring(NUM_SECONDS)  .. "s\n-> " .. REWARD_STRING
+        return BOUNTY_EFFICIENCY.NAME .. ": " .. tostring(NUM_BATTLES) .. " battles <= " ..tostring(NUM_CHIPS)  .. " Chips\n-> " .. REWARD_STRING
     end
 end
 
@@ -58,28 +59,27 @@ end
 
 
 
-function BOUNTY_FRAME_PERFECT:on_patch_before_battle_start(state_logic, gauntlet_data)
+function BOUNTY_EFFICIENCY:on_patch_before_battle_start(state_logic, gauntlet_data)
 
     self.last_round_over_limit = nil
     self.last_known_hp = nil
+    self.num_chips = 0
+
 
 end
 
-function BOUNTY_FRAME_PERFECT:on_first_cust_screen(state_logic, gauntlet_data)
+function BOUNTY_EFFICIENCY:on_first_cust_screen(state_logic, gauntlet_data)
 
     self.last_round_over_limit = nil
     self.last_known_hp = nil
-    self.start_time = os.clock()
+    self.num_chips = 0
 
 end
 
 
-function BOUNTY_FRAME_PERFECT:on_finish_battle(state_logic, gauntlet_data)
-    
-    local end_time = os.clock()
-    self.last_battle_time = end_time - self.start_time
+function BOUNTY_EFFICIENCY:on_finish_battle(state_logic, gauntlet_data)
 
-    if self.last_battle_time > NUM_SECONDS then
+    if self.num_chips > NUM_CHIPS then
         self.last_round_over_limit = 1
     end
 
@@ -88,9 +88,8 @@ function BOUNTY_FRAME_PERFECT:on_finish_battle(state_logic, gauntlet_data)
         self.fight_counter = self.fight_counter + 1
     end
 
-
     self.fight_hp_string = tostring(self.fight_counter)
-    self.last_time_string = tostring(math.floor(self.last_battle_time))
+    self.last_chips_string = tostring(math.floor(self.num_chips))
 
 
     if self.fight_counter == NUM_BATTLES then
@@ -106,7 +105,7 @@ function BOUNTY_FRAME_PERFECT:on_finish_battle(state_logic, gauntlet_data)
 end
 
 
-function BOUNTY_FRAME_PERFECT:on_chip_drop(state_logic, gauntlet_data)
+function BOUNTY_EFFICIENCY:on_chip_drop(state_logic, gauntlet_data)
 
     if self.reward_chip == nil then
         return
@@ -130,10 +129,14 @@ function BOUNTY_FRAME_PERFECT:on_chip_drop(state_logic, gauntlet_data)
 
 end
 
+function BOUNTY_EFFICIENCY:on_chip_use(state_logic, gauntlet_data)
+    self.num_chips = self.num_chips + 1
+end
 
-function BOUNTY_FRAME_PERFECT.new()
 
-    local new_buff = deepcopy(BOUNTY_FRAME_PERFECT)
+function BOUNTY_EFFICIENCY.new()
+
+    local new_buff = deepcopy(BOUNTY_EFFICIENCY)
     
     
     new_buff.DESCRIPTION = new_buff:get_description(1)
@@ -141,10 +144,11 @@ function BOUNTY_FRAME_PERFECT.new()
     new_buff.FINISH_BATTLE_CALLBACK = 1
     new_buff.ON_CHIP_DROP_CALLBACK = 1
     new_buff.ON_FIRST_CUST_SCREEN_CALLBACK = 1
+    new_buff.ON_CHIP_USE_CALLBACK = 1
 
     return deepcopy(new_buff)
 
 end
 
 
-return BOUNTY_FRAME_PERFECT
+return BOUNTY_EFFICIENCY
