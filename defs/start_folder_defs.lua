@@ -15,7 +15,7 @@ local POSSIBLE_FOLDERS = {
 
 function START_FOLDER_DEFS.get_random(code_list)
 
-    return deepcopy(POSSIBLE_FOLDERS[math.random(#POSSIBLE_FOLDERS)].new(code_list))
+    return deepcopy(RANDOMIZED_1_STAR_FOLDER.new(code_list))
 
 end
 

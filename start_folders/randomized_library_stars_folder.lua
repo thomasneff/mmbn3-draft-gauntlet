@@ -23,7 +23,7 @@ function RANDOMIZED_STAR_FOLDER.new(library_stars, code_list)
 
     for chip_idx = 1,num_chips do
 
-        local single_chip_data_ID = randomchoice_key(library_chip_data)
+        local single_chip_data_ID = randomchoice_key(library_chip_data, "LOADOUTS")
         folder[chip_idx] = CHIP.new_chip_with_random_code_from_list(single_chip_data_ID, code_list)
 
 

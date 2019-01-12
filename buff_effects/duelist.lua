@@ -45,7 +45,7 @@ end
 
 function Duelist:get_description(current_round)
 
-    if self.ADDITIVE == 0 then
+    if self.ADDITIVE == 1 then
         return "When only 1 enemy is alive, damage +" .. tostring(DAMAGE_BUFF_ADDITIVE) .. ",\notherwise damage " .. tostring(DAMAGE_NERF_ADDITIVE) .. "!"
     else
         return "When only 1 enemy is alive, damage +" .. tostring(math.floor(DAMAGE_BUFF_MULTIPLICATIVE * 100)) .. "%,\notherwise damage " .. tostring(math.floor(DAMAGE_NERF_MULTIPLICATIVE * 100)) .. "%!"
@@ -55,7 +55,7 @@ end
 
 function Duelist:get_brief_description()
 
-    if self.ADDITIVE == 0 then
+    if self.ADDITIVE == 1 then
         return Duelist.NAME .. ": " .."1 enemy -> damage +" .. tostring(DAMAGE_BUFF_ADDITIVE) .. ",\notherwise -> damage " .. tostring(DAMAGE_NERF_ADDITIVE) .. "!"
     else
         return Duelist.NAME .. ": " .."1 enemy -> damage +" .. tostring(math.floor(DAMAGE_BUFF_MULTIPLICATIVE * 100)) .. "%,\notherwise -> damage " .. tostring(math.floor(DAMAGE_NERF_MULTIPLICATIVE * 100)) .. "%!"
@@ -67,7 +67,7 @@ function Duelist.new()
 
     local new_Duelist = deepcopy(Duelist)
 
-    new_Duelist.ADDITIVE = math.random(0, 1)
+    new_Duelist.ADDITIVE = gauntlet_data.math.random_buff_activation(0, 1)
 
     new_Duelist.DESCRIPTION = new_Duelist:get_description(1)
 

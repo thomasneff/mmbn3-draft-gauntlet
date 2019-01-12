@@ -1,4 +1,5 @@
 local defs = require "defs.generic_defs"
+local gauntlet_data = require "gauntlet_data"
 local ENTITY_TYPE = require "defs.entity_type_defs"
 local ENTITY_KIND = require "defs.entity_kind_defs"
 local ENTITY_GROUPS = require "defs.entity_groups"
@@ -226,11 +227,11 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind, spec
     while found_random_pos == 1 do
         found_random_pos = 0
         if new_entity.BATTLE_DATA.KIND == ENTITY_KIND.Virus then
-            x_pos = math.random(4, 6)
-            y_pos = math.random(1, 3)
+            x_pos = gauntlet_data.math.random_named("BATTLE_DATA", 4, 6)
+            y_pos = gauntlet_data.math.random_named("BATTLE_DATA", 1, 3)
         else
-            x_pos = math.random(1, 6)
-            y_pos = math.random(1, 3)
+            x_pos = gauntlet_data.math.random_named("BATTLE_DATA", 1, 6)
+            y_pos = gauntlet_data.math.random_named("BATTLE_DATA", 1, 3)
         end
 
         found_random_pos = grid[x_pos][y_pos]
@@ -286,7 +287,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
     number_of_twins_viruses = 0
 
     -- TODO: Improve. For now, get a random entity out of the group of the current difficulty/round
-    local number_of_entities = math.random(GAUNTLET_DEFS.MIN_NUMBER_OF_VIRUSES, 4)
+    local number_of_entities = gauntlet_data.math.random_named("BATTLE_DATA", GAUNTLET_DEFS.MIN_NUMBER_OF_VIRUSES, 4)
     
 
     -- For special battles, override number of viruses
@@ -355,8 +356,8 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
         
     while found_random_pos == 1 do
         found_random_pos = 0
-        x_pos = math.random(1, 3)
-        y_pos = math.random(1, 3)
+        x_pos = gauntlet_data.math.random_named("BATTLE_DATA", 1, 3)
+        y_pos = gauntlet_data.math.random_named("BATTLE_DATA", 1, 3)
 
         if  BATTLE_STAGE_DEFS.is_poison_panel(x_pos, y_pos, battle_stage) or
             BATTLE_STAGE_DEFS.is_lava_panel(x_pos, y_pos, battle_stage) then
@@ -400,7 +401,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
     for entity_idx = entity_idx_start,number_of_entities do
         
         -- Roll RNG to determine if we get a virus or non-virus entity
-        local entity_kind_rng = math.random(1, 100)
+        local entity_kind_rng = gauntlet_data.math.random_named("BATTLE_DATA", 1, 100)
         if entity_kind_rng < GAUNTLET_DEFS.NON_VIRUS_ENTITY_CHANCE and specific_entity == nil then
             new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil, battle_stage)
         else
@@ -430,7 +431,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
         
             -- Roll RNG to determine if we get a virus or non-virus entity
             if not is_metalman then
-                local entity_kind_rng = math.random(1, 100)
+                local entity_kind_rng = gauntlet_data.math.random_named("BATTLE_DATA", 1, 100)
                 if entity_kind_rng < GAUNTLET_DEFS.BOSS_NON_VIRUS_ENTITY_CHANCE then
                     new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil, battle_stage)
                 
@@ -457,7 +458,7 @@ function battle_data_generator.random_from_battle(current_battle, specific_entit
             new_entity.BATTLE_DATA.X_POS = 6
             new_entity.BATTLE_DATA.Y_POS = 2  
             battle_entities[#battle_entities + 1] = new_entity
-            local entity_kind_rng = math.random(1, 100)
+            local entity_kind_rng = gauntlet_data.math.random_named("BATTLE_DATA", 1, 100)
             if entity_kind_rng < GAUNTLET_DEFS.BOSS_NON_VIRUS_ENTITY_CHANCE then
                 new_entity = roll_entity(grid, entity_group, contains_virus_table, ENTITY_KIND.random_non_virus_entity_kind(), nil, battle_stage)
                 battle_entities[#battle_entities + 1] = new_entity

@@ -36,6 +36,8 @@ function TimeCompression:get_brief_description()
     return TimeCompression.NAME .. ": " .. "Damage taken -> Rewind (" .. tostring(gauntlet_data.time_compression_delay / 60.0) .. " s)\n(" .. tostring(gauntlet_data.number_of_time_compressions) .. " total per fight)"
 end
 
+-- TODO: fix number_of_time_compressions
+
 function TimeCompression.new()
     local new_TimeCompression = deepcopy(TimeCompression)
     new_TimeCompression.DESCRIPTION = new_TimeCompression:get_description(1)

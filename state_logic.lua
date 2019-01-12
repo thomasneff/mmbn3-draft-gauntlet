@@ -87,7 +87,6 @@ state_logic.battle_data = {}
 state_logic.CHIP_DATA_COPY = {}
 state_logic.INITIAL_CHIP_DATA = nil
 
-state_logic.in_battle_rng_values = nil
 state_logic.battle_enter_lock = 0
 state_logic.main_loop_frame_count = 0
 state_logic.time_compression_savestates = {}
@@ -605,6 +604,9 @@ function state_logic.on_battle_end()
 
     event.unregisterbyname("on_battle_end")
 
+    -- We advance chip generation rng here
+    gauntlet_data.math.advance_rng_since_last_advance("CHIP_GENERATION", 229);
+
     if state_logic.battle_pointer_index > GAUNTLET_DEFS.BATTLES_PER_ROUND then
        gauntlet_data.current_state = gauntlet_data.GAME_STATE.LOAD_INITIAL 
     end  
@@ -733,7 +735,7 @@ function state_logic.on_enter_battle()
     gauntlet_data.battle_phase = 0
     gauntlet_data.is_cust_screen = 0
     state_logic.hp_loaded = 0
-
+    
 
     
 
@@ -972,6 +974,52 @@ function state_logic.export_run_statistics()
     file:close()
 end
 
+function state_logic.random_seeding_test()
+    print("Testing new random seeding: ")
+
+    print("invalid name: " .. tostring(gauntlet_data.math.random_named("asdf", 0, 1)))
+
+    print("Initializting group 'testing' with 5000 random values")
+    gauntlet_data.math.initialize_rng_for_group("testing", 5000)
+
+    print("invalid args: " .. tostring(gauntlet_data.math.random_named("testing", nil, 1)))
+
+    print("Printing 10 random numbers, then advancing rng by 50 so we are on a nice boundary again")
+
+    for i = 1,10 do
+        print(tostring(gauntlet_data.math.random_named("testing")))
+    end
+
+    gauntlet_data.math.advance_rng_since_last_advance("testing", 50)
+
+    print("New index: " .. tostring(gauntlet_data.rng_value_map["testing"].INDEX))
+    print("New last_index: " .. tostring(gauntlet_data.rng_value_map["testing"].LAST_INDEX))
+
+    print("Printing 30 random integers between 5 and 10, then advancing rng by 50 so we are on a nice boundary again")
+
+    for i = 1,30 do
+        print(tostring(gauntlet_data.math.random_named("testing", 5, 10)))
+    end
+    
+    gauntlet_data.math.advance_rng_since_last_advance("testing", 50)
+    
+    print("New index: " .. tostring(gauntlet_data.rng_value_map["testing"].INDEX))
+    print("New last_index: " .. tostring(gauntlet_data.rng_value_map["testing"].LAST_INDEX))
+
+    print("Printing 30 random integers between 1 and 7, then advancing rng by 50 so we are on a nice boundary again")
+
+    for i = 1,30 do
+        print(tostring(gauntlet_data.math.random_named("testing", 7)))
+    end
+        
+    gauntlet_data.math.advance_rng_since_last_advance("testing", 50)
+        
+    print("New index: " .. tostring(gauntlet_data.rng_value_map["testing"].INDEX))
+    print("New last_index: " .. tostring(gauntlet_data.rng_value_map["testing"].LAST_INDEX))
+
+end
+
+
 function state_logic.initialize()
 
     event.unregisterbyname("on_enter_battle")
@@ -1010,19 +1058,31 @@ function state_logic.initialize()
         gauntlet_data.random_seed = gauntlet_data.fixed_random_seed
     end
 
-    print("Seed: " .. gauntlet_data.random_seed)
+    print("Seed: " .. tostring(gauntlet_data.random_seed))
     math.randomseed(gauntlet_data.random_seed)
 
     -- Generate initial random values for in-battle rng (e.g. random reflect)
     -- This is so that the draft is not changed when damage is taken using these buffs.
-    state_logic.in_battle_rng_values = {}
-    for i = 1, 1000 do 
-        state_logic.in_battle_rng_values[#state_logic.in_battle_rng_values + 1] = math.random()
-    end
-    state_logic.in_battle_rng_count = 0
 
-    MusicLoader.generateRNGValues()
+    --state_logic.random_seeding_test()
+
+    gauntlet_data.math.initialize_rng_for_group("MUSIC", 10000)
+    gauntlet_data.math.initialize_rng_for_group("IN_BATTLE", 10000)
+    gauntlet_data.math.initialize_rng_for_group("BUFF_ACTIVATION", 100000)
+    gauntlet_data.math.initialize_rng_for_group("BUFF_SELECTION", 10000)
+    gauntlet_data.math.initialize_rng_for_group("DRAFTING", 10000)
+    gauntlet_data.math.initialize_rng_for_group("CHIP_REWARDS", 10000)
+    gauntlet_data.math.initialize_rng_for_group("LOADOUTS", 10000)
+    gauntlet_data.math.initialize_rng_for_group("SNECKO_EYE", 10000)
+    gauntlet_data.math.initialize_rng_for_group("ILLUSION_OF_CHOICE", 10000)
+    gauntlet_data.math.initialize_rng_for_group("BATTLE_DATA", 10000)
+    gauntlet_data.math.initialize_rng_for_group("CHIP_GENERATION", 100000)
+    gauntlet_data.math.initialize_rng_for_group("FOLDER_SHUFFLING", 10000)
+
+    --MusicLoader.generateRNGValues()
     --savestate.load(state_logic.initial_state)
+
+
     
     state_logic.stats_file_name = "stats/" .. os.date("%Y_%m_%d_%H_%M_%S") .. ".json"
     -- Undo all activated buffs
@@ -1100,6 +1160,7 @@ function state_logic.initialize()
     state_logic.main_loop_frame_count = 0
     state_logic.time_compression_savestates = {}
     gauntlet_data.number_of_time_compressions = 0
+    gauntlet_data.current_battle_number_of_time_compressions = 0
     gauntlet_data.total_frame_count = 0
     gauntlet_data.muramasa_damage_additive = 0
     gauntlet_data.muramasa_damage_multiplicative = 0
@@ -1130,8 +1191,9 @@ function state_logic.initialize()
     gauntlet_data.next_boss_override_counter = 0
     gauntlet_data.add_random_star_code_before_battle = 0
 
+
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
-    
+
     gauntlet_data.rarity_mods = {
         [1] = 0, -- Common
         [2] = 0, -- Rare
@@ -1165,7 +1227,7 @@ function state_logic.initialize()
         PERFECT_FIGHT_INCREASE = 0
 
     }
-
+ 
     gauntlet_data.battle_stages = {}
 
     gauntlet_data.mega_regen_after_battle_relative_to_max = 0
@@ -1196,18 +1258,20 @@ function state_logic.initialize()
         state_logic.CHIP_DATA_COPY[key] = deepcopy(state_logic.INITIAL_CHIP_DATA[key])
     end
 
-    
+
     BUFF_GENERATOR.initialize()
+
     state_logic.initialize_folder()
+
     state_logic.update_printable_chip_names_in_folder()
+
     state_logic.update_argb_chip_icons_in_folder()
-    
+
     gauntlet_data.current_state = gauntlet_data.GAME_STATE.LOAD_INITIAL
 
     client.unpause()
     -- Upon start, initialize the current round:
     --state_logic.next_round()
-
 
 
 end
@@ -1235,7 +1299,7 @@ function state_logic.randomize_snecko_folder_codes(folder)
 
         if (gauntlet_data.snecko_eye_randomize_asterisk == 0 and folder[chip_idx].CODE == CHIP_CODE.Asterisk) then 
         else
-            folder[chip_idx].CODE = math.random(CHIP_CODE.A, gauntlet_data.snecko_eye_number_of_codes)
+            folder[chip_idx].CODE = gauntlet_data.math.random_named("SNECKO_EYE", CHIP_CODE.A, gauntlet_data.snecko_eye_number_of_codes)
         end
       
     end
@@ -1435,6 +1499,9 @@ function state_logic.patch_before_battle_start()
 
     state_logic.main_loop_frame_count = 0
 
+    -- Reset time compression counter
+    gauntlet_data.current_battle_number_of_time_compressions = gauntlet_data.number_of_time_compressions
+
 
 end
 
@@ -1488,7 +1555,7 @@ function state_logic.illusion_of_choice_randomize_selected_chip()
 
     while can_replace == false do
         
-        state_logic.folder_chip_render_index = math.random(1, #gauntlet_data.current_folder)
+        state_logic.folder_chip_render_index = gauntlet_data.math.random_named("ILLUSION_OF_CHOICE", 1, #gauntlet_data.current_folder)
 
         if state_logic.dropped_chip.ID == -1 then
             print("Dropped chip ID == -1")
@@ -1577,10 +1644,10 @@ end
 
 
 function state_logic.on_mega_death()
-    if gauntlet_data.number_of_time_compressions > 0 and state_logic.main_loop_frame_count > gauntlet_data.time_compression_delay then
+    if gauntlet_data.current_battle_number_of_time_compressions > 0 and state_logic.main_loop_frame_count > gauntlet_data.time_compression_delay then
         state_logic.hp_loaded = 0
         state_logic.damage_taken()
-        gauntlet_data.number_of_time_compressions = gauntlet_data.number_of_time_compressions - 1
+        gauntlet_data.current_battle_number_of_time_compressions = gauntlet_data.current_battle_number_of_time_compressions - 1
         memorysavestate.loadcorestate(state_logic.time_compression_savestates[((state_logic.main_loop_frame_count + 1) % gauntlet_data.time_compression_delay) + 1])
         print("Time compression saved the death!")
         return
@@ -1617,12 +1684,6 @@ end
 
 function state_logic.damage_random_enemy(damage)
 
-    -- Compute a random enemy, make sure to use a different rng here
-    local rng_val = state_logic.in_battle_rng_values[(state_logic.in_battle_rng_count + 1)]
-    state_logic.in_battle_rng_count = state_logic.in_battle_rng_count + 1
-    if state_logic.in_battle_rng_count > #state_logic.in_battle_rng_values then
-        state_logic.in_battle_rng_count = 0
-    end
     local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]
 
     local enemy_hp_values = {}
@@ -1638,7 +1699,8 @@ function state_logic.damage_random_enemy(damage)
     end
 
     -- Choose a random one
-    local chosen_rng_index = math.floor((rng_val * (#enemy_hp_values))) + 1.0
+    local chosen_rng_index = gauntlet_data.math.random_in_battle(1, #enemy_hp_values)
+    print("Chosen RNG Index in battle: " .. tostring(chosen_rng_index))
     if chosen_rng_index == 0 then
         chosen_rng_index = 1
     end
@@ -1685,9 +1747,9 @@ function state_logic.on_mega_damage_taken()
     state_logic.damage_taken()
 
 
-    if gauntlet_data.number_of_time_compressions > 0 and state_logic.main_loop_frame_count > gauntlet_data.time_compression_delay then
+    if gauntlet_data.current_battle_number_of_time_compressions > 0 and state_logic.main_loop_frame_count > gauntlet_data.time_compression_delay then
         state_logic.hp_loaded = 0
-        gauntlet_data.number_of_time_compressions = gauntlet_data.number_of_time_compressions - 1
+        gauntlet_data.current_battle_number_of_time_compressions = gauntlet_data.current_battle_number_of_time_compressions - 1
         memorysavestate.loadcorestate(state_logic.time_compression_savestates[((state_logic.main_loop_frame_count + 1) % gauntlet_data.time_compression_delay) + 1])
         --print("Time compression saved the damage!")
         return
@@ -2011,6 +2073,7 @@ function state_logic.on_first_cust_screen()
         end
     end
 
+
 end
 
 function state_logic.on_cust_screen_open()
@@ -2118,7 +2181,7 @@ function state_logic.main_frame_loop()
 
         state_logic.check_frame_events()
 
-        if gauntlet_data.number_of_time_compressions > 0 and gauntlet_data.battle_phase ~= 0 then
+        if gauntlet_data.current_battle_number_of_time_compressions > 0 and gauntlet_data.battle_phase ~= 0 then
             -- We compute the savestate only every x frames to save computing power
             if (state_logic.main_loop_frame_count % gauntlet_data.time_compression_frame_interval) == 0 then
                 state_logic.time_compression_savestates[(state_logic.main_loop_frame_count % gauntlet_data.time_compression_delay) + 1] = memorysavestate.savecorestate()
@@ -2557,6 +2620,9 @@ function state_logic.main_loop()
 
                     gauntlet_data.copy_paste_active_number_of_buffs = gauntlet_data.copy_paste_active_number_of_buffs - 1
                 end
+
+                -- We advance the rng here for buff activations to be consistent
+                gauntlet_data.math.advance_rng_since_last_advance("BUFF_ACTIVATION", 229);
 
                 gauntlet_data.folder_view = 0
                 gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT

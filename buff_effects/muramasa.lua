@@ -53,7 +53,7 @@ function Muramasa.new()
 
     local new_Muramasa = deepcopy(Muramasa)
 
-    new_Muramasa.ADDITIVE = math.random(0, 1)
+    new_Muramasa.ADDITIVE = gauntlet_data.math.random_buff_activation(0, 1)
 
     new_Muramasa.DESCRIPTION = new_Muramasa:get_description(1)
 

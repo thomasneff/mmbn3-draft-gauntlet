@@ -53,7 +53,7 @@ function Masamune.new()
 
     local new_Masamune = deepcopy(Masamune)
 
-    new_Masamune.ADDITIVE = math.random(0, 1)
+    new_Masamune.ADDITIVE = gauntlet_data.math.random_buff_activation(0, 1)
 
     new_Masamune.DESCRIPTION = new_Masamune:get_description(1)
 

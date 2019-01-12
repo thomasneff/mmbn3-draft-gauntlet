@@ -18,7 +18,7 @@ local NUMBER_OF_FOLDERBAK_ADDED = {1, 1, 1, 1, 1}
 function shuffle(tbl)
     size = #tbl
     for i = size, 1, -1 do
-      local rand = math.random(size)
+      local rand = gauntlet_data.math.random_buff_activation(size)
       tbl[i], tbl[rand] = tbl[rand], tbl[i]
     end
     return tbl

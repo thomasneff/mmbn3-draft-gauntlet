@@ -49,7 +49,7 @@ end
 function SpikedArmor.new()
     local new_SpikedArmor = deepcopy(SpikedArmor)
 
-    new_SpikedArmor.ALL = math.random(0, 1)
+    new_SpikedArmor.ALL = gauntlet_data.math.random_buff_activation(0, 1)
 
     if new_SpikedArmor.ALL == 1 then
         new_SpikedArmor.NAME = SpikedArmor.NAME .. " (All)"

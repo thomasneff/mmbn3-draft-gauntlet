@@ -12,7 +12,7 @@ local Duplicator = {
 function shuffle(tbl)
     size = #tbl
     for i = size, 1, -1 do
-      local rand = math.random(size)
+      local rand = gauntlet_data.math.random_buff_activation(size)
       tbl[i], tbl[rand] = tbl[rand], tbl[i]
     end
     return tbl
@@ -29,15 +29,15 @@ function Duplicator:activate(current_round)
     local replaced_idx = nil
     local copied_idx = nil
 
-    for chip_idx = 1,#new_buff.folder_copy do
+    for chip_idx = 1,#self.folder_copy do
 
-        if new_buff.folder_copy[chip_idx].COPY_FLAG ~= nil then
-            new_buff.folder_copy[chip_idx].COPY_FLAG = nil
+        if self.folder_copy[chip_idx].COPY_FLAG ~= nil then
+            self.folder_copy[chip_idx].COPY_FLAG = nil
             copied_idx = chip_idx
         end
 
-        if new_buff.folder_copy[chip_idx].REPLACE_FLAG ~= nil then
-            new_buff.folder_copy[chip_idx].REPLACE_FLAG = nil
+        if self.folder_copy[chip_idx].REPLACE_FLAG ~= nil then
+            self.folder_copy[chip_idx].REPLACE_FLAG = nil
             replaced_idx = chip_idx
         end
 
@@ -76,11 +76,11 @@ function Duplicator.new()
 
     local new_buff = deepcopy(Duplicator)
     
-    new_buff.show_replacement = math.random(0, 1)
+    new_buff.show_replacement = gauntlet_data.math.random_buff_activation(0, 1)
     new_buff.folder_copy = deepcopy(gauntlet_data.current_folder)
     
     if new_buff.show_replacement == 0 then
-        local random_idx = math.random(1, #new_buff.folder_copy)
+        local random_idx = gauntlet_data.math.random_buff_activation(1, #new_buff.folder_copy)
 
         -- Re-roll megachips/gigachips for reduced chance of regging them.
         local chip_data = CHIP_DATA[new_buff.folder_copy[random_idx].ID]
@@ -89,23 +89,23 @@ function Duplicator.new()
         local is_chip_giga = (chip_data.CHIP_RANKING % 4) == 2
 
         if is_chip_mega or is_chip_giga then
-            random_idx = math.random(1, #new_buff.folder_copy)
+            random_idx = gauntlet_data.math.random_buff_activation(1, #new_buff.folder_copy)
         end
 
         chip_data = CHIP_DATA[new_buff.folder_copy[random_idx].ID]
         is_chip_giga = (chip_data.CHIP_RANKING % 4) == 2
 
         if is_chip_giga then
-            random_idx = math.random(1, #new_buff.folder_copy)
+            random_idx = gauntlet_data.math.random_buff_activation(1, #new_buff.folder_copy)
         end
 
 
         new_buff.copied_idx = random_idx
         
         new_buff.copied_chips_string = new_buff.folder_copy[new_buff.copied_idx].PRINT_NAME
-        new_buff.replaced_idx = math.random(1, #new_buff.folder_copy)
+        new_buff.replaced_idx = gauntlet_data.math.random_buff_activation(1, #new_buff.folder_copy)
         while(new_buff.replaced_idx == new_buff.copied_idx) do
-            new_buff.replaced_idx = math.random(1, #new_buff.folder_copy)
+            new_buff.replaced_idx = gauntlet_data.math.random_buff_activation(1, #new_buff.folder_copy)
         end
 
         new_buff.replaced_chips_string = new_buff.folder_copy[new_buff.replaced_idx].PRINT_NAME
@@ -114,12 +114,12 @@ function Duplicator.new()
         new_buff.folder_copy[new_buff.replaced_idx].REPLACE_FLAG = 1
 
     else
-        new_buff.replaced_idx = math.random(1, #new_buff.folder_copy)
+        new_buff.replaced_idx = gauntlet_data.math.random_buff_activation(1, #new_buff.folder_copy)
         new_buff.replaced_chips_string = new_buff.folder_copy[new_buff.replaced_idx].PRINT_NAME
 
-        new_buff.copied_idx = math.random(1, #new_buff.folder_copy)
+        new_buff.copied_idx = gauntlet_data.math.random_buff_activation(1, #new_buff.folder_copy)
         while(new_buff.replaced_idx == new_buff.copied_idx) do
-            new_buff.copied_idx = math.random(1, #new_buff.folder_copy)
+            new_buff.copied_idx = gauntlet_data.math.random_buff_activation(1, #new_buff.folder_copy)
         end
 
         new_buff.copied_chips_string = new_buff.folder_copy[new_buff.copied_idx].PRINT_NAME

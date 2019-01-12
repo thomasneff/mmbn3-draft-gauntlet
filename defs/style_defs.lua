@@ -71,7 +71,7 @@ local STYLE_DEFS_GENERATOR = {}
 
 function STYLE_DEFS_GENERATOR.random_style()
     local new_style = {}
-    new_style.STYLE = randomchoice(STYLE_DEFS)
+    new_style.STYLE = randomchoice(STYLE_DEFS, "BUFF_ACTIVATION")
     new_style.NAME = STYLE_NAMES[new_style.STYLE]
     return new_style
 

@@ -67,7 +67,7 @@ function CrowdFavorite.new()
 
     local new_CrowdFavorite = deepcopy(CrowdFavorite)
 
-    new_CrowdFavorite.ADDITIVE = math.random(0, 1)
+    new_CrowdFavorite.ADDITIVE = gauntlet_data.math.random_buff_activation(0, 1)
 
     new_CrowdFavorite.DESCRIPTION = new_CrowdFavorite:get_description(1)
 

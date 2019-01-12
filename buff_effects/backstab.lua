@@ -30,6 +30,9 @@ function Backstab:get_brief_description()
     return Backstab.NAME .. ": " .. "Boss HP -" .. tostring(math.floor(PERCENTAGE_DAMAGE * 100)) ..  "%!"
 end
 
+
+-- TODO: backstab doesn't do damage do 40+ boss fights
+
 function Backstab.new()
 
     local new_Backstab = deepcopy(Backstab)

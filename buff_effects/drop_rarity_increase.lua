@@ -102,7 +102,7 @@ function RARITY_INCREASE.new()
     --new_set_stage.STAGE = randomchoice(STAGES)
 
     -- Roll type
-    new_obj.rarity = math.random(1, 3)
+    new_obj.rarity = gauntlet_data.math.random_buff_activation(1, 3)
 
 
 

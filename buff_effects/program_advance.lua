@@ -659,7 +659,7 @@ local PROGRAM_ADVANCES_ROUNDS = {
 function shuffle(tbl)
     size = #tbl
     for i = size, 1, -1 do
-      local rand = math.random(size)
+      local rand = gauntlet_data.math.random_buff_activation(size)
       tbl[i], tbl[rand] = tbl[rand], tbl[i]
     end
     return tbl
@@ -677,11 +677,11 @@ function PROGRAMADVANCE:activate(current_round)
     end
 
     -- For consecutive P.A.s, roll the random starting code
-    local random_code = math.random(CHIP_CODE.A, CHIP_CODE.Z - #(self.CHOSEN_PA.CHIPS) + 1)
+    local random_code = gauntlet_data.math.random_buff_activation(CHIP_CODE.A, CHIP_CODE.Z - #(self.CHOSEN_PA.CHIPS) + 1)
 
     if self.CHOSEN_PA.CONSECUTIVE_CODES == 0 then
         -- For non-consecutive P.A.s, roll the common code
-        random_code = randomchoice(CHIP_CODE)
+        random_code = randomchoice(CHIP_CODE, "BUFF_ACTIVATION")
     end 
 
     shuffle_indices = shuffle(deepcopy(shuffle_indices))
@@ -751,7 +751,7 @@ function PROGRAMADVANCE.new(current_round)
 
     local new_buff = deepcopy(PROGRAMADVANCE)
     -- Roll random program advance for current round
-    new_buff.CHOSEN_PA = deepcopy(randomchoice(deepcopy(PROGRAM_ADVANCES_ROUNDS[current_round])))
+    new_buff.CHOSEN_PA = deepcopy(randomchoice(deepcopy(PROGRAM_ADVANCES_ROUNDS[current_round]), "BUFF_ACTIVATION"))
     new_buff.NAME = new_buff.CHOSEN_PA.NAME
     new_buff.DESCRIPTION = new_buff:get_description(1)
 

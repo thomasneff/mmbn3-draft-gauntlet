@@ -18,12 +18,12 @@ function DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES.random_chip_generator(chip_index)
 
     if chip_index == 10 or chip_index == 20 or chip_index == 30 then
         -- MegaChip codes are randomized so you have to either get lucky or commit to MegaChips during battle.
-        local chip = CHIP.new_chip_with_random_code_from_list(randomchoice_key(mega_chips), random_codes)
+        local chip = CHIP.new_chip_with_random_code_from_list(randomchoice_key(mega_chips, "DRAFTING"), random_codes)
         
         return chip
     else
         
-        local chip = CHIP.new_chip_with_random_code_from_list(randomchoice_key(standard_chips), random_codes)
+        local chip = CHIP.new_chip_with_random_code_from_list(randomchoice_key(standard_chips, "DRAFTING"), random_codes)
         
         return chip
     end
@@ -57,16 +57,16 @@ function DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES.activate()
 
     end
 
-    random_codes[1] = math.random(0, 2)
-    random_codes[2] = math.random(3, 5)
-    random_codes[3] = math.random(6, 8)
-    random_codes[4] = math.random(9, 11)
-    random_codes[5] = math.random(12, 13)
-    random_codes[6] = math.random(14, 15)
-    random_codes[7] = math.random(16, 17)
-    random_codes[8] = math.random(18, 21)
-    random_codes[9] = math.random(22, 23)
-    random_codes[10] = math.random(24, 25)
+    random_codes[1] = gauntlet_data.math.random_named("DRAFTING", 0, 2)
+    random_codes[2] = gauntlet_data.math.random_named("DRAFTING", 3, 5)
+    random_codes[3] = gauntlet_data.math.random_named("DRAFTING", 6, 8)
+    random_codes[4] = gauntlet_data.math.random_named("DRAFTING", 9, 11)
+    random_codes[5] = gauntlet_data.math.random_named("DRAFTING", 12, 13)
+    random_codes[6] = gauntlet_data.math.random_named("DRAFTING", 14, 15)
+    random_codes[7] = gauntlet_data.math.random_named("DRAFTING", 16, 17)
+    random_codes[8] = gauntlet_data.math.random_named("DRAFTING", 18, 21)
+    random_codes[9] = gauntlet_data.math.random_named("DRAFTING", 22, 23)
+    random_codes[10] = gauntlet_data.math.random_named("DRAFTING", 24, 25)
     random_codes[11] = 26
 
 

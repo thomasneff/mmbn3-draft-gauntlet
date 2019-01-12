@@ -53,7 +53,7 @@ function OverCust.new()
 
     local new_OverCust = deepcopy(OverCust)
 
-    new_OverCust.ADDITIVE = math.random(0, 1)
+    new_OverCust.ADDITIVE = gauntlet_data.math.random_buff_activation(0, 1)
 
     new_OverCust.DESCRIPTION = new_OverCust:get_description(1)
 

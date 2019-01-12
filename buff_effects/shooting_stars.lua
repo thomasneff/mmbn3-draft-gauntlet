@@ -20,7 +20,7 @@ local NUMBER_OF_STARS_ADDED = {2, 2, 2, 2, 3}
 function shuffle(tbl)
     size = #tbl
     for i = size, 1, -1 do
-      local rand = math.random(size)
+      local rand = gauntlet_data.math.random_buff_activation(size)
       tbl[i], tbl[rand] = tbl[rand], tbl[i]
     end
     return tbl

@@ -12,7 +12,7 @@ local REGCHIP = {
 function shuffle(tbl)
     size = #tbl
     for i = size, 1, -1 do
-      local rand = math.random(size)
+      local rand = gauntlet_data.math.random_buff_activation(size)
       tbl[i], tbl[rand] = tbl[rand], tbl[i]
     end
     return tbl
@@ -26,10 +26,10 @@ function REGCHIP:activate(current_round)
         return
     end
     
-    for chip_idx = 1,#new_buff.folder_copy do
+    for chip_idx = 1,#self.folder_copy do
 
-        if new_buff.folder_copy[chip_idx].REGCHIP_FLAG ~= nil then
-            new_buff.folder_copy[chip_idx].REGCHIP_FLAG = nil
+        if self.folder_copy[chip_idx].REGCHIP_FLAG ~= nil then
+            self.folder_copy[chip_idx].REGCHIP_FLAG = nil
             gauntlet_data.current_folder[chip_idx].REG = 1
         end
 

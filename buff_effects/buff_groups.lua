@@ -1,7 +1,7 @@
 local BUFF_GROUPS_DATA = require "buff_effects.buff_groups_data"
 local deepcopy = require "deepcopy"
-local randomchoice = require "randomchoice"
 local GAUNTLET_DEFS = require "defs.gauntlet_defs"
+local gauntlet_data = require "gauntlet_data"
 -- Similar to entity groups, we define which buffs can appear randomly.
 -- TODO: possibly add specific probabilities?
 
@@ -16,7 +16,7 @@ function buff_generator.random_buffs_from_round(current_round, number_of_buffs, 
     --print("BUFFS: ", number_of_buffs)
     --print("BUFF GROUP: ", buff_group)
     --print("BUFF GROUP LENGTH: ", #buff_group)
-
+    
     if GAUNTLET_DEFS.STYLE_CHANGE_AFTER_10_BATTLES == 1 and current_battle == 11 then
         buffs[1] = BUFF_GROUPS_DATA.STYLE_CHANGE_BUFF.new()
         buffs[2] = BUFF_GROUPS_DATA.STYLE_CHANGE_BUFF.new()
@@ -36,14 +36,16 @@ function buff_generator.random_buffs_from_round(current_round, number_of_buffs, 
     
     for i = 1,number_of_buffs do
 
-        local buff_idx = math.random(#buff_group)
+        local buff_idx = gauntlet_data.math.random_named("BUFF_SELECTION", #buff_group)
 
         -- Just for more balanced granularity - double rarity buffs need to win an additional coin flip.
         while buff_group[buff_idx].DOUBLE_RARITY ~= nil do
-            local coinflip = math.random(1, 2)
+
+            local coinflip = gauntlet_data.math.random_named("BUFF_SELECTION", 1, 2)
+
 
             if coinflip == 2 then
-                buff_idx = math.random(#buff_group)
+                buff_idx = gauntlet_data.math.random_named("BUFF_SELECTION", #buff_group)
             else
                 break
             end
@@ -54,6 +56,10 @@ function buff_generator.random_buffs_from_round(current_round, number_of_buffs, 
         table.remove(buff_group, buff_idx)
         --print("BUFFS[i]", buffs[i])
     end
+
+
+    -- We advance rng here so that the effects of DOUBLE_RARITY don't influence the rng for buff selection
+    gauntlet_data.math.advance_rng_since_last_advance("BUFF_SELECTION", 13)
 
     return buffs
 end

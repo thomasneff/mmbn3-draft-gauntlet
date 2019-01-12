@@ -1,3 +1,4 @@
+local gauntlet_data = require "gauntlet_data"
 local BATTLE_STAGE_DEFS = {}
 
 -- Taken from http://forums.therockManexezone.com/topic/8831451/1/
@@ -295,7 +296,7 @@ end
 
 
 function BATTLE_STAGE_DEFS.random()
-   return math.random(0, BATTLE_STAGE_DEFS.NUM_STAGES)
+   return gauntlet_data.math.random_named("BATTLE_DATA", 0, BATTLE_STAGE_DEFS.NUM_STAGES)
 end
 
 return BATTLE_STAGE_DEFS

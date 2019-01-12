@@ -163,7 +163,7 @@ function SWORD_CHIP_DAMAGE_INCREASE.new()
     local new_buff = deepcopy(SWORD_CHIP_DAMAGE_INCREASE)
     
     -- TODO: roll element and additive/multiplicative.
-    new_buff.ADDITIVE = math.random(0, 1)
+    new_buff.ADDITIVE = gauntlet_data.math.random_buff_activation(0, 1)
 
     if new_buff.ADDITIVE == 0 then
         new_buff.NAME = "Sword-Mastery (%)"

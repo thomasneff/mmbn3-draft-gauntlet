@@ -21,12 +21,12 @@ function DRAFT_STANDARD_MEGA_MAX_1.random_chip_generator(chip_index)
     
     if chip_index == 10 or chip_index == 20 or chip_index == 30 then
         -- MegaChip codes are randomized so you have to either get lucky or commit to MegaChips during battle.
-        local chip = CHIP.new_chip_with_random_code(randomchoice_key(mega_chips))
+        local chip = CHIP.new_chip_with_random_code(randomchoice_key(mega_chips, "DRAFTING"))
         
         return chip
     else
         --print(standard_chips)
-        local chip = CHIP.new_chip_with_random_code_from_list(randomchoice_key(standard_chips), random_codes)
+        local chip = CHIP.new_chip_with_random_code_from_list(randomchoice_key(standard_chips, "DRAFTING"), random_codes)
         
         return chip
     end
@@ -60,12 +60,12 @@ function DRAFT_STANDARD_MEGA_MAX_1.activate()
 
     end
 
-    random_codes[1] = math.random(0, 4)
-    random_codes[2] = math.random(5, 9)
-    random_codes[3] = math.random(10, 13)
-    random_codes[4] = math.random(14, 18)
-    random_codes[5] = math.random(19, 22)
-    random_codes[6] = math.random(23, 25)
+    random_codes[1] = gauntlet_data.math.random_named("DRAFTING", 0, 4)
+    random_codes[2] = gauntlet_data.math.random_named("DRAFTING", 5, 9)
+    random_codes[3] = gauntlet_data.math.random_named("DRAFTING", 10, 13)
+    random_codes[4] = gauntlet_data.math.random_named("DRAFTING", 14, 18)
+    random_codes[5] = gauntlet_data.math.random_named("DRAFTING", 19, 22)
+    random_codes[6] = gauntlet_data.math.random_named("DRAFTING", 23, 25)
     random_codes[7] = random_codes[1]
     random_codes[8] = random_codes[2]
     random_codes[9] = random_codes[3]

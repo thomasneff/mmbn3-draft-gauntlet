@@ -1,6 +1,7 @@
 local GENERIC_DEFS = require "defs.generic_defs"
 local mmbn3_utils = require "mmbn3_utils"
 local randomchoice = require "randomchoice"
+local gauntlet_data = require "gauntlet_data"
 
 local base_dir = "song_extractor_cs/out/"
 local patch_ext = ".songpatch"
@@ -162,40 +163,6 @@ function mysplit(inputstr, sep)
     return t
 end
 
-function MusicLoader.generateRNGValues()
-
-    MusicLoader.music_rng_values = {}
-    for i = 1, 10000 do 
-        MusicLoader.music_rng_values[#MusicLoader.music_rng_values + 1] = math.random()
-    end
-    MusicLoader.music_rng_count = 0
-
-end
-
-function MusicLoader.getRawRNG()
-
-    local rng_val = MusicLoader.music_rng_values[(MusicLoader.music_rng_count + 1)]
-    MusicLoader.music_rng_count = MusicLoader.music_rng_count + 1
-    if MusicLoader.music_rng_count > #MusicLoader.music_rng_values then
-        MusicLoader.music_rng_count = 0
-    end
-
-    return rng_val
-end
-
-
-function MusicLoader.getRNGIndex(min, max)
-
-    local rng = MusicLoader.getRawRNG()
-
-    local range = max - min
-
-    local rng_index = (rng * range) + min
-
-    return math.floor(rng_index + 0.5)
-
-end
-
 function MusicLoader.LoadRandomFile(current_round)
 
     if GENERIC_DEFS.ENABLE_MUSIC_PATCHING == 0 then
@@ -211,9 +178,9 @@ function MusicLoader.LoadRandomFile(current_round)
     print("Loading music for round " .. tostring(current_round))
     local chosen_file = ""
     if current_round % 5 == 0 then
-        chosen_file = BossMusicList[MusicLoader.getRNGIndex(1, #BossMusicList)]--randomchoice(BossMusicList)
+        chosen_file = BossMusicList[gauntlet_data.math.random_music(1, #BossMusicList)]--randomchoice(BossMusicList)
     else
-        chosen_file = BattleMusicList[MusicLoader.getRNGIndex(1, #BattleMusicList)]--randomchoice(BattleMusicList)
+        chosen_file = BattleMusicList[gauntlet_data.math.random_music(1, #BattleMusicList)]--randomchoice(BattleMusicList)
     end
 
     if use_fixed_music == 1 then
@@ -291,8 +258,8 @@ function MusicLoader.LoadRandomFile(current_round)
     --print(transpose_offsets_split)
     --print(bpm_offsets_split)
 
-    MusicLoader.transpose = MusicLoader.getRNGIndex(-transpose_range, transpose_range)--math.random(-transpose_range, transpose_range)
-    MusicLoader.bpm_shift = MusicLoader.getRNGIndex(-transpose_range, transpose_range)--math.random(-bpm_shift_range, bpm_shift_range)
+    MusicLoader.transpose = gauntlet_data.math.random_music(-transpose_range, transpose_range)--math.random(-transpose_range, transpose_range)
+    MusicLoader.bpm_shift = gauntlet_data.math.random_music(-transpose_range, transpose_range)--math.random(-bpm_shift_range, bpm_shift_range)
 
 
     MusicLoader.transpose_offsets = {}

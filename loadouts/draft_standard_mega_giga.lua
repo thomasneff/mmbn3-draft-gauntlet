@@ -18,14 +18,14 @@ function random_chip_generator(chip_index)
 
     if chip_index == 10 or chip_index == 20 then
 
-        return CHIP.new_chip_with_random_code(randomchoice_key(mega_chips))
+        return CHIP.new_chip_with_random_code(randomchoice_key(mega_chips, "DRAFTING"))
 
     elseif chip_index == 30 then
 
-        return CHIP.new_chip_with_random_code(randomchoice_key(giga_chips))
+        return CHIP.new_chip_with_random_code(randomchoice_key(giga_chips, "DRAFTING"))
 
     else
-        return CHIP.new_chip_with_random_code(randomchoice_key(standard_chips))
+        return CHIP.new_chip_with_random_code(randomchoice_key(standard_chips, "DRAFTING"))
     end
 
 

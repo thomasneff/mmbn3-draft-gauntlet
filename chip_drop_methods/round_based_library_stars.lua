@@ -5,6 +5,7 @@ local ENTITY_KIND = require "defs.entity_kind_defs"
 local CHIP_DATA = require "defs.chip_data_defs"
 local CHIP = require "defs.chip_defs"
 local randomchoice_key = require "randomchoice_key"
+local gauntlet_data = require "gauntlet_data"
 
 
 function library_chips(library_number)
@@ -52,7 +53,7 @@ function ROUND_BASED_LIBRARY_STARS.generate_drops(battle_data, current_round, nu
         local virus_entity_data = virus_entities[math.random(#virus_entities)]
 
        
-            local rng = math.random(100)
+            local rng = gauntlet_data.math.random_named("CHIP_REWARDS", 100)
             local library_stars = (current_round - 1)
 
             if rng <= 10 then
@@ -70,7 +71,7 @@ function ROUND_BASED_LIBRARY_STARS.generate_drops(battle_data, current_round, nu
 
             local current_round_chips = library_chips(library_stars)
             --print(current_round_chips)
-            local random_chip_id = randomchoice_key(current_round_chips)
+            local random_chip_id = randomchoice_key(current_round_chips, "CHIP_REWARDS")
             --print("RAND ID: ", random_chip_id)
             dropped_chips[drop_index] = CHIP.new_chip_with_random_code(random_chip_id)
 

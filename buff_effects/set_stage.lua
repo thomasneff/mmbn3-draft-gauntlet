@@ -57,7 +57,7 @@ function SET_STAGE.new()
 
 
     local new_set_stage = deepcopy(SET_STAGE)
-    new_set_stage.STAGE = randomchoice(STAGES)
+    new_set_stage.STAGE = randomchoice(STAGES, "BUFF_ACTIVATION")
     new_set_stage.NAME = STAGE_NAMES[new_set_stage.STAGE] .. "-Stage"
     new_set_stage.DESCRIPTION = new_set_stage:get_description(1)
 

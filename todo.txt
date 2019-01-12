@@ -1,6 +1,35 @@
+TODO test: Snecko eye, illusion of choice (changed rng)
+TODO: make sure rng is advanced for buffs, chip generation
+
+TODO: make sure buffs are seeded, check all calls of math.random for "seededness" requirement. 
+generally, everything that is done should not effect the order of enemies/chips/etc. 
+
+even when you do drop e.g. a lootbox, the whole rng should stay consistent.
+
+need: 
+buff_effect_rng (everything that rolls random in buffs themselves)
+
+the main "issue" is staying consistent when someone picks a buff that has rng vs. a non-rng buff.
+
+proposal: find out the maximum number of random rolls for all buffs, and advance rng by this amount every time a buff is activated?
+
+(potential issue): buffs also roll rng when they are shown -> should be no big deal. this will use the "global" rng, but will stay consistent when the same buffs are shown.
+
+-> only need to check every "activate" call.
+
+need some kind of drop-in replacement for math.random. could use util.math.random or something that has the same functionality but uses the seeded rng from gauntlet_data.
+
+new file which imports gauntlet_data and provides x.math.random with the same signature.
+
+maybe also factor out the other rng. (use an additional string argument that specifies which rng to use)
 
 
 Buffs:
+
+Add (x / 40) text after "Boss" in UI
+
+Illusion of Choice: does it replace a megachip if the limit is reached? -> yes
+fixed rewind not resetting after every battle
 
 After using mega/heat/giga/N chips/enter cust gauge/..., deal +X buster damage on next shot
     - requires buster damage logic in battle

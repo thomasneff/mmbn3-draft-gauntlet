@@ -105,7 +105,7 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
         --print(virus_entity_data.DROP_TABLE)
         if virus_entity_data.DROP_TABLE ~= nil then
 
-            local dark_rng = math.random(1000)
+            local dark_rng = gauntlet_data.math.random_named("CHIP_REWARDS", 1000)
             if dark_rng <= GAUNTLET_DEFS.DROP_DARK_CHIP_CHANCE then
             
                 dropped_chips[drop_index] = CHIP.new_random_chip_with_random_code()
@@ -113,13 +113,13 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
 
             else
 
-                local rng = math.random(100)
+                local rng = gauntlet_data.math.random_named("CHIP_REWARDS", 100)
                 local rarity = 0
 
                 -- TODO: (for Top-Tier): find entity type with ID + 1 (except LAST_ENTITY)
 
                 if gauntlet_data.top_tier_active == 1 then
-                    local top_tier_rng = math.random(100)
+                    local top_tier_rng = gauntlet_data.math.random_named("CHIP_REWARDS", 100)
                     
                     if top_tier_rng < gauntlet_data.top_tier_chance then
 
@@ -159,7 +159,7 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
             -- If there is no drop table, we drop randomly based on the current round.
             -- We roll first and decide to vary the current round by +-1 to get more chip variety.
 
-            local rng = math.random(100)
+            local rng = gauntlet_data.math.random_named("CHIP_REWARDS", 100)
             local library_stars = (current_round - 1)
 
             if rng <= 10 then
@@ -177,7 +177,7 @@ function ENEMY_BASED.generate_drops(battle_data, current_round, number_of_drops)
 
             local current_round_chips = library_chips(library_stars)
             --print(current_round_chips)
-            local random_chip_id = randomchoice_key(current_round_chips)
+            local random_chip_id = randomchoice_key(current_round_chips, "CHIP_REWARDS")
             --print("RAND ID: ", random_chip_id)
             dropped_chips[drop_index] = CHIP.new_chip_with_random_code(random_chip_id)
 

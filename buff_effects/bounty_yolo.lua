@@ -16,7 +16,7 @@ local BOUNTY_YOLO = {
 function shuffle(tbl)
     size = #tbl
     for i = size, 1, -1 do
-      local rand = math.random(size)
+      local rand = gauntlet_data.math.random_buff_activation(size)
       tbl[i], tbl[rand] = tbl[rand], tbl[i]
     end
     return tbl
@@ -144,7 +144,7 @@ function BOUNTY_YOLO:on_chip_drop(state_logic, gauntlet_data)
 
     self.ON_CHIP_DROP_CALLBACK = nil
 
-    local random_idx = math.random(1, #state_logic.dropped_chips)
+    local random_idx = gauntlet_data.math.random_buff_activation(1, #state_logic.dropped_chips)
 
     state_logic.dropped_chips[random_idx] = CHIP.new_chip_with_code(CHIP_ID.Muramasa, CHIP_CODE.M)
     state_logic.dropped_chips[random_idx].RARITY = 3

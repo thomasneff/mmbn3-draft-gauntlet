@@ -1,4 +1,4 @@
-
+local gauntlet_data = require "gauntlet_data"
 -- Taken from http://forums.therockManexezone.com/topic/8831451/1/
 local NUMBER_OF_BACKGROUNDS = 0x1D
 local BACKGROUND_TYPE = {
@@ -37,7 +37,7 @@ local BACKGROUND_TYPE = {
 
 function BACKGROUND_TYPE.random()
 
-    return math.random(0, NUMBER_OF_BACKGROUNDS)
+    return gauntlet_data.math.random_named("BATTLE_DATA", 0, NUMBER_OF_BACKGROUNDS)
 end
 
 

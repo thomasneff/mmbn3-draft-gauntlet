@@ -53,7 +53,7 @@ function AntiCust.new()
 
     local new_AntiCust = deepcopy(AntiCust)
 
-    new_AntiCust.ADDITIVE = math.random(0, 1)
+    new_AntiCust.ADDITIVE = gauntlet_data.math.random_buff_activation(0, 1)
 
     new_AntiCust.DESCRIPTION = new_AntiCust:get_description(1)
 

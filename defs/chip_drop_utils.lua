@@ -3,6 +3,7 @@ local ENTITY_KIND = require "defs.entity_kind_defs"
 local CHIP_DATA = require "defs.chip_data_defs"
 local CHIP = require "defs.chip_defs"
 local randomchoice_key = require "randomchoice_key"
+local gauntlet_data = require "gauntlet_data"
 -- This aims to implement utility functions to get the dropped chips of a battle.
 local CHIP_DROP_UTILS = {}
 
@@ -57,7 +58,7 @@ function CHIP_DROP_UTILS.dropped_chips_from_battle(battle_data, current_round, n
             -- If there is no drop table, we drop randomly based on the current round.
             -- We roll first and decide to vary the current round by +-1 to get more chip variety.
 
-            local rng = math.random(100)
+            local rng = gauntlet_data.math.random_named("CHIP_REWARDS", 100)
             local library_stars = (current_round - 1)
 
             if rng <= 10 then
@@ -75,7 +76,7 @@ function CHIP_DROP_UTILS.dropped_chips_from_battle(battle_data, current_round, n
 
             local current_round_chips = library_chips(library_stars)
             --print(current_round_chips)
-            local random_chip_id = randomchoice_key(current_round_chips)
+            local random_chip_id = randomchoice_key(current_round_chips, "CHIP_REWARDS")
             --print("RAND ID: ", random_chip_id)
             dropped_chips[drop_index] = CHIP.new_chip_with_random_code(random_chip_id)
 

@@ -1082,14 +1082,14 @@ function DRAFT_BALANCED_RARITY.random_chip_generator(chip_index)
     --print("draft table: ")
     --print(draft_table)
     -- Get a drop_table
-    local drop_table = randomchoice(draft_table)
+    local drop_table = randomchoice(draft_table, "DRAFTING")
 
     --print("drop_table: ")
     --print(drop_table)
 
 
     -- Compute rarity and get the generator
-    local rng = math.random(100)
+    local rng = gauntlet_data.math.random_named("DRAFTING", 100)
     local rarity = 0
     local dropped_chip_generator = nil
 
@@ -1109,12 +1109,12 @@ function DRAFT_BALANCED_RARITY.random_chip_generator(chip_index)
 
     chip.RARITY = rarity
     if chip.CODE ~= CHIP_CODE.Asterisk then
-        chip.CODE = randomchoice(random_codes)
+        chip.CODE = randomchoice(random_codes, "DRAFTING")
     end
 
     -- Make sure that no common rarity chip has asterisk code
     while chip.RARITY == 0 and chip.CODE == CHIP_CODE.Asterisk do
-        chip.CODE = randomchoice(random_codes)
+        chip.CODE = randomchoice(random_codes, "DRAFTING")
     end
 
     --print("Before return")
@@ -1143,16 +1143,16 @@ function DRAFT_BALANCED_RARITY.activate()
 
     end
 
-    random_codes[1] = math.random(0, 2)
-    random_codes[2] = math.random(3, 5)
-    random_codes[3] = math.random(6, 8)
-    random_codes[4] = math.random(9, 11)
-    random_codes[5] = math.random(12, 13)
-    random_codes[6] = math.random(14, 15)
-    random_codes[7] = math.random(16, 17)
-    random_codes[8] = math.random(18, 21)
-    random_codes[9] = math.random(22, 23)
-    random_codes[10] = math.random(24, 25)
+    random_codes[1] = gauntlet_data.math.random_named("DRAFTING", 0, 2)
+    random_codes[2] = gauntlet_data.math.random_named("DRAFTING", 3, 5)
+    random_codes[3] = gauntlet_data.math.random_named("DRAFTING", 6, 8)
+    random_codes[4] = gauntlet_data.math.random_named("DRAFTING", 9, 11)
+    random_codes[5] = gauntlet_data.math.random_named("DRAFTING", 12, 13)
+    random_codes[6] = gauntlet_data.math.random_named("DRAFTING", 14, 15)
+    random_codes[7] = gauntlet_data.math.random_named("DRAFTING", 16, 17)
+    random_codes[8] = gauntlet_data.math.random_named("DRAFTING", 18, 21)
+    random_codes[9] = gauntlet_data.math.random_named("DRAFTING", 22, 23)
+    random_codes[10] = gauntlet_data.math.random_named("DRAFTING", 24, 25)
     
     -- Make asterisk code more unlikely
     for i = 11,30 do

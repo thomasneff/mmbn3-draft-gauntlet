@@ -6,6 +6,7 @@ local CHIP_DATA_ADDRESS = require "defs.chip_data_address_defs"
 local CHIP_DATA = require "defs.chip_data_defs"
 local CHIP_CODE = require "defs.chip_code_defs"
 local deepcopy = require "deepcopy"
+local gauntlet_data = require "gauntlet_data"
 local mmbn3_utils = {}
 
 -- This is a wrapper for BizHawk with VBA-Next that automatically selects the correct memory domain.
@@ -195,7 +196,7 @@ end
 function shuffle(tbl)
     size = #tbl
     for i = size, 1, -1 do
-      local rand = math.random(size)
+      local rand = gauntlet_data.math.random_named("FOLDER_SHUFFLING", size)
       tbl[i], tbl[rand] = tbl[rand], tbl[i]
     end
     return tbl
@@ -241,16 +242,16 @@ function mmbn3_utils.patch_folder(folder, folder_address, gauntlet_data)
     local num_replaced_chips = 0
 
     for i = 1,folder_length do
+
+        if num_replaced_chips >= gauntlet_data.add_random_star_code_before_battle then
+            break
+        end
         
         if shuffled_reg_folder[shuffle_indices[i]].CODE ~= CHIP_CODE.Asterisk then
             shuffled_reg_folder[shuffle_indices[i]].CODE = CHIP_CODE.Asterisk
             num_replaced_chips = num_replaced_chips + 1
         end
         
-        if num_replaced_chips >= gauntlet_data.add_random_star_code_before_battle then
-            break
-        end
-
     end
 
     

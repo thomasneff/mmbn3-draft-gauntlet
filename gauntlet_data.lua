@@ -108,9 +108,6 @@ gauntlet_data.battle_stages = {}
 
 gauntlet_data.top_tier_active = 0
 gauntlet_data.top_tier_chance = 0
-gauntlet_data.random_seed = nil
-gauntlet_data.fixed_random_seed = nil
-
 gauntlet_data.damage_reduction_additive = 0
 
 gauntlet_data.healing_increase_mult = 0
@@ -126,6 +123,8 @@ gauntlet_data.illusion_of_choice_active = 0
 gauntlet_data.number_of_rewinds = 0
 
 gauntlet_data.number_of_time_compressions = 0
+gauntlet_data.current_battle_number_of_time_compressions = 0
+
 gauntlet_data.time_compression_delay = 60
 gauntlet_data.time_compression_frame_interval = 4
 
@@ -140,5 +139,99 @@ gauntlet_data.tactician_damage = 0
 gauntlet_data.next_boss_override_counter = 0
 
 gauntlet_data.add_random_star_code_before_battle = 0
+
+
+-- rng seed system
+gauntlet_data.random_seed = nil
+gauntlet_data.fixed_random_seed = nil
+
+gauntlet_data.rng_value_map = {}
+gauntlet_data.math = {}
+
+-- Need: rng_index, last_discrete_rng_index, rng_values[]
+
+function gauntlet_data.math.advance_rng_since_last_advance(name, advance_count)
+    gauntlet_data.rng_value_map[name].INDEX = gauntlet_data.rng_value_map[name].LAST_INDEX + advance_count
+    gauntlet_data.rng_value_map[name].LAST_INDEX = gauntlet_data.rng_value_map[name].INDEX
+end
+
+function gauntlet_data.math.initialize_rng_for_group(name, number_of_values)
+
+    gauntlet_data.rng_value_map[name] = {}
+
+    gauntlet_data.rng_value_map[name].VALUES = {}
+
+    -- 0 is fine here, it gets incremented in random_internal anyways
+    gauntlet_data.rng_value_map[name].INDEX = 0
+    gauntlet_data.rng_value_map[name].LAST_INDEX = 0
+
+    for i = 1, number_of_values do 
+        gauntlet_data.rng_value_map[name].VALUES[#gauntlet_data.rng_value_map[name].VALUES + 1] = math.random()
+    end
+
+end
+
+function gauntlet_data.math.random_buff_activation(arg1, arg2)
+    return gauntlet_data.math.random_named("BUFF_ACTIVATION", arg1, arg2)
+end
+
+function gauntlet_data.math.random_in_battle(arg1, arg2)
+    return gauntlet_data.math.random_named("IN_BATTLE", arg1, arg2)
+end
+
+function gauntlet_data.math.random_music(arg1, arg2)
+    return gauntlet_data.math.random_named("MUSIC", arg1, arg2)
+end
+
+function gauntlet_data.math.random_named(name, arg1, arg2)
+   
+    if name == nil then
+        print("NO NAME SUPPLIED!")
+        print("ARGS: " .. tostring(arg1) .. ", " .. tostring(arg2))
+    end
+
+    if gauntlet_data.rng_value_map[name] == nil then
+        print("Error: rng seeding went wrong when accessing precomputed random values for name " .. name .. ", will default to math.random")
+        return math.random(arg1, arg2)
+    end
+
+    -- get rng index
+    local rng_index = gauntlet_data.rng_value_map[name].INDEX;
+
+    if rng_index == nil then
+        print("Error: rng seeding went wrong when accessing precomputed random values for name " .. name .. ", will default to math.random")
+        return math.random(arg1, arg2)
+    end
+
+    -- advance rng index, and compute modulo'd new index
+    rng_index = rng_index + 1
+    gauntlet_data.rng_value_map[name].INDEX = rng_index
+
+    rng_index = (rng_index % #(gauntlet_data.rng_value_map[name].VALUES)) + 1
+    rng_value = gauntlet_data.rng_value_map[name].VALUES[rng_index]
+
+    if arg1 == nil and arg2 == nil then
+
+        -- Standard random, simply get a value from the rng
+        return rng_value
+
+    elseif arg1 ~= nil and arg2 == nil then
+
+        -- Return an integer in the range of [1, arg1]
+        return math.floor(rng_value * arg1) + 1
+
+
+    elseif arg1 ~= nil and arg2 ~= nil then
+
+         -- Return an integer in the range of [arg1, arg2]
+         return math.floor(rng_value * (arg2 - arg1 + 1)) + arg1
+
+    else
+        print("Error, you should not call math.random with arg1 == nil and arg2 ~= nil!")
+        return nil
+    end
+
+end
+
 
 return gauntlet_data
