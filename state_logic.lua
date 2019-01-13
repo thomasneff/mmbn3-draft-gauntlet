@@ -1646,7 +1646,7 @@ end
 function state_logic.on_mega_death()
     if gauntlet_data.current_battle_number_of_time_compressions > 0 and state_logic.main_loop_frame_count > gauntlet_data.time_compression_delay then
         state_logic.hp_loaded = 0
-        state_logic.damage_taken()
+        --state_logic.damage_taken()
         gauntlet_data.current_battle_number_of_time_compressions = gauntlet_data.current_battle_number_of_time_compressions - 1
         memorysavestate.loadcorestate(state_logic.time_compression_savestates[((state_logic.main_loop_frame_count + 1) % gauntlet_data.time_compression_delay) + 1])
         print("Time compression saved the death!")
