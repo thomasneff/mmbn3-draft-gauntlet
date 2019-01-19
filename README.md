@@ -8,10 +8,6 @@ Additionally, the mod contains an optional music-patching feature that randomly 
 
 The MMBN3 Gauntlet *requires* Bizhawk with the VBA-Next Core. This is because it requires the run-time manipulation of RAM and ROM of the running GBA emulator Core.
 
-# Just show me gameplay!
-Alright! Here you can see a run (this run fails before making it to the final boss, as the gauntlet is *very* difficult): INSERT_YT_LINK
-
-
 # json.lua
 Credits to json.lua go to https://github.com/rxi (Respective License: LICENSE_JSON_LUA)
 
