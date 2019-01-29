@@ -62,6 +62,28 @@ local BattleMusicList =
     --"mmbcc/1",      -- main theme
     --"mmbcc/12",     -- battle bgm 1
     --"mmbcc/13",     -- battle bgm 2
+    "mm_and_bass/0",  -- opening stage
+    --"mm_and_bass/1",  -- stage start
+    --"mm_and_bass/2",  -- stage select
+    --"mm_and_bass/3",  -- player select
+    --"mm_and_bass/4",  -- data select
+    --"mm_and_bass/5",  -- title
+    "mm_and_bass/6",  -- dynamo man stage
+    "mm_and_bass/7",  -- cold man stage
+    "mm_and_bass/8",  -- ground man stage
+    "mm_and_bass/9",  -- tengu man stage
+    "mm_and_bass/10", -- astro man stage
+    --"mm_and_bass/11", -- pirate man stage -> this glitches out in the second part, not sure why
+    "mm_and_bass/12", -- burner man stage
+    "mm_and_bass/13", -- magic man stage
+    "mm_and_bass/16", -- crystal gate stage
+    --"mm_and_bass/18", -- get a weapon
+    --"mm_and_bass/19", -- stage clear
+    --"mm_and_bass/20", -- king castle
+    "mm_and_bass/21", -- shop
+    "mm_and_bass/22", -- data base
+    --"mm_and_bass/23", -- game over
+    --"mm_and_bass/24", -- ending
 } 
 
 
@@ -133,6 +155,10 @@ local BossMusicList =
     "mmbn6/22",     -- surge of power!
     "mmbn6/23",     -- decisive battle, cyber beasts!
     "mmbn6/34",     -- ??? (seriously, I didn't find this in the rockman.exe sound box)
+    "mm_and_bass/14", -- king stage
+    "mm_and_bass/15", -- wily stage
+    "mm_and_bass/17", -- king/wily battle
+    "mm_and_bass/25", -- boss battle
     --"mmbcc/14",     -- battle bgm 3
 
 } 
@@ -175,14 +201,14 @@ function MusicLoader.LoadRandomFile(current_round)
     end
 
 
-    print("Loading music for round " .. tostring(current_round))
+    
     local chosen_file = ""
     if current_round % 5 == 0 then
         chosen_file = BossMusicList[gauntlet_data.math.random_music(1, #BossMusicList)]--randomchoice(BossMusicList)
     else
         chosen_file = BattleMusicList[gauntlet_data.math.random_music(1, #BattleMusicList)]--randomchoice(BattleMusicList)
     end
-
+    
     if use_fixed_music == 1 then
         if FixedMusicList[current_round] ~= nil then
             chosen_file = FixedMusicList[current_round]
@@ -193,6 +219,8 @@ function MusicLoader.LoadRandomFile(current_round)
             bpm_shift_range = 20
         end
     end
+
+    print("Loading music for round " .. tostring(current_round) .. ": " .. chosen_file)
 
     MusicLoader.FinishedLoading = 0
     MusicLoader.offset = 0
