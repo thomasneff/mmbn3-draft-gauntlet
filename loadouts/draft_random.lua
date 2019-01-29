@@ -8,7 +8,7 @@ local CHIP_ID = require "defs.chip_id_defs"
 local CHIP_CODE = require "defs.chip_code_defs"
 local DRAFT_RANDOM = {}
 
-function random_chip_generator(chip_index)
+function DRAFT_RANDOM.random_chip_generator(chip_index)
 
     return CHIP.new_random_chip_with_random_code()
 
@@ -38,7 +38,7 @@ function DRAFT_RANDOM.activate()
     gauntlet_data.current_folder = {}
 
     gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_DRAFT_FOLDER
-    gauntlet_data.folder_draft_chip_generator = random_chip_generator
+    gauntlet_data.folder_draft_chip_generator = DRAFT_RANDOM.random_chip_generator
     print("Draft Random - Patched folder.")
     --print("Length of folder draft chip list:", #gauntlet_data.folder_draft_chip_list)
 

@@ -14,7 +14,7 @@ local mega_chips = {}
 local giga_chips = {}
 
 
-function random_chip_generator(chip_index)
+function DRAFT_STANDARD_MEGA_GIGA.random_chip_generator(chip_index)
 
     if chip_index == 10 or chip_index == 20 then
 
@@ -77,7 +77,7 @@ function DRAFT_STANDARD_MEGA_GIGA.activate()
     gauntlet_data.current_folder = {}
 
     gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_DRAFT_FOLDER
-    gauntlet_data.folder_draft_chip_generator = random_chip_generator
+    gauntlet_data.folder_draft_chip_generator = DRAFT_STANDARD_MEGA_GIGA.random_chip_generator
     print("Draft S/M/G - Patched folder.")
     --print("Length of folder draft chip list:", #gauntlet_data.folder_draft_chip_list)
 

@@ -1,13 +1,35 @@
+local game_name = gameinfo.getromname()
+
+-- These are global.
+GAME_IDS = {
+    MMBN3_BLUE_US = 0,
+    MMBN6_FALZAR_US = 1 
+}
+
+if string.find(game_name, "3") and string.find(game_name, "Blue") then
+    GAME_ID = GAME_IDS.MMBN3_BLUE_US
+    print("Detected Game: MMBN3_BLUE_US")
+elseif string.find(game_name, "3") and string.find(game_name, "blue") then
+    GAME_ID = GAME_IDS.MMBN3_BLUE_US
+    print("Detected Game: MMBN3_BLUE_US")
+elseif string.find(game_name, "6") and string.find(game_name, "Falzar") then
+    GAME_ID = GAME_IDS.MMBN6_FALZAR_US
+    print("Detected Game: MMBN6_FALZAR_US")
+else 
+    print("Error (gauntlet.lua): Unknown game.")
+end
+
+
 local state_logic = require "state_logic"
-local GENERIC_DEFS = require "defs.generic_defs"
-local CHIP_DATA = require "defs.chip_data_defs"
-local CHIP_DEFS = require "defs.chip_defs"
 
 -- Setup Callbacks for battle start to patch viruses
+
 
 --savestate.loadslot(1)
 --CHIP_DATA.dump_entity_name_addresses()
 state_logic.initialize()
+
+
 
 --For some reason, BizHawk with VBA-Next requires an address that's 4 bytes larger. Whatever.
 

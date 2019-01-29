@@ -1,3 +1,5 @@
+TODO: test navicust buffs after refactor to GENERIC_DEFS
+
 TODO test: Snecko eye, illusion of choice (changed rng)
 TODO: make sure rng is advanced for buffs, chip generation
 

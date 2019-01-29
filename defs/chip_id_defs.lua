@@ -342,8 +342,7 @@ GtsShoot	=	0x015B	,
 DeuxHero	=	0x015C	,
 MomQuake	=	0x015D	,
 PrixPowr	=	0x015E	,
-MstrStyl	=	0x015F	,
-
+MstrStyl	=	0x015F	
 }
 
 return CHIP_ID

@@ -7,7 +7,7 @@ local BATTLE_STAGE = require "defs.battle_stage_defs"
 local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 local GAUNTLET_BATTLE_POINTERS = require "defs.gauntlet_battle_pointer_defs"
 local GENERIC_DEFS = require "defs.generic_defs"
-local mmbn3_utils = require "mmbn3_utils"
+local io_utils = require "io_utils"
 local CHIP = require "defs.chip_defs"
 local CHIP_NAME_UTILS = require "defs.chip_name_utils"
 local CHIP_NAME = require "defs.chip_name_defs"
@@ -28,69 +28,11 @@ local MusicLoader = require "music_loader"
 local json = require "json"
 local randomchoice_key = require "randomchoice_key"
 local PA_DEFS = require "defs.pa_defs"
-
+local INITIAL_STATE_NAME = require "initial_state_name"
 
 -- TODO: possibly add more states.
 
 local state_logic = {}
-
-state_logic.activated_buffs = {}
-state_logic.dropped_chips = {}
-state_logic.dropped_buffs = {}
-state_logic.initial_state = "initial.State"
-state_logic.number_of_activated_buffs = 0
-gauntlet_data.current_folder = {}
-gauntlet_data.mega_max_hp = 100
-state_logic.stats_file_name = ""
-
-state_logic.hp_loaded = 0
-state_logic.buff_render_offset = 0
-
-state_logic.initial_chip_amount_flag = 0
-
-state_logic.dropped_chips[1] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
-state_logic.dropped_chips[2] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.B)
-state_logic.dropped_chips[3] = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.C)
-
-state_logic.draft_selection_chips = {}
-
-state_logic.should_redraw = 1
-gauntlet_data.chip_drop_method = CHIP_DROP_METHODS[1]
-state_logic.hp_patch_frame_counter = 0
-state_logic.battle_start_frame_counter = 0
-
-state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
-state_logic.dropped_chip.ID = -1
-state_logic.dropped_chip.PRINT_NAME = ""
-gauntlet_data.loadout_chosen = 0
-state_logic.selected_loadout_index = 2
-state_logic.selected_drop_method_index = 2
-
-gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
-state_logic.dropped_chip_render_index = 1
-state_logic.draft_chip_render_index = 1
-state_logic.dropped_buff_render_index = 2
-state_logic.folder_chip_render_index = 1
-state_logic.pause_frame_counter = 0
-
-
-state_logic.gui_change_savestate = nil
-
-gauntlet_data.mega_chip_limit = GAUNTLET_DEFS.INITIAL_MEGA_CHIP_LIMIT
-gauntlet_data.giga_chip_limit = GAUNTLET_DEFS.INITIAL_GIGA_CHIP_LIMIT
-
-state_logic.current_round = 0
-state_logic.current_battle = 1
-state_logic.battle_pointer_index = 1
-state_logic.battle_data = {}
-
-state_logic.CHIP_DATA_COPY = {}
-state_logic.INITIAL_CHIP_DATA = nil
-
-state_logic.battle_enter_lock = 0
-state_logic.main_loop_frame_count = 0
-state_logic.time_compression_savestates = {}
-
 
 function state_logic.next_round()
 
@@ -98,18 +40,12 @@ function state_logic.next_round()
     -- We just finished the round. We might want to load a savestate? Or just let the user do that.
     state_logic.current_round = state_logic.current_round + 1
 
-    
-
-    
     -- Reset all address variables, as we now start from the beginning again.
     state_logic.battle_pointer_index = 1
 
     if state_logic.current_round == (GAUNTLET_DEFS.MAX_NUMBER_OF_ROUNDS + 1) then
-
         return
-
     end
-
 
     local ptr_table_working_address = GENERIC_DEFS.FIRST_GAUNTLET_BATTLE_POINTER_ADDRESS
     print("Starting Round " .. state_logic.current_round)
@@ -118,10 +54,12 @@ function state_logic.next_round()
     -- The game loads this probably into RAM, so we could only change that later if we found out the 
     -- respective RAM addresses...
     -- print("4")
+
+    -- TODO_REFACTOR: implement a way that doesn't depend on a gauntlet battle and simply re-uses a single battle over and over
     for battle_idx = 1, GAUNTLET_DEFS.BATTLES_PER_ROUND do
         local new_pointer_entry = pointer_entry_generator.new_from_template(GAUNTLET_BATTLE_POINTERS[battle_idx] + 4, BACKGROUND_TYPE.random() , BATTLE_STAGE.random())
         gauntlet_data.battle_stages[(state_logic.current_round - 1) * GAUNTLET_DEFS.BATTLES_PER_ROUND + battle_idx] = new_pointer_entry.BATTLE_STAGE
-        mmbn3_utils.change_battle_pointer_data(ptr_table_working_address, new_pointer_entry)
+        io_utils.change_battle_pointer_data(ptr_table_working_address, new_pointer_entry)
         ptr_table_working_address = ptr_table_working_address - GENERIC_DEFS.OFFSET_BETWEEN_POINTER_TABLE_ENTRIES
     end
     --print("Patched Battle Stage Setups!")
@@ -134,6 +72,7 @@ end
 
 function state_logic.patch_consecutive_program_advances()
 
+    -- TODO_REFACTOR: check if PA patching is even necessary for newer games
     -- early out checks if we can even possibly get a PA: we have to have 3 consecutive chips that are listed in the PA defs
     
     if (#gauntlet_data.selected_chips < 3) then
@@ -386,6 +325,7 @@ function state_logic.on_cust_screen_confirm()
         gauntlet_data.selected_chips[chip_idx] = {}
         
         -- As we now have the folder index, we can read chip code and ID.
+        -- TODO_REFACTOR: check if this structure is the same in other games... 
         gauntlet_data.selected_chips[chip_idx].ID = memory.read_u16_le(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4) - 0x02000000, "EWRAM")
         gauntlet_data.selected_chips[chip_idx].CODE = memory.readbyte(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4) + 2 - 0x02000000, "EWRAM")
         gauntlet_data.selected_chips[chip_idx].NAME = deepcopy(CHIP_NAME[gauntlet_data.selected_chips[chip_idx].ID])
@@ -406,6 +346,15 @@ function state_logic.on_cust_screen_confirm()
     event.unregisterbyname("on_cust_screen_confirm")
 end
 
+function state_logic.init_time_compression()
+
+    state_logic.time_compression_savestates[1] = memorysavestate.savecorestate()
+    for i = 1,gauntlet_data.time_compression_delay do
+        state_logic.time_compression_savestates[(i % gauntlet_data.time_compression_delay) + 1] = state_logic.time_compression_savestates[((i - 1) % gauntlet_data.time_compression_delay) + 1]
+    end
+
+end
+
 function state_logic.on_battle_phase_start()
 
 
@@ -414,12 +363,16 @@ function state_logic.on_battle_phase_start()
     -- Extract held chip IDs and damage values
     gauntlet_data.battle_phase = 1
 
+    -- Initialize time compression savestates
+    state_logic.init_time_compression()
+    
     local held_chip_id_addr = GENERIC_DEFS.IN_BATTLE_HELD_CHIP_IDS_ADDRESS - 0x02000000
     local held_chip_damage_addr =  GENERIC_DEFS.IN_BATTLE_HELD_CHIP_DAMAGES_ADDRESS - 0x02000000
 
     gauntlet_data.held_chips = {}
     gauntlet_data.custgauge_last_frames_storage = 0
 
+    -- TODO_REFACTOR: check if held chips work the same way...
     for chip_idx = 1,5 do 
 
         local chip_id = memory.read_u16_le(held_chip_id_addr + ((chip_idx - 1) * 2), "EWRAM")
@@ -438,6 +391,8 @@ function state_logic.on_battle_phase_start()
         end
 
     end
+
+    
 
     state_logic.check_in_battle_effects()
 
@@ -480,22 +435,6 @@ function state_logic.patch_next_battle()
     if (state_logic.current_battle - 1) % GAUNTLET_DEFS.ROUNDS_PER_BUFF_DROP == 0 then
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT
     end
-
-
-    
-
-    -- print("5")
-    
-    -- print("7")
-    
-    -- print("8")
-    --print("Patched Battle ", state_logic.current_battle)
-
-    
-    
-
-    
-    
 
 end
 
@@ -549,9 +488,8 @@ end
 
 function state_logic.compute_temporary_chip_changes()
     
-
-    
-    
+    -- TODO_REFACTOR: make sure that any CHIP_DATA refactoring doesn't break this.
+    -- TODO_REFACTOR: CHIP_DATA should also work if some elements are left nil, I guess
     -- Restore CHIP_DATA from copy. Copies are always taken when taking a buff, as this is the only possibility where CHIP_DATA is changed directly.
     for key, chip_data in pairs(CHIP_DATA) do
         CHIP_DATA[key] = deepcopy(state_logic.CHIP_DATA_COPY[key])
@@ -594,9 +532,6 @@ function state_logic.compute_temporary_chip_changes()
 
     end
 
-
-
-
 end
 
 
@@ -615,7 +550,7 @@ function state_logic.on_battle_end()
     state_logic.battle_enter_lock = 0
 
     -- Compute lost HP
-
+    -- TODO_REFACTOR: verify that this is consistent between games, if the offset is chosen accordingly
     gauntlet_data.current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, "EWRAM")
     state_logic.stats_lost_hp = state_logic.stats_previous_hp - gauntlet_data.current_hp
     state_logic.stats_previous_hp = gauntlet_data.current_hp
@@ -649,16 +584,12 @@ end
 function state_logic.determine_drops(number_of_drops)
 
     if state_logic.battle_data[state_logic.current_battle - 1] == nil then
-
         -- First round. Do we do anything here?
         -- For now, we don't.
-        
-        
     else
-
         -- TODO: determine drops from state_logic.battle_data[state_logic.current_battle].ENTITIES entity droptables.
-        --TODO: for now, this just randomizes.
-        --state_logic.randomize_dropped_chips(number_of_drops)
+        -- TODO: for now, this just randomizes.
+        -- state_logic.randomize_dropped_chips(number_of_drops)
         state_logic.dropped_chips = gauntlet_data.chip_drop_method.generate_drops(state_logic.battle_data[state_logic.current_battle - 1], state_logic.current_round, number_of_drops)--CHIP_DROP_UTILS.dropped_chips_from_battle(state_logic.battle_data[state_logic.current_battle - 1], state_logic.current_round, number_of_drops)
 
         -- Compute buff effects that depend on battle ending
@@ -669,12 +600,7 @@ function state_logic.determine_drops(number_of_drops)
         end
 
         state_logic.update_dropped_chips_pictures(state_logic.dropped_chips)
-        
-
     end
-
-    
-
 end
 
 function state_logic.on_enter_battle()
@@ -716,17 +642,13 @@ function state_logic.on_enter_battle()
 
 
     if gauntlet_data.loadout_chosen == 0 then
-
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_DROP_METHOD
-
     end
 
     --print("STATE_ENTER: ", gauntlet_data.current_state)
     --print(print(state_logic.dropped_chip))
     if state_logic.current_round >= (GAUNTLET_DEFS.MAX_NUMBER_OF_ROUNDS + 1) then
-
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_GAUNTLET_COMPLETE
-
     end
 
     event.onmemoryexecute(state_logic.on_battle_end, GENERIC_DEFS.END_OF_GAUNTLET_BATTLE_ADDRESS, "on_battle_end")
@@ -735,9 +657,6 @@ function state_logic.on_enter_battle()
     gauntlet_data.battle_phase = 0
     gauntlet_data.is_cust_screen = 0
     state_logic.hp_loaded = 0
-    
-
-    
 
 end
 
@@ -768,22 +687,16 @@ end
 function state_logic.randomize_dropped_chips(number_of_dropped_chips)
     state_logic.dropped_chips = {}
     for chip_idx = 1,number_of_dropped_chips do
-
         state_logic.dropped_chips[chip_idx] = CHIP.new_random_chip_with_random_code()
         --state_logic.dropped_chips[chip_idx] = CHIP.new_chip_with_code(CHIP_ID.Bolt, 0)
-
     end
-   
-    
 end
 
 function state_logic.randomize_folder()
 
     for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
-
         gauntlet_data.current_folder[chip_idx] = CHIP.new_random_chip_with_random_code()
         --gauntlet_data.current_folder[chip_idx] = CHIP.new_chip_with_code(0x1, 0)
-
     end
    
     
@@ -808,7 +721,6 @@ function state_logic.update_dropped_chips_pictures(list_of_chips)
         local chip_address = CHIP_DATA[chip.ID].CHIP_PICTURE_OFFSET
         local chip_palette_address = CHIP_DATA[chip.ID].CHIP_PICTURE_PALETTE_OFFSET
         list_of_chips[chip_idx].ARGB_PICTURE = CHIP_PICTURE.get_argb_2d_array_for_image_address(chip_address, chip_palette_address)
-
     end
 
 end
@@ -849,25 +761,16 @@ end
 
 function state_logic.update_folder_mega_giga_chip_counts()
 
-
     -- Upon chip replacement, recompute Mega/GigaChips
     gauntlet_data.current_number_of_giga_chips = 0
     gauntlet_data.current_number_of_mega_chips = 0
 
-
-
     for chip_idx = 1,#gauntlet_data.current_folder do
 
-        
-
         if (CHIP_DATA[gauntlet_data.current_folder[chip_idx].ID].CHIP_RANKING % 4) == 1 then
-
             gauntlet_data.current_number_of_mega_chips = gauntlet_data.current_number_of_mega_chips + 1
-
         elseif (CHIP_DATA[gauntlet_data.current_folder[chip_idx].ID].CHIP_RANKING % 4) == 2 then
-
             gauntlet_data.current_number_of_giga_chips = gauntlet_data.current_number_of_giga_chips + 1
-
         end
         
     end
@@ -880,7 +783,6 @@ function state_logic.update_argb_chip_icons_in_folder()
         gauntlet_data.current_folder[chip_idx].ARGB_ICON = state_logic.get_argb_icon(gauntlet_data.current_folder[chip_idx])
     end
     
-
 end
 
 
@@ -906,6 +808,7 @@ function state_logic.undo_activated_buffs()
     if state_logic.number_of_activated_buffs == 0 then
         return
     end
+
     local buff_it = state_logic.number_of_activated_buffs
 
     for buff_it = state_logic.number_of_activated_buffs, 1, -1 do
@@ -1039,6 +942,63 @@ function state_logic.initialize()
     --event.onmemoryexecute(state_logic.on_battle_phase_start, GENERIC_DEFS.BATTLE_PHASE_START_CHIP_IDS_ADDRESS + 2, "on_battle_phase_start")
 
 
+    -- TODO: check for duplicate / unnecessary initializations...
+    state_logic.activated_buffs = {}
+    state_logic.dropped_chips = {}
+    state_logic.dropped_buffs = {}
+    state_logic.initial_state = INITIAL_STATE_NAME
+    state_logic.number_of_activated_buffs = 0
+    gauntlet_data.current_folder = {}
+    gauntlet_data.mega_max_hp = 100
+    state_logic.stats_file_name = ""
+
+    state_logic.hp_loaded = 0
+    state_logic.buff_render_offset = 0
+
+    state_logic.initial_chip_amount_flag = 0
+
+    state_logic.draft_selection_chips = {}
+
+    state_logic.should_redraw = 1
+    gauntlet_data.chip_drop_method = CHIP_DROP_METHODS[1]
+    state_logic.hp_patch_frame_counter = 0
+    state_logic.battle_start_frame_counter = 0
+
+    state_logic.dropped_chips[1] = CHIP.get_default_chip()
+    state_logic.dropped_chips[2] = CHIP.get_default_chip()
+    state_logic.dropped_chips[3] = CHIP.get_default_chip()
+    state_logic.dropped_chip = CHIP.get_default_chip()
+    state_logic.dropped_chip.ID = -1
+    state_logic.dropped_chip.PRINT_NAME = ""
+    gauntlet_data.loadout_chosen = 0
+    state_logic.selected_loadout_index = 2
+    state_logic.selected_drop_method_index = 2
+
+    gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
+    state_logic.dropped_chip_render_index = 1
+    state_logic.draft_chip_render_index = 1
+    state_logic.dropped_buff_render_index = 2
+    state_logic.folder_chip_render_index = 1
+    state_logic.pause_frame_counter = 0
+
+
+    state_logic.gui_change_savestate = nil
+
+    gauntlet_data.mega_chip_limit = GAUNTLET_DEFS.INITIAL_MEGA_CHIP_LIMIT
+    gauntlet_data.giga_chip_limit = GAUNTLET_DEFS.INITIAL_GIGA_CHIP_LIMIT
+
+    state_logic.current_round = 0
+    state_logic.current_battle = 1
+    state_logic.battle_pointer_index = 1
+    state_logic.battle_data = {}
+
+    state_logic.CHIP_DATA_COPY = {}
+    state_logic.INITIAL_CHIP_DATA = nil
+
+    state_logic.battle_enter_lock = 0
+    state_logic.main_loop_frame_count = 0
+    state_logic.time_compression_savestates = {}
+
 
     if gauntlet_data.statistics_container ~= nil then
 
@@ -1121,7 +1081,7 @@ function state_logic.initialize()
     gauntlet_data.chip_drop_method.activate()
     gauntlet_data.loadout_chosen = 0
     state_logic.selected_loadout_index = 2
-    state_logic.dropped_chip = CHIP.new_chip_with_code(CHIP_ID.Cannon, CHIP_CODE.A)
+    state_logic.dropped_chip = CHIP.get_default_chip()
     state_logic.dropped_chip.ID = -1
     state_logic.dropped_chip.PRINT_NAME = state_logic.get_printable_chip_name(state_logic.dropped_chip)
     state_logic.dropped_chip.ARGB_ICON = state_logic.get_argb_icon(state_logic.dropped_chip)
@@ -1217,7 +1177,6 @@ function state_logic.initialize()
         LIMIT = 1.0,
         BASE = 1.0,
         PERFECT_FIGHT_INCREASE = 0.0
-
     }
 
     gauntlet_data.perfectionist_damage_bonus_add = {
@@ -1225,7 +1184,6 @@ function state_logic.initialize()
         LIMIT = 0,
         BASE = 0,
         PERFECT_FIGHT_INCREASE = 0
-
     }
  
     gauntlet_data.battle_stages = {}
@@ -1286,9 +1244,6 @@ function state_logic.check_reset()
 
         print("Soft-Reset!")
         state_logic.initialize()
-
-
-
     end
 
 end
@@ -1358,6 +1313,7 @@ function state_logic.update_battle_statistics()
     
     gauntlet_data.statistics_container[#gauntlet_data.statistics_container + 1] = 
     {
+        GAME_ID = GAME_ID,
         RANDOM_SEED = deepcopy(gauntlet_data.random_seed),
         CURRENT_HP = deepcopy(current_hp),
         ACTIVATED_BUFFS = deepcopy(activated_buffs),
@@ -1404,8 +1360,7 @@ function state_logic.patch_before_battle_start()
 
     end
 
-
-    mmbn3_utils.patch_folder(gauntlet_data.current_folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM, gauntlet_data)
+    io_utils.patch_folder(gauntlet_data.current_folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM, gauntlet_data)
 
     local new_battle_data = nil
 
@@ -1428,43 +1383,41 @@ function state_logic.patch_before_battle_start()
     state_logic.battle_data[state_logic.current_battle] = new_battle_data
 
 
-    mmbn3_utils.patch_battle(GAUNTLET_BATTLE_POINTERS[state_logic.battle_pointer_index], new_battle_data)
-    mmbn3_utils.patch_entity_data(state_logic.battle_data[state_logic.current_battle].ENTITIES)
+    io_utils.patch_battle(GAUNTLET_BATTLE_POINTERS[state_logic.battle_pointer_index], new_battle_data)
+    io_utils.patch_entity_data(state_logic.battle_data[state_logic.current_battle].ENTITIES)
     state_logic.current_battle = state_logic.current_battle + 1
     state_logic.battle_pointer_index = state_logic.battle_pointer_index + 1
     state_logic.update_printable_chip_names_in_folder()
     state_logic.update_argb_chip_icons_in_folder()
     
-    mmbn3_utils.set_stage(gauntlet_data.stage) 
+    io_utils.set_stage(gauntlet_data.stage) 
     
-    mmbn3_utils.writebyte(0x02005773, gauntlet_data.mega_AirShoes)
-    mmbn3_utils.writebyte(0x02005788, gauntlet_data.mega_FastGauge)
-    mmbn3_utils.writebyte(0x02005774, gauntlet_data.mega_UnderShirt)
-    mmbn3_utils.writebyte(0x02005771, gauntlet_data.mega_SuperArmor)
-    mmbn3_utils.writebyte(0x02005778, gauntlet_data.mega_AttackPlus)
-    mmbn3_utils.writebyte(0x0200577A, gauntlet_data.mega_ChargePlus)
-    mmbn3_utils.writebyte(0x02005779, gauntlet_data.mega_SpeedPlus)
-    mmbn3_utils.writebyte(0x0200577D, gauntlet_data.mega_WeaponLevelPlus)
-    mmbn3_utils.writebyte(0x02005772, gauntlet_data.mega_FloatShoes)
-    mmbn3_utils.writebyte(0x02005776, gauntlet_data.mega_BreakBuster)
-    mmbn3_utils.writebyte(0x0200577E, gauntlet_data.mega_BreakCharge)
-    mmbn3_utils.writebyte(0x02005790, gauntlet_data.mega_DarkLicense)
-    mmbn3_utils.writebyte(0x0200577F, gauntlet_data.mega_Reflect)
+    -- TODO_REFACTOR: create an io_utils method that performs a nil check on the address and ignores the value if the address is nil
+    -- TODO_REFACTOR: only call writebyte/write_u16/etc. from io_utils in all files.
+    io_utils.writebyte(GENERIC_DEFS.AIRSHOES_ADDRESS, gauntlet_data.mega_AirShoes)
+    io_utils.writebyte(GENERIC_DEFS.FASTGAUGE_ADDRESS, gauntlet_data.mega_FastGauge)
+    io_utils.writebyte(GENERIC_DEFS.UNDERSHIRT_ADDRESS, gauntlet_data.mega_UnderShirt)
+    io_utils.writebyte(GENERIC_DEFS.SUPERARMOR_ADDRESS, gauntlet_data.mega_SuperArmor)
+    io_utils.writebyte(GENERIC_DEFS.ATTACKPLUS_ADDRESS, gauntlet_data.mega_AttackPlus)
+    io_utils.writebyte(GENERIC_DEFS.CHARGEPLUS_ADDRESS, gauntlet_data.mega_ChargePlus)
+    io_utils.writebyte(GENERIC_DEFS.SPEEDPLUS_ADDRESS, gauntlet_data.mega_SpeedPlus)
+    io_utils.writebyte(GENERIC_DEFS.WEAPONLEVELPLUS_ADDRESS, gauntlet_data.mega_WeaponLevelPlus)
+    io_utils.writebyte(GENERIC_DEFS.FLOATSHOES_ADDRESS, gauntlet_data.mega_FloatShoes)
+    io_utils.writebyte(GENERIC_DEFS.BREAKBUSTER_ADDRESS, gauntlet_data.mega_BreakBuster)
+    io_utils.writebyte(GENERIC_DEFS.BREAKCHARGE_ADDRESS, gauntlet_data.mega_BreakCharge)
+    io_utils.writebyte(GENERIC_DEFS.DARKLICENSE_ADDRESS, gauntlet_data.mega_DarkLicense)
+    io_utils.writebyte(GENERIC_DEFS.REFLECT_ADDRESS, gauntlet_data.mega_Reflect)
 
 
     -- Read current HP and apply regeneration
-
     if gauntlet_data.mega_regen_after_battle_relative_to_max ~= 0 then
 
+        -- TODO_REFACTOR: use io_utils
         gauntlet_data.current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, "EWRAM")
 
-        
-
         print("Regenerator current HP before regen " .. tostring(gauntlet_data.current_hp))
-        
-        gauntlet_data.current_hp = math.floor(gauntlet_data.current_hp + gauntlet_data.mega_max_hp * gauntlet_data.mega_regen_after_battle_relative_to_max)
 
-        
+        gauntlet_data.current_hp = math.floor(gauntlet_data.current_hp + gauntlet_data.mega_max_hp * gauntlet_data.mega_regen_after_battle_relative_to_max)
 
         if gauntlet_data.current_hp > gauntlet_data.mega_max_hp then
             gauntlet_data.current_hp = gauntlet_data.mega_max_hp
@@ -1472,13 +1425,17 @@ function state_logic.patch_before_battle_start()
 
         print("Regenerator current HP after regen " .. tostring(gauntlet_data.current_hp))
 
+        -- TODO_REFACTOR: use io_utils
         memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.current_hp, "EWRAM")
     end
 
+    -- TODO_REFACTOR: use io_utils
     memory.write_u16_le(GENERIC_DEFS.MEGA_MAX_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.mega_max_hp, "EWRAM")
     -- We need to wait a few frames to patch the in-battle HP of megaMan in RAM. Otherwise we would need a hook way before battle, which I don't want to find right now.
     if  gauntlet_data.hp_patch_required == 1 then
+        -- TODO_REFACTOR: use io_utils
         memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.mega_max_hp, "EWRAM") 
+        -- TODO_REFACTOR: use io_utils
         memory.write_u16_le(GENERIC_DEFS.MEGA_MAX_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.mega_max_hp, "EWRAM")
         gauntlet_data.hp_patch_required = 0
         
@@ -1487,21 +1444,19 @@ function state_logic.patch_before_battle_start()
    
 
     
+    -- TODO_REFACTOR: of course this is its own function...
+    io_utils.change_megaMan_style(gauntlet_data.mega_style)
 
-    mmbn3_utils.change_megaMan_style(gauntlet_data.mega_style)
-
-    mmbn3_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
+    io_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
     state_logic.export_run_statistics()
-
-
 
     state_logic.rewind_savestate = memorysavestate.savecorestate()
 
     state_logic.main_loop_frame_count = 0
 
     -- Reset time compression counter
+    --print("set number of time compressions to " .. gauntlet_data.number_of_time_compressions)
     gauntlet_data.current_battle_number_of_time_compressions = gauntlet_data.number_of_time_compressions
-
 
 end
 
@@ -1569,6 +1524,7 @@ function state_logic.illusion_of_choice_randomize_selected_chip()
             return
         end
 
+        -- TODO_REFACTOR: make sure CHIP_RANKING is the same in all games / refactor into a better API, I guess
         local is_dropped_chip_mega = (dropped_chip_data.CHIP_RANKING % 4) == 1
         local is_dropped_chip_giga = (dropped_chip_data.CHIP_RANKING % 4) == 2
         local folder_chip_data = CHIP_DATA[gauntlet_data.current_folder[state_logic.folder_chip_render_index].ID]
@@ -1596,15 +1552,12 @@ end
 
 function state_logic.check_buff_render_offset()
 
-    
-
     if #state_logic.activated_buffs < 9 or gauntlet_data.folder_view ~= 2 then
         return
     end
 
     if input_handler.inputs_pressed["Up"] == true then
 
-        
         state_logic.buff_render_offset = state_logic.buff_render_offset - 1
 
         if state_logic.buff_render_offset < 0 then
@@ -1666,6 +1619,8 @@ function state_logic.on_mega_death()
         return
     end
 
+    -- TODO_REFACTOR: use io_utils
+    -- TODO_REFACTOR: make sure MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE behaves the same way in all games / refactor into a better API
     print("Reset in GAME_STATE.RUNNING, number_of_virus_entities = " .. gauntlet_data.number_of_entities)
     print("MEGA_CURRENT_HP_ADDRESS [NUM_ENTITIES] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM"))
     print("MEGA_CURRENT_HP_ADDRESS [1] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[1] - 0x02000000, "EWRAM"))
@@ -1677,13 +1632,13 @@ end
 
 
 function state_logic.set_cust_gauge_value(value)
-
+    -- TODO_REFACTOR: use io_utils
     memory.writebyte(GENERIC_DEFS.CUST_GAUGE_VALUE_ADDRESS - 0x02000000, value, "EWRAM")
-
 end
 
 function state_logic.damage_random_enemy(damage)
 
+    -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
     local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]
 
     local enemy_hp_values = {}
@@ -1691,6 +1646,7 @@ function state_logic.damage_random_enemy(damage)
 
     for key, address in pairs(enemy_addresses) do
         local ewram_address = address - 0x02000000
+        -- TODO_REFACTOR: use io_utils
         local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
         if enemy_hp_value ~= 0 then
             enemy_hp_values[#enemy_hp_values + 1] = enemy_hp_value
@@ -1716,6 +1672,7 @@ function state_logic.damage_random_enemy(damage)
     end
 
     -- Write back new HP
+    -- TODO_REFACTOR: use io_utils
     memory.write_u16_le(chosen_ewram_address, new_enemy_hp_value, "EWRAM")
 
 end
@@ -1723,10 +1680,12 @@ end
 
 function state_logic.damage_all_enemies(damage)
 
+    -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
     local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]
 
     for key, address in pairs(enemy_addresses) do
         local ewram_address = address - 0x02000000
+        -- TODO_REFACTOR: use io_utils
         local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
         if enemy_hp_value ~= 0 then
             local new_enemy_hp_value = enemy_hp_value - damage
@@ -1736,6 +1695,7 @@ function state_logic.damage_all_enemies(damage)
             end
 
             -- Write back new HP
+            -- TODO_REFACTOR: use io_utils
             memory.write_u16_le(ewram_address, new_enemy_hp_value, "EWRAM")
 
         end
@@ -1750,6 +1710,10 @@ function state_logic.on_mega_damage_taken()
     if gauntlet_data.current_battle_number_of_time_compressions > 0 and state_logic.main_loop_frame_count > gauntlet_data.time_compression_delay then
         state_logic.hp_loaded = 0
         gauntlet_data.current_battle_number_of_time_compressions = gauntlet_data.current_battle_number_of_time_compressions - 1
+        --print("Time Compression: index: " .. tostring(((state_logic.main_loop_frame_count + 1) % gauntlet_data.time_compression_delay) + 1))
+        --print("Time Compression: num savestates: " .. tostring(#state_logic.time_compression_savestates))
+        --print("Time Compression: delay: " .. tostring(gauntlet_data.time_compression_delay))
+        --print("Time Compression: frame count: " .. tostring(state_logic.main_loop_frame_count))
         memorysavestate.loadcorestate(state_logic.time_compression_savestates[((state_logic.main_loop_frame_count + 1) % gauntlet_data.time_compression_delay) + 1])
         --print("Time compression saved the damage!")
         return
@@ -1773,9 +1737,9 @@ function state_logic.on_mega_damage_taken()
         gauntlet_data.current_hp = gauntlet_data.last_hp
     end
 
+    -- TODO_REFACTOR: use io_utils
+    -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
     memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities] - 0x02000000, gauntlet_data.current_hp, "EWRAM")
-
-
 
 end
 
@@ -1789,8 +1753,10 @@ function state_logic.on_mega_heal()
         gauntlet_data.current_hp = gauntlet_data.mega_max_hp
     end
 
-    memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities] - 0x02000000, gauntlet_data.current_hp, "EWRAM")
 
+    -- TODO_REFACTOR: use io_utils
+    -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
+    memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities] - 0x02000000, gauntlet_data.current_hp, "EWRAM")
 
 end
 
@@ -1816,12 +1782,14 @@ function state_logic.enemy_hp_regen()
 
         gauntlet_data.enemies_hp_regen_accum = 0
         
-    
+        -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
         local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]
 
         for key, address in pairs(enemy_addresses) do
             local ewram_address = address - 0x02000000
+            -- TODO_REFACTOR: use io_utils
             local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
+            -- TODO_REFACTOR: use io_utils
             local enemy_max_hp_value = memory.read_u16_le(ewram_address + 2, "EWRAM")
             if enemy_hp_value ~= 0 then
 
@@ -1832,6 +1800,7 @@ function state_logic.enemy_hp_regen()
                 end
 
                 -- Write back new HP
+                -- TODO_REFACTOR: use io_utils
                 memory.write_u16_le(ewram_address, new_enemy_hp_value, "EWRAM")
 
             end
@@ -1919,6 +1888,9 @@ function state_logic.in_battle_chip_effects()
 
                 -- Patch new chip damage
                 --if new_chip_damage ~= current_chip_damage then
+
+                -- TODO_REFACTOR: use io_utils
+                -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
                 memory.write_u16_le(held_chip_damage_addr + ((chip_idx - 1) * 2), new_chip_damage, "EWRAM")
                 --end
 
@@ -1932,6 +1904,7 @@ end
 
 function state_logic.get_number_of_alive_enemies()
 
+    -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
     local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]
 
     local enemy_hp_values = {}
@@ -1942,6 +1915,7 @@ function state_logic.get_number_of_alive_enemies()
 
     for key, address in pairs(enemy_addresses) do
         local ewram_address = address - 0x02000000
+        -- TODO_REFACTOR: use io_utils
         local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
         if enemy_hp_value ~= 0 then
             gauntlet_data.number_enemies_alive = gauntlet_data.number_enemies_alive + 1
@@ -1951,6 +1925,7 @@ end
 
 function state_logic.get_current_custgauge_value()
 
+    -- TODO_REFACTOR: use io_utils
     gauntlet_data.current_custgauge_value = memory.readbyte(GENERIC_DEFS.CUST_GAUGE_VALUE_ADDRESS - 0x02000000, "EWRAM")
 
 end
@@ -2010,6 +1985,8 @@ function state_logic.in_battle_custgauge_effects()
     end
 
     if gauntlet_data.current_custgauge_value ~= old_custgauge_value then
+        -- TODO_REFACTOR: use io_utils
+        -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
         memory.writebyte(GENERIC_DEFS.CUST_GAUGE_VALUE_ADDRESS - 0x02000000, gauntlet_data.current_custgauge_value, "EWRAM")
     end
 
@@ -2017,8 +1994,11 @@ end
 
 function state_logic.check_pause_screen()
 
+    -- TODO_REFACTOR: use io_utils
     gauntlet_data.battle_paused = memory.readbyte(GENERIC_DEFS.IN_BATTLE_PAUSE_ADDRESS - 0x02000000, "EWRAM")
+    -- TODO_REFACTOR: use io_utils
     gauntlet_data.battle_paused = gauntlet_data.battle_paused + memory.readbyte(GENERIC_DEFS.IN_BATTLE_TIMEFREEZE_ADDRESS - 0x02000000, "EWRAM")
+    -- TODO_REFACTOR: use io_utils
     gauntlet_data.battle_paused = gauntlet_data.battle_paused + memory.readbyte(GENERIC_DEFS.IN_BATTLE_TIMEFREEZE_ADDRESS2 - 0x02000000, "EWRAM")
 
 end
@@ -2028,16 +2008,10 @@ function state_logic.check_in_battle_effects()
     state_logic.get_number_of_alive_enemies()
 
     state_logic.check_pause_screen()
-    
 
     state_logic.in_battle_custgauge_effects()
 
-    
-
     state_logic.in_battle_chip_effects()
-
-    
-
 
 end
 
@@ -2047,6 +2021,7 @@ function state_logic.on_first_cust_screen()
 
     if gauntlet_data.backstab_percentage_damage ~= 0 and (state_logic.current_battle - 1 ) % GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL == 0 then
 
+        -- TODO_REFACTOR: make sure this behaves the same in all games / refactor into a better API
         local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]
 
         local enemy_hp_values = {}
@@ -2054,6 +2029,7 @@ function state_logic.on_first_cust_screen()
 
         for key, address in pairs(enemy_addresses) do
             local ewram_address = address - 0x02000000
+            -- TODO_REFACTOR: use io_utils
             local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
             if enemy_hp_value ~= 0 then
                 enemy_hp_values[#enemy_hp_values + 1] = enemy_hp_value
@@ -2107,7 +2083,7 @@ function state_logic.check_frame_events()
 
     -- Here, we check for events that can easily be polled every frame to save expensive event.onmemoryexecute hooks
     -- Check if we are in cust screen
-
+    -- TODO_REFACTOR: use io_utils
     local is_cust_screen = memory.readbyte(GENERIC_DEFS.IN_BATTLE_IS_CUSTSCREEN_OPEN - 0x02000000, "EWRAM")
 
     if is_cust_screen == 1 and gauntlet_data.is_cust_screen == 0 then
@@ -2140,10 +2116,15 @@ function state_logic.check_frame_events()
     -- TODO: refactor into "on_chip_use parts"
     if gauntlet_data.is_cust_screen == 0 and gauntlet_data.cust_screen_was_opened ~= 0 then 
         -- Check for "on_chip_use"
+        -- TODO_REFACTOR: use io_utils
+        -- TODO_REFACTOR: make sure this behaves the same in all games / refactor into a better API
         local num_chips = memory.readbyte(GENERIC_DEFS.IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM")
 
-        if gauntlet_data.battle_phase == 0 and num_chips ~= 0 then
+        if gauntlet_data.battle_phase == 0 then
             state_logic.on_battle_phase_start()
+        end
+
+        if gauntlet_data.battle_phase == 0 and num_chips ~= 0 then
             gauntlet_data.num_chips_in_battle = num_chips
         else
             if num_chips < gauntlet_data.num_chips_in_battle then
@@ -2194,7 +2175,8 @@ function state_logic.main_frame_loop()
         
         
         --print("Number of entities in battle: " .. tostring(gauntlet_data.number_of_entities))
-        
+        -- TODO_REFACTOR: use io_utils
+        -- TODO_REFACTOR: make sure this behaves the same in all games / refactor into a better API
         gauntlet_data.current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM")
 
         if gauntlet_data.current_hp ~= 0 and gauntlet_data.battle_phase ~= 0 then
@@ -2385,12 +2367,13 @@ function state_logic.main_loop()
         -- We render 15 x 2 chips.
         
         local num_chips_per_col = 15
-        local num_chips_per_folder = 30
+        local num_chips_per_folder = GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER
 
         
 
         if input_handler.inputs_pressed["L"] == true or input_handler.inputs_pressed["R"] == true then
 
+            -- TODO_REFACTOR: use names/enums for folder_view types...
             if gauntlet_data.folder_view == 2 then
                 gauntlet_data.folder_view = 0
             else
@@ -2418,7 +2401,7 @@ function state_logic.main_loop()
                 if input_handler.inputs_pressed["Left"] == true then
                     state_logic.folder_chip_render_index = (state_logic.folder_chip_render_index - num_chips_per_col) % (num_chips_per_folder)
                     if state_logic.folder_chip_render_index == 0 then
-                        state_logic.folder_chip_render_index = 30
+                        state_logic.folder_chip_render_index = num_chips_per_folder
                     end
                     state_logic.should_redraw = 1
                 end
@@ -2426,7 +2409,7 @@ function state_logic.main_loop()
                 if input_handler.inputs_pressed["Right"] == true then
                     state_logic.folder_chip_render_index = (state_logic.folder_chip_render_index + num_chips_per_col) % (num_chips_per_folder)
                     if state_logic.folder_chip_render_index == 0 then
-                        state_logic.folder_chip_render_index = 30
+                        state_logic.folder_chip_render_index = num_chips_per_folder
                     end
                     state_logic.should_redraw = 1
                 end
@@ -2435,7 +2418,7 @@ function state_logic.main_loop()
                     state_logic.folder_chip_render_index = (state_logic.folder_chip_render_index - 1) % (num_chips_per_folder + 1)
                     --print ("UP PRESSED")
                     if state_logic.folder_chip_render_index == 0 then
-                        state_logic.folder_chip_render_index = 30
+                        state_logic.folder_chip_render_index = num_chips_per_folder
                     end
                     state_logic.should_redraw = 1
                 end
@@ -2460,6 +2443,7 @@ function state_logic.main_loop()
             
                 if state_logic.dropped_chip.ID ~= -1 then
 
+                    -- TODO_REFACTOR: make sure CHIP_RANKING is the same in all games / refactor to a better API
                     local dropped_chip_data = CHIP_DATA[state_logic.dropped_chip.ID]
                     local is_dropped_chip_mega = (dropped_chip_data.CHIP_RANKING % 4) == 1
                     local is_dropped_chip_giga = (dropped_chip_data.CHIP_RANKING % 4) == 2
@@ -2488,6 +2472,7 @@ function state_logic.main_loop()
                         state_logic.should_redraw = 1
 
                         state_logic.update_folder_mega_giga_chip_counts()
+                        -- TODO_REFACTOR: folder_view enum
                         gauntlet_data.folder_view = 0
                         
                     end
@@ -2495,6 +2480,7 @@ function state_logic.main_loop()
                 else
                     state_logic.replaced_chip = "Skipped Chip"
                     gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
+                    -- TODO_REFACTOR: folder_view enum
                     gauntlet_data.folder_view = 0
                     state_logic.should_redraw = 1
                 end
@@ -2519,7 +2505,7 @@ function state_logic.main_loop()
 
 
             
-            
+            -- TODO_REFACTOR: folder_view enum
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, state_logic.folder_chip_render_index, state_logic.dropped_chip, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 1 then
@@ -2558,7 +2544,7 @@ function state_logic.main_loop()
 
         state_logic.folder_view_switch_and_sort()
         state_logic.check_buff_render_offset()
-
+        -- TODO_REFACTOR: folder_view enum
         if gauntlet_data.folder_view == 0 then
         
             if input_handler.inputs_pressed["Up"] == true then
@@ -2623,7 +2609,7 @@ function state_logic.main_loop()
 
                 -- We advance the rng here for buff activations to be consistent
                 gauntlet_data.math.advance_rng_since_last_advance("BUFF_ACTIVATION", 229);
-
+                -- TODO_REFACTOR: folder_view enum
                 gauntlet_data.folder_view = 0
                 gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT
                 --gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT
@@ -2640,7 +2626,7 @@ function state_logic.main_loop()
 
         if state_logic.should_redraw == 1 then
 
-
+            -- TODO_REFACTOR: folder_view enum
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_items(state_logic.dropped_buffs, state_logic.dropped_buff_render_index)
             elseif gauntlet_data.folder_view == 1 then
@@ -2659,11 +2645,11 @@ function state_logic.main_loop()
 
         state_logic.patch_before_battle_start()
         state_logic.hp_loaded = 0
-        --mmbn3_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
+        --io_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
         
         --print("Patched folder!")
         client.unpause()
-         --mmbn3_utils.change_megaMan_max_hp(gauntlet_data.mega_max_hp) 
+         --io_utils.change_megaMan_max_hp(gauntlet_data.mega_max_hp) 
         
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
         
@@ -2691,7 +2677,7 @@ function state_logic.main_loop()
         state_logic.folder_view_switch_and_sort()
         state_logic.check_buff_render_offset()
 
-
+        -- TODO_REFACTOR: folder_view enum    
         if gauntlet_data.folder_view == 0 then
 
             if input_handler.inputs_pressed["Up"] == true then
@@ -2723,7 +2709,6 @@ function state_logic.main_loop()
 
                 LOADOUTS[state_logic.selected_loadout_index].activate()
 
-                
                 state_logic.update_printable_chip_names_in_folder()
                 state_logic.update_argb_chip_icons_in_folder()
                 state_logic.update_folder_mega_giga_chip_counts()
@@ -2738,7 +2723,7 @@ function state_logic.main_loop()
         end
 
         if state_logic.should_redraw == 1 then
-            
+            -- TODO_REFACTOR: folder_view enum
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_items(LOADOUTS, state_logic.selected_loadout_index)
             elseif gauntlet_data.folder_view == 1 then
@@ -2768,7 +2753,7 @@ function state_logic.main_loop()
         -- TODO: render list of starting loadouts. Each loadout should provide a callable function that can set various things.
         state_logic.folder_view_switch_and_sort()
         state_logic.check_buff_render_offset()
-
+        -- TODO_REFACTOR: folder_view enum
         if gauntlet_data.folder_view == 0 then
 
             if input_handler.inputs_pressed["Up"] == true then
@@ -2811,7 +2796,7 @@ function state_logic.main_loop()
 
         if state_logic.should_redraw == 1 then
 
-
+            -- TODO_REFACTOR: folder_view enum
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_items(CHIP_DROP_METHODS, state_logic.selected_drop_method_index)
             elseif gauntlet_data.folder_view == 1 then
@@ -2839,8 +2824,8 @@ function state_logic.main_loop()
         state_logic.update_argb_chip_icons_in_folder()
         
         --print("Folder:", gauntlet_data.current_folder)
-
-        if #gauntlet_data.current_folder == 30 then
+        
+        if #gauntlet_data.current_folder == GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER then
             gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT
         else
             for draft_chip_idx = 1,GAUNTLET_DEFS.NUMBER_OF_DRAFT_CHIPS do
@@ -2864,7 +2849,7 @@ function state_logic.main_loop()
         
         state_logic.folder_view_switch_and_sort()
         state_logic.check_buff_render_offset()
-
+        -- TODO_REFACTOR: folder_view enum
         if gauntlet_data.folder_view == 0 then
 
             if input_handler.inputs_pressed["Left"] == true then

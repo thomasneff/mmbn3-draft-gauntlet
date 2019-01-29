@@ -34,6 +34,14 @@ function CHIP.new_chip_with_code(chip_id, chip_code)
     return new_chip
 end
 
+function CHIP.get_default_chip()
+    -- TODO: refactor game-dependent CHIP_CODE / CHIP_ID
+    new_chip = deepcopy(CHIP_TEMPLATE)
+    new_chip.ID = 1
+    new_chip.CODE = 0
+
+    return new_chip
+end
 
 function CHIP.new_chip_with_random_code_from_list(chip_id, chip_codes)
 
@@ -86,9 +94,6 @@ function CHIP.new_chip_with_random_code_generator(chip_id)
 end
 
 function CHIP.new_random_chip_with_random_code_generator()
-
-  
-
     return CHIP.new_random_chip_with_random_code
 end
 

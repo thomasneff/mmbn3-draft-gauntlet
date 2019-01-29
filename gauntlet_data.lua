@@ -143,7 +143,7 @@ gauntlet_data.add_random_star_code_before_battle = 0
 
 -- rng seed system
 gauntlet_data.random_seed = nil
-gauntlet_data.fixed_random_seed = nil
+gauntlet_data.fixed_random_seed = 1539278633
 
 gauntlet_data.rng_value_map = {}
 gauntlet_data.math = {}
