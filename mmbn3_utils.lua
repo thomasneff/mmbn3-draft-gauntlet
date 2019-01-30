@@ -27,6 +27,27 @@ function mmbn3_utils.writebyte(address, value)
 end
 
 -- This is a wrapper for BizHawk with VBA-Next that automatically selects the correct memory domain.
+function mmbn3_utils.readbyte(address)
+    if address >= 0x08000000 then
+        address = address - 0x08000000
+        return memory.readbyte(address, "ROM")
+    elseif address >= 0x02000000 then
+        address = address - 0x02000000
+        return memory.readbyte(address, "EWRAM")
+    end
+end
+
+function mmbn3_utils.readword(address)
+    if address >= 0x08000000 then
+        address = address - 0x08000000
+        return memory.read_u16_le(address, "ROM")
+    elseif address >= 0x02000000 then
+        address = address - 0x02000000
+        return memory.read_u16_le(address, "EWRAM")
+    end
+end
+
+-- This is a wrapper for BizHawk with VBA-Next that automatically selects the correct memory domain.
 function mmbn3_utils.writeword(address, value)
     if address >= 0x08000000 then
         address = address - 0x08000000
@@ -35,8 +56,6 @@ function mmbn3_utils.writeword(address, value)
         address = address - 0x02000000
         memory.write_u16_le(address, value, "EWRAM")    
     end
-
-    
 end
 
 -- This is a wrapper for BizHawk with VBA-Next that automatically selects the correct memory domain.

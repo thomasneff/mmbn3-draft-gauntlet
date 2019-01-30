@@ -1,4 +1,6 @@
 TODO: test navicust buffs after refactor to GENERIC_DEFS
+TODO: test everything that was changed when refactoring to use io_utils instead of memory
+TODO: test regenerator after refactor to 1 battle savestate instead of 10 battle
 
 TODO test: Snecko eye, illusion of choice (changed rng)
 TODO: make sure rng is advanced for buffs, chip generation

@@ -274,14 +274,14 @@ function state_logic.patch_consecutive_program_advances()
             end
         end
 
-            --print(combined_pa_chip_and_code)
-            --print(selected_chip_id)
-            --print("Forged PA data: " .. bizstring.hex(combined_pa_chip_and_code))
-            -- Write PA chip ID + starting code
-        memory.write_u16_le(pa_address - 0x08000000, combined_pa_chip_and_code, "ROM")
+        --print(combined_pa_chip_and_code)
+        --print(selected_chip_id)
+        --print("Forged PA data: " .. bizstring.hex(combined_pa_chip_and_code))
+        -- Write PA chip ID + starting code
+        io_utils.writeword(pa_address, combined_pa_chip_and_code)
     
-            -- Write component ID
-        memory.writebyte(pa_address + 2 - 0x08000000, selected_chip_id, "ROM")
+        -- Write component ID
+        io_utils.writebyte(pa_address + 2, selected_chip_id)
         
     end
 
@@ -311,16 +311,16 @@ function state_logic.on_cust_screen_confirm()
     --    assert(nil)
     --end
     
-    gauntlet_data.number_of_chosen_cust_chips = memory.readbyte(GENERIC_DEFS.CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS - 0x02000000, "EWRAM")
+    gauntlet_data.number_of_chosen_cust_chips = io_utils.readbyte(GENERIC_DEFS.CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS)
 
     for chip_idx = 1, gauntlet_data.number_of_chosen_cust_chips do
-        local folder_index = memory.readbyte(GENERIC_DEFS.CUST_SCREEN_SELECTED_CHIP_INDICES_ADDRESS + chip_idx - 1 - 0x02000000, "EWRAM")
+        local folder_index = io_utils.readbyte(GENERIC_DEFS.CUST_SCREEN_SELECTED_CHIP_INDICES_ADDRESS + chip_idx - 1)
         gauntlet_data.selected_chips[chip_idx] = {}
         
         -- As we now have the folder index, we can read chip code and ID.
         -- TODO_REFACTOR: check if this structure is the same in other games... 
-        gauntlet_data.selected_chips[chip_idx].ID = memory.read_u16_le(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4) - 0x02000000, "EWRAM")
-        gauntlet_data.selected_chips[chip_idx].CODE = memory.readbyte(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4) + 2 - 0x02000000, "EWRAM")
+        gauntlet_data.selected_chips[chip_idx].ID = io_utils.readword(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4))
+        gauntlet_data.selected_chips[chip_idx].CODE = io_utils.readbyte(GENERIC_DEFS.FOLDER_START_ADDRESS_RAM + (folder_index * 4) + 2)
         gauntlet_data.selected_chips[chip_idx].NAME = deepcopy(CHIP_NAME[gauntlet_data.selected_chips[chip_idx].ID])
     end
 
@@ -359,8 +359,8 @@ function state_logic.on_battle_phase_start()
     -- Initialize time compression savestates
     state_logic.init_time_compression()
     
-    local held_chip_id_addr = GENERIC_DEFS.IN_BATTLE_HELD_CHIP_IDS_ADDRESS - 0x02000000
-    local held_chip_damage_addr =  GENERIC_DEFS.IN_BATTLE_HELD_CHIP_DAMAGES_ADDRESS - 0x02000000
+    local held_chip_id_addr = GENERIC_DEFS.IN_BATTLE_HELD_CHIP_IDS_ADDRESS
+    local held_chip_damage_addr =  GENERIC_DEFS.IN_BATTLE_HELD_CHIP_DAMAGES_ADDRESS
 
     gauntlet_data.held_chips = {}
     gauntlet_data.custgauge_last_frames_storage = 0
@@ -368,11 +368,11 @@ function state_logic.on_battle_phase_start()
     -- TODO_REFACTOR: check if held chips work the same way...
     for chip_idx = 1,5 do 
 
-        local chip_id = memory.read_u16_le(held_chip_id_addr + ((chip_idx - 1) * 2), "EWRAM")
+        local chip_id = io_utils.readword(held_chip_id_addr + ((chip_idx - 1) * 2))
 
         if (chip_id ~= 0xFFFF) then
             
-            local chip_damage = memory.read_u16_le(held_chip_damage_addr + ((chip_idx - 1) * 2), "EWRAM")
+            local chip_damage = io_utils.readword(held_chip_damage_addr + ((chip_idx - 1) * 2))
 
             local chip = {}
             chip.ID = chip_id
@@ -558,7 +558,7 @@ function state_logic.on_battle_end()
 
     -- Compute lost HP
     -- TODO_REFACTOR: verify that this is consistent between games, if the offset is chosen accordingly
-    gauntlet_data.current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, "EWRAM")
+    gauntlet_data.current_hp = io_utils.readword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING)
     state_logic.stats_lost_hp = state_logic.stats_previous_hp - gauntlet_data.current_hp
     state_logic.stats_previous_hp = gauntlet_data.current_hp
     
@@ -880,6 +880,7 @@ end
 function state_logic.export_run_statistics()
     local file = io.open(state_logic.stats_file_name, "w")
     if file == nil then
+        -- TODO: for some reason this gets called even when the statistics are saved...?
         print("Could not save statistics, please create the \"stats\" folder inside the gauntlet folder!")
         return
     end
@@ -1281,7 +1282,7 @@ function state_logic.update_battle_statistics()
         return
     end
 
-    gauntlet_data.current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, "EWRAM")
+    gauntlet_data.current_hp = io_utils.readword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING)
 
     -- Extract only relevant parts
 
@@ -1422,15 +1423,13 @@ function state_logic.patch_before_battle_start()
     io_utils.writebyte(GENERIC_DEFS.DARKLICENSE_ADDRESS, gauntlet_data.mega_DarkLicense)
     io_utils.writebyte(GENERIC_DEFS.REFLECT_ADDRESS, gauntlet_data.mega_Reflect)
 
-    -- TODO_REFACTOR: use io_utils
     -- Set the current HP to the last known value
-    memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.last_known_current_hp, "EWRAM")
+    io_utils.writeword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING, gauntlet_data.last_known_current_hp)
 
     -- Read current HP and apply regeneration
     if gauntlet_data.mega_regen_after_battle_relative_to_max ~= 0 then
 
-        -- TODO_REFACTOR: use io_utils
-        gauntlet_data.current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, "EWRAM")
+        gauntlet_data.current_hp = io_utils.readword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING)
 
         print("Regenerator current HP before regen " .. tostring(gauntlet_data.current_hp))
 
@@ -1442,25 +1441,11 @@ function state_logic.patch_before_battle_start()
 
         print("Regenerator current HP after regen " .. tostring(gauntlet_data.current_hp))
 
-        -- TODO_REFACTOR: use io_utils
-        memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.current_hp, "EWRAM")
+        io_utils.writeword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING, gauntlet_data.current_hp)
     end
 
-    -- TODO_REFACTOR: use io_utils
-    memory.write_u16_le(GENERIC_DEFS.MEGA_MAX_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.mega_max_hp, "EWRAM")
-    -- We need to wait a few frames to patch the in-battle HP of megaMan in RAM. Otherwise we would need a hook way before battle, which I don't want to find right now.
-    if  gauntlet_data.hp_patch_required == 1 then
-        -- TODO_REFACTOR: use io_utils
-        --memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.mega_max_hp, "EWRAM") 
-        -- TODO_REFACTOR: use io_utils
-        memory.write_u16_le(GENERIC_DEFS.MEGA_MAX_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.mega_max_hp, "EWRAM")
-        gauntlet_data.hp_patch_required = 0
-        
-    end
-
-   
-
-    
+    io_utils.writeword(GENERIC_DEFS.MEGA_MAX_HP_ADDRESS_DURING_LOADING, gauntlet_data.mega_max_hp)
+      
     -- TODO_REFACTOR: of course this is its own function...
     io_utils.change_megaMan_style(gauntlet_data.mega_style)
 
@@ -1636,21 +1621,19 @@ function state_logic.on_mega_death()
         return
     end
 
-    -- TODO_REFACTOR: use io_utils
     -- TODO_REFACTOR: make sure MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE behaves the same way in all games / refactor into a better API
     print("Reset in GAME_STATE.RUNNING, number_of_virus_entities = " .. gauntlet_data.number_of_entities)
-    print("MEGA_CURRENT_HP_ADDRESS [NUM_ENTITIES] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM"))
-    print("MEGA_CURRENT_HP_ADDRESS [1] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[1] - 0x02000000, "EWRAM"))
-    print("MEGA_CURRENT_HP_ADDRESS [2] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[2] - 0x02000000, "EWRAM"))
-    print("MEGA_CURRENT_HP_ADDRESS [3] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[3] - 0x02000000, "EWRAM"))
-    print("MEGA_CURRENT_HP_ADDRESS [4] " .. memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[4] - 0x02000000, "EWRAM"))
+    print("MEGA_CURRENT_HP_ADDRESS [NUM_ENTITIES] " .. io_utils.readword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]))
+    print("MEGA_CURRENT_HP_ADDRESS [1] " .. io_utils.readword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[1]))
+    print("MEGA_CURRENT_HP_ADDRESS [2] " .. io_utils.readword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[2]))
+    print("MEGA_CURRENT_HP_ADDRESS [3] " .. io_utils.readword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[3]))
+    print("MEGA_CURRENT_HP_ADDRESS [4] " .. io_utils.readword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[4]))
     state_logic.initialize()
 end
 
 
 function state_logic.set_cust_gauge_value(value)
-    -- TODO_REFACTOR: use io_utils
-    memory.writebyte(GENERIC_DEFS.CUST_GAUGE_VALUE_ADDRESS - 0x02000000, value, "EWRAM")
+    io_utils.writebyte(GENERIC_DEFS.CUST_GAUGE_VALUE_ADDRESS, value)
 end
 
 function state_logic.damage_random_enemy(damage)
@@ -1662,9 +1645,8 @@ function state_logic.damage_random_enemy(damage)
     local enemy_ewram_addresses = {}
 
     for key, address in pairs(enemy_addresses) do
-        local ewram_address = address - 0x02000000
-        -- TODO_REFACTOR: use io_utils
-        local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
+        local ewram_address = address
+        local enemy_hp_value = io_utils.readword(ewram_address)
         if enemy_hp_value ~= 0 then
             enemy_hp_values[#enemy_hp_values + 1] = enemy_hp_value
             enemy_ewram_addresses[#enemy_ewram_addresses + 1] = ewram_address
@@ -1689,8 +1671,7 @@ function state_logic.damage_random_enemy(damage)
     end
 
     -- Write back new HP
-    -- TODO_REFACTOR: use io_utils
-    memory.write_u16_le(chosen_ewram_address, new_enemy_hp_value, "EWRAM")
+    io_utils.writeword(chosen_ewram_address, new_enemy_hp_value)
 
 end
 
@@ -1701,9 +1682,8 @@ function state_logic.damage_all_enemies(damage)
     local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]
 
     for key, address in pairs(enemy_addresses) do
-        local ewram_address = address - 0x02000000
-        -- TODO_REFACTOR: use io_utils
-        local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
+        local ewram_address = address
+        local enemy_hp_value = io_utils.readword(ewram_address)
         if enemy_hp_value ~= 0 then
             local new_enemy_hp_value = enemy_hp_value - damage
 
@@ -1712,8 +1692,7 @@ function state_logic.damage_all_enemies(damage)
             end
 
             -- Write back new HP
-            -- TODO_REFACTOR: use io_utils
-            memory.write_u16_le(ewram_address, new_enemy_hp_value, "EWRAM")
+            io_utils.writeword(ewram_address, new_enemy_hp_value)
 
         end
     end
@@ -1754,9 +1733,8 @@ function state_logic.on_mega_damage_taken()
         gauntlet_data.current_hp = gauntlet_data.last_hp
     end
 
-    -- TODO_REFACTOR: use io_utils
     -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
-    memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities] - 0x02000000, gauntlet_data.current_hp, "EWRAM")
+    io_utils.writeword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities], gauntlet_data.current_hp)
 
 end
 
@@ -1771,9 +1749,8 @@ function state_logic.on_mega_heal()
     end
 
 
-    -- TODO_REFACTOR: use io_utils
     -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
-    memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities] - 0x02000000, gauntlet_data.current_hp, "EWRAM")
+    io_utils.writeword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities], gauntlet_data.current_hp)
 
 end
 
@@ -1803,11 +1780,9 @@ function state_logic.enemy_hp_regen()
         local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]
 
         for key, address in pairs(enemy_addresses) do
-            local ewram_address = address - 0x02000000
-            -- TODO_REFACTOR: use io_utils
-            local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
-            -- TODO_REFACTOR: use io_utils
-            local enemy_max_hp_value = memory.read_u16_le(ewram_address + 2, "EWRAM")
+            local ewram_address = address
+            local enemy_hp_value = io_utils.readword(ewram_address)
+            local enemy_max_hp_value = io_utils.readword(ewram_address + 2)
             if enemy_hp_value ~= 0 then
 
                 local new_enemy_hp_value = enemy_hp_value + 1
@@ -1817,8 +1792,7 @@ function state_logic.enemy_hp_regen()
                 end
 
                 -- Write back new HP
-                -- TODO_REFACTOR: use io_utils
-                memory.write_u16_le(ewram_address, new_enemy_hp_value, "EWRAM")
+                io_utils.writeword(ewram_address, new_enemy_hp_value)
 
             end
         end
@@ -1883,7 +1857,7 @@ function state_logic.in_battle_chip_effects()
     --print("Mul: " .. tostring(multiplicative_damage_increase))
 
     -- Now we can patch the current and next chip based on the held chip index
-    local held_chip_damage_addr =  GENERIC_DEFS.IN_BATTLE_HELD_CHIP_DAMAGES_ADDRESS - 0x02000000
+    local held_chip_damage_addr =  GENERIC_DEFS.IN_BATTLE_HELD_CHIP_DAMAGES_ADDRESS
 
     local chip_idx = gauntlet_data.current_battle_chip_index
 
@@ -1906,9 +1880,8 @@ function state_logic.in_battle_chip_effects()
                 -- Patch new chip damage
                 --if new_chip_damage ~= current_chip_damage then
 
-                -- TODO_REFACTOR: use io_utils
                 -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
-                memory.write_u16_le(held_chip_damage_addr + ((chip_idx - 1) * 2), new_chip_damage, "EWRAM")
+                io_utils.writeword(held_chip_damage_addr + ((chip_idx - 1) * 2), new_chip_damage)
                 --end
 
             end
@@ -1931,9 +1904,8 @@ function state_logic.get_number_of_alive_enemies()
     gauntlet_data.number_enemies_alive = 0
 
     for key, address in pairs(enemy_addresses) do
-        local ewram_address = address - 0x02000000
-        -- TODO_REFACTOR: use io_utils
-        local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
+        local ewram_address = address
+        local enemy_hp_value = io_utils.readword(ewram_address)
         if enemy_hp_value ~= 0 then
             gauntlet_data.number_enemies_alive = gauntlet_data.number_enemies_alive + 1
         end
@@ -1941,10 +1913,7 @@ function state_logic.get_number_of_alive_enemies()
 end
 
 function state_logic.get_current_custgauge_value()
-
-    -- TODO_REFACTOR: use io_utils
-    gauntlet_data.current_custgauge_value = memory.readbyte(GENERIC_DEFS.CUST_GAUGE_VALUE_ADDRESS - 0x02000000, "EWRAM")
-
+    gauntlet_data.current_custgauge_value = io_utils.readbyte(GENERIC_DEFS.CUST_GAUGE_VALUE_ADDRESS)
 end
 
 function state_logic.in_battle_custgauge_effects()
@@ -2002,21 +1971,17 @@ function state_logic.in_battle_custgauge_effects()
     end
 
     if gauntlet_data.current_custgauge_value ~= old_custgauge_value then
-        -- TODO_REFACTOR: use io_utils
         -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
-        memory.writebyte(GENERIC_DEFS.CUST_GAUGE_VALUE_ADDRESS - 0x02000000, gauntlet_data.current_custgauge_value, "EWRAM")
+        io_utils.writebyte(GENERIC_DEFS.CUST_GAUGE_VALUE_ADDRESS, gauntlet_data.current_custgauge_value)
     end
 
 end
 
 function state_logic.check_pause_screen()
 
-    -- TODO_REFACTOR: use io_utils
-    gauntlet_data.battle_paused = memory.readbyte(GENERIC_DEFS.IN_BATTLE_PAUSE_ADDRESS - 0x02000000, "EWRAM")
-    -- TODO_REFACTOR: use io_utils
-    gauntlet_data.battle_paused = gauntlet_data.battle_paused + memory.readbyte(GENERIC_DEFS.IN_BATTLE_TIMEFREEZE_ADDRESS - 0x02000000, "EWRAM")
-    -- TODO_REFACTOR: use io_utils
-    gauntlet_data.battle_paused = gauntlet_data.battle_paused + memory.readbyte(GENERIC_DEFS.IN_BATTLE_TIMEFREEZE_ADDRESS2 - 0x02000000, "EWRAM")
+    gauntlet_data.battle_paused = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_PAUSE_ADDRESS)
+    gauntlet_data.battle_paused = gauntlet_data.battle_paused + io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_TIMEFREEZE_ADDRESS)
+    gauntlet_data.battle_paused = gauntlet_data.battle_paused + io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_TIMEFREEZE_ADDRESS2)
 
 end
 
@@ -2045,9 +2010,8 @@ function state_logic.on_first_cust_screen()
         local enemy_ewram_addresses = {}
 
         for key, address in pairs(enemy_addresses) do
-            local ewram_address = address - 0x02000000
-            -- TODO_REFACTOR: use io_utils
-            local enemy_hp_value = memory.read_u16_le(ewram_address, "EWRAM")
+            local ewram_address = address
+            local enemy_hp_value = io_utils.readword(ewram_address)
             if enemy_hp_value ~= 0 then
                 enemy_hp_values[#enemy_hp_values + 1] = enemy_hp_value
                 enemy_ewram_addresses[#enemy_ewram_addresses + 1] = ewram_address
@@ -2100,8 +2064,7 @@ function state_logic.check_frame_events()
 
     -- Here, we check for events that can easily be polled every frame to save expensive event.onmemoryexecute hooks
     -- Check if we are in cust screen
-    -- TODO_REFACTOR: use io_utils
-    local is_cust_screen = memory.readbyte(GENERIC_DEFS.IN_BATTLE_IS_CUSTSCREEN_OPEN - 0x02000000, "EWRAM")
+    local is_cust_screen = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_IS_CUSTSCREEN_OPEN)
 
     if is_cust_screen == 1 and gauntlet_data.is_cust_screen == 0 then
         state_logic.on_cust_screen_open()
@@ -2133,9 +2096,8 @@ function state_logic.check_frame_events()
     -- TODO: refactor into "on_chip_use parts"
     if gauntlet_data.is_cust_screen == 0 and gauntlet_data.cust_screen_was_opened ~= 0 then 
         -- Check for "on_chip_use"
-        -- TODO_REFACTOR: use io_utils
         -- TODO_REFACTOR: make sure this behaves the same in all games / refactor into a better API
-        local num_chips = memory.readbyte(GENERIC_DEFS.IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM")
+        local num_chips = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS[gauntlet_data.number_of_entities])
 
         if gauntlet_data.battle_phase == 0 then
             state_logic.on_battle_phase_start()
@@ -2192,9 +2154,8 @@ function state_logic.main_frame_loop()
         
         
         --print("Number of entities in battle: " .. tostring(gauntlet_data.number_of_entities))
-        -- TODO_REFACTOR: use io_utils
         -- TODO_REFACTOR: make sure this behaves the same in all games / refactor into a better API
-        gauntlet_data.current_hp = memory.read_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM")
+        gauntlet_data.current_hp = io_utils.readword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities])
 
         if gauntlet_data.current_hp ~= 0 and gauntlet_data.battle_phase ~= 0 then
             state_logic.hp_loaded = 1
