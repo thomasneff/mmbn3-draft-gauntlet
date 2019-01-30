@@ -13,6 +13,7 @@ local DAMAGE_INCREASE_MULT = {-0, -0, -0, -0, -0}
 function HP_INCREASE:activate(current_round)
 
     gauntlet_data.mega_max_hp = gauntlet_data.mega_max_hp + HP_INCREASE_PER_ROUND[current_round]
+    gauntlet_data.last_known_current_hp = gauntlet_data.mega_max_hp
     gauntlet_data.hp_patch_required = 1
 
     -- This is an example for how to modify chip data.

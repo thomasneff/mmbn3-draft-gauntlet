@@ -47,21 +47,14 @@ function state_logic.next_round()
         return
     end
 
-    local ptr_table_working_address = GENERIC_DEFS.FIRST_GAUNTLET_BATTLE_POINTER_ADDRESS
+    
     print("Starting Round " .. state_logic.current_round)
 
     -- Patch all battle stage setups. This needs to be done before engaging the gauntlet.
     -- The game loads this probably into RAM, so we could only change that later if we found out the 
     -- respective RAM addresses...
     -- print("4")
-
-    -- TODO_REFACTOR: implement a way that doesn't depend on a gauntlet battle and simply re-uses a single battle over and over
-    for battle_idx = 1, GAUNTLET_DEFS.BATTLES_PER_ROUND do
-        local new_pointer_entry = pointer_entry_generator.new_from_template(GAUNTLET_BATTLE_POINTERS[battle_idx] + 4, BACKGROUND_TYPE.random() , BATTLE_STAGE.random())
-        gauntlet_data.battle_stages[(state_logic.current_round - 1) * GAUNTLET_DEFS.BATTLES_PER_ROUND + battle_idx] = new_pointer_entry.BATTLE_STAGE
-        io_utils.change_battle_pointer_data(ptr_table_working_address, new_pointer_entry)
-        ptr_table_working_address = ptr_table_working_address - GENERIC_DEFS.OFFSET_BETWEEN_POINTER_TABLE_ENTRIES
-    end
+    
     --print("Patched Battle Stage Setups!")
 
     state_logic.on_next_round()
@@ -534,6 +527,19 @@ function state_logic.compute_temporary_chip_changes()
 
 end
 
+function state_logic.load_encounter_data()
+
+    print("Loading encounter data for battle " .. tostring(state_logic.current_battle))
+    local ptr_table_working_address = GENERIC_DEFS.FIRST_GAUNTLET_BATTLE_POINTER_ADDRESS
+    -- TODO_REFACTOR: implement a way that doesn't depend on a gauntlet battle and simply re-uses a single battle over and over
+    --for battle_idx = 1, GAUNTLET_DEFS.BATTLES_PER_ROUND do
+    local new_pointer_entry = pointer_entry_generator.new_from_template(GAUNTLET_BATTLE_POINTERS[1] + 4, BACKGROUND_TYPE.random() , BATTLE_STAGE.random())
+    gauntlet_data.battle_stages[state_logic.current_battle] = new_pointer_entry.BATTLE_STAGE
+    io_utils.change_battle_pointer_data(ptr_table_working_address, new_pointer_entry)
+    --ptr_table_working_address = ptr_table_working_address - GENERIC_DEFS.OFFSET_BETWEEN_POINTER_TABLE_ENTRIES
+    --end
+    
+end
 
 function state_logic.on_battle_end()
 
@@ -544,6 +550,7 @@ function state_logic.on_battle_end()
 
     if state_logic.battle_pointer_index > GAUNTLET_DEFS.BATTLES_PER_ROUND then
        gauntlet_data.current_state = gauntlet_data.GAME_STATE.LOAD_INITIAL 
+       state_logic.next_round()
     end  
 
     -- Reset battle enter lock
@@ -579,6 +586,10 @@ function state_logic.on_battle_end()
     gauntlet_data.is_cust_screen = 0
     state_logic.hp_loaded = 0
     gauntlet_data.cust_screen_was_opened = 0
+
+    gauntlet_data.hp_patch_required = 1
+
+    gauntlet_data.current_state = gauntlet_data.GAME_STATE.LOAD_INITIAL
 end
 
 function state_logic.determine_drops(number_of_drops)
@@ -665,6 +676,7 @@ function state_logic.on_next_round()
     
     --print ("BEFORE MEGA MAX INCREASE PER ROUND")
     gauntlet_data.mega_max_hp = gauntlet_data.mega_max_hp + GAUNTLET_DEFS.HP_INCREASE_PER_ROUND[state_logic.current_round]
+    gauntlet_data.last_known_current_hp = gauntlet_data.mega_max_hp
     state_logic.stats_previous_hp = gauntlet_data.mega_max_hp
     
     
@@ -1150,6 +1162,7 @@ function state_logic.initialize()
     gauntlet_data.tactician_damage = 0
     gauntlet_data.next_boss_override_counter = 0
     gauntlet_data.add_random_star_code_before_battle = 0
+    gauntlet_data.last_known_current_hp = nil
 
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)
@@ -1216,6 +1229,7 @@ function state_logic.initialize()
         state_logic.CHIP_DATA_COPY[key] = deepcopy(state_logic.INITIAL_CHIP_DATA[key])
     end
 
+    state_logic.next_round()
 
     BUFF_GENERATOR.initialize()
 
@@ -1315,7 +1329,7 @@ function state_logic.update_battle_statistics()
     {
         GAME_ID = GAME_ID,
         RANDOM_SEED = deepcopy(gauntlet_data.random_seed),
-        CURRENT_HP = deepcopy(current_hp),
+        CURRENT_HP = deepcopy(gauntlet_data.current_hp),
         ACTIVATED_BUFFS = deepcopy(activated_buffs),
         DROPPED_BUFFS = deepcopy(dropped_buffs),
         DROPPED_CHIPS = deepcopy(dropped_chips),
@@ -1383,7 +1397,7 @@ function state_logic.patch_before_battle_start()
     state_logic.battle_data[state_logic.current_battle] = new_battle_data
 
 
-    io_utils.patch_battle(GAUNTLET_BATTLE_POINTERS[state_logic.battle_pointer_index], new_battle_data)
+    io_utils.patch_battle(GAUNTLET_BATTLE_POINTERS[1], new_battle_data)
     io_utils.patch_entity_data(state_logic.battle_data[state_logic.current_battle].ENTITIES)
     state_logic.current_battle = state_logic.current_battle + 1
     state_logic.battle_pointer_index = state_logic.battle_pointer_index + 1
@@ -1408,6 +1422,9 @@ function state_logic.patch_before_battle_start()
     io_utils.writebyte(GENERIC_DEFS.DARKLICENSE_ADDRESS, gauntlet_data.mega_DarkLicense)
     io_utils.writebyte(GENERIC_DEFS.REFLECT_ADDRESS, gauntlet_data.mega_Reflect)
 
+    -- TODO_REFACTOR: use io_utils
+    -- Set the current HP to the last known value
+    memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.last_known_current_hp, "EWRAM")
 
     -- Read current HP and apply regeneration
     if gauntlet_data.mega_regen_after_battle_relative_to_max ~= 0 then
@@ -1434,7 +1451,7 @@ function state_logic.patch_before_battle_start()
     -- We need to wait a few frames to patch the in-battle HP of megaMan in RAM. Otherwise we would need a hook way before battle, which I don't want to find right now.
     if  gauntlet_data.hp_patch_required == 1 then
         -- TODO_REFACTOR: use io_utils
-        memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.mega_max_hp, "EWRAM") 
+        --memory.write_u16_le(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.mega_max_hp, "EWRAM") 
         -- TODO_REFACTOR: use io_utils
         memory.write_u16_le(GENERIC_DEFS.MEGA_MAX_HP_ADDRESS_DURING_LOADING - 0x02000000, gauntlet_data.mega_max_hp, "EWRAM")
         gauntlet_data.hp_patch_required = 0
@@ -2200,6 +2217,7 @@ function state_logic.main_frame_loop()
         -- Set last HP for next frame
         if gauntlet_data.current_hp ~= nil and gauntlet_data.current_hp ~= 0 then
             gauntlet_data.last_hp = gauntlet_data.current_hp
+            gauntlet_data.last_known_current_hp = gauntlet_data.current_hp
         end
 
         state_logic.check_in_battle_effects()
@@ -2656,7 +2674,9 @@ function state_logic.main_loop()
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.LOAD_INITIAL then
         -- Simply load initial state again if we beat all rounds.
         savestate.load(state_logic.initial_state)
-        state_logic.next_round()
+
+        state_logic.load_encounter_data()
+        --state_logic.next_round()
         client.unpause()
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
     

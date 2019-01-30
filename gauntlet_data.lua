@@ -140,6 +140,7 @@ gauntlet_data.next_boss_override_counter = 0
 
 gauntlet_data.add_random_star_code_before_battle = 0
 
+gauntlet_data.last_known_current_hp = nil
 
 -- rng seed system
 gauntlet_data.random_seed = nil
