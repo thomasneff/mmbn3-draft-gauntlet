@@ -142,6 +142,8 @@ gauntlet_data.add_random_star_code_before_battle = 0
 
 gauntlet_data.last_known_current_hp = nil
 
+gauntlet_data.pa_patching_enabled = 1
+
 -- rng seed system
 gauntlet_data.random_seed = nil
 gauntlet_data.fixed_random_seed = 1539278633
@@ -192,7 +194,7 @@ function gauntlet_data.math.random_named(name, arg1, arg2)
     end
 
     if gauntlet_data.rng_value_map[name] == nil then
-        print("Error: rng seeding went wrong when accessing precomputed random values for name " .. name .. ", will default to math.random")
+        error("Error: rng seeding went wrong when accessing precomputed random values for name " .. name .. ", will default to math.random")
         return math.random(arg1, arg2)
     end
 
@@ -200,7 +202,7 @@ function gauntlet_data.math.random_named(name, arg1, arg2)
     local rng_index = gauntlet_data.rng_value_map[name].INDEX;
 
     if rng_index == nil then
-        print("Error: rng seeding went wrong when accessing precomputed random values for name " .. name .. ", will default to math.random")
+        error("Error: rng seeding went wrong when accessing precomputed random values for name " .. name .. ", will default to math.random")
         return math.random(arg1, arg2)
     end
 
@@ -228,7 +230,7 @@ function gauntlet_data.math.random_named(name, arg1, arg2)
          return math.floor(rng_value * (arg2 - arg1 + 1)) + arg1
 
     else
-        print("Error, you should not call math.random with arg1 == nil and arg2 ~= nil!")
+        error("Error, you should not call math.random with arg1 == nil and arg2 ~= nil!")
         return nil
     end
 

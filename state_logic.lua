@@ -3,6 +3,7 @@ local gui_rendering = require "gui_rendering"
 local battle_data_generator = require "battle_data_generator"
 local pointer_entry_generator = require "pointer_entry_generator"
 local BACKGROUND_TYPE = require "defs.battle_background_defs"
+-- REFACTOR CONTINUE BELOW vvvvv
 local BATTLE_STAGE = require "defs.battle_stage_defs"
 local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 local GAUNTLET_BATTLE_POINTERS = require "defs.gauntlet_battle_pointer_defs"
@@ -65,9 +66,13 @@ end
 
 function state_logic.patch_consecutive_program_advances()
 
-    -- TODO_REFACTOR: check if PA patching is even necessary for newer games
     -- early out checks if we can even possibly get a PA: we have to have 3 consecutive chips that are listed in the PA defs
     
+    -- We simply exit out if we don't want/need PA patching, which might be the case for newer games.
+    if (gauntlet_data.pa_patching_enabled ~= 1) then
+        return
+    end
+
     if (#gauntlet_data.selected_chips < 3) then
         return
     end
@@ -1164,6 +1169,7 @@ function state_logic.initialize()
     gauntlet_data.next_boss_override_counter = 0
     gauntlet_data.add_random_star_code_before_battle = 0
     gauntlet_data.last_known_current_hp = nil
+    gauntlet_data.pa_patching_enabled = GENERIC_DEFS.PA_PATCHING_ENABLED
 
 
     gauntlet_data.next_boss = battle_data_generator.random_boss(GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL)

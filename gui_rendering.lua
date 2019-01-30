@@ -313,6 +313,8 @@ end
 
 function split_boss_name(boss_name)
 
+    -- TODO_REFACTOR: other games.
+
     if string.find(boss_name, "AlphaOmega") then
         return "Alpha", "Omega"
     elseif string.find(boss_name, "SerenadeAlpha") then
@@ -384,6 +386,9 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
     if new_chip == nil or new_chip.ID == -1 then
     
     else
+
+        -- TODO_REFACTOR: check if this works the same across games
+        -- TODO_REFACTOR: the same check is used multiple times in the codebase
         local dropped_chip_data = CHIP_DATA[new_chip.ID]
         --print("DROPPED CHIP DATA: ", dropped_chip_data)
         local is_dropped_chip_mega = (dropped_chip_data.CHIP_RANKING % 4) == 1

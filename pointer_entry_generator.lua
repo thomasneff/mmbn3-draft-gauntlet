@@ -4,6 +4,8 @@ local FOLDER_SHUFFLE = require "defs.folder_shuffle_defs"
 local STARTING_HP = require "defs.starting_hp_defs"
 local BATTLE_STAGE_DEFS = require "defs.battle_stage_defs"
 -- Can't change music yet unfortunately without more reverse engineering.
+
+-- TODO_REFACTOR: we can add stuff to this template and handle the specific changes in *_utils, I guess
 local pointer_entry_template = {
   -- Important - this address starts at the first entity (MegaMan, typically)
   ADDRESS = 0x0801AA60,

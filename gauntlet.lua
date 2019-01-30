@@ -3,7 +3,8 @@ local game_name = gameinfo.getromname()
 -- These are global.
 GAME_IDS = {
     MMBN3_BLUE_US = 0,
-    MMBN6_FALZAR_US = 1 
+    MMBN3_WHITE_US = 1,
+    MMBN6_FALZAR_US = 2
 }
 
 if string.find(game_name, "3") and string.find(game_name, "Blue") then
@@ -16,7 +17,7 @@ elseif string.find(game_name, "6") and string.find(game_name, "Falzar") then
     GAME_ID = GAME_IDS.MMBN6_FALZAR_US
     print("Detected Game: MMBN6_FALZAR_US")
 else 
-    print("Error (gauntlet.lua): Unknown game.")
+    error("Error (gauntlet.lua): Unknown game.")
 end
 
 

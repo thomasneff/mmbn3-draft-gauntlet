@@ -9,6 +9,8 @@ local BATTLE_STAGE_DEFS = require "defs.battle_stage_defs"
 
 local number_of_twins_viruses = 0
 
+-- TODO_REFACTOR: should the templates be different, or should this be handled in the respective *_utils?
+--                we could probably just extend the template if necessary and resolve the writing correctly in *_utils
 local battle_data_template = {
     LIMITER_START = defs.BATTLE_LIMITER,
     UNKNOWN_ZERO_BYTE_1 = 0x00,
@@ -122,6 +124,12 @@ function is_table_empty(table)
 end
 
 function is_twins_virus(entity)
+
+    -- TODO_REFACTOR: ignore white for now, all other games simply ignore this check
+    if GAME_ID ~= GAME_IDS.MMBN3_BLUE_US and GAME_ID ~= GAME_IDS.MMBN3_WHITE_US then
+        return false
+    end
+
     return entity.BATTLE_DATA.TYPE == ENTITY_TYPE.Twins 
         or entity.BATTLE_DATA.TYPE == ENTITY_TYPE.Twinner 
         or entity.BATTLE_DATA.TYPE == ENTITY_TYPE.Twinnest
@@ -148,7 +156,7 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind, spec
         if is_table_empty(entity_group_of_kind) then
             -- Just return a Mettaur.
             print ("No entity of kind", entity_kind, "found in entity group", entity_group, "!")
-            new_entity = deepcopy(ENTITIES.Mettaur)
+            new_entity = deepcopy(ENTITIES.Default)
         else
             new_entity = deepcopy(entity_group_of_kind[math.random(#entity_group_of_kind)])
         end
@@ -236,19 +244,24 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind, spec
 
         found_random_pos = grid[x_pos][y_pos]
 
+        -- TODO_REFACTOR: blackbomb doesn't exist in other games (I think) -> should be handled in ENTITY_KIND
         if (BATTLE_STAGE_DEFS.is_lava_panel(x_pos, y_pos, battle_stage)) and new_entity.BATTLE_DATA.KIND == ENTITY_KIND.BlackBomb then
             found_random_pos = 1
         end
     end
 
 
-    if new_entity.BATTLE_DATA.TYPE == ENTITY_TYPE.Alpha or
-       new_entity.BATTLE_DATA.TYPE == ENTITY_TYPE.AlphaOmega then
-
-        x_pos = 5
-        y_pos = 2
-
+    if GAME_ID == GAME_IDS.MMBN3_BLUE_US or GAME_ID ~= GAME_IDS.MMBN3_WHITE_US then
+        if new_entity.BATTLE_DATA.TYPE == ENTITY_TYPE.Alpha or new_entity.BATTLE_DATA.TYPE == ENTITY_TYPE.AlphaOmega then
+            -- Place Alpha in center.
+            -- TODO_REFACTOR: need similar code for other bosses, I guess
+            x_pos = 5
+            y_pos = 2
+        end
     end
+    
+
+
     if new_entity.BATTLE_DATA.KIND == ENTITY_KIND.Virus then    
         contains_virus_table.VALUE = contains_virus_table.VALUE + 1
     end
