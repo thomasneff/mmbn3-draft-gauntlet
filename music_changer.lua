@@ -1,6 +1,6 @@
 local state_logic = require "state_logic"
 local GENERIC_DEFS = require "defs.generic_defs"
-local mmbn3_utils = require "mmbn3_utils"
+local io_utils = require "io_utils.io_utils"
 
 local base_dir = "song_extractor/out/mmbn3/"
 local song_name = "7"
@@ -103,11 +103,11 @@ end
     -- do something with c
     
 --   if bpm_offsets[offset] ~= nil then
---        mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, string.byte(c) + bpm_shift)
+--        io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, string.byte(c) + bpm_shift)
 --    elseif bpm_offsets[offset] ~= nil then
---        mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, string.byte(c) + transpose)
+--        io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, string.byte(c) + transpose)
 --    else
---        mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, string.byte(c))
+--        io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, string.byte(c))
 --    end
    
 
@@ -121,7 +121,7 @@ end
     --if not byte then break end
 
    -- print(byte)
---    mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + (i - 1), byte)
+--    io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + (i - 1), byte)
 
 --end
 
@@ -153,19 +153,19 @@ for i = 1,(#patch_str+1) do
         --print("BPM change " .. tostring(offset))
         --print(c)
         --print(c + bpm_shift)
-        --mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c + bpm_shift)
+        --io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c + bpm_shift)
         --print("BPM changed. " .. tostring(offset))
     --elseif transpose_offsets[offset] ~= nil then
         --print("Transpose change " .. tostring(offset))
         --print(c)
         --print(c + transpose)
-        --mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c + transpose)
+        --io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c + transpose)
         --print("Transpose changed. " .. tostring(offset))
     --else
-        mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c)
+        io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c)
     --end
 
-    --mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c)
+    --io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c)
 
     offset = offset + 1
 
@@ -200,16 +200,16 @@ while 1 do
     --            print("BPM change" .. tostring(offset))
     --            print(c)
     --            print(c + bpm_shift)
-    --            mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c + bpm_shift)
+    --            io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c + bpm_shift)
     --            print("BPM changed." .. tostring(offset))
     --        elseif transpose_offsets[offset] ~= nil then
     --            print("Transpose change" .. tostring(offset))
     --            print(c)
     --            print(c + transpose)
-    --            mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c + transpose)
+    --            io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c + transpose)
     --            print("Transpose changed. " .. tostring(offset))
     --        else
-    --            mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c)
+    --            io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c)
     --        end
         
     

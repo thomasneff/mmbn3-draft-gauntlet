@@ -8,7 +8,7 @@ local BATTLE_STAGE = require "defs.battle_stage_defs"
 local GAUNTLET_DEFS = require "defs.gauntlet_defs"
 local GAUNTLET_BATTLE_POINTERS = require "defs.gauntlet_battle_pointer_defs"
 local GENERIC_DEFS = require "defs.generic_defs"
-local io_utils = require "io_utils"
+local io_utils = require "io_utils.io_utils"
 local CHIP = require "defs.chip_defs"
 local CHIP_NAME_UTILS = require "defs.chip_name_utils"
 local CHIP_NAME = require "defs.chip_name_defs"
@@ -663,7 +663,7 @@ function state_logic.on_enter_battle()
 
     --print("STATE_ENTER: ", gauntlet_data.current_state)
     --print(print(state_logic.dropped_chip))
-    if state_logic.current_round >= (GAUNTLET_DEFS.MAX_NUMBER_OF_ROUNDS + 1) then
+    if state_logic.current_battle >= (GAUNTLET_DEFS.MAX_NUMBER_OF_BATTLES + 1) then
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_GAUNTLET_COMPLETE
     end
 
@@ -1107,7 +1107,7 @@ function state_logic.initialize()
     state_logic.dropped_buffs = {}
     state_logic.dropped_buff_render_index = 2
     state_logic.current_round = 0
-    state_logic.current_battle = 1
+    --state_logic.current_battle = 1
     state_logic.battle_pointer_index = 1
     state_logic.hp_patch_frame_counter = 0
     state_logic.battle_start_frame_counter = 0
@@ -1320,10 +1320,12 @@ function state_logic.update_battle_statistics()
         current_folder[k] = v.PRINT_NAME
     end
 
-    for k, v in pairs(state_logic.battle_data[state_logic.current_battle - 1].ENTITIES) do
-        if k ~= 0 then
-            entities[k] = v.ID
-        end  
+    if state_logic.battle_data[state_logic.current_battle - 1] ~= nil then
+        for k, v in pairs(state_logic.battle_data[state_logic.current_battle - 1].ENTITIES) do
+            if k ~= 0 then
+                entities[k] = v.ID
+            end  
+        end
     end
 
     for k, v in pairs(state_logic.activated_buffs) do
@@ -1706,8 +1708,7 @@ end
 
 function state_logic.on_mega_damage_taken()
     --print("Damage taken! (Previous HP: " .. tostring(gauntlet_data.last_hp) .. ", Current HP: " .. tostring(gauntlet_data.current_hp) .. ", Max HP: " .. tostring(gauntlet_data.mega_max_hp) .. ")")
-    state_logic.damage_taken()
-
+    
 
     if gauntlet_data.current_battle_number_of_time_compressions > 0 and state_logic.main_loop_frame_count > gauntlet_data.time_compression_delay then
         state_logic.hp_loaded = 0
@@ -1720,6 +1721,10 @@ function state_logic.on_mega_damage_taken()
         --print("Time compression saved the damage!")
         return
     end
+
+    -- Trigger this after time compression so that it saves perfectionist.
+    state_logic.damage_taken()
+
 
     local damage_taken = gauntlet_data.last_hp - gauntlet_data.current_hp
 

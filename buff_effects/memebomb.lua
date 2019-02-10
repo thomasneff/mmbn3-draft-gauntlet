@@ -3,7 +3,7 @@ local CHIP_DATA = require "defs.chip_data_defs"
 local CHIP_ID = require "defs.chip_id_defs"
 local CHIP_NAMES = require "defs.chip_name_defs"
 local CHIP_NAME_ADDRESSES = require "defs.chip_name_address_defs"
-local mmbn3_utils = require "mmbn3_utils"
+local io_utils = require "io_utils.io_utils"
 local CHIP = require "defs.chip_defs"
 local ELEMENT_DEFS = require "defs.entity_element_defs"
 local GENERIC_DEFS = require "defs.generic_defs"
@@ -67,7 +67,7 @@ function MEMEBOMB:activate(current_round)
     self.current_round = current_round
     -- Write name to game and CHIP_NAMES
     CHIP_NAMES[CHIP_ID.MiniBomb] = "MemeBomb"
-    mmbn3_utils.write_mmbn3_string(CHIP_NAME_ADDRESSES[CHIP_ID.MiniBomb], CHIP_NAMES[CHIP_ID.MiniBomb])
+    io_utils.write_mmbn3_string(CHIP_NAME_ADDRESSES[CHIP_ID.MiniBomb], CHIP_NAMES[CHIP_ID.MiniBomb])
 
 end
 
@@ -86,7 +86,7 @@ function MEMEBOMB:deactivate(current_round)
 
     -- Write name to game and CHIP_NAMES
     CHIP_NAMES[CHIP_ID.MiniBomb] = "MiniBomb"
-    mmbn3_utils.write_mmbn3_string(CHIP_NAME_ADDRESSES[CHIP_ID.MiniBomb], CHIP_NAMES[CHIP_ID.MiniBomb])
+    io_utils.write_mmbn3_string(CHIP_NAME_ADDRESSES[CHIP_ID.MiniBomb], CHIP_NAMES[CHIP_ID.MiniBomb])
 
 end
 

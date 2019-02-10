@@ -1,5 +1,5 @@
 local GENERIC_DEFS = require "defs.generic_defs"
-local mmbn3_utils = require "mmbn3_utils"
+local io_utils = require "io_utils.io_utils"
 local randomchoice = require "randomchoice"
 local gauntlet_data = require "gauntlet_data"
 
@@ -287,8 +287,8 @@ function MusicLoader.LoadRandomFile(current_round)
     --print(bpm_offsets_split)
 
     MusicLoader.transpose = gauntlet_data.math.random_music(-transpose_range, transpose_range)--math.random(-transpose_range, transpose_range)
-    MusicLoader.bpm_shift = gauntlet_data.math.random_music(-transpose_range, transpose_range)--math.random(-bpm_shift_range, bpm_shift_range)
-
+    MusicLoader.bpm_shift = gauntlet_data.math.random_music(-bpm_shift_range, bpm_shift_range)--math.random(-bpm_shift_range, bpm_shift_range)
+    print("Music transpose / bpm shifts: " .. tostring(MusicLoader.transpose) .. " / " .. tostring(MusicLoader.bpm_shift))
 
     MusicLoader.transpose_offsets = {}
     MusicLoader.bpm_offsets = {}
@@ -357,19 +357,19 @@ function MusicLoader.LoadBlock()
             --print("BPM change " .. tostring(offset))
             --print(c)
             --print(c + bpm_shift)
-            mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + MusicLoader.offset, c + MusicLoader.bpm_shift)
+            io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + MusicLoader.offset, c + MusicLoader.bpm_shift)
             --print("BPM changed. " .. tostring(offset))
         elseif MusicLoader.transpose_offsets[MusicLoader.offset] ~= nil then
             --print("Transpose change " .. tostring(offset))
             --print(c)
             --print(c + transpose)
-            mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + MusicLoader.offset, c + MusicLoader.transpose)
+            io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + MusicLoader.offset, c + MusicLoader.transpose)
             --print("Transpose changed. " .. tostring(offset))
         else
-            mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + MusicLoader.offset, c)
+            io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + MusicLoader.offset, c)
         end
     
-        --mmbn3_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c)
+        --io_utils.writebyte(GENERIC_DEFS.MUSIC_PATCH_ADDRESS + offset, c)
     
         MusicLoader.offset = MusicLoader.offset + 1
     

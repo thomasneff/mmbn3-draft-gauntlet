@@ -64,7 +64,7 @@ ENTITIES.MegaMan                            = new_base_entity(ENTITY_KIND.MegaMa
 
 
 local ALL_BATTLES = {}
-for i = 1,GAUNTLET_DEFS.NUMBER_OF_BATTLES do
+for i = 1, GAUNTLET_DEFS.MAX_NUMBER_OF_BATTLES + 10 do
     ALL_BATTLES[i] = i
 end
 
@@ -114,7 +114,7 @@ local TIER_4_MINIBOSS_BATTLES = {35}
 local TIER_1_BOSS_BATTLES = {10}
 local TIER_2_BOSS_BATTLES = {20}
 local TIER_3_BOSS_BATTLES = {30}
-local TIER_4_BOSS_BATTLES = {40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50}
+local TIER_4_BOSS_BATTLES = {40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 55}
 
 
 
