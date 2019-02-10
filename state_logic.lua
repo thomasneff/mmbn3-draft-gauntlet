@@ -1,7 +1,7 @@
 local input_handler = require "input_handler"
 local gui_rendering = require "gui_rendering"
-local battle_data_generator = require "battle_data_generator"
-local pointer_entry_generator = require "pointer_entry_generator"
+local battle_data_generator = require "defs.battle_data_generator"
+local pointer_entry_generator = require "defs.pointer_entry_generator"
 local BACKGROUND_TYPE = require "defs.battle_background_defs"
 -- REFACTOR CONTINUE BELOW vvvvv
 local BATTLE_STAGE = require "defs.battle_stage_defs"
@@ -26,7 +26,7 @@ local MusicLoader = require "music_loader"
 local json = require "json"
 local randomchoice_key = require "randomchoice_key"
 local PA_DEFS = require "defs.pa_defs"
-local INITIAL_STATE_NAME = require "initial_state_name"
+local INITIAL_STATE_NAME = require "savestates.initial_state_name"
 
 -- TODO: possibly add more states.
 
@@ -881,12 +881,14 @@ function state_logic.shuffle_folder()
 end
 
 function state_logic.export_run_statistics()
+
     local file = io.open(state_logic.stats_file_name, "w")
     if file == nil then
-        -- TODO: for some reason this gets called even when the statistics are saved...?
         print("Could not save statistics, please create the \"stats\" folder inside the gauntlet folder!")
         return
     end
+
+    print("Saving statistics to file: " .. state_logic.stats_file_name)
     local stats_json = json.encode(gauntlet_data.statistics_container)
     file:write(stats_json)
     file:flush()
@@ -966,7 +968,9 @@ function state_logic.initialize()
     state_logic.number_of_activated_buffs = 0
     gauntlet_data.current_folder = {}
     gauntlet_data.mega_max_hp = 100
-    state_logic.stats_file_name = ""
+    
+    
+    state_logic.stats_file_name = "stats/" .. os.date("%Y_%m_%d_%H_%M_%S") .. ".json"
 
     state_logic.hp_loaded = 0
     state_logic.buff_render_offset = 0
@@ -1059,8 +1063,6 @@ function state_logic.initialize()
     --savestate.load(state_logic.initial_state)
 
 
-    
-    state_logic.stats_file_name = "stats/" .. os.date("%Y_%m_%d_%H_%M_%S") .. ".json"
     -- Undo all activated buffs
     state_logic.undo_activated_buffs()
     state_logic.number_of_activated_buffs = 0
@@ -1256,11 +1258,30 @@ end
 -- This function checks for the button combination A-B-L-R to reset the script.
 function state_logic.check_reset()
 
-    if      input_handler.inputs_held["A"]
-        and input_handler.inputs_held["B"]
-        and input_handler.inputs_held["L"]
-        and input_handler.inputs_held["R"] then
+    -- This convoluted way of checking makes sure that it only activates once, when the last button is pressed
+    local soft_reset = false
+             
+    soft_reset = soft_reset or (input_handler.inputs_pressed["A"]
+                            and input_handler.inputs_held["B"]
+                            and input_handler.inputs_held["L"]
+                            and input_handler.inputs_held["R"])
 
+    soft_reset = soft_reset or (input_handler.inputs_held["A"]
+                            and input_handler.inputs_pressed["B"]
+                            and input_handler.inputs_held["L"]
+                            and input_handler.inputs_held["R"])
+                           
+    soft_reset = soft_reset or (input_handler.inputs_held["A"]
+                            and input_handler.inputs_held["B"]
+                            and input_handler.inputs_pressed["L"]
+                            and input_handler.inputs_held["R"])
+
+    soft_reset = soft_reset or (input_handler.inputs_held["A"]
+                            and input_handler.inputs_held["B"]
+                            and input_handler.inputs_held["L"]
+                            and input_handler.inputs_pressed["R"])                  
+
+    if soft_reset then
         print("Soft-Reset!")
         state_logic.initialize()
     end

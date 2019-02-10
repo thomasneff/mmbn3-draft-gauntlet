@@ -1,5 +1,5 @@
-local battle_data_generator = require "battle_data_generator"
-local pointer_entry_generator = require "pointer_entry_generator"
+local battle_data_generator = require "defs.battle_data_generator"
+local pointer_entry_generator = require "defs.pointer_entry_generator"
 local BACKGROUND_TYPE = require "defs.battle_background_defs"
 local BATTLE_STAGE = require "defs.battle_stage_defs"
 
