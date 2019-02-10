@@ -23,7 +23,7 @@ if test_loadouts then
     gauntlet_data.math.initialize_rng_for_group("FOLDER_SHUFFLING", 10000)
 
     for key, value in pairs(loadouts_module) do
-        print("Testing loadout " .. key)
+        print("Testing loadout " .. key .. ": " .. value.NAME)
         value.activate()
     end
 
