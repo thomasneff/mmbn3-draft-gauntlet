@@ -6,7 +6,6 @@ local BACKGROUND_TYPE = require "defs.battle_background_defs"
 -- REFACTOR CONTINUE BELOW vvvvv
 local BATTLE_STAGE = require "defs.battle_stage_defs"
 local GAUNTLET_DEFS = require "defs.gauntlet_defs"
-local GAUNTLET_BATTLE_POINTERS = require "defs.gauntlet_battle_pointer_defs"
 local GENERIC_DEFS = require "defs.generic_defs"
 local io_utils = require "io_utils.io_utils"
 local CHIP = require "defs.chip_defs"
@@ -18,9 +17,7 @@ local CHIP_CODE_REVERSE = require "defs.chip_code_reverse_defs"
 local CHIP_ICON = require "defs.chip_icon_defs"
 local CHIP_PICTURE = require "defs.chip_picture_defs"
 local CHIP_DATA = require "defs.chip_data_defs"
-local CHIP_DROP_UTILS = require "defs.chip_drop_utils"
 local BUFF_GENERATOR = require "buff_effects.buff_groups"
-local START_FOLDER = require "defs.start_folder_defs"
 local LOADOUTS = require "loadouts.loadout_defs"
 local gauntlet_data = require "gauntlet_data"
 local deepcopy = require "deepcopy"
@@ -536,9 +533,9 @@ function state_logic.load_encounter_data()
 
     print("Loading encounter data for battle " .. tostring(state_logic.current_battle))
     local ptr_table_working_address = GENERIC_DEFS.FIRST_GAUNTLET_BATTLE_POINTER_ADDRESS
-    -- TODO_REFACTOR: implement a way that doesn't depend on a gauntlet battle and simply re-uses a single battle over and over
     --for battle_idx = 1, GAUNTLET_DEFS.BATTLES_PER_ROUND do
-    local new_pointer_entry = pointer_entry_generator.new_from_template(GAUNTLET_BATTLE_POINTERS[1] + 4, BACKGROUND_TYPE.random() , BATTLE_STAGE.random())
+    -- TODO_REFACTOR: why is this address + 4? I forgot, but that might be important for the other games...
+    local new_pointer_entry = pointer_entry_generator.new_from_template(GENERIC_DEFS.FIRST_GAUNTLET_BATTLE_ADDRESS + 4, BACKGROUND_TYPE.random() , BATTLE_STAGE.random())
     gauntlet_data.battle_stages[state_logic.current_battle] = new_pointer_entry.BATTLE_STAGE
     io_utils.change_battle_pointer_data(ptr_table_working_address, new_pointer_entry)
     --ptr_table_working_address = ptr_table_working_address - GENERIC_DEFS.OFFSET_BETWEEN_POINTER_TABLE_ENTRIES
@@ -606,7 +603,7 @@ function state_logic.determine_drops(number_of_drops)
         -- TODO: determine drops from state_logic.battle_data[state_logic.current_battle].ENTITIES entity droptables.
         -- TODO: for now, this just randomizes.
         -- state_logic.randomize_dropped_chips(number_of_drops)
-        state_logic.dropped_chips = gauntlet_data.chip_drop_method.generate_drops(state_logic.battle_data[state_logic.current_battle - 1], state_logic.current_round, number_of_drops)--CHIP_DROP_UTILS.dropped_chips_from_battle(state_logic.battle_data[state_logic.current_battle - 1], state_logic.current_round, number_of_drops)
+        state_logic.dropped_chips = gauntlet_data.chip_drop_method.generate_drops(state_logic.battle_data[state_logic.current_battle - 1], state_logic.current_round, number_of_drops)
 
         -- Compute buff effects that depend on battle ending
         for k, v in pairs(state_logic.activated_buffs) do
@@ -725,7 +722,8 @@ function state_logic.initialize_folder()
 
     gauntlet_data.current_folder = {}
 
-    gauntlet_data.current_folder = START_FOLDER.get_random(nil)
+    -- NOTE: not sure if this is necessary anymore. Removed for now.
+    --gauntlet_data.current_folder = START_FOLDER.get_random(nil)
 
     
 end
@@ -1401,12 +1399,12 @@ function state_logic.patch_before_battle_start()
 
     end
     
-
+    
     -- This is used to determine drops.
     state_logic.battle_data[state_logic.current_battle] = new_battle_data
 
 
-    io_utils.patch_battle(GAUNTLET_BATTLE_POINTERS[1], new_battle_data)
+    io_utils.patch_battle(GENERIC_DEFS.FIRST_GAUNTLET_BATTLE_ADDRESS, new_battle_data)
     io_utils.patch_entity_data(state_logic.battle_data[state_logic.current_battle].ENTITIES)
     state_logic.current_battle = state_logic.current_battle + 1
     state_logic.battle_pointer_index = state_logic.battle_pointer_index + 1

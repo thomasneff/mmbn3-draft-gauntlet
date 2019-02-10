@@ -1,7 +1,6 @@
 local BACKGROUND_TYPE = require "defs.battle_background_defs"
 local BATTLE_MODE = require "defs.battle_mode_defs"
 local FOLDER_SHUFFLE = require "defs.folder_shuffle_defs"
-local STARTING_HP = require "defs.starting_hp_defs"
 local BATTLE_STAGE_DEFS = require "defs.battle_stage_defs"
 -- Can't change music yet unfortunately without more reverse engineering.
 

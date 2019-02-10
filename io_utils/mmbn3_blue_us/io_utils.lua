@@ -1,7 +1,7 @@
 local defs = require "defs.generic_defs"
 local ENTITY_KIND = require "defs.entity_kind_defs"
 local TEXT_TABLE = require "defs.text_table_defs"
-local ENTITY_PALETTE_DEFS = require "defs.entity_palette_defs"
+--local ENTITY_PALETTE_DEFS = require "defs.entity_palette_defs"
 local CHIP_DATA_ADDRESS = require "defs.chip_data_address_defs"
 local CHIP_DATA = require "defs.chip_data_defs"
 local CHIP_CODE = require "defs.chip_code_defs"

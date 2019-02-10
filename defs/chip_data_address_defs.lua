@@ -1,11 +1,3 @@
-local BASE_OFFSET_FIRST_CHIP = 0x08011530
-local BYTES_PER_CHIP = 32
+local ERROR_CHECKED_SPECIFIC_GAME_WRAPPER = require "error_checked_specific_game_wrapper"
 
-CHIP_DATA_ADDRESS = {}
-
-function CHIP_DATA_ADDRESS.from_id(id)
-    return BASE_OFFSET_FIRST_CHIP + (id - 1) * BYTES_PER_CHIP
-end
-
-
-return CHIP_DATA_ADDRESS
+return ERROR_CHECKED_SPECIFIC_GAME_WRAPPER.get_module("defs", GAME_ID, "chip_data_address_defs")

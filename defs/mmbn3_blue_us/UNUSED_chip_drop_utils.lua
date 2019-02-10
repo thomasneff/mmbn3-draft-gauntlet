@@ -1,3 +1,4 @@
+-- NOTE: this is generic as-is, no need to make this game specific for now...?
 local ENTITIES = require "defs.entity_defs"
 local ENTITY_KIND = require "defs.entity_kind_defs"
 local CHIP_DATA = require "defs.chip_data_defs"

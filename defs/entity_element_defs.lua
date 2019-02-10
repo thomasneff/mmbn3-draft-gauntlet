@@ -1,12 +1,3 @@
-local ENTITY_ELEMENT_DEFS = 
-{
-    ELEMENT_NONE    = 0x00,
-    ELEMENT_ELEC    = 0x01,
-    ELEMENT_HEAT    = 0x02,
-    ELEMENT_AQUA    = 0x03,
-    ELEMENT_WOOD    = 0x04,
+local ERROR_CHECKED_SPECIFIC_GAME_WRAPPER = require "error_checked_specific_game_wrapper"
 
-}
-
-
-return ENTITY_ELEMENT_DEFS
+return ERROR_CHECKED_SPECIFIC_GAME_WRAPPER.get_module("defs", GAME_ID, "entity_element_defs")

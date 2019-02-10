@@ -14,6 +14,9 @@ function WRAPPER.get_module(base_path, game_id, file_name)
         error("Error (" .. full_path .. ".lua): module is nil: " .. tostring(game_id))
     end
 
+
+    print("Loaded: " .. full_path .. ".lua : " .. game_id)
+
     return module
 end
 

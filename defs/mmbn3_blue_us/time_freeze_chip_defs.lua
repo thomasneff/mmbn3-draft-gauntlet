@@ -1,0 +1,988 @@
+-- This file contains definitions for enemy chip usage (e.g. Dominerd, FlashMan)
+-- Mostly taken from http://forums.therockManexezone.com/topic/10006275/1/
+-- Many of those chips crash or do nothing if not used with MegaMan (-> r2 in ExecTimeFreezeChip needs to be set to 0x01)
+-- I'm still including them in case we want to hook ExecTimeFreezeChip and execute arbitrary stuff for us.
+-- (Example - we could make a custom hook, that replaces all time-freeze chips with a specific chip, or forces all enemy chips to be good, etc.)
+
+local TIME_FREEZE_CHIP_DEFS = {}
+
+TIME_FREEZE_CHIP_DEFS.PanelGrab = {
+    FAMILY = 0x00,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.AreaGrab = {
+    FAMILY = 0x00,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.RockCube = {
+    FAMILY = 0x02,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Mole1 = {
+    FAMILY = 0x03,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Mole2 = {
+    FAMILY = 0x03,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Mole3 = {
+    FAMILY = 0x03,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.Repair = {
+    FAMILY = 0x04,
+    SUBFAMILY = 0x00
+}
+TIME_FREEZE_CHIP_DEFS.LavaStage = {
+    FAMILY = 0x04,
+    SUBFAMILY = 0x01
+}
+TIME_FREEZE_CHIP_DEFS.IceStage = {
+    FAMILY = 0x04,
+    SUBFAMILY = 0x02
+}
+TIME_FREEZE_CHIP_DEFS.GrassStage = {
+    FAMILY = 0x04,
+    SUBFAMILY = 0x03
+}
+TIME_FREEZE_CHIP_DEFS.SandStage = {
+    FAMILY = 0x04,
+    SUBFAMILY = 0x04
+}
+TIME_FREEZE_CHIP_DEFS.MetalStage = {
+    FAMILY = 0x04,
+    SUBFAMILY = 0x05
+}
+TIME_FREEZE_CHIP_DEFS.HolyPanel = {
+    FAMILY = 0x04,
+    SUBFAMILY = 0x06
+}
+TIME_FREEZE_CHIP_DEFS.Sanctuary = {
+    FAMILY = 0x04,
+    SUBFAMILY = 0x07
+}
+
+TIME_FREEZE_CHIP_DEFS.Wind = {
+    FAMILY = 0x05,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Fan = {
+    FAMILY = 0x05,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Wind3 = {
+    FAMILY = 0x05,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.WindOmega = {
+    FAMILY = 0x05,
+    SUBFAMILY = 0x03
+}
+
+
+TIME_FREEZE_CHIP_DEFS.FlashMan = {
+    FAMILY = 0x06,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.FlashManV2 = {
+    FAMILY = 0x06,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.FlashManV3 = {
+    FAMILY = 0x06,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.FlashManV4 = {
+    FAMILY = 0x06,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.FlashManV5 = {
+    FAMILY = 0x06,
+    SUBFAMILY = 0x04
+}
+
+
+TIME_FREEZE_CHIP_DEFS.Roll = {
+    FAMILY = 0x07,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.RollV2 = {
+    FAMILY = 0x06,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.RollV3 = {
+    FAMILY = 0x07,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.ZPunch = {
+    FAMILY = 0x08,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.GutsMan = {
+    FAMILY = 0x09,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.GutsManV2 = {
+    FAMILY = 0x09,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.GutsManV3 = {
+    FAMILY = 0x09,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.GutsManV4 = {
+    FAMILY = 0x09,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.GutsManV5 = {
+    FAMILY = 0x09,
+    SUBFAMILY = 0x04
+}
+
+TIME_FREEZE_CHIP_DEFS.BeastMan = {
+    FAMILY = 0x0A,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.BeastManV2 = {
+    FAMILY = 0x0A,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.BeastManV3 = {
+    FAMILY = 0x0A,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.BeastManV4 = {
+    FAMILY = 0x0A,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.BeastManV5 = {
+    FAMILY = 0x0A,
+    SUBFAMILY = 0x04
+}
+
+TIME_FREEZE_CHIP_DEFS.Guardian = {
+    FAMILY = 0x0B,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Punisher = {
+    FAMILY = 0x0C,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.AirShoes = {
+    FAMILY = 0x0D,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.BubbleMan = {
+    FAMILY = 0x0E,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.BubbleManV2 = {
+    FAMILY = 0x0E,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.BubbleManV3 = {
+    FAMILY = 0x0E,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.BubbleManV4 = {
+    FAMILY = 0x0E,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.BubbleManV5 = {
+    FAMILY = 0x0E,
+    SUBFAMILY = 0x04
+}
+
+TIME_FREEZE_CHIP_DEFS.NorthWind = {
+    FAMILY = 0x0F,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Restock = {
+    FAMILY = 0x10,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Mettaur = {
+    FAMILY = 0x11,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Mettaur2 = {
+    FAMILY = 0x11,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Mettaur3 = {
+    FAMILY = 0x11,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.MettaurOmega = {
+    FAMILY = 0x11,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.TimeBomb = {
+    FAMILY = 0x12,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.TimeBombPlus = {
+    FAMILY = 0x12,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Mine = {
+    FAMILY = 0x13,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.MetalMan = {
+    FAMILY = 0x14,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.MetalManV2 = {
+    FAMILY = 0x14,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.MetalManV3 = {
+    FAMILY = 0x14,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.MetalManV4 = {
+    FAMILY = 0x14,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.MetalManV5 = {
+    FAMILY = 0x14,
+    SUBFAMILY = 0x04
+}
+
+TIME_FREEZE_CHIP_DEFS.GrabBack = {
+    FAMILY = 0x15,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.GrabRevenge = {
+    FAMILY = 0x15,
+    SUBFAMILY = 0x01
+}
+
+
+TIME_FREEZE_CHIP_DEFS.MetaGel = {
+    FAMILY = 0x16,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.MetaGel2 = {
+    FAMILY = 0x16,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.MetaGel3 = {
+    FAMILY = 0x16,
+    SUBFAMILY = 0x02
+}
+
+
+TIME_FREEZE_CHIP_DEFS.Snake = {
+    FAMILY = 0x17,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Rush = {
+    FAMILY = 0x18,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Beat = {
+    FAMILY = 0x18,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Tango = {
+    FAMILY = 0x18,
+    SUBFAMILY = 0x01
+}
+
+
+TIME_FREEZE_CHIP_DEFS.Geddon = {
+    FAMILY = 0x19,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Geddon2 = {
+    FAMILY = 0x19,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Geddon3 = {
+    FAMILY = 0x19,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.Bunny = {
+    FAMILY = 0x1A,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.TuffBunny = {
+    FAMILY = 0x1A,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.MegaBunny = {
+    FAMILY = 0x1A,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.BunnyOmega = {
+    FAMILY = 0x1A,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.Shadow = {
+    FAMILY = 0x1B,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.SloGauge = {
+    FAMILY = 0x1C,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.FastGauge = {
+    FAMILY = 0x1C,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Spikey = {
+    FAMILY = 0x1D,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Spikey2 = {
+    FAMILY = 0x1D,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Spikey3 = {
+    FAMILY = 0x1D,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.SpikeyOmega = {
+    FAMILY = 0x1D,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.Swordy = {
+    FAMILY = 0x1E,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Swordy2 = {
+    FAMILY = 0x1E,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Swordy3 = {
+    FAMILY = 0x1E,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.SwordyOmega = {
+    FAMILY = 0x1E,
+    SUBFAMILY = 0x03
+}
+
+
+TIME_FREEZE_CHIP_DEFS.DesertMan = {
+    FAMILY = 0x1F,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.DesertManV2 = {
+    FAMILY = 0x1F,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.DesertManV3 = {
+    FAMILY = 0x1F,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.DesertManV4 = {
+    FAMILY = 0x1F,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.DesertManV5 = {
+    FAMILY = 0x1F,
+    SUBFAMILY = 0x04
+}
+
+
+TIME_FREEZE_CHIP_DEFS.AlphaBug1 = {
+    FAMILY = 0x20,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.AlphaBug2 = {
+    FAMILY = 0x20,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.AlphaBug3 = {
+    FAMILY = 0x20,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.Anubis = {
+    FAMILY = 0x21,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.PoisPhar = {
+    FAMILY = 0x21,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.GodStone = {
+    FAMILY = 0x22,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.OldWood = {
+    FAMILY = 0x23,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Jealousy = {
+    FAMILY = 0x24,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.PoltrGst = {
+    FAMILY = 0x25,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.Fanfare = {
+    FAMILY = 0x26,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Discord = {
+    FAMILY = 0x26,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Timpani = {
+    FAMILY = 0x26,
+    SUBFAMILY = 0x02
+}
+
+
+TIME_FREEZE_CHIP_DEFS.PlantMan = {
+    FAMILY = 0x27,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.PlantManV2 = {
+    FAMILY = 0x27,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.PlantManV3 = {
+    FAMILY = 0x27,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.PlantManV4 = {
+    FAMILY = 0x27,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.PlantManV5 = {
+    FAMILY = 0x27,
+    SUBFAMILY = 0x04
+}
+
+TIME_FREEZE_CHIP_DEFS.Needler = {
+    FAMILY = 0x1E,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Needler2 = {
+    FAMILY = 0x1E,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Needler3 = {
+    FAMILY = 0x1E,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.NeedlerOmega = {
+    FAMILY = 0x1E,
+    SUBFAMILY = 0x03
+}
+
+
+TIME_FREEZE_CHIP_DEFS.DrillMan = {
+    FAMILY = 0x29,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.DrillManV2 = {
+    FAMILY = 0x29,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.DrillManV3 = {
+    FAMILY = 0x29,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.DrillManV4 = {
+    FAMILY = 0x29,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.DrillManV5 = {
+    FAMILY = 0x29,
+    SUBFAMILY = 0x04
+}
+
+
+TIME_FREEZE_CHIP_DEFS.FlameMan = {
+    FAMILY = 0x2A,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.FlameManV2 = {
+    FAMILY = 0x2A,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.FlameManV3 = {
+    FAMILY = 0x2A,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.FlameManV4 = {
+    FAMILY = 0x2A,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.FlameManV5 = {
+    FAMILY = 0x2A,
+    SUBFAMILY = 0x04
+}
+
+
+
+TIME_FREEZE_CHIP_DEFS.Mushy = {
+    FAMILY = 0x2B,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Mashy = {
+    FAMILY = 0x2B,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Moshy = {
+    FAMILY = 0x2B,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.MushyOmega = {
+    FAMILY = 0x2B,
+    SUBFAMILY = 0x03
+}
+
+
+TIME_FREEZE_CHIP_DEFS.Hole = {
+    FAMILY = 0x2C,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.PlanB_AreaGrab_2_Pawns_1_Knight = {
+    FAMILY = 0x2F,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.PlanB_2_Knights_1_Pawn = {
+    FAMILY = 0x2F,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.PlanB_2_Knights = {
+    FAMILY = 0x2F,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.PoisonMist = {
+    FAMILY = 0x3A,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Soulgang = {
+    FAMILY = 0x3B,
+    SUBFAMILY = 0x00
+}
+
+
+
+TIME_FREEZE_CHIP_DEFS.KillerEye = {
+    FAMILY = 0x3C,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.DemonEye = {
+    FAMILY = 0x3C,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.JokerEye = {
+    FAMILY = 0x3C,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.KillerEyeOmega = {
+    FAMILY = 0x3C,
+    SUBFAMILY = 0x03
+}
+
+
+TIME_FREEZE_CHIP_DEFS.MistMan = {
+    FAMILY = 0x3D,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.MistManV2 = {
+    FAMILY = 0x3D,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.MistManV3 = {
+    FAMILY = 0x3D,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.MistManV4 = {
+    FAMILY = 0x3D,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.MistManV5 = {
+    FAMILY = 0x3D,
+    SUBFAMILY = 0x04
+}
+
+TIME_FREEZE_CHIP_DEFS.Sensor = {
+    FAMILY = 0x3E,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Sensor2 = {
+    FAMILY = 0x3E,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Sensor3 = {
+    FAMILY = 0x3E,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.Team = {
+    FAMILY = 0x3F,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Team2 = {
+    FAMILY = 0x3F,
+    SUBFAMILY = 0x01
+}
+
+
+TIME_FREEZE_CHIP_DEFS.BowlMan = {
+    FAMILY = 0x40,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.BowlManV2 = {
+    FAMILY = 0x40,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.BowlManV3 = {
+    FAMILY = 0x40,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.BowlManV4 = {
+    FAMILY = 0x40,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.BowlManV5 = {
+    FAMILY = 0x40,
+    SUBFAMILY = 0x04
+}
+
+
+TIME_FREEZE_CHIP_DEFS.DeuxHero = {
+    FAMILY = 0x41,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.DoubleHero = {
+    FAMILY = 0x41,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.KillerEye = {
+    FAMILY = 0x3C,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.Scutz = {
+    FAMILY = 0x42,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.Scuttle = {
+    FAMILY = 0x42,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.Scuttler = {
+    FAMILY = 0x42,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.Scuttzer = {
+    FAMILY = 0x42,
+    SUBFAMILY = 0x04
+}
+
+TIME_FREEZE_CHIP_DEFS.Scuttlest = {
+    FAMILY = 0x42,
+    SUBFAMILY = 0x05
+}
+
+TIME_FREEZE_CHIP_DEFS.ScuttleOmega = {
+    FAMILY = 0x42,
+    SUBFAMILY = 0x06
+}
+
+TIME_FREEZE_CHIP_DEFS.ERROR_DELETE = {
+    FAMILY = 0x43,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.ProtoMan = {
+    FAMILY = 0x44,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.ProtoManV2 = {
+    FAMILY = 0x44,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.ProtoManV3 = {
+    FAMILY = 0x44,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.ProtoManV4 = {
+    FAMILY = 0x44,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.ProtoManV5 = {
+    FAMILY = 0x44,
+    SUBFAMILY = 0x04
+}
+
+
+
+TIME_FREEZE_CHIP_DEFS.DarkMan = {
+    FAMILY = 0x45,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.DarkManV2 = {
+    FAMILY = 0x45,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.DarkManV3 = {
+    FAMILY = 0x45,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.DarkManV4 = {
+    FAMILY = 0x45,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.DarkManV5 = {
+    FAMILY = 0x45,
+    SUBFAMILY = 0x04
+}
+
+
+TIME_FREEZE_CHIP_DEFS.DeltaRay = {
+    FAMILY = 0x46,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.Bass = {
+    FAMILY = 0x47,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.BassPlus = {
+    FAMILY = 0x48,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.BassGS = {
+    FAMILY = 0x49,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.JapanMan = {
+    FAMILY = 0x4A,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.JapanManV2 = {
+    FAMILY = 0x4A,
+    SUBFAMILY = 0x01
+}
+
+TIME_FREEZE_CHIP_DEFS.JapanManV3 = {
+    FAMILY = 0x4A,
+    SUBFAMILY = 0x02
+}
+
+TIME_FREEZE_CHIP_DEFS.JapanManV4 = {
+    FAMILY = 0x4A,
+    SUBFAMILY = 0x03
+}
+
+TIME_FREEZE_CHIP_DEFS.JapanManV5 = {
+    FAMILY = 0x4A,
+    SUBFAMILY = 0x04
+}
+
+
+TIME_FREEZE_CHIP_DEFS.JapanMan_Backup = {
+    FAMILY = 0x4B,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.Balance = {
+    FAMILY = 0x4C,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.AlphaArmSigma = {
+    FAMILY = 0x4D,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.AlphaArmOmega = {
+    FAMILY = 0x4E,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.GelRain = {
+    FAMILY = 0x4F,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.BodyGuard = {
+    FAMILY = 0x50,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.PrixPower = {
+    FAMILY = 0x51,
+    SUBFAMILY = 0x00
+}
+
+TIME_FREEZE_CHIP_DEFS.MotherEarthquake = {
+    FAMILY = 0x52,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.MasterStyle = {
+    FAMILY = 0x53,
+    SUBFAMILY = 0x00
+}
+
+
+TIME_FREEZE_CHIP_DEFS.Serenade = {
+    FAMILY = 0x54,
+    SUBFAMILY = 0x00
+}
+
+
+return TIME_FREEZE_CHIP_DEFS

@@ -1,0 +1,12 @@
+local ENTITY_ELEMENT_DEFS = 
+{
+    ELEMENT_NONE    = 0x00,
+    ELEMENT_ELEC    = 0x01,
+    ELEMENT_HEAT    = 0x02,
+    ELEMENT_AQUA    = 0x03,
+    ELEMENT_WOOD    = 0x04,
+
+}
+
+
+return ENTITY_ELEMENT_DEFS

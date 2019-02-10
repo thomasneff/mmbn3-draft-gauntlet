@@ -1,10 +1,3 @@
+local ERROR_CHECKED_SPECIFIC_GAME_WRAPPER = require "error_checked_specific_game_wrapper"
 
--- Taken from http://forums.therockManexezone.com/topic/8831451/1/
-
-local FOLDER_SHUFFLE = {
-    InOrder = 0x00,
-    Randomized = 0x01
-}
-
-
-return FOLDER_SHUFFLE
+return ERROR_CHECKED_SPECIFIC_GAME_WRAPPER.get_module("defs", GAME_ID, "folder_shuffle_defs")

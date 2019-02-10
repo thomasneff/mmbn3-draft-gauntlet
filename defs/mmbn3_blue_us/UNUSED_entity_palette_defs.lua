@@ -4,8 +4,7 @@ local ENTITY_PALETTE_DEFS =
     PALETTE_V1 = 0x00,
     PALETTE_V2 = 0x01,
     PALETTE_V3 = 0x02,
-    PALETTE_Omega = 0x03,
-
+    PALETTE_Omega = 0x03
 }
 
 
