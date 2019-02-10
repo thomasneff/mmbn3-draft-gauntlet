@@ -2,10 +2,12 @@ local game_name = gameinfo.getromname()
 
 -- These are global.
 GAME_IDS = {
-    MMBN3_BLUE_US = 0,
-    MMBN3_WHITE_US = 1,
-    MMBN6_FALZAR_US = 2
+    MMBN3_BLUE_US = "mmbn3_blue_us",
+    MMBN3_WHITE_US = "mmbn3_white_us",
+    MMBN6_FALZAR_US = "mmbn6_falzar_us"
 }
+
+GAME_ID = nil
 
 if string.find(game_name, "3") and string.find(game_name, "Blue") then
     GAME_ID = GAME_IDS.MMBN3_BLUE_US
