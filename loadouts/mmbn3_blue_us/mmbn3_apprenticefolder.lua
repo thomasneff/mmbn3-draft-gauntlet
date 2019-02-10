@@ -51,6 +51,8 @@ function MMBN3_APPRENTICEFOLDER.activate()
 
     gauntlet_data.current_folder = deepcopy(new_folder)
 
+    print("MMBN3 Apprentice Folder - Patched folder.")
+
 end
 
 

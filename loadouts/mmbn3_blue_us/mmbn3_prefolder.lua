@@ -48,6 +48,8 @@ function MMBN3_PREFOLDER.activate()
 
     gauntlet_data.current_folder = deepcopy(new_folder)
 
+    print("MMBN3 N1-Preliminaries Folder - Patched folder.")
+
 end
 
 

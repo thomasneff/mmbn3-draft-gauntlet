@@ -48,6 +48,8 @@ function MMBN3_EXTRAFOLDER.activate()
 
     gauntlet_data.current_folder = deepcopy(new_folder)
 
+    print("MMBN3 Extra Folder - Patched folder.")
+
 end
 
 

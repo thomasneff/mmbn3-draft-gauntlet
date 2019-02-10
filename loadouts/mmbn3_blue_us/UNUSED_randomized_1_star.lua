@@ -2,6 +2,7 @@ local CHIP_DATA = require "defs.chip_data_defs"
 local GENERIC_DEFS = require "defs.generic_defs"
 local gauntlet_data = require "gauntlet_data"
 local deepcopy = require "deepcopy"
+local RANDOMIZED_LIBRARY_STARS_FOLDER = require "UNUSED_start_folders.randomized_library_stars_folder"
 
 local RANDOMIZED_1_STAR_FOLDER = {}
 

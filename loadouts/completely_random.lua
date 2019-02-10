@@ -1,30 +1,5 @@
-local CHIP_DATA = require "defs.chip_data_defs"
-local GENERIC_DEFS = require "defs.generic_defs"
-local gauntlet_data = require "gauntlet_data"
-local deepcopy = require "deepcopy"
-local CHIP = require "defs.chip_defs"
-local COMPLETELY_RANDOM = {}
+local ERROR_CHECKED_SPECIFIC_GAME_WRAPPER = require "error_checked_specific_game_wrapper"
 
-function COMPLETELY_RANDOM.activate()
-
-    new_folder = {}
-
-    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
-
-        new_folder[chip_idx] = CHIP.new_random_chip_with_random_code()
-
-    end
-    
-    gauntlet_data.current_folder = deepcopy(new_folder)
-
-    print("Completely Random - Patched folder.")
-
-end
-
-
-COMPLETELY_RANDOM.NAME = "Completely Random Folder"
-COMPLETELY_RANDOM.DESCRIPTION = "You start with a completely randomized folder!"
-
-
-return COMPLETELY_RANDOM
-
+-- NOTE: This is already generic, so we use the same file for different games.
+--       If different functionality is necessary, change the following import.
+return ERROR_CHECKED_SPECIFIC_GAME_WRAPPER.get_module("loadouts", "mmbn3_blue_us", "completely_random")

@@ -50,6 +50,8 @@ function MMBN3_HADESFOLDER.activate()
 
     gauntlet_data.current_folder = deepcopy(new_folder)
 
+    print("MMBN3 Hades Folder - Patched folder.")
+
 end
 
 

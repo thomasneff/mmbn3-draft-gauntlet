@@ -47,6 +47,8 @@ function MMBN3_START_FOLDER.activate()
 
     gauntlet_data.current_folder = deepcopy(new_folder)
 
+    print("MMBN3 Starting Folder - Patched folder.")
+
 end
 
 

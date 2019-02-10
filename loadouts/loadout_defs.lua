@@ -1,97 +1,33 @@
-local deepcopy = require "deepcopy"
-local RANDOMIZED_1_STAR = require "loadouts.randomized_1_star"
-local RANDOMIZED_2_STAR = require "loadouts.randomized_2_star"
-local COMPLETELY_RANDOM = require "loadouts.completely_random"
-local DRAFT_RANDOM = require "loadouts.draft_random"
-local DRAFT_BALANCED_RARITY = require "loadouts.draft_balanced_rarity"
-local DRAFT_STANDARD_MEGA_GIGA = require "loadouts.draft_standard_mega_giga"
-local DRAFT_STANDARD_MEGA_MAX_1 = require "loadouts.draft_sm_lib_max_1"
-local DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES = require "loadouts.draft_sm_lib_max_1_more_codes"
-local MMBN3_START_FOLDER = require "loadouts.mmbn3_start_folder"
-local MMBN3_EXTRAFOLDER = require "loadouts.mmbn3_extrafolder"
-local MMBN3_PREFOLDER = require "loadouts.mmbn3_prefolder"
-local MMBN3_HADESFOLDER = require "loadouts.mmbn3_hadesfolder"
-local MMBN3_N1FOLDER_A = require "loadouts.mmbn3_n1folder_a"
-local MMBN3_N1FOLDER_B = require "loadouts.mmbn3_n1folder_b"
-local MMBN3_N1FOLDER_C = require "loadouts.mmbn3_n1folder_c"
-local MMBN3_N1FOLDER_D = require "loadouts.mmbn3_n1folder_d"
-local MMBN3_FAMFOLDER = require "loadouts.mmbn3_famfolder"
-local MMBN3_APPRENTICEFOLDER = require "loadouts.mmbn3_apprenticefolder"
-local PA_TEST_FOLDER = require "loadouts.pa_test_folder"
+local ERROR_CHECKED_SPECIFIC_GAME_WRAPPER = require "error_checked_specific_game_wrapper"
+
+-- Test code for loadouts
+local loadouts_module = ERROR_CHECKED_SPECIFIC_GAME_WRAPPER.get_module("loadouts", GAME_ID, "loadout_defs")
+
+local test_loadouts = false
+
+if test_loadouts then
+
+    print("Testing Loadouts (disable in loadouts.loadout_defs), GAME_ID: " .. GAME_ID)
+    local gauntlet_data = require "gauntlet_data"
+    gauntlet_data.math.initialize_rng_for_group("MUSIC", 10000)
+    gauntlet_data.math.initialize_rng_for_group("IN_BATTLE", 10000)
+    gauntlet_data.math.initialize_rng_for_group("BUFF_ACTIVATION", 100000)
+    gauntlet_data.math.initialize_rng_for_group("BUFF_SELECTION", 10000)
+    gauntlet_data.math.initialize_rng_for_group("DRAFTING", 10000)
+    gauntlet_data.math.initialize_rng_for_group("CHIP_REWARDS", 10000)
+    gauntlet_data.math.initialize_rng_for_group("LOADOUTS", 10000)
+    gauntlet_data.math.initialize_rng_for_group("SNECKO_EYE", 10000)
+    gauntlet_data.math.initialize_rng_for_group("ILLUSION_OF_CHOICE", 10000)
+    gauntlet_data.math.initialize_rng_for_group("BATTLE_DATA", 10000)
+    gauntlet_data.math.initialize_rng_for_group("CHIP_GENERATION", 100000)
+    gauntlet_data.math.initialize_rng_for_group("FOLDER_SHUFFLING", 10000)
+
+    for key, value in pairs(loadouts_module) do
+        print("Testing loadout " .. key)
+        value.activate()
+    end
+
+end
 
 
-local JUST_MONIKA = require "loadouts.just_monika"
-
--- TODO: Each loadout should provide a NAME, a DESCRIPTION, and an activate() function.
---       This activate() function simply does everything necessary for the state_logic to advance.
-local LIST_OF_LOADOUTS = {
-    DRAFT_RANDOM,
-    DRAFT_BALANCED_RARITY,
-    DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES,
-    DRAFT_STANDARD_MEGA_MAX_1,
-    MMBN3_START_FOLDER,
-    MMBN3_EXTRAFOLDER,
-    MMBN3_PREFOLDER,
-    MMBN3_HADESFOLDER,
-    MMBN3_N1FOLDER_A,
-    MMBN3_N1FOLDER_B,
-    MMBN3_N1FOLDER_C,
-    MMBN3_N1FOLDER_D,
-    MMBN3_FAMFOLDER,
-    MMBN3_APPRENTICEFOLDER,
-    PA_TEST_FOLDER,
-    COMPLETELY_RANDOM,
-    RANDOMIZED_1_STAR,
-    RANDOMIZED_2_STAR,   
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    JUST_MONIKA,
-    
-}
-
-
-
-
-return LIST_OF_LOADOUTS
+return loadouts_module

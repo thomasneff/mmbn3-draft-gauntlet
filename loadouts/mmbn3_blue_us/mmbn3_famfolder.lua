@@ -49,6 +49,8 @@ function MMBN3_FAMFOLDER.activate()
 
     gauntlet_data.current_folder = deepcopy(new_folder)
 
+    print("MMBN3 Famous Folder - Patched folder.")
+    
 end
 
 
