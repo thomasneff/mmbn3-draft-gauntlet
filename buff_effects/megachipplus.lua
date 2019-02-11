@@ -1,45 +1,5 @@
-local gauntlet_data = require "gauntlet_data"
-local deepcopy = require "deepcopy"
+local ERROR_CHECKED_SPECIFIC_GAME_WRAPPER = require "error_checked_specific_game_wrapper"
 
-local MegaChipPlus = {
-    NAME = "MegaChips + 2",
-}
-
-
-
-function MegaChipPlus:activate(current_round)
-
-    self.old_MegaChipPlus = gauntlet_data.mega_chip_limit
-    gauntlet_data.mega_chip_limit = gauntlet_data.mega_chip_limit + 2
-
-end
-
-
-function MegaChipPlus:deactivate(current_round)
-
-    gauntlet_data.mega_chip_limit = self.old_MegaChipPlus
-
-end
-
-function MegaChipPlus:get_description(current_round)
-
-    return "Increase number of possible\nMegaChips in Folder by 2!"
-
-end
-
-function MegaChipPlus:get_brief_description()
-    return MegaChipPlus.NAME .. ": MegaChips + 2!"
-end
-
-function MegaChipPlus.new()
-
-    local new_MegaChipPlus = deepcopy(MegaChipPlus)
-
-    new_MegaChipPlus.DESCRIPTION = new_MegaChipPlus:get_description(1)
-
-    return deepcopy(new_MegaChipPlus)
-
-end
-
-
-return MegaChipPlus
+-- NOTE: This is already generic, so we use the same file for different games.
+--       If different functionality is necessary, change the following import.
+return ERROR_CHECKED_SPECIFIC_GAME_WRAPPER.get_module("buff_effects", "mmbn3_blue_us", "megachipplus")

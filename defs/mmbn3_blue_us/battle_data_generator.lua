@@ -143,7 +143,7 @@ end
 function roll_entity(grid, entity_group, contains_virus_table, entity_kind, specific_entity, battle_stage)
 
 
-    local new_entity = deepcopy(entity_group[math.random(#entity_group)])
+    local new_entity = deepcopy(entity_group[gauntlet_data.math.random_named("BATTLE_DATA", #entity_group)])
 
 
     
@@ -155,10 +155,10 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind, spec
 
         if is_table_empty(entity_group_of_kind) then
             -- Just return a Mettaur.
-            print ("No entity of kind", entity_kind, "found in entity group", entity_group, "!")
-            new_entity = deepcopy(ENTITIES.Default)
+            error ("No entity of kind", entity_kind, "found in entity group", entity_group, "!")
+            new_entity = deepcopy(ENTITIES.Mettaur)
         else
-            new_entity = deepcopy(entity_group_of_kind[math.random(#entity_group_of_kind)])
+            new_entity = deepcopy(entity_group_of_kind[gauntlet_data.math.random_named("BATTLE_DATA", #entity_group_of_kind)])
         end
 
         
@@ -189,7 +189,7 @@ function roll_entity(grid, entity_group, contains_virus_table, entity_kind, spec
             print ("No entity of types ", twins_types, "found in entity group", entity_group, "!")
             new_entity = deepcopy(ENTITIES.Twins)
         else
-            new_entity = deepcopy(entity_group_of_type[math.random(#entity_group_of_type)])
+            new_entity = deepcopy(entity_group_of_type[gauntlet_data.math.random_named("BATTLE_DATA", #entity_group_of_type)])
         end
 
 
@@ -281,7 +281,7 @@ function battle_data_generator.random_boss(next_boss_round)
 
     local entity_group_of_kind = get_all_entities_with_kind(entity_group, ENTITY_KIND.Virus) 
 
-    local boss_entity = deepcopy(entity_group_of_kind[math.random(#entity_group_of_kind)])
+    local boss_entity = deepcopy(entity_group_of_kind[gauntlet_data.math.random_named("BATTLE_DATA", #entity_group_of_kind)])
 
     return boss_entity
     

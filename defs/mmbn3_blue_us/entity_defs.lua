@@ -168,8 +168,6 @@ ENTITIES.Mettaur.AI_BYTES[0x01]             = 0x28                              
 ENTITIES.Mettaur.AI_BYTES[0x02]             = 0x1E                              -- Delay before attacking.
 ENTITIES.Mettaur.BATTLE_NUMBERS             = TIER_1_BATTLES_WITHOUT_BOSSES     -- Battles in which this entity can appear.
 
-ENTITIES.Default                            = deepcopy(ENTITIES.Mettaur) 
-
 ENTITIES.Mettaur2                           = new_base_entity(ENTITY_KIND.Virus, "Mettaur2")
 ENTITIES.Mettaur2.NAME                      = "Mettaur2"
 ENTITIES.Mettaur2.HP_BASE                   = 60

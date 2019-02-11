@@ -1,45 +1,4 @@
-local gauntlet_data = require "gauntlet_data"
-local deepcopy = require "deepcopy"
+local ERROR_CHECKED_SPECIFIC_GAME_WRAPPER = require "error_checked_specific_game_wrapper"
 
-local WeaponLevelPlus = {
-    NAME = "WeaponLevel + 1",
-}
-
-
-
-function WeaponLevelPlus:activate(current_round)
-
-    self.old_WeaponLevelPlus = gauntlet_data.mega_WeaponLevelPlus
-    gauntlet_data.mega_WeaponLevelPlus = gauntlet_data.mega_WeaponLevelPlus + 1
-
-end
-
-
-function WeaponLevelPlus:deactivate(current_round)
-
-    gauntlet_data.mega_WeaponLevelPlus = self.old_WeaponLevelPlus
-
-end
-
-function WeaponLevelPlus:get_description(current_round)
-
-    return "Increase Element-Style Weapon Level by 1!"
-
-end
-
-function WeaponLevelPlus:get_brief_description()
-    return WeaponLevelPlus.NAME .. ": " .. "Style Weapon + 1!"
-end
-
-function WeaponLevelPlus.new()
-
-    local new_WeaponLevelPlus = deepcopy(WeaponLevelPlus)
-
-    new_WeaponLevelPlus.DESCRIPTION = new_WeaponLevelPlus:get_description(1)
-
-    return deepcopy(new_WeaponLevelPlus)
-
-end
-
-
-return WeaponLevelPlus
+-- NOTE: This buff doesn't even exist for other games. This will crash if you import it in buff_groups_data of other games.
+return ERROR_CHECKED_SPECIFIC_GAME_WRAPPER.get_module("buff_effects", GAME_ID, "style_weaponlevelplus")

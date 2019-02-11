@@ -49,7 +49,7 @@ function CHIP_DROP_UTILS.dropped_chips_from_battle(battle_data, current_round, n
 
     for drop_index = 1, number_of_drops do
 
-        local virus_entity_data = virus_entities[math.random(#virus_entities)]
+        local virus_entity_data = virus_entities[gauntlet_data.math.random_named("CHIP_REWARDS", #virus_entities)]
 
         if virus_entity_data.DROP_TABLE ~= nil then
             -- TODO: implement virus chip drops

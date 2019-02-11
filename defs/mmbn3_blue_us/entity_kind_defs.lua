@@ -1,5 +1,7 @@
 
 -- Taken from http://forums.therockManexezone.com/topic/746085/1/
+local gauntlet_data = require "gauntlet_data"
+
 
 local ENTITY_KIND = {
     MegaMan = 0x00,
@@ -27,7 +29,8 @@ local NON_VIRUS_ENTITIES = {
 
 function ENTITY_KIND.random_non_virus_entity_kind()
     -- TODO: possibly implement probabilities of each type, as Guardian/BlackBomb can be pretty OP ;-)
-    return NON_VIRUS_ENTITIES[math.random(#NON_VIRUS_ENTITIES)]
+    -- TODO_RANDOM: check which seed to use here
+    return NON_VIRUS_ENTITIES[gauntlet_data.math.random_named("BATTLE_DATA", #NON_VIRUS_ENTITIES)]
 end
 
 return ENTITY_KIND

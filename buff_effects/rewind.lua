@@ -1,39 +1,5 @@
-local gauntlet_data = require "gauntlet_data"
-local deepcopy = require "deepcopy"
+local ERROR_CHECKED_SPECIFIC_GAME_WRAPPER = require "error_checked_specific_game_wrapper"
 
-local Rewind = {
-    NAME = "Rewind",
-}
-
-local NUMBER_OF_REWINDS = 1
-
-function Rewind:activate(current_round)
-    gauntlet_data.number_of_rewinds = gauntlet_data.number_of_rewinds + NUMBER_OF_REWINDS
-end
-
-
-function Rewind:deactivate(current_round)
-    gauntlet_data.number_of_rewinds = gauntlet_data.number_of_rewinds - NUMBER_OF_REWINDS
-end
-
-function Rewind:get_description(current_round)
-    if NUMBER_OF_REWINDS == 1 then
-        return "Upon death, reload at the beginning of the fight!\n( + " .. tostring(NUMBER_OF_REWINDS) .. " time per run!)"
-    else
-        return "Upon death, reload at the beginning of the fight!\n( + " .. tostring(NUMBER_OF_REWINDS) .. " times per run!)"
-    end
-end
-
-function Rewind:get_brief_description()
-    return Rewind.NAME .. ": " .. "Death -> Reload (" .. tostring(gauntlet_data.number_of_rewinds) .. " left)"
-end
-
-function Rewind.new()
-    local new_Rewind = deepcopy(Rewind)
-    new_Rewind.DESCRIPTION = new_Rewind:get_description(1)
-
-    return deepcopy(new_Rewind)
-end
-
-
-return Rewind
+-- NOTE: This is already generic, so we use the same file for different games.
+--       If different functionality is necessary, change the following import.
+return ERROR_CHECKED_SPECIFIC_GAME_WRAPPER.get_module("buff_effects", "mmbn3_blue_us", "rewind")

@@ -50,7 +50,7 @@ function ROUND_BASED_LIBRARY_STARS.generate_drops(battle_data, current_round, nu
 
     for drop_index = 1, number_of_drops do
 
-        local virus_entity_data = virus_entities[math.random(#virus_entities)]
+        local virus_entity_data = virus_entities[gauntlet_data.math.random_named("CHIP_REWARDS", #virus_entities)]
 
        
             local rng = gauntlet_data.math.random_named("CHIP_REWARDS", 100)

@@ -1,51 +1,5 @@
-local gauntlet_data = require "gauntlet_data"
-local deepcopy = require "deepcopy"
+local ERROR_CHECKED_SPECIFIC_GAME_WRAPPER = require "error_checked_specific_game_wrapper"
 
-local SneckoEye = {
-    NAME = "Snecko Eye",
-    REMOVE_AFTER_ACTIVATION = 1,
-    DOUBLE_RARITY = 1
-}
-
-CUSTOM_INCREASE = 2
-
-function SneckoEye:activate(current_round)
-
-    self.old_SneckoEye = gauntlet_data.snecko_eye_enabled
-    gauntlet_data.snecko_eye_enabled = 1
-    self.old_CustomPlus = gauntlet_data.cust_screen_number_of_chips
-    gauntlet_data.cust_screen_number_of_chips = gauntlet_data.cust_screen_number_of_chips + CUSTOM_INCREASE
-
-end
-
-
-function SneckoEye:deactivate(current_round)
-
-    gauntlet_data.snecko_eye_enabled = self.old_SneckoEye
-
-    gauntlet_data.cust_screen_number_of_chips = self.old_CustomPlus
-
-end
-
-function SneckoEye:get_description(current_round)
-
-    return "Custom + " .. tostring(CUSTOM_INCREASE) ..  "!\nRandomizes chip codes before battle! (" ..
-     tostring(gauntlet_data.snecko_eye_number_of_codes) .. " Codes)"
-
-end
-
-function SneckoEye:get_brief_description()
-    return SneckoEye.NAME .. ": Custom +" .. tostring(CUSTOM_INCREASE) .. ", " .. tostring(gauntlet_data.snecko_eye_number_of_codes) .. " random codes before battle!"
-end
-
-function SneckoEye.new()
-
-    local new_SneckoEye = deepcopy(SneckoEye)
-    new_SneckoEye.DESCRIPTION = new_SneckoEye:get_description(1)
-
-    return deepcopy(new_SneckoEye)
-
-end
-
-
-return SneckoEye
+-- NOTE: This is already generic, so we use the same file for different games.
+--       If different functionality is necessary, change the following import.
+return ERROR_CHECKED_SPECIFIC_GAME_WRAPPER.get_module("buff_effects", "mmbn3_blue_us", "snecko_eye")

@@ -1,46 +1,5 @@
-local gauntlet_data = require "gauntlet_data"
-local deepcopy = require "deepcopy"
+local ERROR_CHECKED_SPECIFIC_GAME_WRAPPER = require "error_checked_specific_game_wrapper"
 
-local Collector = {
-    NAME = "Collector",
-}
-
-COLLECTOR_DAMAGE_PER_DUPLICATE_MULT = 0.25
-
-
-function Collector:activate(current_round)
-
-    self.collector_duplicate_damage_bonus = deepcopy(gauntlet_data.collector_duplicate_damage_bonus)
-    gauntlet_data.collector_active = 1
-    gauntlet_data.collector_duplicate_damage_bonus = gauntlet_data.collector_duplicate_damage_bonus + COLLECTOR_DAMAGE_PER_DUPLICATE_MULT
-
-end
-
-
-function Collector:deactivate(current_round)
-
-    gauntlet_data.collector_duplicate_damage_bonus = deepcopy(self.collector_duplicate_damage_bonus)
-
-end
-
-function Collector:get_description(current_round)
-
-    return "For every duplicate Chip, increase that Chip\nDamage by " .. tostring((COLLECTOR_DAMAGE_PER_DUPLICATE_MULT) * 100) .. "%!"
-
-end
-
-function Collector:get_brief_description()
-    return Collector.NAME .. ": Chip duplicates -> +" .. tostring(100 * gauntlet_data.collector_duplicate_damage_bonus) .. "% damage / duplicate!"
-end
-
-function Collector.new()
-
-    local new_Collector = deepcopy(Collector)
-    new_Collector.DESCRIPTION = new_Collector:get_description(1)
-
-    return deepcopy(new_Collector)
-
-end
-
-
-return Collector
+-- NOTE: This is already generic, so we use the same file for different games.
+--       If different functionality is necessary, change the following import.
+return ERROR_CHECKED_SPECIFIC_GAME_WRAPPER.get_module("buff_effects", "mmbn3_blue_us", "collector")
