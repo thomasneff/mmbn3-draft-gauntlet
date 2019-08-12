@@ -347,7 +347,7 @@ function split_boss_name(boss_name)
 
     local man_start, man_end = string.find(boss_name, "Man")
 
-    if i == nil then
+    if man_start == nil then
         return "No Man xD", "Lol"
     end
 

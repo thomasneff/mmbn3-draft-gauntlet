@@ -232,7 +232,8 @@ function MusicLoader.LoadRandomFile(current_round)
 
     if file_exists(patch_file_name) == false or 
        file_exists(transpose_offset_file_name) == false or
-       file_exists(bpm_offset_file_name) == false then
+       file_exists(bpm_offset_file_name) == false or
+       GLOBAL_DISABLE_MUSIC_PATCHING == true then
 
         print ("Turning off Music Loader, file: " .. chosen_file .. " could not be opened!")
 

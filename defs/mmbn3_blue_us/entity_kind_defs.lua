@@ -29,7 +29,6 @@ local NON_VIRUS_ENTITIES = {
 
 function ENTITY_KIND.random_non_virus_entity_kind()
     -- TODO: possibly implement probabilities of each type, as Guardian/BlackBomb can be pretty OP ;-)
-    -- TODO_RANDOM: check which seed to use here
     return NON_VIRUS_ENTITIES[gauntlet_data.math.random_named("BATTLE_DATA", #NON_VIRUS_ENTITIES)]
 end
 
