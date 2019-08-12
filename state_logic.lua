@@ -27,6 +27,7 @@ local json = require "json"
 local randomchoice_key = require "randomchoice_key"
 local PA_DEFS = require "defs.pa_defs"
 local INITIAL_STATE_NAME = require "savestates.initial_state_name"
+local DIFFICULTY_LEVELS = require "difficulty_levels.difficulty_levels_defs"
 
 -- TODO: possibly add more states.
 
@@ -290,7 +291,7 @@ function state_logic.patch_consecutive_program_advances()
 end
 
 function state_logic.on_cust_screen_confirm()
-    print("Cust screen confirmed!")
+    --print("Cust screen confirmed!")
     gauntlet_data.current_battle_chip_index = 1
   
     
@@ -353,7 +354,7 @@ end
 function state_logic.on_battle_phase_start()
 
 
-    print("Battle phase start!")
+    --print("Battle phase start!")
 
     -- Extract held chip IDs and damage values
     gauntlet_data.battle_phase = 1
@@ -395,7 +396,7 @@ function state_logic.on_battle_phase_start()
 end
 
 function state_logic.on_chip_use()
-    print("Chip used!")
+    --print("Chip used!")
 
     for k, v in pairs(state_logic.activated_buffs) do
         if v.ON_CHIP_USE_CALLBACK ~= nil then
@@ -981,6 +982,7 @@ function state_logic.initialize()
 
     state_logic.should_redraw = 1
     gauntlet_data.chip_drop_method = CHIP_DROP_METHODS[1]
+    gauntlet_data.difficulty = DIFFICULTY_LEVELS[1]
     state_logic.hp_patch_frame_counter = 0
     state_logic.battle_start_frame_counter = 0
 
@@ -993,6 +995,7 @@ function state_logic.initialize()
     gauntlet_data.loadout_chosen = 0
     state_logic.selected_loadout_index = 2
     state_logic.selected_drop_method_index = 2
+    state_logic.selected_difficulty_index = 2
 
     gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
     state_logic.dropped_chip_render_index = 1
@@ -1097,6 +1100,8 @@ function state_logic.initialize()
     gauntlet_data.folder_view = 0
     gauntlet_data.chip_drop_method = CHIP_DROP_METHODS[1]
     gauntlet_data.chip_drop_method.activate()
+    gauntlet_data.difficulty = DIFFICULTY_LEVELS[1]
+    gauntlet_data.difficulty.activate()
     gauntlet_data.loadout_chosen = 0
     state_logic.selected_loadout_index = 2
     state_logic.dropped_chip = CHIP.get_default_chip()
@@ -1112,6 +1117,7 @@ function state_logic.initialize()
     state_logic.hp_patch_frame_counter = 0
     state_logic.battle_start_frame_counter = 0
     state_logic.selected_drop_method_index = 2
+    state_logic.selected_difficulty_index = 2
     gauntlet_data.mega_chip_limit_team = 0
     state_logic.reset_selected_chips()
     gauntlet_data.folder_draft_chip_list = {}
@@ -1367,7 +1373,8 @@ function state_logic.update_battle_statistics()
         LOST_HP = deepcopy(state_logic.stats_lost_hp),
         REPLACED_CHIP = deepcopy(state_logic.replaced_chip),
         BATTLE_STAGE = deepcopy(gauntlet_data.battle_stages[state_logic.current_battle - 1]),
-        ACTIVATED_BUFF_DESCRIPTIONS = deepcopy(buff_descriptions)
+        ACTIVATED_BUFF_DESCRIPTIONS = deepcopy(buff_descriptions),
+        DIFFICULTY = deepcopy(gauntlet_data.difficulty.NAME)
     }
 
     --print(gauntlet_data.statistics_container[#gauntlet_data.statistics_container])
@@ -1472,7 +1479,7 @@ function state_logic.patch_before_battle_start()
     end
 
     io_utils.writeword(GENERIC_DEFS.MEGA_MAX_HP_ADDRESS_DURING_LOADING, gauntlet_data.mega_max_hp)
-      
+    --print("Wrote hp: " .. tostring(gauntlet_data.mega_max_hp))
     -- TODO_REFACTOR: of course this is its own function...
     io_utils.change_megaMan_style(gauntlet_data.mega_style)
 
@@ -2079,12 +2086,12 @@ function state_logic.on_cust_screen_open()
 
     event.onmemoryexecute(state_logic.on_cust_screen_confirm, GENERIC_DEFS.CUST_SCREEN_CONFIRM_ADDRESS + 2, "on_cust_screen_confirm")
 
-    print("Cust screen opened")
+    --print("Cust screen opened")
 end
 
 function state_logic.on_cust_screen_closed()
     --gauntlet_data.num_chips_in_battle = memory.readbyte(GENERIC_DEFS.IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM")
-    print("Cust screen closed")
+    --print("Cust screen closed")
 
 end
 
@@ -2799,7 +2806,7 @@ function state_logic.main_loop()
 
                 --print("Selected a Chip!")
                 --print("Selected drop method: ", CHIP_DROP_METHODS[state_logic.selected_drop_method_index])
-                gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_STARTING_LOADOUT
+                gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_DIFFICULTY
 
 
                 gauntlet_data.chip_drop_method = CHIP_DROP_METHODS[state_logic.selected_drop_method_index]
@@ -2818,6 +2825,79 @@ function state_logic.main_loop()
             -- TODO_REFACTOR: folder_view enum
             if gauntlet_data.folder_view == 0 then
                 gui_rendering.render_items(CHIP_DROP_METHODS, state_logic.selected_drop_method_index)
+            elseif gauntlet_data.folder_view == 1 then
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
+            elseif gauntlet_data.folder_view == 2 then
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset)
+            end
+
+            
+            gui.DrawFinish()
+            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            state_logic.should_redraw = 0
+        end
+
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_DIFFICULTY then
+        state_logic.gui_change_savestate = memorysavestate.savecorestate()
+        
+        gauntlet_data.current_state = gauntlet_data.GAME_STATE.CHOOSE_DIFFICULTY
+        state_logic.should_redraw = 1
+        
+        
+        memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+        client.pause()
+
+    elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.CHOOSE_DIFFICULTY then
+
+        -- TODO: render list of starting loadouts. Each loadout should provide a callable function that can set various things.
+        state_logic.folder_view_switch_and_sort()
+        state_logic.check_buff_render_offset()
+        -- TODO_REFACTOR: folder_view enum
+        if gauntlet_data.folder_view == 0 then
+
+            if input_handler.inputs_pressed["Up"] == true then
+                state_logic.selected_difficulty_index = (state_logic.selected_difficulty_index - 1) % (#DIFFICULTY_LEVELS)
+                
+                if state_logic.selected_difficulty_index == 0 then
+                    state_logic.selected_difficulty_index = #DIFFICULTY_LEVELS
+                end
+                state_logic.should_redraw = 1
+            end
+
+            if input_handler.inputs_pressed["Down"] == true then
+                state_logic.selected_difficulty_index = (state_logic.selected_difficulty_index + 1) % (#DIFFICULTY_LEVELS + 1)
+                if state_logic.selected_difficulty_index == 0 then
+                    state_logic.selected_difficulty_index = 1
+                end
+                state_logic.should_redraw = 1
+            end
+
+            
+
+
+            if input_handler.inputs_pressed["A"] == true then
+
+                --print("Selected a Chip!")
+                --print("Selected drop method: ", CHIP_DROP_METHODS[state_logic.selected_drop_method_index])
+                gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_STARTING_LOADOUT
+
+
+                gauntlet_data.difficulty = DIFFICULTY_LEVELS[state_logic.selected_difficulty_index]
+                gauntlet_data.difficulty.activate()
+
+                
+                --print("Folder after loadout: ", gauntlet_data.current_folder)
+                gauntlet_data.folder_view = 0
+                state_logic.selected_difficulty_index = 2
+            end
+
+        end
+
+        if state_logic.should_redraw == 1 then
+
+            -- TODO_REFACTOR: folder_view enum
+            if gauntlet_data.folder_view == 0 then
+                gui_rendering.render_items(DIFFICULTY_LEVELS, state_logic.selected_difficulty_index)
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
