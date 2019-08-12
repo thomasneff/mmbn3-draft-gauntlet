@@ -39,9 +39,8 @@ function PenNib:on_chip_use(chip, current_frame, state_logic, gauntlet_data)
     if self.chip_use_count == 9 then
         --print ("Pen Nib activation!")
         gauntlet_data.pen_nib_bonus_damage = gauntlet_data.pen_nib_bonus_damage + DAMAGE_INCREASE
-    elseif self.chip_use_count == 10 then
+    elseif self.chip_use_count >= 10 then
         self.chip_use_count = 0
-    else
         gauntlet_data.pen_nib_bonus_damage = 0
     end
 

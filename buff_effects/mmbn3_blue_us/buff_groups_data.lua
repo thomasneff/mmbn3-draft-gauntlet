@@ -165,6 +165,11 @@ end
 
 -- Buff groups for testing.
 --BUFF_GROUPS[1] = {
+--    PENNIB,
+--    OVERCUST,
+--    SPIKEDARMOR,
+    --DUELIST,
+    --ANTICUST
     --MURAMASA,
     --MASAMUNE,
     --OVERCUST,

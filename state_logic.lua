@@ -290,7 +290,7 @@ function state_logic.patch_consecutive_program_advances()
 end
 
 function state_logic.on_cust_screen_confirm()
-    --print("Cust screen confirmed!")
+    print("Cust screen confirmed!")
     gauntlet_data.current_battle_chip_index = 1
   
     
@@ -353,7 +353,7 @@ end
 function state_logic.on_battle_phase_start()
 
 
-    --print("Battle phase start!")
+    print("Battle phase start!")
 
     -- Extract held chip IDs and damage values
     gauntlet_data.battle_phase = 1
@@ -395,7 +395,7 @@ function state_logic.on_battle_phase_start()
 end
 
 function state_logic.on_chip_use()
-    --print("Chip used!")
+    print("Chip used!")
 
     for k, v in pairs(state_logic.activated_buffs) do
         if v.ON_CHIP_USE_CALLBACK ~= nil then
@@ -2079,12 +2079,12 @@ function state_logic.on_cust_screen_open()
 
     event.onmemoryexecute(state_logic.on_cust_screen_confirm, GENERIC_DEFS.CUST_SCREEN_CONFIRM_ADDRESS + 2, "on_cust_screen_confirm")
 
-    --print("Cust screen opened")
+    print("Cust screen opened")
 end
 
 function state_logic.on_cust_screen_closed()
     --gauntlet_data.num_chips_in_battle = memory.readbyte(GENERIC_DEFS.IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM")
-    --print("Cust screen closed")
+    print("Cust screen closed")
 
 end
 
@@ -2125,17 +2125,25 @@ function state_logic.check_frame_events()
     -- Check difference to gauntlet_data.num_chips
     -- TODO: refactor into "on_chip_use parts"
     if gauntlet_data.is_cust_screen == 0 and gauntlet_data.cust_screen_was_opened ~= 0 then 
+        
         -- Check for "on_chip_use"
         -- TODO_REFACTOR: make sure this behaves the same in all games / refactor into a better API
         local num_chips = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS[gauntlet_data.number_of_entities])
 
         if gauntlet_data.battle_phase == 0 then
             state_logic.on_battle_phase_start()
+
+            if num_chips ~= 0 then
+                gauntlet_data.num_chips_in_battle = num_chips
+            end
+
         end
 
-        if gauntlet_data.battle_phase == 0 and num_chips ~= 0 then
-            gauntlet_data.num_chips_in_battle = num_chips
-        else
+        
+
+        if gauntlet_data.battle_phase ~= 0 then
+            --print("num chips: " .. tostring(num_chips) .. ", in_battle: " .. tostring(gauntlet_data.num_chips_in_battle))
+
             if num_chips < gauntlet_data.num_chips_in_battle then
 
                 state_logic.on_chip_use()
