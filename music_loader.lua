@@ -12,9 +12,59 @@ local bpm_shift_range = 20
 local use_fixed_music = 0
 GENERIC_DEFS.ENABLE_MUSIC_PATCHING = 1
 
-function file_exists(name)
-    local f=io.open(name,"r")
-    if f~=nil then io.close(f) return true else return false end
+--function file_exists(name)
+
+    --print(io.popen"cd":read'*l')
+
+--    print("Trying to open file: " .. name)
+
+--    local f=io.open(name,"r")
+--    if f~=nil then io.close(f) return true else return false end
+--end
+
+function try_open_file(path, mode)
+
+    local file = io.open(path, mode)
+
+    print("Trying to open file: " .. path)
+
+    if file == nil then
+        file = io.open("Lua/mmbn3_draft_gauntlet/" .. path, mode)
+    end
+
+    if file == nil then
+        file = io.open("Lua/mmbn3-draft-gauntlet-master/" .. path, mode)
+    end
+
+    if file == nil then
+        file = io.open("Lua/mmbn3_draft_gauntlet/" .. path, mode)
+    end
+
+
+
+    if file == nil then
+        file = io.open("../lua/" .. path, mode)
+    end
+
+    if file == nil then
+        file = io.open("../bizhawk/" .. path, mode)
+    end
+
+    if file == nil then
+        file = io.open("../mmbn3_draft_gauntlet/" .. path, mode)
+    end
+
+    if file == nil then
+        file = io.open("../mmbn3-draft-gauntlet-master/" .. path, mode)
+    end
+
+
+    if file == nil then
+        print("Could not read input file " .. path .. "!")
+        return nil
+    end
+
+    return file
 end
 
 
@@ -168,7 +218,7 @@ local MusicLoader =
 {
     FinishedLoading = 0,
     StartedLoading = 0,
-    BlockSize = 2000,
+    BlockSize = 8000,
     transpose_offset = 1,
     bpm_offset = 3,
     transpose = 4,
@@ -230,10 +280,14 @@ function MusicLoader.LoadRandomFile(current_round)
     local transpose_offset_file_name = base_dir .. chosen_file .. transpose_offset_ext
     local bpm_offset_file_name = base_dir .. chosen_file .. bpm_offset_ext
 
-    if file_exists(patch_file_name) == false or 
-       file_exists(transpose_offset_file_name) == false or
-       file_exists(bpm_offset_file_name) == false or
-       GLOBAL_DISABLE_MUSIC_PATCHING == true then
+    local patch_file = try_open_file(patch_file_name, "rb")
+    local transpose_offset_file = try_open_file(transpose_offset_file_name, "r")
+    local bpm_offset_file = try_open_file(bpm_offset_file_name, "r")
+
+    if patch_file == nil or 
+        transpose_offset_file == nil or
+        bpm_offset_file == nil or
+        GLOBAL_DISABLE_MUSIC_PATCHING == true then
 
         print ("Turning off Music Loader, file: " .. chosen_file .. " could not be opened!")
 
@@ -242,13 +296,13 @@ function MusicLoader.LoadRandomFile(current_round)
         return
     end
 
-    local patch_file = assert(io.open(patch_file_name, "rb"))
+    --local patch_file = assert(io.open(patch_file_name, "rb"))
 
     MusicLoader.patch_str = patch_file:read("*all")
     --print(#MusicLoader.patch_str)
     patch_file:close()
 
-    local transpose_offset_file = assert(io.open(transpose_offset_file_name, "r"))
+    --local transpose_offset_file = assert(io.open(transpose_offset_file_name, "r"))
 
     local transpose_offset_string = ""
 
@@ -266,7 +320,7 @@ function MusicLoader.LoadRandomFile(current_round)
     transpose_offsets_split[#transpose_offsets_split + 1] = 2147483647
 
 
-    local bpm_offset_file = assert(io.open(bpm_offset_file_name, "r"))
+    --local bpm_offset_file = assert(io.open(bpm_offset_file_name, "r"))
 
     local bpm_offset_string = ""
 

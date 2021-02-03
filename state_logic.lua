@@ -33,6 +33,8 @@ local DIFFICULTY_LEVELS = require "difficulty_levels.difficulty_levels_defs"
 
 local state_logic = {}
 
+local DEBUG_STATE_LOGIC = 0
+
 function state_logic.next_round()
 
     
@@ -291,6 +293,11 @@ function state_logic.patch_consecutive_program_advances()
 end
 
 function state_logic.on_cust_screen_confirm()
+
+    if DEBUG_STATE_LOGIC == 1 then
+        print("on_cust_screen_confirm")
+    end
+
     --print("Cust screen confirmed!")
     gauntlet_data.current_battle_chip_index = 1
   
@@ -339,7 +346,7 @@ function state_logic.on_cust_screen_confirm()
     
     state_logic.patch_consecutive_program_advances()
 
-    event.unregisterbyname("on_cust_screen_confirm")
+    --event.unregisterbyname("on_cust_screen_confirm")
 end
 
 function state_logic.init_time_compression()
@@ -353,7 +360,9 @@ end
 
 function state_logic.on_battle_phase_start()
 
-
+    if DEBUG_STATE_LOGIC == 1 then
+        print("on_battle_phase_start")
+    end
     --print("Battle phase start!")
 
     -- Extract held chip IDs and damage values
@@ -397,6 +406,10 @@ end
 
 function state_logic.on_chip_use()
     --print("Chip used!")
+
+    if DEBUG_STATE_LOGIC == 1 then
+        print("on_chip_use")
+    end
 
     for k, v in pairs(state_logic.activated_buffs) do
         if v.ON_CHIP_USE_CALLBACK ~= nil then
@@ -448,6 +461,9 @@ function state_logic.recompute_perfect_damage_bonuses()
     gauntlet_data.perfectionist_damage_bonus_mult.CURRENT = damage_mult
 
     --print("Perfectionist multiplier: " .. gauntlet_data.perfectionist_damage_bonus_mult.CURRENT)
+    if DEBUG_STATE_LOGIC == 1 then
+        print("Perfectionist multiplier: " .. gauntlet_data.perfectionist_damage_bonus_mult.CURRENT)
+    end
     
     local damage_add =  gauntlet_data.perfectionist_damage_bonus_add.BASE +  gauntlet_data.perfectionist_damage_bonus_add.PERFECT_FIGHT_INCREASE * gauntlet_data.number_of_perfect_fights
     
@@ -546,7 +562,15 @@ end
 
 function state_logic.on_battle_end()
 
-    event.unregisterbyname("on_battle_end")
+    --event.unregisterbyname("on_battle_end")
+    if DEBUG_STATE_LOGIC == 1 then
+        print("on_battle_end")
+    end
+
+    input_handler.current_input_state = nil
+
+    gauntlet_data.main_player = 1 - gauntlet_data.main_player
+    gauntlet_data.sub_player_delay_counter = gauntlet_data.sub_player_ingame_delay_frames
 
     -- We advance chip generation rng here
     gauntlet_data.math.advance_rng_since_last_advance("CHIP_GENERATION", 229);
@@ -567,7 +591,8 @@ function state_logic.on_battle_end()
     
     if gauntlet_data.current_hp == 0 then
         print("Reset in on_battle_end(), MEGA HP was 0 during battle end loading")
-        state_logic.initialize()
+        --state_logic.initialize()
+        state_logic.reset = true
         return
     end
 
@@ -583,7 +608,7 @@ function state_logic.on_battle_end()
     state_logic.update_argb_chip_icons_in_folder()
 
     
-    event.onmemoryexecute(state_logic.on_enter_battle, GENERIC_DEFS.BATTLE_START_ADDRESS + 4, "on_enter_battle")
+    --event.onmemoryexecute(state_logic.on_enter_battle, GENERIC_DEFS.BATTLE_START_ADDRESS + 4, "on_enter_battle")
     gauntlet_data.num_chips_in_battle = 0
     gauntlet_data.battle_phase = 0
     gauntlet_data.is_cust_screen = 0
@@ -619,6 +644,11 @@ end
 
 function state_logic.on_enter_battle()
     
+    if DEBUG_STATE_LOGIC == 1 then
+        print("on_enter_battle")
+    end
+
+    input_handler.current_input_state = nil
     -- Check if this is really the battle start or just a use of FoldrBak
     -- If in the future, somehow, our check with battle_start and battle_end doesn't work, we can use this to check for FoldrBak
     --local r9_val = emu.getregister("R9")
@@ -631,7 +661,7 @@ function state_logic.on_enter_battle()
     --end
 
     -- We simply check if we are in battle, because then it's guaranteed to be FoldrBak
-    event.unregisterbyname("on_enter_battle")
+    --event.unregisterbyname("on_enter_battle")
 
     if state_logic.battle_enter_lock == 1 then
         return
@@ -665,7 +695,7 @@ function state_logic.on_enter_battle()
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_GAUNTLET_COMPLETE
     end
 
-    event.onmemoryexecute(state_logic.on_battle_end, GENERIC_DEFS.END_OF_GAUNTLET_BATTLE_ADDRESS, "on_battle_end")
+    --event.onmemoryexecute(state_logic.on_battle_end, GENERIC_DEFS.END_OF_GAUNTLET_BATTLE_ADDRESS, "on_battle_end")
     --gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT
     gauntlet_data.num_chips_in_battle = 0
     gauntlet_data.battle_phase = 0
@@ -676,6 +706,10 @@ end
 
 
 function state_logic.on_next_round()
+
+    if DEBUG_STATE_LOGIC == 1 then
+        print("on_next_round")
+    end
     
     --print ("BEFORE MEGA MAX INCREASE PER ROUND")
     gauntlet_data.mega_max_hp = gauntlet_data.mega_max_hp + GAUNTLET_DEFS.HP_INCREASE_PER_ROUND[state_logic.current_round]
@@ -881,17 +915,73 @@ function state_logic.shuffle_folder()
 
 end
 
+function state_logic.try_open_file(path, mode)
+
+    local file = io.open(path, mode)
+
+    print("Trying to open file: " .. path)
+
+    if file == nil then
+        file = io.open("Lua/mmbn3_draft_gauntlet/" .. path, mode)
+    end
+
+    if file == nil then
+        file = io.open("Lua/mmbn3-draft-gauntlet-master/" .. path, mode)
+    end
+
+    if file == nil then
+        file = io.open("Lua/mmbn3_draft_gauntlet/" .. path, mode)
+    end
+
+    if file == nil then
+        file = io.open("../lua/" .. path, mode)
+    end
+
+    if file == nil then
+        file = io.open("../bizhawk/" .. path, mode)
+    end
+
+    if file == nil then
+        file = io.open("../mmbn3_draft_gauntlet/" .. path, mode)
+    end
+
+    if file == nil then
+        file = io.open("../mmbn3-draft-gauntlet-master/" .. path, mode)
+    end
+
+
+    if file == nil then
+        print("Could not read input file " .. path .. "!")
+        return nil
+    end
+
+    return file
+end
+
 function state_logic.export_run_statistics()
 
-    local file = io.open(state_logic.stats_file_name, "w")
+    local file = state_logic.try_open_file(state_logic.stats_file_name, "w")
     if file == nil then
-        print("Could not save statistics, please create the \"stats\" folder inside the gauntlet folder!")
         return
     end
 
     print("Saving statistics to file: " .. state_logic.stats_file_name)
     local stats_json = json.encode(gauntlet_data.statistics_container)
     file:write(stats_json)
+    file:flush()
+    file:close()
+
+    -- Export run inputs
+
+    print("Saving run inputs to file: " .. state_logic.recorded_inputs_file_name)
+
+    file = state_logic.try_open_file(state_logic.recorded_inputs_file_name, "w")
+    if file == nil then
+        return
+    end
+    gauntlet_data.recorded_input_deltas[1].RANDOM_SEED = gauntlet_data.random_seed
+    local inputs_json = json.encode(gauntlet_data.recorded_input_deltas)
+    file:write(inputs_json)
     file:flush()
     file:close()
 end
@@ -941,22 +1031,59 @@ function state_logic.random_seeding_test()
 
 end
 
+function state_logic.load_prerecorded_inputs()
+
+    if gauntlet_data.prerecorded_inputs_file == nil then
+        return
+    end
+
+    local file = state_logic.try_open_file(gauntlet_data.prerecorded_inputs_file, "r")
+    if file == nil then
+        return
+    end
+
+    local prerecorded_input_str = file:read("*all")
+
+    gauntlet_data.prerecorded_inputs = json.decode(prerecorded_input_str)
+
+    file:close()
+end
 
 function state_logic.initialize()
 
+    if DEBUG_STATE_LOGIC == 1 then
+        print("initialize")
+    end
+
+    gauntlet_data.current_input = nil
+    state_logic.reset = false
+    gauntlet_data.main_player = 1
+
+    if state_logic.network_handler.is_host == false then
+        gauntlet_data.main_player = 0
+    end
+
+    event.unregisterbyname("main_frame_loop")
     event.unregisterbyname("on_enter_battle")
     event.unregisterbyname("on_battle_end")
     event.unregisterbyname("on_cust_screen_confirm")
+
+    gauntlet_data.recorded_input_deltas = {}
+    gauntlet_data.prerecorded_inputs = nil
+    gauntlet_data.prerecorded_inputs_index = 1
+    -- Load prerecorded inputs, if they exist
+    state_logic.load_prerecorded_inputs()
+
+
     --event.unregisterbyname("on_chip_use")
     --event.unregisterbyname("on_battle_phase_start")
 
-    event.unregisterbyname("main_frame_loop")
     event.onframestart(state_logic.main_frame_loop, "main_frame_loop")
     --event.onframeend(state_logic.main_loop, "main_loop2")
 
     event.onmemoryexecute(state_logic.on_enter_battle, GENERIC_DEFS.BATTLE_START_ADDRESS + 4, "on_enter_battle")
-    --event.onmemoryexecute(state_logic.on_battle_end, GENERIC_DEFS.END_OF_GAUNTLET_BATTLE_ADDRESS, "on_battle_end")
-    --event.onmemoryexecute(state_logic.on_cust_screen_confirm, GENERIC_DEFS.CUST_SCREEN_CONFIRM_ADDRESS + 2, "on_cust_screen_confirm")
+    event.onmemoryexecute(state_logic.on_battle_end, GENERIC_DEFS.END_OF_GAUNTLET_BATTLE_ADDRESS, "on_battle_end")
+    event.onmemoryexecute(state_logic.on_cust_screen_confirm, GENERIC_DEFS.CUST_SCREEN_CONFIRM_ADDRESS + 2, "on_cust_screen_confirm")
     --event.onmemoryexecute(state_logic.on_chip_use, GENERIC_DEFS.CHIP_USE_ADDRESS + 2, "on_chip_use")
     --event.onmemoryexecute(state_logic.on_battle_phase_start, GENERIC_DEFS.BATTLE_PHASE_START_CHIP_IDS_ADDRESS + 2, "on_battle_phase_start")
 
@@ -972,6 +1099,8 @@ function state_logic.initialize()
     
     
     state_logic.stats_file_name = "stats/" .. os.date("%Y_%m_%d_%H_%M_%S") .. ".json"
+    
+    state_logic.recorded_inputs_file_name = "stats/" .. os.date("%Y_%m_%d_%H_%M_%S") .. "_inputs.json"
 
     state_logic.hp_loaded = 0
     state_logic.buff_render_offset = 0
@@ -1023,22 +1152,22 @@ function state_logic.initialize()
     state_logic.time_compression_savestates = {}
 
 
-    if gauntlet_data.statistics_container ~= nil then
-
-        -- Just update it again, don't care if we possibly have duplicate entries.
-        state_logic.update_battle_statistics()
-        state_logic.export_run_statistics()
-
-    end
-
-
     gauntlet_data.statistics_container = {}
 
-    if gauntlet_data.fixed_random_seed == nil then
+    if gauntlet_data.fixed_random_seed == nil and state_logic.network_handler.random_seed == nil then
         math.randomseed(os.time())
         gauntlet_data.random_seed = math.random(2147483647)
     else
         gauntlet_data.random_seed = gauntlet_data.fixed_random_seed
+    end
+
+    if state_logic.network_handler.random_seed ~= nil then
+        gauntlet_data.random_seed = state_logic.network_handler.random_seed
+        state_logic.network_handler.random_seed = math.random(state_logic.network_handler.random_seed)
+    end
+
+    if gauntlet_data.prerecorded_inputs ~= nil then
+        gauntlet_data.random_seed = gauntlet_data.prerecorded_inputs[1].RANDOM_SEED
     end
 
     print("Seed: " .. tostring(gauntlet_data.random_seed))
@@ -1146,6 +1275,7 @@ function state_logic.initialize()
     gauntlet_data.number_of_time_compressions = 0
     gauntlet_data.current_battle_number_of_time_compressions = 0
     gauntlet_data.total_frame_count = 0
+    gauntlet_data.total_gba_frame_count = 0
     gauntlet_data.muramasa_damage_additive = 0
     gauntlet_data.muramasa_damage_multiplicative = 0
     gauntlet_data.masamune_damage_additive = 0
@@ -1287,14 +1417,33 @@ function state_logic.check_reset()
                             and input_handler.inputs_held["L"]
                             and input_handler.inputs_pressed["R"])                  
 
-    if soft_reset then
+    if soft_reset or state_logic.reset then
         print("Soft-Reset!")
+
+        
+
+        if gauntlet_data.statistics_container ~= nil then
+
+            -- Just update it again, don't care if we possibly have duplicate entries.
+            --state_logic.update_battle_statistics()
+            state_logic.export_run_statistics()
+
+        end
+
+
         state_logic.initialize()
+
+        return true
     end
 
+    return false
 end
 
 function state_logic.randomize_snecko_folder_codes(folder)
+
+    if DEBUG_STATE_LOGIC == 1 then
+        print("randomize_snecko_folder_codes")
+    end
 
     for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
 
@@ -1308,6 +1457,10 @@ function state_logic.randomize_snecko_folder_codes(folder)
 end
 
 function state_logic.update_battle_statistics()
+
+    if DEBUG_STATE_LOGIC == 1 then
+        print("update_battle_statistics")
+    end
 
     if state_logic.current_battle < 2 then
         return
@@ -1384,6 +1537,10 @@ function state_logic.update_battle_statistics()
 end
 
 function state_logic.patch_before_battle_start()
+
+    if DEBUG_STATE_LOGIC == 1 then
+        print("patch_before_battle_start")
+    end
 
     -- Patch folder with all new stuff.
     -- state_logic.randomize_folder()
@@ -1534,6 +1691,9 @@ end
 
 function state_logic.damage_taken()
 
+    if DEBUG_STATE_LOGIC == 1 then
+        print("damage_taken")
+    end
     
     gauntlet_data.has_mega_been_hit = 1
     gauntlet_data.number_of_perfect_fights = 0
@@ -1541,6 +1701,10 @@ function state_logic.damage_taken()
 end
 
 function state_logic.illusion_of_choice_randomize_selected_chip()
+
+    if DEBUG_STATE_LOGIC == 1 then
+        print("illusion_of_choice_randomize_selected_chip")
+    end
 
     local can_replace = false
 
@@ -1662,7 +1826,12 @@ function state_logic.on_mega_death()
     print("MEGA_CURRENT_HP_ADDRESS [2] " .. io_utils.readword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[2]))
     print("MEGA_CURRENT_HP_ADDRESS [3] " .. io_utils.readword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[3]))
     print("MEGA_CURRENT_HP_ADDRESS [4] " .. io_utils.readword(GENERIC_DEFS.MEGA_CURRENT_HP_ADDRESS_DURING_BATTLE[4]))
-    state_logic.initialize()
+    
+
+
+    --state_logic.initialize()
+
+    state_logic.reset = true
 end
 
 
@@ -1671,6 +1840,10 @@ function state_logic.set_cust_gauge_value(value)
 end
 
 function state_logic.damage_random_enemy(damage)
+
+    if DEBUG_STATE_LOGIC == 1 then
+        print("damage_random_enemy")
+    end
 
     -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
     local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]
@@ -1689,7 +1862,7 @@ function state_logic.damage_random_enemy(damage)
 
     -- Choose a random one
     local chosen_rng_index = gauntlet_data.math.random_in_battle(1, #enemy_hp_values)
-    print("Chosen RNG Index in battle: " .. tostring(chosen_rng_index))
+    --print("Chosen RNG Index in battle: " .. tostring(chosen_rng_index))
     if chosen_rng_index == 0 then
         chosen_rng_index = 1
     end
@@ -1711,6 +1884,10 @@ end
 
 
 function state_logic.damage_all_enemies(damage)
+
+    if DEBUG_STATE_LOGIC == 1 then
+        print("damage_all_enemies")
+    end
 
     -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
     local enemy_addresses = GENERIC_DEFS.ENEMY_CURRENT_HP_ADDRESS_DURING_BATTLE[gauntlet_data.number_of_entities]
@@ -1734,7 +1911,9 @@ end
 
 function state_logic.on_mega_damage_taken()
     --print("Damage taken! (Previous HP: " .. tostring(gauntlet_data.last_hp) .. ", Current HP: " .. tostring(gauntlet_data.current_hp) .. ", Max HP: " .. tostring(gauntlet_data.mega_max_hp) .. ")")
-    
+    if DEBUG_STATE_LOGIC == 1 then
+        print("on_mega_damage_taken")
+    end
 
     if gauntlet_data.current_battle_number_of_time_compressions > 0 and state_logic.main_loop_frame_count > gauntlet_data.time_compression_delay then
         state_logic.hp_loaded = 0
@@ -1777,6 +1956,10 @@ end
 
 function state_logic.on_mega_heal()
 
+    if DEBUG_STATE_LOGIC == 1 then
+        print("on_mega_heal")
+    end
+
     -- Compute healing difference
     local heal_diff = gauntlet_data.current_hp - gauntlet_data.last_hp
     gauntlet_data.current_hp = gauntlet_data.current_hp + math.floor(heal_diff * (gauntlet_data.healing_increase_mult))
@@ -1794,6 +1977,10 @@ end
 
 function state_logic.on_mega_hp_change()
 
+    if DEBUG_STATE_LOGIC == 1 then
+        print("on_mega_hp_change")
+    end
+
     if gauntlet_data.current_hp == nil or gauntlet_data.last_hp == nil or gauntlet_data.current_hp == 0 or gauntlet_data.last_hp == 0 then
         return
     end
@@ -1807,6 +1994,11 @@ function state_logic.on_mega_hp_change()
 end
 
 function state_logic.enemy_hp_regen()
+
+    if DEBUG_STATE_LOGIC == 1 then
+        print("enemy_hp_regen")
+    end
+
     gauntlet_data.enemies_hp_regen_accum = gauntlet_data.enemies_hp_regen_accum + gauntlet_data.enemies_hp_regen_per_frame
 
     if gauntlet_data.enemies_hp_regen_accum > 1 then
@@ -2036,6 +2228,9 @@ end
 
 function state_logic.on_first_cust_screen()
 
+    if DEBUG_STATE_LOGIC == 1 then
+        print("on_first_cust_screen")
+    end
     --print ("First cust screen: " .. tostring(gauntlet_data.backstab_percentage_damage) .. ", " .. tostring(state_logic.current_battle - 1))
 
     if gauntlet_data.backstab_percentage_damage ~= 0 and (state_logic.current_battle - 1 ) % GAUNTLET_DEFS.BOSS_BATTLE_INTERVAL == 0 then
@@ -2071,6 +2266,11 @@ function state_logic.on_first_cust_screen()
 end
 
 function state_logic.on_cust_screen_open()
+
+    if DEBUG_STATE_LOGIC == 1 then
+        print("on_cust_screen_open")
+    end
+
     gauntlet_data.num_chips_in_battle = 0
     gauntlet_data.battle_phase = 0
 
@@ -2084,12 +2284,17 @@ function state_logic.on_cust_screen_open()
     --memory.writebyte(GENERIC_DEFS.CUST_SCREEN_NUMBER_OF_CHIPS_ADDRESS - 0x02000000, 0xFF, "EWRAM")
     gauntlet_data.number_of_chosen_cust_chips = 0xFF
 
-    event.onmemoryexecute(state_logic.on_cust_screen_confirm, GENERIC_DEFS.CUST_SCREEN_CONFIRM_ADDRESS + 2, "on_cust_screen_confirm")
+    --event.onmemoryexecute(state_logic.on_cust_screen_confirm, GENERIC_DEFS.CUST_SCREEN_CONFIRM_ADDRESS + 2, "on_cust_screen_confirm")
 
     --print("Cust screen opened")
 end
 
 function state_logic.on_cust_screen_closed()
+
+    if DEBUG_STATE_LOGIC == 1 then
+        print("on_cust_screen_closed")
+    end
+
     --gauntlet_data.num_chips_in_battle = memory.readbyte(GENERIC_DEFS.IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS[gauntlet_data.number_of_entities] - 0x02000000, "EWRAM")
     --print("Cust screen closed")
 
@@ -2178,9 +2383,62 @@ end
 
 function state_logic.main_frame_loop()
 
+    
     -- This loop runs at the GBA framerate. 
     --print ("Current state: " .. gauntlet_data.current_state)
     if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
+
+            
+        if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 then
+            gauntlet_data.sub_player_delay_counter = gauntlet_data.sub_player_delay_counter + 1
+
+            if gauntlet_data.sub_player_delay_counter < gauntlet_data.sub_player_ingame_delay_frames then
+
+                -- Reload rewind savestate until we "delayed enough"
+                memorysavestate.loadcorestate(state_logic.rewind_savestate)
+            end
+        end
+
+        
+        state_logic.apply_prerecorded_inputs_ingame()
+
+        if state_logic.network_handler.is_connected == false then
+            if gauntlet_data.prerecorded_inputs == nil then
+                input_handler.current_input_state = joypad.get()
+            end
+        else
+            if gauntlet_data.main_player == 1 then
+                input_handler.current_input_state = joypad.get()
+            end
+        end
+
+        state_logic.apply_networked_inputs_ingame()
+
+        -- TODO: check if we're using recorded, networked or raw inputs
+        input_handler.handle_inputs()
+
+        -- This input delta recording should only run in the "menu". This will be replayed differently compared to the in-game inputs.
+
+        if input_handler.has_delta == true then
+            local recorded_input_table = deepcopy(input_handler.inputs_delta)
+            recorded_input_table.GBA_FRAME = gauntlet_data.total_gba_frame_count
+            gauntlet_data.recorded_input_deltas[#gauntlet_data.recorded_input_deltas + 1] = recorded_input_table
+
+            
+            -- Enter current menu inputs into network buffer
+            if gauntlet_data.main_player == 1 then
+                state_logic.network_handler.produce_send_buffer(json.encode(recorded_input_table) .. "\n")
+            end
+        end
+
+        
+        if state_logic.check_reset() then
+            return
+        end
+
+
+        gauntlet_data.total_gba_frame_count = gauntlet_data.total_gba_frame_count + 1
+
 
         gauntlet_data.number_of_entities = (state_logic.battle_data[state_logic.current_battle - 1].NUM_ENTITIES)
 
@@ -2229,6 +2487,7 @@ function state_logic.main_frame_loop()
         state_logic.check_in_battle_effects()
 
         -- Check enemy HP regen
+        -- TODO_REFACTOR: this is currently a special if for the single buff that trades pausing for enemy HP regen...
         if gauntlet_data.enemies_hp_regen_per_frame ~= 0 and gauntlet_data.battle_paused == 0 then
             state_logic.enemy_hp_regen()
         end
@@ -2251,15 +2510,268 @@ function state_logic.main_frame_loop()
     end
 end
 
+local start_frame = 0
+local start_time = 0
+
+function state_logic.apply_prerecorded_inputs_menu()
+
+    
+    if gauntlet_data.current_state ~= gauntlet_data.GAME_STATE.RUNNING then
+
+        -- If we have recorded inputs, we set them
+
+        if gauntlet_data.prerecorded_inputs ~= nil then
+
+            --print("prerecorded index: " .. tostring(gauntlet_data.prerecorded_inputs_index))
+
+            -- Get next (MENU) input frame and play it back if the frame number is lower
+            local current_input_table = gauntlet_data.prerecorded_inputs[gauntlet_data.prerecorded_inputs_index]
+
+            
+            if input_handler.current_input_state == nil then
+                input_handler.current_input_state = joypad.get()
+            end
+
+
+            if current_input_table ~= nil then
+
+                if current_input_table.MENU_FRAME ~= nil then
+
+                    if gauntlet_data.total_frame_count >= current_input_table.MENU_FRAME then
+
+                        for key, value in pairs(current_input_table) do
+
+                            if input_handler.current_input_state[key] ~= nil then
+                                input_handler.current_input_state[key] = value
+                            end
+
+                        end
+
+                        gauntlet_data.prerecorded_inputs_index = gauntlet_data.prerecorded_inputs_index + 1
+                    end
+                    
+                end
+
+            end
+
+
+        end
+    end
+
+end
+
+function state_logic.apply_prerecorded_inputs_ingame()
+
+    if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
+
+        -- If we have recorded inputs, we set them
+
+        if gauntlet_data.prerecorded_inputs ~= nil then
+
+            
+            if input_handler.current_input_state == nil then
+                input_handler.current_input_state = joypad.get()
+            end
+
+            -- Get next (MENU) input frame and play it back if the frame number is lower
+            local current_input_table = gauntlet_data.prerecorded_inputs[gauntlet_data.prerecorded_inputs_index]
+
+            if current_input_table ~= nil then
+
+                if current_input_table.GBA_FRAME ~= nil then
+
+                    if gauntlet_data.total_gba_frame_count >= current_input_table.GBA_FRAME then
+
+                        if input_handler.current_input_state == nil then
+                            input_handler.current_input_state = joypad.get()
+                        end
+
+                        for key, value in pairs(current_input_table) do
+
+                            if input_handler.current_input_state[key] ~= nil then
+                                input_handler.current_input_state[key] = value
+                            end
+
+                        end
+
+                        gauntlet_data.prerecorded_inputs_index = gauntlet_data.prerecorded_inputs_index + 1
+                    end
+                    
+                end
+
+            end
+
+            
+            joypad.set(input_handler.current_input_state)
+
+        end
+    end
+
+end
+
+function state_logic.apply_current_networked_input()
+
+    if input_handler.current_input_state == nil then
+        input_handler.current_input_state = joypad.get()
+    end
+
+    -- Try to use the inputs
+    if gauntlet_data.current_input ~= nil then
+
+        if (gauntlet_data.current_input.MENU_FRAME ~= nil) or (gauntlet_data.current_input.GBA_FRAME ~= nil and (gauntlet_data.current_input.GBA_FRAME <= gauntlet_data.total_gba_frame_count)) then
+            
+            --print("applying: ")
+            --print(gauntlet_data.current_input)
+
+            for key, value in pairs(gauntlet_data.current_input) do
+
+                if input_handler.current_input_state[key] ~= nil then
+                    input_handler.current_input_state[key] = value
+                end
+
+            end
+            
+            gauntlet_data.current_input = nil
+
+        else
+            --print("NOT applying: ")
+            --print(gauntlet_data.current_input)
+            --print(gauntlet_data.total_gba_frame_count)
+
+        end
+
+        
+    end
+
+end
+
+
+function state_logic.apply_networked_inputs_menu()
+
+
+    if gauntlet_data.main_player == 0 and state_logic.network_handler.is_connected then
+        -- Get inputs from network
+
+        if gauntlet_data.current_input == nil then
+            local data = state_logic.network_handler.consume_receive_buffer()
+
+            if data ~= nil then
+               gauntlet_data.current_input = json.decode(data)
+
+               --print("Received current data (menu): ")
+               --print(gauntlet_data.current_input)
+            end
+
+        end
+
+
+        state_logic.apply_current_networked_input()
+    end
+
+
+end
+
+function state_logic.apply_networked_inputs_ingame()
+
+    if gauntlet_data.main_player == 0 and state_logic.network_handler.is_connected then
+        -- Get inputs from network
+
+        if gauntlet_data.current_input == nil then
+            local data = state_logic.network_handler.consume_receive_buffer()
+
+            if data ~= nil then
+               gauntlet_data.current_input = json.decode(data)
+
+               --print("Received current data (ingame): ")
+               --print(gauntlet_data.current_input)
+               --print(gauntlet_data.total_gba_frame_count)
+            end
+
+        end
+
+
+        state_logic.apply_current_networked_input()
+
+        if input_handler.current_input_state ~= nil then
+            joypad.set(input_handler.current_input_state)
+        end
+
+    end
+
+end
+
 function state_logic.main_loop()
-    gauntlet_data.total_frame_count = gauntlet_data.total_frame_count + 1
+
+    -- This loop runs at emulator frame rate
+
+
+    local current_time = os.time()
+
+    if (current_time - start_time) > 1 then
+        print ("FPS: ", (gauntlet_data.total_frame_count - start_frame) / (current_time - start_time))
+        start_time = current_time
+        start_frame = gauntlet_data.total_frame_count
+    end
+
+    --
+
     if DEBUG == 1 then
         print ("DEBUG: STATE: ", gauntlet_data.current_state)
     end
-    input_handler.handle_inputs()
 
 
-    state_logic.check_reset()
+    --if gauntlet_data.current_state ~= gauntlet_data.GAME_STATE.RUNNING then
+
+    -- If we have recorded inputs, we set them
+
+    if gauntlet_data.current_state ~= gauntlet_data.GAME_STATE.RUNNING then
+
+        
+        state_logic.apply_prerecorded_inputs_menu()
+
+        if state_logic.network_handler.is_connected == false then
+            if gauntlet_data.prerecorded_inputs == nil then
+                input_handler.current_input_state = joypad.get()
+            end
+        else
+            if gauntlet_data.main_player == 1 then
+                input_handler.current_input_state = joypad.get()
+            end
+        end
+
+        state_logic.apply_networked_inputs_menu()
+
+        -- TODO: check if we're using recorded, networked or raw inputs
+        input_handler.handle_inputs()
+
+        -- This input delta recording should only run in the "menu". This will be replayed differently compared to the in-game inputs.
+    
+        if input_handler.has_delta == true then
+            local recorded_input_table = deepcopy(input_handler.inputs_delta)
+            recorded_input_table.MENU_FRAME = gauntlet_data.total_frame_count
+            gauntlet_data.recorded_input_deltas[#gauntlet_data.recorded_input_deltas + 1] = recorded_input_table
+            
+        
+            -- Enter current menu inputs into network buffer
+            if gauntlet_data.main_player == 1 then
+                state_logic.network_handler.produce_send_buffer(json.encode(recorded_input_table) .. "\n")
+            end
+        end
+        
+           
+        
+
+        --end
+        
+        if state_logic.check_reset() then
+            return
+        end
+    end
+
+
+    
+    gauntlet_data.total_frame_count = gauntlet_data.total_frame_count + 1
+
 
     --state_logic.main_frame_loop()
     
@@ -2358,9 +2870,9 @@ function state_logic.main_loop()
 
 
             
-            gui.DrawFinish()
-            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-            state_logic.should_redraw = 0
+            --gui.DrawFinish()
+            --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            --state_logic.should_redraw = 0
         end
 
 
@@ -2540,9 +3052,9 @@ function state_logic.main_loop()
             
             
             
-            gui.DrawFinish()
-            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-            state_logic.should_redraw = 0
+            --gui.DrawFinish()
+            --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            --state_logic.should_redraw = 0
         end
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT then    
@@ -2555,7 +3067,7 @@ function state_logic.main_loop()
         state_logic.shuffle_folder()
         state_logic.dropped_buffs = BUFF_GENERATOR.random_buffs_from_round(state_logic.current_round, GAUNTLET_DEFS.NUMBER_OF_DROPPED_BUFFS, state_logic.current_battle)
         state_logic.update_buff_discriptions()
-        memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+        --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         client.pause()
 
         -- Determine number of Mega/Giga chips in folder.
@@ -2660,9 +3172,9 @@ function state_logic.main_loop()
             end
 
             
-            gui.DrawFinish()
-            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-            state_logic.should_redraw = 0
+            --gui.DrawFinish()
+            --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            --state_logic.should_redraw = 0
         end
         
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING then
@@ -2678,6 +3190,9 @@ function state_logic.main_loop()
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
         
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.LOAD_INITIAL then
+
+        --print('test!')
+
         -- Simply load initial state again if we beat all rounds.
         savestate.load(state_logic.initial_state)
 
@@ -2693,7 +3208,7 @@ function state_logic.main_loop()
         state_logic.should_redraw = 1
         
         
-        memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+        --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         client.pause()
 
 
@@ -2759,9 +3274,9 @@ function state_logic.main_loop()
             end
 
             
-            gui.DrawFinish()
-            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-            state_logic.should_redraw = 0
+            --gui.DrawFinish()
+            --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            --state_logic.should_redraw = 0
         end
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_DROP_METHOD then
@@ -2771,7 +3286,7 @@ function state_logic.main_loop()
         state_logic.should_redraw = 1
         
         
-        memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+        --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         client.pause()
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.CHOOSE_DROP_METHOD then
@@ -2832,9 +3347,9 @@ function state_logic.main_loop()
             end
 
             
-            gui.DrawFinish()
-            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-            state_logic.should_redraw = 0
+            --gui.DrawFinish()
+            --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            --state_logic.should_redraw = 0
         end
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_DIFFICULTY then
@@ -2844,7 +3359,7 @@ function state_logic.main_loop()
         state_logic.should_redraw = 1
         
         
-        memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+        --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         client.pause()
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.CHOOSE_DIFFICULTY then
@@ -2905,9 +3420,9 @@ function state_logic.main_loop()
             end
 
             
-            gui.DrawFinish()
-            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-            state_logic.should_redraw = 0
+            --gui.DrawFinish()
+            --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            --state_logic.should_redraw = 0
         end
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_DRAFT_FOLDER then
@@ -2937,7 +3452,7 @@ function state_logic.main_loop()
         end
         
         state_logic.update_argb_chip_icons_in_folder()
-        memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+        --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         client.pause()
         
 
@@ -2998,9 +3513,9 @@ function state_logic.main_loop()
                 gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset)
             end
             
-            gui.DrawFinish()
-            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-            state_logic.should_redraw = 0
+            --gui.DrawFinish()
+            --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            --state_logic.should_redraw = 0
         end
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_GAUNTLET_COMPLETE then
@@ -3009,7 +3524,7 @@ function state_logic.main_loop()
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.GAUNTLET_COMPLETE
         state_logic.should_redraw = 1
         
-        memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+        --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         client.pause()
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.GAUNTLET_COMPLETE then
@@ -3019,19 +3534,31 @@ function state_logic.main_loop()
             
             gui_rendering.render_gauntlet_complete()
 
-            gui.DrawFinish()
-            memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-            state_logic.should_redraw = 0
+           -- gui.DrawFinish()
+            --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            --state_logic.should_redraw = 0
         end
         
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
         
+        
     else-- Default state, should never happen
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
     end
 
+
+
+    -- Send network buffer values, if they exist
+    while state_logic.network_handler.consume_send_buffer() do
     
+    end
+
+    -- Receive network buffer values, if they exist
+    while state_logic.network_handler.produce_receive_buffer() do
+
+    end
+
 
     -- Pause-Buffer penalty  0x02001889
     -- Would need to check for first cust-screen open to prevent invalid triggers at the start of battle.

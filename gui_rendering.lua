@@ -22,7 +22,9 @@ function drawTextOutline(x_pos, y_pos, string, outline_color, color, background_
 
 
     -- This is a hack to prevent the background/selected box from stopping before the end of the text.
-    gui.drawText(x_pos, y_pos, string .. "|", background_color, background_color, font_size, font_family)
+    local bg_string = "||||||||||||||||||||||||"
+
+    gui.drawText(x_pos, y_pos, bg_string, background_color, background_color, font_size, font_family)
     -- Draw simple outline
     gui.drawText(x_pos - 1, y_pos, string, outline_color, "transparent", font_size, font_family)
     gui.drawText(x_pos + 1, y_pos, string, outline_color, "transparent", font_size, font_family)
@@ -32,9 +34,26 @@ function drawTextOutline(x_pos, y_pos, string, outline_color, color, background_
     gui.drawText(x_pos + 1, y_pos + 1, string, outline_color, "transparent", font_size, font_family)
     gui.drawText(x_pos + 1, y_pos - 1, string, outline_color, "transparent", font_size, font_family)
     gui.drawText(x_pos - 1, y_pos + 1, string, outline_color, "transparent", font_size, font_family)
+    
+    --gui.drawText(x_pos - 1, y_pos, string, outline_color, "transparent", font_size, font_family)
+    --gui.drawText(x_pos + 1, y_pos, string, outline_color, "transparent", font_size, font_family)
+    local x_pos_off = x_pos + 2
+    local y_pos_off = y_pos + 2
+
+    --gui.pixelText(x_pos_off, y_pos_off, bg_string, background_color, background_color)
+
+    --gui.pixelText(x_pos_off - 1, y_pos_off, string, outline_color, "transparent")
+    --gui.pixelText(x_pos_off + 1, y_pos_off, string, outline_color, "transparent")
+    --gui.pixelText(x_pos_off, y_pos_off - 1, string, outline_color, "transparent")
+    --gui.pixelText(x_pos_off, y_pos_off + 1, string, outline_color, "transparent")
+    --gui.pixelText(x_pos_off - 1, y_pos_off - 1, string, outline_color, "transparent")
+    --gui.pixelText(x_pos_off + 1, y_pos_off + 1, string, outline_color, "transparent")
+    --gui.pixelText(x_pos_off + 1, y_pos_off - 1, string, outline_color, "transparent")
+    --gui.pixelText(x_pos_off - 1, y_pos_off + 1, string, outline_color, "transparent")
 
     -- Draw main text
     gui.drawText(x_pos, y_pos, string, color, "transparent", font_size, font_family)
+    --gui.pixelText(x_pos_off, y_pos_off, string, color, "transparent")
 end
 
 -- We will use this for both icons and chip images with palettes.
@@ -44,7 +63,9 @@ function render_argb_2d_array(argb_2d_array, x_offset, y_offset, width, height)
 
         for y = 1,height do
 
-            gui.drawPixel(x + x_offset, y + y_offset, argb_2d_array[x][y])
+            --if bit.rshift(argb_2d_array[x][y], 24) >= 0x0 then
+                gui.drawPixel(x + x_offset, y + y_offset, argb_2d_array[x][y])
+            --end
 
         end
 
@@ -144,16 +165,17 @@ function gui_rendering.render_items_non_centered_without_arrow_guides(buff_list,
     local x_offset = base_offset_x
     local y_offset = base_offset_y
 
-    
 
-    for buff_idx = 1,num_buffs do
+    local buff_idx_start = math.max(1, selected_buff_index - 1)
+    local buff_idx_end = math.min(num_buffs, selected_buff_index + 1)
 
+    for buff_idx = buff_idx_start, buff_idx_end do
 
         
-        render_item(buff_list[buff_idx], x_offset, y_offset, buff_idx == selected_buff_index)
+        render_item(buff_list[buff_idx], x_offset + offset_per_item_x * (item_idx - 1), y_offset + offset_per_item_y * (item_idx - 1), buff_idx == selected_buff_index)
 
-        x_offset = x_offset + offset_per_buff_x
-        y_offset = y_offset + offset_per_buff_y
+        --x_offset = x_offset + offset_per_buff_x
+        --y_offset = y_offset + offset_per_buff_y
 
     end
 
@@ -201,16 +223,21 @@ function gui_rendering.render_items(items, selected_item_index)
     local y_offset = base_offset_y
 
 
-    
+    -- Make sure out-of-view objects are not rendered
+    local item_idx_start = math.max(1, selected_item_index - 1)
+    local item_idx_end = math.min(num_items, selected_item_index + 1)
 
-    for item_idx = 1,num_items do
+    --local item_idx_start = 1
+    --local item_idx_end = num_items
+
+    for item_idx = item_idx_start,item_idx_end do
 
 
         
-        render_list_item(items[item_idx], x_offset, y_offset, item_idx == selected_item_index)
+        render_list_item(items[item_idx], x_offset + offset_per_item_x * (item_idx - 1), y_offset + offset_per_item_y * (item_idx - 1), item_idx == selected_item_index)
 
-        x_offset = x_offset + offset_per_item_x
-        y_offset = y_offset + offset_per_item_y
+        --x_offset = x_offset + offset_per_item_x
+        --y_offset = y_offset + offset_per_item_y
 
     end
 

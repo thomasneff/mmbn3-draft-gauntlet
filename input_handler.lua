@@ -7,13 +7,27 @@ input_handler.inputs_pressed = nil
 
 input_handler.inputs_held = {}
 
+input_handler.inputs_delta = {}
 
+input_handler.previous_inputs = {}
+
+input_handler.has_delta = false
+
+input_handler.current_input_state = nil
 
 -- This handles all the input stuff.
 function input_handler.handle_inputs()
 
 
-    local joypad_readout = joypad.get()
+    input_handler.inputs_delta = {}
+    
+    input_handler.has_delta = false
+    
+    if input_handler.current_input_state == nil then
+        input_handler.current_input_state = joypad.get()
+    end
+
+    local joypad_readout = input_handler.current_input_state
 
     if input_handler.inputs_pressed == nil then
 
@@ -39,7 +53,14 @@ function input_handler.handle_inputs()
 
         input_handler.inputs_held[key] = value
 
+        if value ~= input_handler.previous_inputs[key] then
+            input_handler.inputs_delta[key] = value
+            input_handler.has_delta = true
+        end
+
     end
+
+    input_handler.previous_inputs = deepcopy(joypad_readout)
 
 end
 

@@ -153,6 +153,28 @@ gauntlet_data.fixed_random_seed = nil
 gauntlet_data.rng_value_map = {}
 gauntlet_data.math = {}
 
+-- input recording / playback
+-- This is a map from frame number (after initialize) to joypad change dict
+gauntlet_data.recorded_input_deltas = {}
+gauntlet_data.prerecorded_inputs_file = nil--"stats/test_inputs3.json"
+gauntlet_data.prerecorded_inputs = nil
+gauntlet_data.prerecorded_inputs_index = 1
+
+
+-- networking mode - this is simply alternating control / sync between client and host
+-- e.g. first round: host plays, client gets sync'd inputs, second round: client plays, host gets sync'd inputs
+--      we make sure that this is ok by doing the following:
+-- 
+-- In Menu: inputs are just sent from host to client
+-- In Battle: client waits/pauses for N frames (while still receiving inputs), then reloads the initial save state
+--            afterwards, client just plays back the inputs for each frame in order.  
+--            This means we want to receive/send messages in the main loop.       
+gauntlet_data.main_player = 1 
+gauntlet_data.current_input = nil
+gauntlet_data.sub_player_ingame_delay_frames = 30
+gauntlet_data.sub_player_delay_counter = 0
+
+
 -- Need: rng_index, last_discrete_rng_index, rng_values[]
 
 function gauntlet_data.math.advance_rng_since_last_advance(name, advance_count)

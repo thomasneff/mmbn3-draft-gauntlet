@@ -15,7 +15,7 @@ function WRAPPER.get_module(base_path, game_id, file_name)
     end
 
 
-    print("Loaded: " .. full_path .. ".lua : " .. game_id)
+    --print("Loaded: " .. full_path .. ".lua : " .. game_id)
 
     return module
 end

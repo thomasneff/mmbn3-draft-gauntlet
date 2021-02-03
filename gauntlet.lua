@@ -24,13 +24,25 @@ end
 
 
 local state_logic = require "state_logic"
+state_logic.network_handler = require "network_handler"
+
+local run_main_loop = false
+
+local function on_form_exit_callback()
+
+    state_logic.initialize()
+    run_main_loop = true
+
+end
+
+state_logic.network_handler.open_connection_form(on_form_exit_callback)
 
 -- Setup Callbacks for battle start to patch viruses
 
 
 --savestate.loadslot(1)
 --CHIP_DATA.dump_entity_name_addresses()
-state_logic.initialize()
+--state_logic.initialize()
 
 
 
@@ -121,7 +133,9 @@ testfile:close()--]]
 while 1 do
 
 
-    state_logic.main_loop()
+    if run_main_loop then
+        state_logic.main_loop()
+    end
 
     emu.yield()
 
