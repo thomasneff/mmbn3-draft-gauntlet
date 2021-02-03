@@ -6,10 +6,15 @@ The player has to survive a series of 50 battles, with a boss fight every 5 batt
 The player can select from various starting loadouts that include a fully-featured draft mode to impact the starting folder. 
 Additionally, the mod contains an optional music-patching feature that randomly selects music tracks from other GBA games and randomizes tempo as well as pitch. 
 
-The MMBN3 Gauntlet *requires* Bizhawk with the VBA-Next Core. This is because it requires the run-time manipulation of RAM and ROM of the running GBA emulator Core.
+The MMBN3 Gauntlet *requires* a recent version of [Bizhawk](https://github.com/TASVideos/BizHawk) using the default mGBA core. This is because it requires the run-time manipulation of RAM and ROM of the running GBA emulator Core.
 
-# json.lua
+# Credits
+
+## json.lua
 Credits to json.lua go to https://github.com/rxi (Respective License: LICENSE_JSON_LUA)
+
+## BBN3-netcode
+Credits to the experimental [BBN3-netcode](https://github.com/ssbmars/BBN3-netcode) repo by [ssbmars](https://github.com/ssbmars) for helping me save time in creating the network-input form before running.
 
 # How-To / Usage
 
@@ -17,13 +22,11 @@ Download BizHawk from https://github.com/TASVideos/BizHawk/releases
 
 Download the latest release of the Gauntlet files in the release section ( https://github.com/thomasneff/mmbn3-draft-gauntlet/releases )
 
-Extract all files to a directory of your choice (I will refer to that directory from now on as GAUNTLET_FOLDER)
+Extract all files into the Bizhawk/Lua directory (so that the directory then contains the mmbn3_draft_gauntlet folder). I will refer to the mmbn3_draft_gauntlet folder as the GAUNTLET_FOLDER.
 
-Get "gbabios.rom" and make sure to put it in the "Firmware" directory inside your BizHawk directory
+Get "gbabios.rom" and make sure to put it in the "Firmware" directory inside your BizHawk directory.
 
-Start BizHawk (EmuHawk.exe)
-
-Switch GBA Core to "VBA-Next" (Config -> Cores -> GBA -> "VBA-Next")
+Start BizHawk (EmuHawk.exe).
 
 Load Megaman Battle Network 3: Blue [US] in BizHawk
 
@@ -33,7 +36,12 @@ In the Lua Console, open the script "gauntlet.lua" (Script -> Open Script -> ope
 
 (If it didn't start automatically) Doubleclick the "gauntlet" script in the Lua Console list of scripts
 
-The paused icon should change to a running icon, and the gauntlet will load
+The paused icon should change to a running icon, and the gauntlet will load.
+
+# Experimental Netplay
+The gauntlet supports a 2-player "netplay" mode that alternates controls between a "controller" and a "spectator" between rounds. 
+Make sure that the hosts forwards the port correctly and that the host clicks the "Host" button before the Client clicks the "Join" button.
+If you don't want to use the netplay mode, simply close the form without pressing either button.
 
 
 # Controls during Menus / between Battles
@@ -136,7 +144,6 @@ Changing / adding entries to this list will add the possibility for these songs 
 1. Download BizHawk ( https://github.com/TASVideos/BizHawk/releases )
 2. Download and extract newest Release of MMBN3 Gauntlet ( https://github.com/thomasneff/mmbn3-draft-gauntlet/releases )
 3. Get gbabios.rom for BizHawk
-4. Switch BizHawk to VBA-Next (Config -> Cores -> GBA -> "VBA-Next")
 5. Patch MMBN3 Blue [US] with GAUNTLET_FOLDER/rom_patcher/RomPatcher.exe (RomPatcher.exe mmbn3.gba)
 6. Extract Songs from GBA files using GAUNTLET_FOLDER/song_extractor_cs/SongExtractor.exe (SongExtractor.exe rom_path song_table_address first_song_index last_song_index 800000)
 7. Modify GAUNTLET_FOLDER/music_loader.lua to use your extracted songs or change music randomization!
@@ -148,7 +155,6 @@ Changing / adding entries to this list will add the possibility for these songs 
 1. Download BizHawk ( https://github.com/TASVideos/BizHawk/releases )
 2. Download and extract newest Release of MMBN3 Gauntlet ( https://github.com/thomasneff/mmbn3-draft-gauntlet/releases )
 3. Get gbabios.rom for BizHawk
-4. Switch BizHawk to VBA-Next (Config -> Cores -> GBA -> "VBA-Next")
 5. Open the BizHawk Lua Console (Tools -> Lua Console)
 6. Open the script "gauntlet.lua" (Script -> Open Script -> open GAUNTLET_FOLDER/gauntlet.lua)
 7. ( If not started automatically: Doubleclick the "gauntlet" script in the Lua Console list of scripts )
