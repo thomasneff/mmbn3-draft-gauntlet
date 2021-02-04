@@ -407,19 +407,21 @@ end
 function state_logic.on_chip_use()
     --print("Chip used!")
 
-    if DEBUG_STATE_LOGIC == 1 then
-        print("on_chip_use")
-    end
+    --if DEBUG_STATE_LOGIC == 1 then
+    --    print("on_chip_use: " .. CHIP_NAME[gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].ID])
+    --end
 
     for k, v in pairs(state_logic.activated_buffs) do
         if v.ON_CHIP_USE_CALLBACK ~= nil then
-            v:on_chip_use(gauntlet_data.selected_chips[gauntlet_data.current_battle_chip_index], 
+            v:on_chip_use(gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index], 
                 state_logic.main_loop_frame_count, 
                 state_logic, 
                 gauntlet_data)
         end
     end
 
+    gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].ID = 0xFFFF
+    gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].DAMAGE = 0x0000
     --state_logic.update_printable_chip_names_in_folder()
     --state_logic.update_argb_chip_icons_in_folder()
     gauntlet_data.current_battle_chip_index = gauntlet_data.current_battle_chip_index + 1
@@ -569,8 +571,10 @@ function state_logic.on_battle_end()
 
     input_handler.current_input_state = nil
 
-    gauntlet_data.main_player = 1 - gauntlet_data.main_player
-    gauntlet_data.sub_player_delay_counter = gauntlet_data.sub_player_ingame_delay_frames
+    if state_logic.network_handler.is_connected then
+        gauntlet_data.main_player = 1 - gauntlet_data.main_player
+        gauntlet_data.sub_player_delay_counter = gauntlet_data.sub_player_ingame_delay_frames
+    end
 
     -- We advance chip generation rng here
     gauntlet_data.math.advance_rng_since_last_advance("CHIP_GENERATION", 229);
@@ -648,7 +652,6 @@ function state_logic.on_enter_battle()
         print("on_enter_battle")
     end
 
-    input_handler.current_input_state = nil
     -- Check if this is really the battle start or just a use of FoldrBak
     -- If in the future, somehow, our check with battle_start and battle_end doesn't work, we can use this to check for FoldrBak
     --local r9_val = emu.getregister("R9")
@@ -677,8 +680,6 @@ function state_logic.on_enter_battle()
     --state_logic.determine_drops(GAUNTLET_DEFS.NUMBER_OF_DROPPED_CHIPS)
     state_logic.shuffle_folder()
     
-    
-
     if gauntlet_data.current_state ~= gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT and  
         gauntlet_data.current_state ~= gauntlet_data.GAME_STATE.BUFF_SELECT then
             gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT
@@ -803,9 +804,15 @@ function state_logic.get_argb_icon(chip)
         return nil
     end
 
+    if gauntlet_data.chip_icon_cache[chip.ID] ~= nil then
+        return gauntlet_data.chip_icon_cache[chip.ID]
+    end
+
     local chip_address = CHIP_DATA[chip.ID].CHIP_ICON_OFFSET
 
-    return CHIP_ICON.get_argb_2d_array_for_icon_address(chip_address)
+    gauntlet_data.chip_icon_cache[chip.ID] = deepcopy(CHIP_ICON.get_argb_2d_array_for_icon_address(chip_address))
+
+    return gauntlet_data.chip_icon_cache[chip.ID]
 
 end
 
@@ -1057,12 +1064,25 @@ function state_logic.initialize()
 
     gauntlet_data.current_input = nil
     state_logic.reset = false
-    gauntlet_data.main_player = 1
+    gauntlet_data.networked_music_loaded = 1
 
-    if state_logic.network_handler.is_host == false then
-        gauntlet_data.main_player = 0
+
+    if gauntlet_data.main_player == nil then
+
+        gauntlet_data.main_player = 1
+
+        if state_logic.network_handler.is_connected == true and state_logic.network_handler.is_host == false then
+            gauntlet_data.main_player = 0
+        end
+    
+    else
+
+        if state_logic.network_handler.is_connected then
+            gauntlet_data.main_player = 1 - gauntlet_data.main_player
+        end
+
     end
-
+    
     event.unregisterbyname("main_frame_loop")
     event.unregisterbyname("on_enter_battle")
     event.unregisterbyname("on_battle_end")
@@ -1163,7 +1183,6 @@ function state_logic.initialize()
 
     if state_logic.network_handler.random_seed ~= nil then
         gauntlet_data.random_seed = state_logic.network_handler.random_seed
-        state_logic.network_handler.random_seed = math.random(state_logic.network_handler.random_seed)
     end
 
     if gauntlet_data.prerecorded_inputs ~= nil then
@@ -1172,6 +1191,7 @@ function state_logic.initialize()
 
     print("Seed: " .. tostring(gauntlet_data.random_seed))
     math.randomseed(gauntlet_data.random_seed)
+    
 
     -- Generate initial random values for in-battle rng (e.g. random reflect)
     -- This is so that the draft is not changed when damage is taken using these buffs.
@@ -1190,7 +1210,11 @@ function state_logic.initialize()
     gauntlet_data.math.initialize_rng_for_group("BATTLE_DATA", 10000)
     gauntlet_data.math.initialize_rng_for_group("CHIP_GENERATION", 100000)
     gauntlet_data.math.initialize_rng_for_group("FOLDER_SHUFFLING", 10000)
+    gauntlet_data.math.initialize_rng_for_group("SPECTATOR_CHIP", 10000)
 
+    if state_logic.network_handler.random_seed ~= nil then
+        state_logic.network_handler.random_seed = math.random(state_logic.network_handler.random_seed)
+    end
     --MusicLoader.generateRNGValues()
     --savestate.load(state_logic.initial_state)
 
@@ -1420,7 +1444,12 @@ function state_logic.check_reset()
     if soft_reset or state_logic.reset then
         print("Soft-Reset!")
 
-        
+        if state_logic.network_handler.is_connected and gauntlet_data.main_player == 1 then
+            local send_data = {}
+            send_data.SOFT_RESET = 1
+
+            state_logic.network_handler.produce_send_buffer(json.encode(send_data) .. "\n")
+        end
 
         if gauntlet_data.statistics_container ~= nil then
 
@@ -1542,6 +1571,9 @@ function state_logic.patch_before_battle_start()
         print("patch_before_battle_start")
     end
 
+    
+    input_handler.current_input_state = nil
+
     -- Patch folder with all new stuff.
     -- state_logic.randomize_folder()
 
@@ -1567,6 +1599,21 @@ function state_logic.patch_before_battle_start()
     end
 
     io_utils.patch_folder(gauntlet_data.current_folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM, gauntlet_data)
+
+    
+    -- Get spectator chip
+
+    if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 then
+        gauntlet_data.spectator_chip =  gauntlet_data.current_folder[gauntlet_data.math.random_spectator_chip(1, GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER)]
+        gauntlet_data.spectator_chip.PRINT_NAME = state_logic.get_printable_chip_name(gauntlet_data.spectator_chip)
+        gauntlet_data.spectator_chip.ARGB_ICON = state_logic.get_argb_icon(gauntlet_data.spectator_chip)
+        --print("Spectator Chip: ")
+        --print(gauntlet_data.spectator_chip)
+        gauntlet_data.spectator_chip_sent = false
+    else
+        gauntlet_data.spectator_chip = nil
+    end
+
 
     local new_battle_data = nil
 
@@ -2086,17 +2133,21 @@ function state_logic.in_battle_chip_effects()
     --print("Mul: " .. tostring(multiplicative_damage_increase))
 
     -- Now we can patch the current and next chip based on the held chip index
+    
+
+    local held_chip_id_addr = GENERIC_DEFS.IN_BATTLE_HELD_CHIP_IDS_ADDRESS
     local held_chip_damage_addr =  GENERIC_DEFS.IN_BATTLE_HELD_CHIP_DAMAGES_ADDRESS
 
     local chip_idx = gauntlet_data.current_battle_chip_index
 
-    for chip_idx = gauntlet_data.current_battle_chip_index, (gauntlet_data.current_battle_chip_index + 1) do
+    for chip_idx = 1, #gauntlet_data.held_chips do
         local chip = gauntlet_data.held_chips[chip_idx]
 
         if (chip ~= nil) then
 
             local current_chip_damage = chip.DAMAGE
-            if (current_chip_damage ~= 0) then
+            local current_chip_id = chip.ID
+            if (current_chip_id ~= 0) then
 
                 -- NOTE: this might need changing because of balancing reasons, as this is the ideal order
                 local new_chip_damage = (current_chip_damage + additive_damage_increase) * (1.0 + multiplicative_damage_increase)
@@ -2110,7 +2161,19 @@ function state_logic.in_battle_chip_effects()
                 --if new_chip_damage ~= current_chip_damage then
 
                 -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
-                io_utils.writeword(held_chip_damage_addr + ((chip_idx - 1) * 2), new_chip_damage)
+                
+                io_utils.writeword(held_chip_id_addr + ((chip_idx - 1) * 2), current_chip_id)
+                io_utils.writeword(held_chip_damage_addr + ((chip_idx - 1) * 2), current_chip_damage)
+                
+    
+                if gauntlet_data.update_held_chip_data == true then
+                    io_utils.writebyte(GENERIC_DEFS.IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS[gauntlet_data.number_of_entities], #gauntlet_data.held_chips - (gauntlet_data.current_battle_chip_index - 1))
+
+                    -- Also patch the offset pointer in case we increase/decrease the held chips
+                    io_utils.writebyte(GENERIC_DEFS.IN_BATTLE_CURRENT_CHIP_OFFSET_ADDRESS,  math.max(2 * (gauntlet_data.current_battle_chip_index - 1), 0))
+                    gauntlet_data.update_held_chip_data = false
+                end
+
                 --end
 
             end
@@ -2118,6 +2181,9 @@ function state_logic.in_battle_chip_effects()
         end
 
     end
+
+    
+    
 
 end
 
@@ -2318,6 +2384,7 @@ function state_logic.check_frame_events()
         gauntlet_data.is_cust_screen = is_cust_screen
     end
 
+
     
     -- Check for cust screen confirm (this is commented out because it doesn't work with PA patching unfortunately, may need to look into it again)
     --if gauntlet_data.is_cust_screen == 1 and gauntlet_data.cust_screen_was_opened ~= 0 then
@@ -2355,35 +2422,209 @@ function state_logic.check_frame_events()
 
         if gauntlet_data.battle_phase ~= 0 then
             --print("num chips: " .. tostring(num_chips) .. ", in_battle: " .. tostring(gauntlet_data.num_chips_in_battle))
-
-            if num_chips < gauntlet_data.num_chips_in_battle then
-
-                state_logic.on_chip_use()
-                -- TODO: what happens if we e.g. have 3 chips, enter the cust screen and then select 0 ?
-                --       we need a variable that tells us if we are in the cust screen.
-                --       00C0C9 is a flag that's 1 if the cust screen gfx are shown
-                --       34420 or 34432 are probably good candidates, they togggle immediately after pressing L/R
-                --       we *might* be able to use them for detecting cust confirm
-                --       00A5C8, 00A5D8, 00A5E8 seem to be possible candidates for detecting battle phase start
-                --       00A588, 00A598, 00A5A8, 00A5B8
-                --       00F802 seems like a good candidate for cust confirm, contains number of selected chips directly after confirming
-                --       otherwise we can detect battle phase start by checking when 006CAC goes from 1 -> 0
-                gauntlet_data.num_chips_in_battle = num_chips
-            end
+            state_logic.during_battle_phase(num_chips)
         end
 
         
     end
 
-    
 
     
+    
+
+    if state_logic.network_handler.is_connected == true and gauntlet_data.main_player == 1 and gauntlet_data.current_input ~= nil and gauntlet_data.current_input.SPECTATOR_CHIP ~= nil then
+
+        --print("We received a spectator chip as host!")
+        --print(gauntlet_data.current_input.SPECTATOR_CHIP)
+
+        if gauntlet_data.battle_phase == 0 then
+            --local send_data = {}
+            --send_data.NO_SPEC_CHIP = 1
+
+            gauntlet_data.NO_SPEC_CHIP = 1
+
+            -- Return a message that says that we're not able to use the chip
+            --state_logic.network_handler.produce_send_buffer(json.encode(send_data) .. "\n")
+            
+            --gauntlet_data.current_input = nil
+        else
+
+            -- Yay, we're in the battle phase! 
+            -- We can actually patch the spectator chip
+            
+            gauntlet_data.spectator_chip = gauntlet_data.current_input.SPECTATOR_CHIP
+            state_logic.patch_spectator_chip()
+            local current_pad = joypad.get()
+            current_pad.A = true
+            input_handler.inputs_delta.A = true
+
+            joypad.set(current_pad)
+            -- Send 
+
+            --gauntlet_data.current_input = nil
+        end
+
+
+    end
+
+    if state_logic.network_handler.is_connected == true and gauntlet_data.main_player == 0 and gauntlet_data.current_input ~= nil and gauntlet_data.current_input.NO_SPEC_CHIP ~= nil then
+
+        print("Spectator chip not usable - resetting!")
+        gauntlet_data.current_input.NO_SPEC_CHIP = nil
+        gauntlet_data.spectator_chip_sent = false
+    end
+
+    if state_logic.network_handler.is_connected == true and gauntlet_data.main_player == 0 and gauntlet_data.use_spectator_chip == true then
+
+        --print("Spectator chip used by server on this frame, using it on the client!")
+        state_logic.patch_spectator_chip()
+
+        gauntlet_data.use_spectator_chip = false
+
+        gauntlet_data.spectator_chip_sent = false
+    end
+
+
+end
+
+function state_logic.patch_spectator_chip()
+        --print("Pressed A")
+        --print(gauntlet_data.spectator_chip)
+        --print(gauntlet_data.held_chips)
+
+        if gauntlet_data.spectator_chip ~= nil then
+
+
+            if gauntlet_data.current_battle_chip_index > 1 then
+                -- We have already used a chip, we can simply overwrite the previous one
+                gauntlet_data.current_battle_chip_index = gauntlet_data.current_battle_chip_index - 1
+                gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index] = {}
+                gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].ID = gauntlet_data.spectator_chip.ID
+                gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].DAMAGE = CHIP_DATA[gauntlet_data.spectator_chip.ID].DAMAGE
+                
+                --print("Patched spectator chip: " .. CHIP_NAME[gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].ID] .. " ; " .. gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].ID .. " ; " .. gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].DAMAGE)
+                
+                gauntlet_data.spectator_chip = nil
+
+                gauntlet_data.update_held_chip_data = true
+
+                gauntlet_data.num_chips_in_battle = gauntlet_data.num_chips_in_battle + 1
+
+            elseif #gauntlet_data.held_chips < 5 then
+                -- We have less then 5 chips in total, we can simply move them forward and add the new chip in the current position
+                --print("Changing held chips")
+
+                --print("before: ")
+                --for key, value in pairs(gauntlet_data.held_chips) do
+                --    print(key, value)
+                --end
+
+                if #gauntlet_data.held_chips ~= 0 then
+                    
+
+                    for chip_idx = #gauntlet_data.held_chips + 1, gauntlet_data.current_battle_chip_index + 1, -1 do
+                        gauntlet_data.held_chips[chip_idx] = deepcopy(gauntlet_data.held_chips[chip_idx - 1])
+                    end
+
+                end
+
+                gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index] = {}
+                gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].ID = gauntlet_data.spectator_chip.ID
+                gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].DAMAGE = CHIP_DATA[gauntlet_data.spectator_chip.ID].DAMAGE
+
+                --print("Patched spectator chip: " .. CHIP_NAME[gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].ID] .. " ; " .. gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].ID .. " ; " .. gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].DAMAGE)      
+               
+
+                --gauntlet_data.num_chips_in_battle = #gauntlet_data.held_chips - (gauntlet_data.current_battle_chip_index - 1)
+
+                gauntlet_data.spectator_chip = nil
+
+                gauntlet_data.update_held_chip_data = true
+
+                if gauntlet_data.current_battle_chip_index == 1 then
+                    gauntlet_data.num_chips_in_battle = gauntlet_data.num_chips_in_battle + 1
+                end
+
+                --print("after: ")
+                --for key, value in pairs(gauntlet_data.held_chips) do
+                --    print(key, value)
+                --end
+
+                
+            else
+                -- We can't use the chip.
+
+            end
+
+
+        end
+
+end
+
+function state_logic.during_battle_phase(num_chips)
+
+    if num_chips < gauntlet_data.num_chips_in_battle or gauntlet_data.trigger_on_chip_use == true then
+
+        state_logic.on_chip_use()
+        -- TODO: what happens if we e.g. have 3 chips, enter the cust screen and then select 0 ?
+        --       we need a variable that tells us if we are in the cust screen.
+        --       00C0C9 is a flag that's 1 if the cust screen gfx are shown
+        --       34420 or 34432 are probably good candidates, they togggle immediately after pressing L/R
+        --       we *might* be able to use them for detecting cust confirm
+        --       00A5C8, 00A5D8, 00A5E8 seem to be possible candidates for detecting battle phase start
+        --       00A588, 00A598, 00A5A8, 00A5B8
+        --       00F802 seems like a good candidate for cust confirm, contains number of selected chips directly after confirming
+        --       otherwise we can detect battle phase start by checking when 006CAC goes from 1 -> 0
+        gauntlet_data.num_chips_in_battle = num_chips
+        gauntlet_data.trigger_on_chip_use = false
+    end
+
+    
+    
+    if gauntlet_data.current_inputs.A == true and gauntlet_data.main_player == 0 and gauntlet_data.anything_from_networked_inputs == false and gauntlet_data.anything_from_last_networked_inputs == false then
+        -- This sucks, but it's the only reasonable way to get inputs from the spectator while it receives inputs from the controller
+        -- The main reason I have to do this is because Bizhawk doesn't clear the joypad inputs between frames (apparently?!) when you set them via code.
+        -- It takes 2 frames for them to be cleared.
+        -- This way, we can input commands from the spectator if there is no input this or last frame from the controller.
+        --print("A pressed!")
+
+        -- TODO:
+        -- We want the spectator to have 1 random chip from the folder, which gets used on the controller side when A is pressed.
+        -- GUI needs to show chip name + icon overlay on spectator side.
+        -- The chip needs to be determined randomly. This is done on the spectator side when the battle starts after replacing the folder chips. 
+        -- Once the client presses the button, it sends a message with a "CHIP_USE" entry to the controller.
+        -- The controller gets this message (it also reads messages during the game loop).
+        -- After getting the message, the controller executes the code (probably by replacing the current chip, using it, and then adding it back again? might need to patch number of chips in hand...)
+        -- It then sends a message back to the client with "CHIP_USE" entry, which the client executes in identical fashion on the same frame.
+        -- Main difficulty: figure out if we can add/change chip hand dynamically. Adding a chip and using it, with it simply failing if the hand contains 5 chips (which we can check on the client)
+        -- During that frame, we have to force the "A" button since we use the chip. 
+        -- Issues: what if we're stunlocked -> we can't use the chip. Is this an issue though? Then it'll be just a slot-in and might still be useful?
+        -- gauntlet_data.held_chips = {} is useful. need to figure out where the sprite data is stored though.
+    end
+
+    -- gauntlet_data.main_player == 0 and 
+    if gauntlet_data.spectator_chip ~= nil and gauntlet_data.spectator_chip_sent == false and gauntlet_data.main_player == 0 and gauntlet_data.current_inputs.A == true and gauntlet_data.anything_from_networked_inputs == false and gauntlet_data.anything_from_last_networked_inputs == false then
+        
+        --state_logic.patch_spectator_chip()
+
+        -- TODO: send message to server, who then does the thing
+
+        if #gauntlet_data.held_chips < 5 or gauntlet_data.current_battle_chip_index > 1 then
+            local send_data = {}
+            send_data.SPECTATOR_CHIP = deepcopy(gauntlet_data.spectator_chip)
+
+            state_logic.network_handler.produce_send_buffer(json.encode(send_data) .. "\n")
+
+            gauntlet_data.spectator_chip_sent = true
+        end
+    end
+
+
 
 end
 
 function state_logic.main_frame_loop()
 
-    
     -- This loop runs at the GBA framerate. 
     --print ("Current state: " .. gauntlet_data.current_state)
     if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
@@ -2396,40 +2637,67 @@ function state_logic.main_frame_loop()
 
                 -- Reload rewind savestate until we "delayed enough"
                 memorysavestate.loadcorestate(state_logic.rewind_savestate)
+                return
             end
         end
 
         
         state_logic.apply_prerecorded_inputs_ingame()
 
+        gauntlet_data.current_inputs = joypad.get()
+
         if state_logic.network_handler.is_connected == false then
             if gauntlet_data.prerecorded_inputs == nil then
-                input_handler.current_input_state = joypad.get()
+                input_handler.current_input_state = gauntlet_data.current_inputs
             end
         else
             if gauntlet_data.main_player == 1 then
-                input_handler.current_input_state = joypad.get()
+                input_handler.current_input_state = gauntlet_data.current_inputs
+            end
+        end
+
+        gauntlet_data.anything_pressed = false
+
+        for key, value in pairs(gauntlet_data.current_inputs) do
+            if value == true then
+                gauntlet_data.anything_pressed = true
+                break
+            end
+        end
+        
+        gauntlet_data.anything_from_last_networked_inputs = false
+
+        if input_handler.current_input_state ~= nil and gauntlet_data.main_player == 0 then
+            for key, value in pairs(input_handler.current_input_state) do
+                if value == true then
+                    gauntlet_data.anything_from_last_networked_inputs = true
+                    break
+                end
             end
         end
 
         state_logic.apply_networked_inputs_ingame()
+        
+        gauntlet_data.anything_from_networked_inputs = false
+
+        if input_handler.current_input_state ~= nil and gauntlet_data.main_player == 0 then
+ 
+
+            for key, value in pairs(input_handler.current_input_state) do
+                if value == true then
+                    gauntlet_data.anything_from_networked_inputs = true
+                    break
+                end
+            end
+
+            if gauntlet_data.anything_from_networked_inputs == true or gauntlet_data.anything_pressed == true then
+                joypad.set(input_handler.current_input_state)
+            end
+        end
+        
 
         -- TODO: check if we're using recorded, networked or raw inputs
         input_handler.handle_inputs()
-
-        -- This input delta recording should only run in the "menu". This will be replayed differently compared to the in-game inputs.
-
-        if input_handler.has_delta == true then
-            local recorded_input_table = deepcopy(input_handler.inputs_delta)
-            recorded_input_table.GBA_FRAME = gauntlet_data.total_gba_frame_count
-            gauntlet_data.recorded_input_deltas[#gauntlet_data.recorded_input_deltas + 1] = recorded_input_table
-
-            
-            -- Enter current menu inputs into network buffer
-            if gauntlet_data.main_player == 1 then
-                state_logic.network_handler.produce_send_buffer(json.encode(recorded_input_table) .. "\n")
-            end
-        end
 
         
         if state_logic.check_reset() then
@@ -2443,6 +2711,46 @@ function state_logic.main_frame_loop()
         gauntlet_data.number_of_entities = (state_logic.battle_data[state_logic.current_battle - 1].NUM_ENTITIES)
 
         state_logic.check_frame_events()
+
+
+        local recorded_input_table = deepcopy(input_handler.inputs_delta)
+
+        recorded_input_table.GBA_FRAME = gauntlet_data.total_gba_frame_count
+
+        if input_handler.has_delta == true then
+            gauntlet_data.recorded_input_deltas[#gauntlet_data.recorded_input_deltas + 1] = recorded_input_table
+        end
+
+        
+        -- Enter current menu inputs into network buffer
+        if gauntlet_data.main_player == 1 then
+            
+
+            if gauntlet_data.current_input ~= nil and gauntlet_data.current_input.SPECTATOR_CHIP ~= nil and gauntlet_data.NO_SPEC_CHIP == nil then
+                -- We used the spec chip this frame - send it to the client
+                recorded_input_table.SPECTATOR_CHIP = gauntlet_data.current_input.SPECTATOR_CHIP
+                gauntlet_data.spectator_chip = nil
+                --print("Used spec chip this frame, sending to client")
+            end
+
+            if gauntlet_data.NO_SPEC_CHIP ~= nil then
+                -- We were not able to use the spec chip
+                recorded_input_table.NO_SPEC_CHIP = 1
+                gauntlet_data.NO_SPEC_CHIP = nil
+                print("No spec chip this frame, sending to client")
+            end
+            
+            --print("sending: ")
+            --print(recorded_input_table)
+            --print(" at frame " .. gauntlet_data.total_gba_frame_count)
+
+            gauntlet_data.current_input = nil
+
+            if input_handler.has_delta == true or recorded_input_table.SPECTATOR_CHIP ~= nil or recorded_input_table.NO_SPEC_CHIP ~= nil then
+                state_logic.network_handler.produce_send_buffer(json.encode(recorded_input_table) .. "\n")
+            end
+        end
+
 
         if gauntlet_data.current_battle_number_of_time_compressions > 0 and gauntlet_data.battle_phase ~= 0 then
             -- We compute the savestate only every x frames to save computing power
@@ -2602,7 +2910,7 @@ function state_logic.apply_prerecorded_inputs_ingame()
             end
 
             
-            joypad.set(input_handler.current_input_state)
+            --joypad.set(input_handler.current_input_state)
 
         end
     end
@@ -2618,10 +2926,17 @@ function state_logic.apply_current_networked_input()
     -- Try to use the inputs
     if gauntlet_data.current_input ~= nil then
 
+        if gauntlet_data.current_input.SOFT_RESET == 1 then
+            state_logic.reset = true
+            gauntlet_data.current_input = nil
+            return
+        end
+
         if (gauntlet_data.current_input.MENU_FRAME ~= nil) or (gauntlet_data.current_input.GBA_FRAME ~= nil and (gauntlet_data.current_input.GBA_FRAME <= gauntlet_data.total_gba_frame_count)) then
             
             --print("applying: ")
             --print(gauntlet_data.current_input)
+            --print(" at frame " .. gauntlet_data.total_gba_frame_count)
 
             for key, value in pairs(gauntlet_data.current_input) do
 
@@ -2629,6 +2944,12 @@ function state_logic.apply_current_networked_input()
                     input_handler.current_input_state[key] = value
                 end
 
+            end
+
+            if gauntlet_data.current_input.SPECTATOR_CHIP ~= nil then
+                gauntlet_data.use_spectator_chip = true
+                --print("Received spectator chip: ")
+                --print(gauntlet_data.current_input.SPECTATOR_CHIP)
             end
             
             gauntlet_data.current_input = nil
@@ -2649,7 +2970,7 @@ end
 function state_logic.apply_networked_inputs_menu()
 
 
-    if gauntlet_data.main_player == 0 and state_logic.network_handler.is_connected then
+    if state_logic.network_handler.is_connected then
         -- Get inputs from network
 
         if gauntlet_data.current_input == nil then
@@ -2657,15 +2978,26 @@ function state_logic.apply_networked_inputs_menu()
 
             if data ~= nil then
                gauntlet_data.current_input = json.decode(data)
+            
 
+               gauntlet_data.networked_music_loaded = gauntlet_data.current_input.MUSIC_LOADED
                --print("Received current data (menu): ")
                --print(gauntlet_data.current_input)
             end
 
+        
+            if gauntlet_data.main_player == 0 then
+                state_logic.apply_current_networked_input()
+            end
+
+        
+            -- If we received a packet with contents that don't contain a menu frame for some reason, discard it
+            if gauntlet_data.current_input ~= nil and gauntlet_data.current_input.MENU_FRAME == nil then
+                gauntlet_data.current_input = nil
+            end
+
         end
 
-
-        state_logic.apply_current_networked_input()
     end
 
 
@@ -2673,7 +3005,7 @@ end
 
 function state_logic.apply_networked_inputs_ingame()
 
-    if gauntlet_data.main_player == 0 and state_logic.network_handler.is_connected then
+    if state_logic.network_handler.is_connected then
         -- Get inputs from network
 
         if gauntlet_data.current_input == nil then
@@ -2689,13 +3021,11 @@ function state_logic.apply_networked_inputs_ingame()
 
         end
 
-
-        state_logic.apply_current_networked_input()
-
-        if input_handler.current_input_state ~= nil then
-            joypad.set(input_handler.current_input_state)
+        if gauntlet_data.main_player == 0 then
+            state_logic.apply_current_networked_input()
         end
 
+     
     end
 
 end
@@ -2708,7 +3038,7 @@ function state_logic.main_loop()
     local current_time = os.time()
 
     if (current_time - start_time) > 1 then
-        print ("FPS: ", (gauntlet_data.total_frame_count - start_frame) / (current_time - start_time))
+        --print ("FPS: ", (gauntlet_data.total_frame_count - start_frame) / (current_time - start_time))
         start_time = current_time
         start_frame = gauntlet_data.total_frame_count
     end
@@ -2752,6 +3082,7 @@ function state_logic.main_loop()
             gauntlet_data.recorded_input_deltas[#gauntlet_data.recorded_input_deltas + 1] = recorded_input_table
             
         
+            recorded_input_table.MUSIC_LOADED = MusicLoader.FinishedLoading
             -- Enter current menu inputs into network buffer
             if gauntlet_data.main_player == 1 then
                 state_logic.network_handler.produce_send_buffer(json.encode(recorded_input_table) .. "\n")
@@ -2968,10 +3299,8 @@ function state_logic.main_loop()
                 end
             end
             
-
             -- If MusicLoader is still loading, we simply do not handle the event
-            if input_handler.inputs_pressed["A"] == true and (MusicLoader.FinishedLoading == 1 or GENERIC_DEFS.ENABLE_MUSIC_PATCHING == 0) then
-
+            if input_handler.inputs_pressed["A"] == true and (MusicLoader.FinishedLoading == 1 or GENERIC_DEFS.ENABLE_MUSIC_PATCHING == 0) and (gauntlet_data.networked_music_loaded == 1 or gauntlet_data.main_player == 1) then
                 
 
                 -- TODO: add chip to folder!
@@ -3023,7 +3352,7 @@ function state_logic.main_loop()
             end
             
             if (gauntlet_data.illusion_of_choice_active == 0) or (gauntlet_data.illusion_of_choice_active and state_logic.dropped_chip.ID == -1) then
-                if input_handler.inputs_pressed["B"] == true and (MusicLoader.FinishedLoading == 1 or GENERIC_DEFS.ENABLE_MUSIC_PATCHING == 0)  then
+                if input_handler.inputs_pressed["B"] == true and (MusicLoader.FinishedLoading == 1 or GENERIC_DEFS.ENABLE_MUSIC_PATCHING == 0) and (gauntlet_data.networked_music_loaded == 1 or gauntlet_data.main_player == 1) then
                     -- Just skip - we didn't want a chip!
                     --print("B pressed")
                     gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
@@ -3178,6 +3507,8 @@ function state_logic.main_loop()
         end
         
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING then
+
+        gauntlet_data.current_input = nil
 
         state_logic.patch_before_battle_start()
         state_logic.hp_loaded = 0
@@ -3362,6 +3693,8 @@ function state_logic.main_loop()
         --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
         client.pause()
 
+        gauntlet_data.current_input = nil
+
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.CHOOSE_DIFFICULTY then
 
         -- TODO: render list of starting loadouts. Each loadout should provide a callable function that can set various things.
@@ -3541,7 +3874,43 @@ function state_logic.main_loop()
         
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
-        
+
+        if gauntlet_data.spectator_chip_sent == false and gauntlet_data.spectator_chip ~= nil and state_logic.network_handler.is_connected == true then
+            gui_rendering.render_spectator_chip(gauntlet_data.spectator_chip)
+        end
+
+        -- TODO: we render the chip icon over the existing icons because with the spectator replacement the icons are broken and I'm too lazy to check for a proper solution
+        --       we only do this *if*
+        --       we're in the battle phase
+        --       we're not in time freeze (IN_BATTLE_TIMEFREEZE_ADDRESS)
+        --       we simply render the currently held chip at mega man's position (with an offset) (IN_BATTLE_MEGA_MAN_POSITION_ADDRESS)
+
+
+        if gauntlet_data.held_chips ~= nil then
+
+                
+            local is_timefreeze = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_TIMEFREEZE_ADDRESS)
+            local is_after_battle = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_AFTER_BATTLE_ADDRESS) 
+
+            --print("Render check: ", gauntlet_data.battle_phase, is_timefreeze, gauntlet_data.current_battle_chip_index, #gauntlet_data.held_chips)
+            if gauntlet_data.battle_phase == 1 and is_after_battle == 0 and is_timefreeze == 0 and gauntlet_data.current_battle_chip_index <= #gauntlet_data.held_chips and #gauntlet_data.held_chips ~= 0 then
+            
+                --print("Held chips: ")
+                --print(gauntlet_data.held_chips)
+
+                -- Read mega man's x and y positions
+                local mega_x = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_MEGA_MAN_POSITION_ADDRESS[gauntlet_data.number_of_entities]) - 1
+                local mega_y = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_MEGA_MAN_POSITION_ADDRESS[gauntlet_data.number_of_entities] + 1) - 1
+
+                --print("mega x", mega_x, "mega y", mega_y)
+
+                gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].ARGB_ICON = state_logic.get_argb_icon(gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index])
+                
+                gui_rendering.render_chip_icon_in_battle(gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index], 17 + 40 * mega_x, 28 + 24 * mega_y)
+
+            end
+
+        end
         
     else-- Default state, should never happen
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS

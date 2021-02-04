@@ -169,11 +169,15 @@ gauntlet_data.prerecorded_inputs_index = 1
 -- In Battle: client waits/pauses for N frames (while still receiving inputs), then reloads the initial save state
 --            afterwards, client just plays back the inputs for each frame in order.  
 --            This means we want to receive/send messages in the main loop.       
-gauntlet_data.main_player = 1 
+gauntlet_data.main_player = nil 
 gauntlet_data.current_input = nil
 gauntlet_data.sub_player_ingame_delay_frames = 30
 gauntlet_data.sub_player_delay_counter = 0
-
+gauntlet_data.networked_music_loaded = 1
+gauntlet_data.spectator_chip = nil
+gauntlet_data.spectator_chip_sent = false
+gauntlet_data.use_spectator_chip = nil
+gauntlet_data.chip_icon_cache = {}
 
 -- Need: rng_index, last_discrete_rng_index, rng_values[]
 
@@ -208,6 +212,10 @@ end
 
 function gauntlet_data.math.random_music(arg1, arg2)
     return gauntlet_data.math.random_named("MUSIC", arg1, arg2)
+end
+
+function gauntlet_data.math.random_spectator_chip(arg1, arg2)
+    return gauntlet_data.math.random_named("SPECTATOR_CHIP", arg1, arg2)
 end
 
 function gauntlet_data.math.random_named(name, arg1, arg2)

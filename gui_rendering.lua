@@ -18,6 +18,13 @@ local arrow_right_path = "gfx/arrow_right.png"
 local arrow_up_path = "gfx/arrow_up.png"
 local arrow_down_path = "gfx/arrow_down.png"
 
+function drawTextBG(x_pos, y_pos, string, outline_color, color, background_color, font_size, font_family)
+    local bg_string = "||||||||||||||||||||||||"
+    --gui.drawText(x_pos, y_pos - 1, bg_string, background_color, "transparent", font_size, font_family)
+    gui.drawRectangle(x_pos - 2, y_pos - 1, 71, 13, outline_color, background_color)
+    gui.drawText(x_pos, y_pos, string, color, "transparent", font_size, font_family)
+end
+
 function drawTextOutline(x_pos, y_pos, string, outline_color, color, background_color, font_size, font_family)
 
 
@@ -70,6 +77,32 @@ function render_argb_2d_array(argb_2d_array, x_offset, y_offset, width, height)
         end
 
     end
+
+end
+
+function render_argb_2d_array_with_black_border(argb_2d_array, x_offset, y_offset, width, height)
+
+    for x = 2, width - 1 do
+
+        for y = 2, height - 1 do
+
+            --if bit.rshift(argb_2d_array[x][y], 24) >= 0x0 then
+                gui.drawPixel(x + x_offset, y + y_offset, argb_2d_array[x][y])
+            --end
+
+        end
+
+    end
+
+    --for x = 1, width do
+    --    gui.drawPixel(x + x_offset, 1 + y_offset, 0xFF000000)
+    --    gui.drawPixel(x + x_offset, height + y_offset, 0xFF000000)
+    --end
+
+    --for y = 1, height do
+    --    gui.drawPixel(1 + x_offset, y + y_offset, 0xFF000000)
+    --    gui.drawPixel(width + x_offset, y + y_offset, 0xFF000000)
+    --end
 
 end
 
@@ -595,6 +628,15 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
 
 end
 
+function gui_rendering.render_spectator_chip(spectator_chip)
+    local x_offset = 170
+    local y_offset = 143
+    render_argb_2d_array_with_black_border(spectator_chip.ARGB_ICON, x_offset - CHIP_ICON.WIDTH - 2, y_offset, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
+    drawTextBG(x_offset, y_offset + CHIP_ICON.HEIGHT / 4 - 1,  spectator_chip.PRINT_NAME, "black", "white", 0x99999999, 10, "Arial")
+end
 
+function gui_rendering.render_chip_icon_in_battle(chip, x, y)
+    render_argb_2d_array_with_black_border(chip.ARGB_ICON, x, y, CHIP_ICON.WIDTH, CHIP_ICON.HEIGHT)
+end
 
 return gui_rendering

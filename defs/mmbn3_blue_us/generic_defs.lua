@@ -68,11 +68,26 @@ local defs = {
     IN_BATTLE_PAUSE_ADDRESS = 0x02001889,
     IN_BATTLE_TIMEFREEZE_ADDRESS = 0x02006CB6,
     IN_BATTLE_TIMEFREEZE_ADDRESS2 = 0x02008EE4,
+    IN_BATTLE_AFTER_BATTLE_ADDRESS = 0x02006CD8,
+    -- 3 entities: 374FE
+    -- 1 entity: 371E8 or 37356
+    -- 2 entities: 371A8 or 3742A
+    IN_BATTLE_MEGA_MAN_POSITION_ADDRESS = { -- this is X, for Y simply add 1
+        [1] = 0x02037356,
+        [2] = 0x0203742A,
+        [3] = 0x020374FE,
+        [4] = 0x020374FE
+    },
+    --IN_BATTLE_MEGA_MAN_POSITION_ADDRESS = 0x02005C68, -- this seems to be consistent independent of number of entities
     IN_BATTLE_NUMBER_OF_CHIPS_ADDRESS = {
         [1] = 0x0203735E,
         [2] = 0x02037432,
         [3] = 0x02037506,
     },
+    IN_BATTLE_CURRENT_CHIP_OFFSET_ADDRESS = 0x020384D8,
+    -- 384D8 might be an offset into the number of chips used? 3B32E seems to count the total number of chips used in battle?
+    -- success: 0x020384D8 is the offset into the chip ID that is used next. so we also need to patch this if we want to add a new chip. 
+    -- might also be different with different numbers of entities
     IN_BATTLE_IS_CUSTSCREEN_OPEN = 0x02034420,
     IN_BATTLE_IS_CUSTSCREEN_OPEN2 = 0x02034432,
     AIRSHOES_ADDRESS = 0x02005773,
