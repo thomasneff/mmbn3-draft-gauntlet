@@ -1,12 +1,12 @@
 waiting for music is broken
-draft has issues when skipping too fast
 muramasa is broken
-for some reason we desynced once when loading mm&bass music
-desync because save state loading doesnt really work...
 memebomb doesnt reset with soft reset ?!
 sending a spectator chip and then choosing nothing in the cust screen is broken
 
-solve desync issue by simply sending *every frame* and pausing the emulator unless we have an input for any given frame -> send empty messages to still enable spec chips
+
+soft reset triggers twice? <-- fixed
+draft has issues when skipping too fast -> desync when skipping too fast through draft <-- fixed, hopefully
+solve desync issue by simply sending *every frame* and pausing the emulator unless we have an input for any given frame -> send empty messages to still enable spec chips <-- implemented, hopefully
 
 
 TODO: test navicust buffs after refactor to GENERIC_DEFS

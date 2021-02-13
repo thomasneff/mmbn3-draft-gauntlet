@@ -1082,6 +1082,8 @@ function state_logic.initialize()
     else
 
         if state_logic.network_handler.is_connected then
+
+            print("Swapping main player: ")
             gauntlet_data.main_player = 1 - gauntlet_data.main_player
 
             if gauntlet_data.main_player == 1 then
@@ -1456,6 +1458,12 @@ function state_logic.check_reset()
 
     if soft_reset or state_logic.reset then
         print("Soft-Reset!")
+        print("soft_reset: ", soft_reset)
+        print("state_logic.reset: ", state_logic.reset)
+
+
+        soft_reset = false
+        state_logic.reset = false
 
         if state_logic.network_handler.is_connected and gauntlet_data.main_player == 1 then
             local send_data = {}
@@ -1476,7 +1484,13 @@ function state_logic.check_reset()
 
         end
 
+        local current_time = os.time()
 
+        if state_logic.last_soft_reset ~= nil and current_time - state_logic.last_soft_reset < 2 then
+            return false
+        end
+
+        state_logic.last_soft_reset = os.time()
         state_logic.initialize()
 
         return true
@@ -2676,15 +2690,15 @@ function state_logic.on_frame_end()
             else
                 -- Only pause client if we didn't get matching inputs for the next frame.
                 state_logic.pause_emu()
-                print("after pause")
+                --print("after pause")
 
-                print("inputs: ")
-                print(gauntlet_data.current_input)
-                print("current frame: ")
-                print(gauntlet_data.total_gba_frame_count)
+                --print("inputs: ")
+                --print(gauntlet_data.current_input)
+                --print("current frame: ")
+                --print(gauntlet_data.total_gba_frame_count)
 
                 client.exactsleep(100)
-                print("after exactsleep")
+                --print("after exactsleep")
                 -- We also sleep for 100 ms so that the client has time to buffer.
             end
 
@@ -3031,7 +3045,45 @@ function state_logic.apply_current_networked_input_menu()
             return
         end
 
-        if (gauntlet_data.current_input.MENU_FRAME ~= nil) then
+        local ignore_state_check = (gauntlet_data.current_input.CURRENT_STATE == gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_SELECT) 
+                                or (gauntlet_data.current_input.CURRENT_STATE == gauntlet_data.GAME_STATE.TRANSITION_TO_CHIP_REPLACE) 
+                                or (gauntlet_data.current_input.CURRENT_STATE == gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING) 
+                                or (gauntlet_data.current_input.CURRENT_STATE == gauntlet_data.GAME_STATE.TRANSITION_TO_BUFF_SELECT)         
+                                or (gauntlet_data.current_input.CURRENT_STATE == gauntlet_data.GAME_STATE.LOAD_INITIAL)       
+                                or (gauntlet_data.current_input.CURRENT_STATE == gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_STARTING_LOADOUT)       
+                                or (gauntlet_data.current_input.CURRENT_STATE == gauntlet_data.GAME_STATE.TRANSITION_TO_DRAFT_FOLDER)
+                                or (gauntlet_data.current_input.CURRENT_STATE == gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_DROP_METHOD)
+                                or (gauntlet_data.current_input.CURRENT_STATE == gauntlet_data.GAME_STATE.TRANSITION_TO_GAUNTLET_COMPLETE)
+                                or (gauntlet_data.current_input.CURRENT_STATE == gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS)
+                                or (gauntlet_data.current_input.CURRENT_STATE == gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_DIFFICULTY)
+
+
+        -- Check if the input contains only "false" inputs -> we can apply those at any time
+        local only_false = true
+
+        for key, value in pairs(gauntlet_data.current_input) do
+
+            if value == true then
+                only_false = false
+                break
+            end
+
+        end
+
+
+        
+        if only_false == false and (ignore_state_check == false) and (gauntlet_data.current_input.CURRENT_STATE ~= gauntlet_data.current_state) then
+            --print("Error: we have an input that we cannot match to the required state!")
+            --print(gauntlet_data.current_input)
+            --print(gauntlet_data.current_state)
+            
+            state_logic.network_handler.rewind_receive_buffer_consumer_index()
+            gauntlet_data.current_input = nil
+            return
+        end
+
+
+        if (gauntlet_data.current_input.MENU_FRAME ~= nil) and ((gauntlet_data.current_input.CURRENT_STATE == gauntlet_data.current_state) or ignore_state_check or only_false) then
             
             --print("applying: ")
             --print(gauntlet_data.current_input)
@@ -3051,6 +3103,7 @@ function state_logic.apply_current_networked_input_menu()
         else
 
         end
+
 
 
     end
@@ -3301,7 +3354,16 @@ function state_logic.main_loop()
         start_frame = gauntlet_data.total_frame_count
     end
 
-    
+    --print(gauntlet_data.main_player)
+    if gauntlet_data.main_player == 0 then
+        --print("ASDF")
+        --print("ASDF")
+        --print("ASDF")
+        --print(gauntlet_data.current_input)
+        --print(gauntlet_data.current_state)
+        --print("ASDF")
+    end
+
     --print("THIS SHOULD ALWAYS RUN...")
 
 
@@ -3344,7 +3406,6 @@ function state_logic.main_loop()
 
         -- TODO: check if we're using recorded, networked or raw inputs
         input_handler.handle_inputs()
-
         
         --if ret_data ~= nil then
         --    print("after handle_inputs inputs pressed")
@@ -3361,12 +3422,16 @@ function state_logic.main_loop()
         if input_handler.has_delta == true then
             local recorded_input_table = deepcopy(input_handler.inputs_delta)
             recorded_input_table.MENU_FRAME = gauntlet_data.total_frame_count
+            recorded_input_table.CURRENT_STATE = gauntlet_data.current_state
             gauntlet_data.recorded_input_deltas[#gauntlet_data.recorded_input_deltas + 1] = recorded_input_table
             
         
             recorded_input_table.MUSIC_LOADED = MusicLoader.FinishedLoading
             -- Enter current menu inputs into network buffer
             if gauntlet_data.main_player == 1 then
+                --print("Sent current data (menu): ")
+                --print(recorded_input_table)
+                --print("Current state: " .. gauntlet_data.current_state)
                 state_logic.network_handler.produce_send_buffer(json.encode(recorded_input_table) .. "\n")
             end
         end
@@ -3579,6 +3644,13 @@ function state_logic.main_loop()
             end
             
             -- If MusicLoader is still loading, we simply do not handle the event
+
+            --print(input_handler.inputs_pressed)
+            --print(input_handler.inputs_held)
+
+            --print(gauntlet_data.networked_music_loaded)
+            
+
             if input_handler.inputs_pressed["A"] == true and (MusicLoader.FinishedLoading == 1 or GENERIC_DEFS.ENABLE_MUSIC_PATCHING == 0) and (gauntlet_data.networked_music_loaded == 1 or gauntlet_data.main_player == 1) then
                 
 
