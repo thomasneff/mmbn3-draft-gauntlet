@@ -132,7 +132,7 @@ testfile:close()--]]
 
 while 1 do
 
-
+    --print("?!?!?!")
     if run_main_loop then
         state_logic.main_loop()
     end

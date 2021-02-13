@@ -573,7 +573,7 @@ function state_logic.on_battle_end()
 
     if state_logic.network_handler.is_connected then
         gauntlet_data.main_player = 1 - gauntlet_data.main_player
-        gauntlet_data.sub_player_delay_counter = gauntlet_data.sub_player_ingame_delay_frames
+        gauntlet_data.sub_player_delay_counter = 0
     end
 
     -- We advance chip generation rng here
@@ -1064,7 +1064,9 @@ function state_logic.initialize()
 
     gauntlet_data.current_input = nil
     state_logic.reset = false
-    gauntlet_data.networked_music_loaded = 1
+    
+    input_handler.reset_all()
+
 
 
     if gauntlet_data.main_player == nil then
@@ -1074,11 +1076,20 @@ function state_logic.initialize()
         if state_logic.network_handler.is_connected == true and state_logic.network_handler.is_host == false then
             gauntlet_data.main_player = 0
         end
+
+
     
     else
 
         if state_logic.network_handler.is_connected then
             gauntlet_data.main_player = 1 - gauntlet_data.main_player
+
+            if gauntlet_data.main_player == 1 then
+                gauntlet_data.networked_music_loaded = 0
+            else
+                gauntlet_data.networked_music_loaded = 1
+            end
+
         end
 
     end
@@ -1099,6 +1110,8 @@ function state_logic.initialize()
     --event.unregisterbyname("on_battle_phase_start")
 
     event.onframestart(state_logic.main_frame_loop, "main_frame_loop")
+    
+    event.onframeend(state_logic.on_frame_end, "on_frame_end")
     --event.onframeend(state_logic.main_loop, "main_loop2")
 
     event.onmemoryexecute(state_logic.on_enter_battle, GENERIC_DEFS.BATTLE_START_ADDRESS + 4, "on_enter_battle")
@@ -1408,7 +1421,7 @@ function state_logic.initialize()
 
     gauntlet_data.current_state = gauntlet_data.GAME_STATE.LOAD_INITIAL
 
-    client.unpause()
+    state_logic.unpause_emu()
     -- Upon start, initialize the current round:
     --state_logic.next_round()
 
@@ -1447,9 +1460,13 @@ function state_logic.check_reset()
         if state_logic.network_handler.is_connected and gauntlet_data.main_player == 1 then
             local send_data = {}
             send_data.SOFT_RESET = 1
+            send_data.GBA_FRAME = gauntlet_data.total_gba_frame_count
+            send_data.MENU_FRAME = gauntlet_data.total_frame_count
 
             state_logic.network_handler.produce_send_buffer(json.encode(send_data) .. "\n")
         end
+
+        gauntlet_data.current_input = nil
 
         if gauntlet_data.statistics_container ~= nil then
 
@@ -1573,6 +1590,7 @@ function state_logic.patch_before_battle_start()
 
     
     input_handler.current_input_state = nil
+    gauntlet_data.total_gba_frame_count = 0
 
     -- Patch folder with all new stuff.
     -- state_logic.randomize_folder()
@@ -2611,7 +2629,12 @@ function state_logic.during_battle_phase(num_chips)
 
         if #gauntlet_data.held_chips < 5 or gauntlet_data.current_battle_chip_index > 1 then
             local send_data = {}
-            send_data.SPECTATOR_CHIP = deepcopy(gauntlet_data.spectator_chip)
+            send_data.SPECTATOR_CHIP = {}
+
+            send_data.SPECTATOR_CHIP.ID = deepcopy(gauntlet_data.spectator_chip.ID)
+            send_data.SPECTATOR_CHIP.DAMAGE = deepcopy(gauntlet_data.spectator_chip.DAMAGE)
+            
+            -- deepcopy(gauntlet_data.spectator_chip)
 
             state_logic.network_handler.produce_send_buffer(json.encode(send_data) .. "\n")
 
@@ -2623,6 +2646,63 @@ function state_logic.during_battle_phase(num_chips)
 
 end
 
+
+function state_logic.pause_emu()
+    client.pause()
+    state_logic.emu_paused = true
+end
+
+function state_logic.unpause_emu()
+
+    if state_logic.emu_paused == true then
+        client.unpause()
+        state_logic.emu_paused = false
+    end
+end
+
+function state_logic.on_frame_end()
+
+    if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
+
+        -- We only run frame-by-frame. We cannot use emu.frameadvance() because this conflicts with our yield main loop... :/
+        if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 then
+
+            -- Only pause if we do not have at least another frame in the buffer that is correct.
+            --print("on_frame_end")
+            local ret_data = state_logic.apply_networked_inputs_ingame()
+
+            if state_logic.unpause_once_ingame == true then
+                state_logic.unpause_once_ingame = false
+            else
+                -- Only pause client if we didn't get matching inputs for the next frame.
+                state_logic.pause_emu()
+                print("after pause")
+
+                print("inputs: ")
+                print(gauntlet_data.current_input)
+                print("current frame: ")
+                print(gauntlet_data.total_gba_frame_count)
+
+                client.exactsleep(100)
+                print("after exactsleep")
+                -- We also sleep for 100 ms so that the client has time to buffer.
+            end
+
+            
+            if ret_data ~= nil then
+                --print("Received actual ret data when reading next frames' data - rewinding")
+                state_logic.network_handler.rewind_receive_buffer_consumer_index()
+                gauntlet_data.current_input = nil
+            end
+
+
+            --client.pause()
+        end
+
+    end
+
+end
+
 function state_logic.main_frame_loop()
 
     -- This loop runs at the GBA framerate. 
@@ -2630,16 +2710,18 @@ function state_logic.main_frame_loop()
     if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
 
             
-        if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 then
-            gauntlet_data.sub_player_delay_counter = gauntlet_data.sub_player_delay_counter + 1
+        --if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 then
+            
+            --gauntlet_data.sub_player_delay_counter = gauntlet_data.sub_player_delay_counter + 1
 
-            if gauntlet_data.sub_player_delay_counter < gauntlet_data.sub_player_ingame_delay_frames then
-
+            --if gauntlet_data.sub_player_delay_counter < gauntlet_data.sub_player_ingame_delay_frames then
                 -- Reload rewind savestate until we "delayed enough"
-                memorysavestate.loadcorestate(state_logic.rewind_savestate)
-                return
-            end
-        end
+                --print("reloading savestate")
+                
+                --memorysavestate.loadcorestate(state_logic.rewind_savestate)
+                --return
+            --end
+        --end
 
         
         state_logic.apply_prerecorded_inputs_ingame()
@@ -2676,7 +2758,17 @@ function state_logic.main_frame_loop()
             end
         end
 
-        state_logic.apply_networked_inputs_ingame()
+        --state_logic.apply_networked_inputs_ingame()
+
+        if gauntlet_data.main_player == 0 then
+            if state_logic.apply_current_networked_input_ingame() == false then
+                --print("WE RETURNED TRUE AFTER APPLYING NETWORKED INPUT!")
+                return
+            else
+                --print("WE RETURNED FALSE")
+            end
+        end
+
         
         gauntlet_data.anything_from_networked_inputs = false
 
@@ -2703,9 +2795,6 @@ function state_logic.main_frame_loop()
         if state_logic.check_reset() then
             return
         end
-
-
-        gauntlet_data.total_gba_frame_count = gauntlet_data.total_gba_frame_count + 1
 
 
         gauntlet_data.number_of_entities = (state_logic.battle_data[state_logic.current_battle - 1].NUM_ENTITIES)
@@ -2746,9 +2835,13 @@ function state_logic.main_frame_loop()
 
             gauntlet_data.current_input = nil
 
-            if input_handler.has_delta == true or recorded_input_table.SPECTATOR_CHIP ~= nil or recorded_input_table.NO_SPEC_CHIP ~= nil then
-                state_logic.network_handler.produce_send_buffer(json.encode(recorded_input_table) .. "\n")
-            end
+            -- We always send messages, because we also need them so the spectator can sync.
+            --if input_handler.has_delta == true or recorded_input_table.SPECTATOR_CHIP ~= nil or recorded_input_table.NO_SPEC_CHIP ~= nil then
+            --print("Sending:")
+            local payload = json.encode(recorded_input_table) .. "\n"
+            --print(payload)
+            state_logic.network_handler.produce_send_buffer(payload)
+            --end
         end
 
 
@@ -2810,6 +2903,13 @@ function state_logic.main_frame_loop()
                 v:update(state_logic, gauntlet_data)
             end
         end
+
+        --print("GBA count before: " .. gauntlet_data.total_gba_frame_count)
+
+        gauntlet_data.total_gba_frame_count = gauntlet_data.total_gba_frame_count + 1
+        
+        --print("GBA count after: " .. gauntlet_data.total_gba_frame_count)
+
 
     end
 
@@ -2917,6 +3017,110 @@ function state_logic.apply_prerecorded_inputs_ingame()
 
 end
 
+function state_logic.apply_current_networked_input_menu()
+    if input_handler.current_input_state == nil then
+        input_handler.current_input_state = joypad.get()
+    end
+
+    -- Try to use the inputs
+    if gauntlet_data.current_input ~= nil then
+
+        if gauntlet_data.current_input.SOFT_RESET == 1 then
+            state_logic.reset = true
+            gauntlet_data.current_input = nil
+            return
+        end
+
+        if (gauntlet_data.current_input.MENU_FRAME ~= nil) then
+            
+            --print("applying: ")
+            --print(gauntlet_data.current_input)
+            --print(" at frame " .. gauntlet_data.total_gba_frame_count)
+
+            for key, value in pairs(gauntlet_data.current_input) do
+
+                if input_handler.current_input_state[key] ~= nil then
+                    input_handler.current_input_state[key] = value
+                end
+
+            end
+            
+            --print("Input handler state: ", input_handler.current_input_state)
+            gauntlet_data.current_input = nil
+
+        else
+
+        end
+
+
+    end
+
+    return true
+end
+
+function state_logic.apply_current_networked_input_ingame()
+
+    if input_handler.current_input_state == nil then
+        input_handler.current_input_state = joypad.get()
+    end
+
+    -- Try to use the inputs
+    if gauntlet_data.current_input ~= nil then
+
+        if gauntlet_data.current_input.SOFT_RESET == 1 then
+            state_logic.reset = true
+            gauntlet_data.current_input = nil
+            return
+        end
+
+        if (gauntlet_data.current_input.GBA_FRAME ~= nil and (gauntlet_data.current_input.GBA_FRAME == gauntlet_data.total_gba_frame_count)) then
+            
+            --print("applying: ")
+            --print(gauntlet_data.current_input)
+            --print(" at frame " .. gauntlet_data.total_gba_frame_count)
+
+            for key, value in pairs(gauntlet_data.current_input) do
+
+                if input_handler.current_input_state[key] ~= nil then
+                    input_handler.current_input_state[key] = value
+                end
+
+            end
+
+            if gauntlet_data.current_input.SPECTATOR_CHIP ~= nil then
+                gauntlet_data.use_spectator_chip = true
+                --print("Received spectator chip: ")
+                --print(gauntlet_data.current_input.SPECTATOR_CHIP)
+            end
+
+            -- TODO: figure this out if we have an input here we need to unpause, but don't unpause *twice* for the same input.
+            --state_logic.unpause_once_ingame == true
+            
+            gauntlet_data.current_input = nil
+
+        else
+            --print("NOT applying: ")
+            --print(gauntlet_data.current_input)
+            --print(gauntlet_data.total_gba_frame_count)
+            --client.pause()
+
+            print("ERROR: we received a message from the host that we cannot apply because the frame count doesnt match!")
+            print(gauntlet_data.current_input)
+            print(gauntlet_data.total_gba_frame_count)
+        end
+
+        
+    else
+        -- Current input is nil - we haven't received a message. Pause the emulator
+        
+        return false
+
+    end
+
+    return true
+
+end
+
 function state_logic.apply_current_networked_input()
 
     if input_handler.current_input_state == nil then
@@ -2932,7 +3136,7 @@ function state_logic.apply_current_networked_input()
             return
         end
 
-        if (gauntlet_data.current_input.MENU_FRAME ~= nil) or (gauntlet_data.current_input.GBA_FRAME ~= nil and (gauntlet_data.current_input.GBA_FRAME <= gauntlet_data.total_gba_frame_count)) then
+        if (gauntlet_data.current_input.MENU_FRAME ~= nil) or (gauntlet_data.current_input.GBA_FRAME ~= nil and (gauntlet_data.current_input.GBA_FRAME == gauntlet_data.total_gba_frame_count)) then
             
             --print("applying: ")
             --print(gauntlet_data.current_input)
@@ -2953,23 +3157,33 @@ function state_logic.apply_current_networked_input()
             end
             
             gauntlet_data.current_input = nil
+            --client.unpause()
 
         else
             --print("NOT applying: ")
             --print(gauntlet_data.current_input)
             --print(gauntlet_data.total_gba_frame_count)
+            --client.pause()
 
+            print("ERROR: we received a message from the host that we cannot apply because the frame count doesnt match!")
+            print(gauntlet_data.current_input)
+            print(gauntlet_data.total_gba_frame_count)
         end
 
         
+    else
+        -- Current input is nil - we haven't received a message. Pause the emulator
+        print("Pausing the emulator - we don't have an input.")
+        state_logic.pause_emu()
+        return false
+
     end
 
+    return true
 end
 
 
 function state_logic.apply_networked_inputs_menu()
-
-
     if state_logic.network_handler.is_connected then
         -- Get inputs from network
 
@@ -2983,50 +3197,94 @@ function state_logic.apply_networked_inputs_menu()
                gauntlet_data.networked_music_loaded = gauntlet_data.current_input.MUSIC_LOADED
                --print("Received current data (menu): ")
                --print(gauntlet_data.current_input)
+               --print("Current state: " .. gauntlet_data.current_state)
             end
+
+            
+            -- TODO: this is definitely a potential issue with the "lockstep" networking
+            -- If we received a packet with contents that don't contain a menu frame for some reason, discard it
+            if gauntlet_data.current_input ~= nil and gauntlet_data.current_input.MENU_FRAME == nil then
+
+                -- If we received something that contains a GBA_FRAME, we need to be careful to make sure that we still apply them correctly.
+                if gauntlet_data.current_input.GBA_FRAME ~= nil then
+                    print("Received a GBA Frame while not yet in-game. Rewinding message consume pointer and ignoring this input for now")
+                    print("Current state: " .. gauntlet_data.current_state)
+                    print(gauntlet_data.current_input)
+                    print(gauntlet_data.total_gba_frame_count)
+                    state_logic.network_handler.rewind_receive_buffer_consumer_index()
+                    gauntlet_data.current_input = nil
+                    return nil
+                end
+
+            end
+
 
         
             if gauntlet_data.main_player == 0 then
-                state_logic.apply_current_networked_input()
+                state_logic.apply_current_networked_input_menu()
             end
 
-        
-            -- If we received a packet with contents that don't contain a menu frame for some reason, discard it
-            if gauntlet_data.current_input ~= nil and gauntlet_data.current_input.MENU_FRAME == nil then
-                gauntlet_data.current_input = nil
-            end
+            return data
 
         end
 
     end
 
-
+    return nil
 end
 
 function state_logic.apply_networked_inputs_ingame()
+    local data = nil
 
     if state_logic.network_handler.is_connected then
         -- Get inputs from network
 
         if gauntlet_data.current_input == nil then
-            local data = state_logic.network_handler.consume_receive_buffer()
+            data = state_logic.network_handler.consume_receive_buffer()
 
             if data ~= nil then
-               gauntlet_data.current_input = json.decode(data)
+                
+                gauntlet_data.current_input = json.decode(data)
 
-               --print("Received current data (ingame): ")
-               --print(gauntlet_data.current_input)
-               --print(gauntlet_data.total_gba_frame_count)
+                --print("Received: ")
+                --print(gauntlet_data.current_input)
+
+
+                if gauntlet_data.current_input.GBA_FRAME ~= nil and gauntlet_data.current_input.GBA_FRAME < gauntlet_data.total_gba_frame_count then
+                    print("ERROR - received data for a frame that is in the past! ")
+                    print(gauntlet_data.current_input)
+                    print(gauntlet_data.current_input)
+                    print(gauntlet_data.current_input)
+                    print(gauntlet_data.current_input)
+                    print(gauntlet_data.current_input)
+                    print(gauntlet_data.total_gba_frame_count)
+                end
+
+                if gauntlet_data.current_input.GBA_FRAME ~= nil and gauntlet_data.current_input.GBA_FRAME == gauntlet_data.total_gba_frame_count then
+                    --print("Advancing frame: ")
+                    --print(gauntlet_data.current_input)
+                    --emu.yield()
+                    state_logic.unpause_once_ingame = true
+                end
+
+                if gauntlet_data.current_input.MENU_FRAME ~= nil and gauntlet_data.current_input.SOFT_RESET == nil then
+                    -- Receiving a menu frame while we're ingame would be weird
+
+                    print("Error: received a MENU FRAME while ingame. ")
+                    print(gauntlet_data.current_input)
+                    gauntlet_data.current_input = nil
+                end
+
+                --print("Received current data (ingame): ")
+                --print(gauntlet_data.current_input)
+                --print(gauntlet_data.total_gba_frame_count)
             end
 
         end
-
-        if gauntlet_data.main_player == 0 then
-            state_logic.apply_current_networked_input()
-        end
-
      
     end
+
+    return data
 
 end
 
@@ -3042,6 +3300,10 @@ function state_logic.main_loop()
         start_time = current_time
         start_frame = gauntlet_data.total_frame_count
     end
+
+    
+    --print("THIS SHOULD ALWAYS RUN...")
+
 
     --
 
@@ -3069,10 +3331,30 @@ function state_logic.main_loop()
             end
         end
 
-        state_logic.apply_networked_inputs_menu()
+        local ret_data = state_logic.apply_networked_inputs_menu()
+
+        --if ret_data ~= nil then
+        --    print("before handle_inputs inputs pressed")
+        --    print(input_handler.inputs_pressed)
+        --    print("inputs held")
+        --    print(input_handler.inputs_held)
+        --    print("current input state")
+        --    print(input_handler.current_input_state)
+        --end
 
         -- TODO: check if we're using recorded, networked or raw inputs
         input_handler.handle_inputs()
+
+        
+        --if ret_data ~= nil then
+        --    print("after handle_inputs inputs pressed")
+        --    print(input_handler.inputs_pressed)
+        --    print("inputs held")
+        --    print(input_handler.inputs_held)
+        --    print("current input state")
+        --    print(input_handler.current_input_state)
+        --end
+
 
         -- This input delta recording should only run in the "menu". This will be replayed differently compared to the in-game inputs.
     
@@ -3094,9 +3376,6 @@ function state_logic.main_loop()
 
         --end
         
-        if state_logic.check_reset() then
-            return
-        end
     end
 
 
@@ -3137,7 +3416,7 @@ function state_logic.main_loop()
             
 
         end
-        client.pause()
+        state_logic.pause_emu()
         state_logic.should_redraw = 1
         state_logic.dropped_buff_render_index = 2
         
@@ -3304,7 +3583,7 @@ function state_logic.main_loop()
                 
 
                 -- TODO: add chip to folder!
-                --print("A pressed")
+                --print("A pressed - replacing chip")
             
                 if state_logic.dropped_chip.ID ~= -1 then
 
@@ -3352,9 +3631,17 @@ function state_logic.main_loop()
             end
             
             if (gauntlet_data.illusion_of_choice_active == 0) or (gauntlet_data.illusion_of_choice_active and state_logic.dropped_chip.ID == -1) then
+            
+                --print("illusion of choice check passes")
+
+                --print("Input handler B ", input_handler.inputs_pressed["B"])
+                --print("Finished loading", MusicLoader.FinishedLoading)
+                --print("networked loaded ", gauntlet_data.networked_music_loaded)
+                --print("main player", gauntlet_data.main_player)
+
                 if input_handler.inputs_pressed["B"] == true and (MusicLoader.FinishedLoading == 1 or GENERIC_DEFS.ENABLE_MUSIC_PATCHING == 0) and (gauntlet_data.networked_music_loaded == 1 or gauntlet_data.main_player == 1) then
                     -- Just skip - we didn't want a chip!
-                    --print("B pressed")
+                    --print("B pressed - skipping chip")
                     gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
                     state_logic.replaced_chip = "Skipped Chip"
                     
@@ -3397,7 +3684,7 @@ function state_logic.main_loop()
         state_logic.dropped_buffs = BUFF_GENERATOR.random_buffs_from_round(state_logic.current_round, GAUNTLET_DEFS.NUMBER_OF_DROPPED_BUFFS, state_logic.current_battle)
         state_logic.update_buff_discriptions()
         --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-        client.pause()
+        state_logic.pause_emu()
 
         -- Determine number of Mega/Giga chips in folder.
         state_logic.update_folder_mega_giga_chip_counts()
@@ -3515,8 +3802,16 @@ function state_logic.main_loop()
         --io_utils.change_number_of_cust_screen_chips(gauntlet_data.cust_style_number_of_chips + gauntlet_data.cust_screen_number_of_chips)  
         
         --print("Patched folder!")
-        client.unpause()
+        
          --io_utils.change_megaMan_max_hp(gauntlet_data.mega_max_hp) 
+
+        if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 then
+            -- We use manual frame advances for the client (but not actually emu.frameadvance because it fucks up everything)
+            state_logic.pause_emu()
+        else
+            state_logic.unpause_emu()
+        end
+
         
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.RUNNING
         
@@ -3529,7 +3824,7 @@ function state_logic.main_loop()
 
         state_logic.load_encounter_data()
         --state_logic.next_round()
-        client.unpause()
+        state_logic.unpause_emu()
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
     
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_STARTING_LOADOUT then
@@ -3540,7 +3835,7 @@ function state_logic.main_loop()
         
         
         --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-        client.pause()
+        state_logic.pause_emu()
 
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.CHOOSE_STARTING_LOADOUT then
@@ -3618,7 +3913,7 @@ function state_logic.main_loop()
         
         
         --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-        client.pause()
+        state_logic.pause_emu()
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.CHOOSE_DROP_METHOD then
 
@@ -3691,7 +3986,7 @@ function state_logic.main_loop()
         
         
         --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-        client.pause()
+        state_logic.pause_emu()
 
         gauntlet_data.current_input = nil
 
@@ -3786,7 +4081,7 @@ function state_logic.main_loop()
         
         state_logic.update_argb_chip_icons_in_folder()
         --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-        client.pause()
+        state_logic.pause_emu()
         
 
         
@@ -3858,7 +4153,7 @@ function state_logic.main_loop()
         state_logic.should_redraw = 1
         
         --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-        client.pause()
+        state_logic.pause_emu()
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.GAUNTLET_COMPLETE then
 
@@ -3911,11 +4206,26 @@ function state_logic.main_loop()
             end
 
         end
+
+        -- Run the ingame network input receiver code
+        --
+
         
+        --print("Running before apply_networked_inputs_ingame")
+        state_logic.apply_networked_inputs_ingame()
+
     else-- Default state, should never happen
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
+        state_logic.emu_paused = true
+        state_logic.unpause_emu()
     end
 
+    
+
+    
+    if state_logic.check_reset() then
+        return
+    end
 
 
     -- Send network buffer values, if they exist
@@ -3956,6 +4266,12 @@ function state_logic.main_loop()
 
     if MusicLoader.LoadBlock() == 1 then
         state_logic.should_redraw = 1
+    end
+
+
+    if state_logic.unpause_once_ingame == true then
+        state_logic.unpause_once_ingame = false
+        state_logic.unpause_emu()
     end
 
     --emu.yield()

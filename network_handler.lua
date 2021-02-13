@@ -15,7 +15,7 @@ network_handler.receive_buffer_producer_index = 1
 network_handler.send_buffer = {}
 network_handler.send_buffer_consumer_index = 1
 network_handler.send_buffer_producer_index = 1
-network_handler.max_buffer_items = 4000
+network_handler.max_buffer_items = 12000
 network_handler.random_seed = nil
 
 function network_handler.send(data)
@@ -58,6 +58,33 @@ function network_handler.produce_receive_buffer()
 
     return true
 
+end
+
+function network_handler.query_receive_buffer_next()
+
+    local temp_consume_buffer_index = network_handler.receive_buffer_consumer_index + 1
+
+    if temp_consume_buffer_index > temp_consume_buffer_index then
+        temp_consume_buffer_index = 1
+    end
+
+
+    if temp_consume_buffer_index >= network_handler.receive_buffer_producer_index then
+        return nil
+    end
+
+    return network_handler.receive_buffer[temp_consume_buffer_index]
+
+end
+
+function network_handler.rewind_receive_buffer_consumer_index()
+
+    network_handler.receive_buffer_consumer_index = network_handler.receive_buffer_consumer_index - 1
+
+    if network_handler.receive_buffer_consumer_index < 1 then
+        network_handler.receive_buffer_consumer_index = network_handler.max_buffer_items
+    end
+    
 end
 
 function network_handler.consume_receive_buffer()

@@ -171,7 +171,7 @@ gauntlet_data.prerecorded_inputs_index = 1
 --            This means we want to receive/send messages in the main loop.       
 gauntlet_data.main_player = nil 
 gauntlet_data.current_input = nil
-gauntlet_data.sub_player_ingame_delay_frames = 30
+gauntlet_data.sub_player_ingame_delay_frames = 120
 gauntlet_data.sub_player_delay_counter = 0
 gauntlet_data.networked_music_loaded = 1
 gauntlet_data.spectator_chip = nil
