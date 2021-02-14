@@ -18,6 +18,15 @@ network_handler.send_buffer_producer_index = 1
 network_handler.max_buffer_items = 12000
 network_handler.random_seed = nil
 
+function network_handler.reset_buffers()
+    network_handler.receive_buffer = {}
+    network_handler.receive_buffer_consumer_index = 1
+    network_handler.receive_buffer_producer_index = 1
+    network_handler.send_buffer = {}
+    network_handler.send_buffer_consumer_index = 1
+    network_handler.send_buffer_producer_index = 1
+end
+
 function network_handler.send(data)
     if network_handler.is_connected == false then
         return
