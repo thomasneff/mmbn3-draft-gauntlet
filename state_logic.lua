@@ -880,6 +880,14 @@ end
 
 function state_logic.undo_activated_buffs()
     
+    if state_logic.number_of_activated_buffs == nil then
+        state_logic.number_of_activated_buffs = 0
+        state_logic.activated_buffs = {}
+        return
+    end
+
+    print("Undo activated buffs: ", state_logic.number_of_activated_buffs)
+
     if state_logic.number_of_activated_buffs == 0 then
         return
     end
@@ -888,7 +896,7 @@ function state_logic.undo_activated_buffs()
 
     for buff_it = state_logic.number_of_activated_buffs, 1, -1 do
 
-        print("Deactivating ", buff_it)
+        print("Deactivating: ", buff_it)
         state_logic.activated_buffs[buff_it]:deactivate(buff_it)
     
     end
@@ -1152,11 +1160,10 @@ function state_logic.initialize()
 
 
     -- TODO: check for duplicate / unnecessary initializations...
-    state_logic.activated_buffs = {}
     state_logic.dropped_chips = {}
     state_logic.dropped_buffs = {}
     state_logic.initial_state = INITIAL_STATE_NAME
-    state_logic.number_of_activated_buffs = 0
+    
     gauntlet_data.current_folder = {}
     gauntlet_data.mega_max_hp = 100
     
@@ -2225,6 +2232,8 @@ function state_logic.in_battle_chip_effects()
                 -- NOTE: this might need changing because of balancing reasons, as this is the ideal order
                 local new_chip_damage = (current_chip_damage + additive_damage_increase) * (1.0 + multiplicative_damage_increase)
 
+                --print("Chip ", chip, "New chip damage: ", new_chip_damage)
+
                 if new_chip_damage < 0 then
                     new_chip_damage = 0
                 end
@@ -2236,7 +2245,7 @@ function state_logic.in_battle_chip_effects()
                 -- TODO_REFACTOR: make sure this behaves the same way in all games / refactor into a better API
                 
                 io_utils.writeword(held_chip_id_addr + ((chip_idx - 1) * 2), current_chip_id)
-                io_utils.writeword(held_chip_damage_addr + ((chip_idx - 1) * 2), current_chip_damage)
+                io_utils.writeword(held_chip_damage_addr + ((chip_idx - 1) * 2), new_chip_damage)
                 
     
                 if gauntlet_data.update_held_chip_data == true then
@@ -3544,7 +3553,7 @@ function state_logic.main_loop()
             gauntlet_data.recorded_input_deltas[#gauntlet_data.recorded_input_deltas + 1] = recorded_input_table
 
             -- Enter current menu inputs into network buffer
-            if gauntlet_data.main_player == 1 or recorded_input_table.MUSIC_LOADED ~= nil then
+            if gauntlet_data.main_player == 1 or recorded_input_table.MUSIC_LOADED ~= nil and state_logic.network_handler.is_connected then
                 print("Sent current data (menu): ")
                 print(recorded_input_table)
                 print("Current state: " .. gauntlet_data.current_state)

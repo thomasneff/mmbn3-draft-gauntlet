@@ -94,6 +94,7 @@ end
 
 function buff_generator.activate_buff(buff, current_round)
 
+    --print("Activating: ", buff)
     buff:activate(current_round)
 
     if buff.REMOVE_AFTER_ACTIVATION == 1 then

@@ -162,6 +162,11 @@ else
     print("Removing Style-Change from Buff-Pool.")
 end
 
+--BUFF_GROUPS[1] = {
+--    MEMEBOMB,
+--    MASAMUNE,
+--    ANTICUST
+--}
 
 -- Buff groups for testing.
 --BUFF_GROUPS[1] = {

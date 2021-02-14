@@ -1,10 +1,9 @@
-muramasa is broken
-memebomb doesnt reset with soft reset ?!
 show current run time in folder screen just for fun :)
 minor issue: when choosing the loadout there is a frame where the "default" index is rendered...
 
 
-
+muramasa is broken <-- fixed
+memebomb doesnt reset with soft reset ?! <-- fixed
 sending a spectator chip and then choosing nothing in the cust screen is broken <-- couldn't reproduce yet, maybe fixed?
 sometimes the client freezes when entering battle <-- should be fixed...?
 sometimes the main-player swap doesn't work correctly (soft-resetting twice again maybe?!) <-- should be fixed...?
