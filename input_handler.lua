@@ -31,6 +31,7 @@ function input_handler.handle_inputs()
 
 
     input_handler.inputs_delta = {}
+    input_handler.inputs_pressed = nil
     
     input_handler.has_delta = false
     

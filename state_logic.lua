@@ -572,7 +572,9 @@ function state_logic.on_battle_end()
     input_handler.current_input_state = nil
 
     if state_logic.network_handler.is_connected then
+        print("Swapping main player: ")
         gauntlet_data.main_player = 1 - gauntlet_data.main_player
+        print("Main player: ", gauntlet_data.main_player)
         gauntlet_data.sub_player_delay_counter = 0
     end
 
@@ -1081,6 +1083,7 @@ function state_logic.initialize()
     gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
     gauntlet_data.current_input = nil
     state_logic.reset = false
+    state_logic.network_reset = false
     
 
     gauntlet_data.music_loading_started = 0
@@ -1102,6 +1105,7 @@ function state_logic.initialize()
 
             print("Swapping main player: ")
             gauntlet_data.main_player = 1 - gauntlet_data.main_player
+            print("Main player: ", gauntlet_data.main_player)
         end
 
     end
@@ -1482,7 +1486,7 @@ function state_logic.check_reset()
                             and input_handler.inputs_held["L"]
                             and input_handler.inputs_pressed["R"])                  
 
-    if soft_reset or state_logic.reset then
+    if soft_reset or state_logic.reset or state_logic.network_reset then
         print("Soft-Reset!")
         --print("soft_reset: ", soft_reset)
         --print("state_logic.reset: ", state_logic.reset)
@@ -1491,7 +1495,7 @@ function state_logic.check_reset()
         soft_reset = false
         state_logic.reset = false
 
-        if state_logic.network_handler.is_connected and gauntlet_data.main_player == 1 then
+        if state_logic.network_handler.is_connected and gauntlet_data.main_player == 1 and state_logic.network_reset == false then
             local send_data = {}
             send_data.SOFT_RESET = 1
             send_data.GBA_FRAME = gauntlet_data.total_gba_frame_count
@@ -1508,6 +1512,8 @@ function state_logic.check_reset()
             
             end
         end
+
+        state_logic.network_reset = false
 
         gauntlet_data.current_input = nil
 
@@ -2987,6 +2993,9 @@ function state_logic.apply_prerecorded_inputs_menu()
             
             if input_handler.current_input_state == nil then
                 input_handler.current_input_state = joypad.get()
+                for key, value in pairs(input_handler.current_input_state) do
+                    input_handler.current_input_state[key] = false
+                end
             end
 
 
@@ -3028,6 +3037,9 @@ function state_logic.apply_prerecorded_inputs_ingame()
             
             if input_handler.current_input_state == nil then
                 input_handler.current_input_state = joypad.get()
+                for key, value in pairs(input_handler.current_input_state) do
+                    input_handler.current_input_state[key] = false
+                end
             end
 
             -- Get next (MENU) input frame and play it back if the frame number is lower
@@ -3041,6 +3053,9 @@ function state_logic.apply_prerecorded_inputs_ingame()
 
                         if input_handler.current_input_state == nil then
                             input_handler.current_input_state = joypad.get()
+                            for key, value in pairs(input_handler.current_input_state) do
+                                input_handler.current_input_state[key] = false
+                            end
                         end
 
                         for key, value in pairs(current_input_table) do
@@ -3069,13 +3084,18 @@ end
 function state_logic.apply_current_networked_input_menu()
     if input_handler.current_input_state == nil then
         input_handler.current_input_state = joypad.get()
+        for key, value in pairs(input_handler.current_input_state) do
+            input_handler.current_input_state[key] = false
+        end
     end
 
     -- Try to use the inputs
     if gauntlet_data.current_input ~= nil then
 
         if gauntlet_data.current_input.SOFT_RESET == 1 then
-            state_logic.reset = true
+            --state_logic.reset = true
+            
+            state_logic.network_reset = true
             gauntlet_data.current_input = nil
             return
         end
@@ -3131,6 +3151,7 @@ function state_logic.apply_current_networked_input_menu()
             
             print("applying: ")
             print(gauntlet_data.current_input)
+            print(gauntlet_data.current_state)
             --print(" at frame " .. gauntlet_data.total_gba_frame_count)
 
             for key, value in pairs(gauntlet_data.current_input) do
@@ -3159,13 +3180,16 @@ function state_logic.apply_current_networked_input_ingame()
 
     if input_handler.current_input_state == nil then
         input_handler.current_input_state = joypad.get()
+        for key, value in pairs(input_handler.current_input_state) do
+            input_handler.current_input_state[key] = false
+        end
     end
 
     -- Try to use the inputs
     if gauntlet_data.current_input ~= nil then
 
         if gauntlet_data.current_input.SOFT_RESET == 1 then
-            state_logic.reset = true
+            state_logic.network_reset = true
             gauntlet_data.current_input = nil
             return
         end
@@ -3222,13 +3246,16 @@ function state_logic.apply_current_networked_input()
 
     if input_handler.current_input_state == nil then
         input_handler.current_input_state = joypad.get()
+        for key, value in pairs(input_handler.current_input_state) do
+            input_handler.current_input_state[key] = false
+        end
     end
 
     -- Try to use the inputs
     if gauntlet_data.current_input ~= nil then
 
         if gauntlet_data.current_input.SOFT_RESET == 1 then
-            state_logic.reset = true
+            state_logic.network_reset = true
             gauntlet_data.current_input = nil
             return
         end
@@ -3297,7 +3324,7 @@ function state_logic.apply_networked_inputs_menu()
                 end
 
                 if gauntlet_data.current_input.SOFT_RESET ~= nil then
-                    state_logic.reset = true
+                    state_logic.network_reset = true
                 end
 
 
@@ -3363,7 +3390,7 @@ function state_logic.apply_networked_inputs_ingame()
                 --print(gauntlet_data.current_input)
 
                 if gauntlet_data.current_input.SOFT_RESET ~= nil then
-                    state_logic.reset = true
+                    state_logic.network_reset = true
                 end
 
 
@@ -3471,6 +3498,20 @@ function state_logic.main_loop()
 
         -- TODO: check if we're using recorded, networked or raw inputs
         input_handler.handle_inputs()
+
+        if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 then
+
+            for key, value in pairs(input_handler.current_input_state) do
+
+                -- Override some of the input handler logic that might mess up our networked inputs for some configurations.
+                if value == true then
+                    input_handler.inputs_pressed[key] = value
+                end
+            end
+
+            input_handler.current_input_state = nil
+            
+        end
         
         --if ret_data ~= nil then
         --    print("after handle_inputs inputs pressed")
@@ -3804,7 +3845,7 @@ function state_logic.main_loop()
                 end
             end
             
-            if (gauntlet_data.illusion_of_choice_active == 0) or (gauntlet_data.illusion_of_choice_active and state_logic.dropped_chip.ID == -1) then
+            if (gauntlet_data.illusion_of_choice_active == 0) or (gauntlet_data.illusion_of_choice_active == 1 and state_logic.dropped_chip.ID == -1) then
             
                 --print("illusion of choice check passes")
 

@@ -1,9 +1,17 @@
 muramasa is broken
 memebomb doesnt reset with soft reset ?!
-sending a spectator chip and then choosing nothing in the cust screen is broken
 show current run time in folder screen just for fun :)
-stage 114 has lava tiles on the whole player field
+minor issue: when choosing the loadout there is a frame where the "default" index is rendered...
 
+
+
+sending a spectator chip and then choosing nothing in the cust screen is broken <-- couldn't reproduce yet, maybe fixed?
+sometimes the client freezes when entering battle <-- should be fixed...?
+sometimes the main-player swap doesn't work correctly (soft-resetting twice again maybe?!) <-- should be fixed...?
+
+soft-reset now triggers twice again because server sends soft reset message -> client soft resets, but *also* sends a soft reset message itself <-- should be fixed
+
+stage 114 has lava tiles on the whole player field <-- I had lavastage ...
 waiting for music is broken <-- fixed, hopefully
 soft reset triggers twice? <-- fixed
 draft has issues when skipping too fast -> desync when skipping too fast through draft <-- fixed, hopefully
