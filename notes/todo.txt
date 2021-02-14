@@ -1,7 +1,7 @@
-show current run time in folder screen just for fun :)
-minor issue: when choosing the loadout there is a frame where the "default" index is rendered...
+show current run time in folder screen just for fun :) <-- not really any space, but we could add a dummy buff for things like that? <-- done
 
 
+minor issue: when choosing the loadout there is a frame where the "default" index is rendered... <-- fixed
 muramasa is broken <-- fixed
 memebomb doesnt reset with soft reset ?! <-- fixed
 sending a spectator chip and then choosing nothing in the cust screen is broken <-- couldn't reproduce yet, maybe fixed?

@@ -67,9 +67,9 @@ function SpeedRunner:get_brief_description()
         self.is_beaten = -1
         ret_string = ret_string .. "Boss not beaten in time!\n(Missed reward: " .. REWARD_STRING .. ")"
     elseif self.is_beaten == 0 then
-        ret_string = ret_string .. "Beat the next Boss in " .. tostring(minutes_left) .. ":" .. tostring(seconds_left) .. "!\n(Reward: " .. REWARD_STRING .. ")"
+        ret_string = ret_string .. "Beat the next Boss in " .. (minutes_left_string) .. ":" .. (seconds_left_string) .. "!\n(Reward: " .. REWARD_STRING .. ")"
     elseif self.is_beaten == 1 then
-        ret_string = ret_string .. "Boss beaten in " .. tostring(minutes_left) .. ":" .. tostring(seconds_left) .. "!\n(" .. self.replaced_chips_string  .. " -> " .. REWARD_STRING .. ")"
+        ret_string = ret_string .. "Boss beaten in " .. (minutes_left_string) .. ":" .. (seconds_left_string) .. "!\n(" .. self.replaced_chips_string  .. " -> " .. REWARD_STRING .. ")"
     end
 
 

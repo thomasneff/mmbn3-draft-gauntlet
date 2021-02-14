@@ -18,6 +18,7 @@ local CHIP_PICTURE = require "defs.chip_picture_defs"
 local CHIP_DATA = require "defs.chip_data_defs"
 -- TODO_REFACTOR: buff_effects folder is the only one left :D
 local BUFF_GENERATOR = require "buff_effects.buff_groups"
+local INFO_BUFF = require "buff_effects.info_buff"
 local LOADOUTS = require "loadouts.loadout_defs"
 local gauntlet_data = require "gauntlet_data"
 local deepcopy = require "deepcopy"
@@ -1273,6 +1274,11 @@ function state_logic.initialize()
     state_logic.undo_activated_buffs()
     state_logic.number_of_activated_buffs = 0
     state_logic.activated_buffs = {}
+    -- Add the info buff
+    state_logic.number_of_activated_buffs = state_logic.number_of_activated_buffs + 1
+    state_logic.activated_buffs[state_logic.number_of_activated_buffs] = INFO_BUFF.new()
+    state_logic.activated_buffs[state_logic.number_of_activated_buffs]:activate()
+
     gauntlet_data.stage = 0
     gauntlet_data.mega_max_hp = 100
     state_logic.stats_previous_hp = gauntlet_data.mega_max_hp + GAUNTLET_DEFS.HP_INCREASE_PER_ROUND[1]
@@ -3666,7 +3672,7 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
             end
 
 
@@ -3887,7 +3893,7 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, state_logic.folder_chip_render_index, state_logic.dropped_chip, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
             end
             
             
@@ -4008,7 +4014,7 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
             end
 
             
@@ -4068,6 +4074,23 @@ function state_logic.main_loop()
         state_logic.folder_view_switch_and_sort()
         state_logic.check_buff_render_offset()
 
+        
+        if state_logic.should_redraw == 1 then
+            -- TODO_REFACTOR: folder_view enum
+            if gauntlet_data.folder_view == 0 then
+                gui_rendering.render_items(LOADOUTS, state_logic.selected_loadout_index)
+            elseif gauntlet_data.folder_view == 1 then
+                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
+            elseif gauntlet_data.folder_view == 2 then
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
+            end
+
+            
+            --gui.DrawFinish()
+            --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
+            --state_logic.should_redraw = 0
+        end
+
         -- TODO_REFACTOR: folder_view enum    
         if gauntlet_data.folder_view == 0 then
 
@@ -4113,21 +4136,6 @@ function state_logic.main_loop()
 
         end
 
-        if state_logic.should_redraw == 1 then
-            -- TODO_REFACTOR: folder_view enum
-            if gauntlet_data.folder_view == 0 then
-                gui_rendering.render_items(LOADOUTS, state_logic.selected_loadout_index)
-            elseif gauntlet_data.folder_view == 1 then
-                gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
-            elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset)
-            end
-
-            
-            --gui.DrawFinish()
-            --memorysavestate.loadcorestate(state_logic.gui_change_savestate)
-            --state_logic.should_redraw = 0
-        end
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.TRANSITION_TO_CHOOSE_DROP_METHOD then
         state_logic.gui_change_savestate = memorysavestate.savecorestate()
@@ -4193,7 +4201,7 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
             end
 
             
@@ -4268,7 +4276,7 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
             end
 
             
@@ -4362,7 +4370,7 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
             end
             
             --gui.DrawFinish()

@@ -299,7 +299,7 @@ function gui_rendering.render_gauntlet_complete()
 
 end
 
-function gui_rendering.render_buffs(buffs, finished_loading, buff_render_offset)
+function gui_rendering.render_buffs(buffs, finished_loading, buff_render_offset, current_round)
 
 
     gui.drawRectangle(0, 0, 239, 159, "Gray", "Gainsboro")
@@ -332,7 +332,7 @@ function gui_rendering.render_buffs(buffs, finished_loading, buff_render_offset)
             end
 
             if buffs[chip_counter] ~= nil then
-                drawTextOutline(x_offset, y_offset,  buffs[chip_counter]:get_brief_description(), "black", "lightblue", "transparent", 9, "Arial")
+                drawTextOutline(x_offset, y_offset,  buffs[chip_counter]:get_brief_description(current_round), "black", "lightblue", "transparent", 9, "Arial")
             end
 
             y_offset = y_offset + offset_per_row
