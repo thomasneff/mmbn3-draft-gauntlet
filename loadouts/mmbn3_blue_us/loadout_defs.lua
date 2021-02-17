@@ -15,6 +15,7 @@ local MMBN3_N1FOLDER_D = require "loadouts.mmbn3_blue_us.mmbn3_n1folder_d"
 local MMBN3_FAMFOLDER = require "loadouts.mmbn3_blue_us.mmbn3_famfolder"
 local MMBN3_APPRENTICEFOLDER = require "loadouts.mmbn3_blue_us.mmbn3_apprenticefolder"
 local PA_TEST_FOLDER = require "loadouts.pa_test_folder"
+local YOUR_CUSTOM_FOLDER = require "loadouts.your_custom_folder"
 
 
 local JUST_MONIKA = require "loadouts.just_monika"
@@ -26,6 +27,7 @@ local LIST_OF_LOADOUTS = {
     DRAFT_BALANCED_RARITY,
     DRAFT_STANDARD_MEGA_MAX_1_MORE_CODES,
     DRAFT_STANDARD_MEGA_MAX_1,
+    YOUR_CUSTOM_FOLDER,
     MMBN3_START_FOLDER,
     MMBN3_EXTRAFOLDER,
     MMBN3_PREFOLDER,
