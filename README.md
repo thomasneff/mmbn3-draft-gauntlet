@@ -24,8 +24,6 @@ Download the latest release of the Gauntlet files in the release section ( https
 
 Extract all files into the Bizhawk/Lua directory (so that the directory then contains the mmbn3_draft_gauntlet folder). I will refer to the mmbn3_draft_gauntlet folder as the GAUNTLET_FOLDER.
 
-Get "gbabios.rom" and make sure to put it in the "Firmware" directory inside your BizHawk directory.
-
 Start BizHawk (EmuHawk.exe).
 
 Load Megaman Battle Network 3: Blue [US] in BizHawk
