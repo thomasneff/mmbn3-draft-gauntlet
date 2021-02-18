@@ -332,6 +332,7 @@ function gui_rendering.render_buffs(buffs, finished_loading, buff_render_offset,
             end
 
             if buffs[chip_counter] ~= nil then
+                --print("In render buffs: current_round: ", current_round)
                 drawTextOutline(x_offset, y_offset,  buffs[chip_counter]:get_brief_description(current_round), "black", "lightblue", "transparent", 9, "Arial")
             end
 
@@ -453,10 +454,18 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
         --print("DROPPED CHIP DATA: ", dropped_chip_data)
         local is_dropped_chip_mega = (dropped_chip_data.CHIP_RANKING % 4) == 1
         local is_dropped_chip_giga = (dropped_chip_data.CHIP_RANKING % 4) == 2
-        local folder_chip_data = CHIP_DATA[folder[selected_chip_index].ID]
-        --print("FOLDER CHIP DATA: ", folder_chip_data)
-        local is_folder_chip_mega = (folder_chip_data.CHIP_RANKING % 4) == 1
-        local is_folder_chip_giga = (folder_chip_data.CHIP_RANKING % 4) == 2
+
+        local is_folder_chip_mega = false
+        local is_folder_chip_giga = false
+
+        if folder[selected_chip_index] ~= nil then
+            local folder_chip_data = CHIP_DATA[folder[selected_chip_index].ID]
+            --print("FOLDER CHIP DATA: ", folder_chip_data)
+            is_folder_chip_mega = (folder_chip_data.CHIP_RANKING % 4) == 1
+            is_folder_chip_giga = (folder_chip_data.CHIP_RANKING % 4) == 2
+        end
+
+        
 
         local replaces_mega_chip = is_folder_chip_mega and is_dropped_chip_mega
 
@@ -510,6 +519,19 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
                     end
                 else
                     drawTextOutline(x_offset, y_offset,  folder[chip_counter].PRINT_NAME, "black", text_color, "transparent", 10, "Arial")
+                end
+
+            else
+                -- Render "invisible" chips for folders with size < 30
+                if chip_counter == selected_chip_index then
+                    -- Render red background if we can't add a new megachip.
+                    if can_replace_chip == false then
+                        drawTextOutline(x_offset, y_offset,  "", "black", text_color, "red", 10, "Arial")
+                    else
+                        drawTextOutline(x_offset, y_offset,  "", "black", text_color, "green", 10, "Arial")
+                    end
+                else
+                    drawTextOutline(x_offset, y_offset,  "", "black", text_color, "transparent", 10, "Arial")
                 end
 
             end

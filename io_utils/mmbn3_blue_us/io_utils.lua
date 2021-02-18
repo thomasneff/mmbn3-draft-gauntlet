@@ -234,6 +234,11 @@ function mmbn3_utils.patch_folder(folder, folder_address, gauntlet_data)
 
     end
 
+    for unused_chip_index = folder_length + 1,defs.NUMBER_OF_CHIPS_IN_FOLDER do
+        -- Write "unused" flags for the chip index. This might need to be inverted.
+        bizhawk_io_wrapper.writebyte(defs.SHUFFLED_FOLDER_INDICES_RAM_ADDRESS + (unused_chip_index - 1), 0xFF)
+    end
+
 end
 
 

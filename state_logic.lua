@@ -763,7 +763,7 @@ end
 
 function state_logic.randomize_folder()
 
-    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
+    for chip_idx = 1,#gauntlet_data.current_folder do
         gauntlet_data.current_folder[chip_idx] = CHIP.new_random_chip_with_random_code()
         --gauntlet_data.current_folder[chip_idx] = CHIP.new_chip_with_code(0x1, 0)
     end
@@ -1559,7 +1559,7 @@ function state_logic.randomize_snecko_folder_codes(folder)
         print("randomize_snecko_folder_codes")
     end
 
-    for chip_idx = 1,GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER do
+    for chip_idx = 1,#folder do
 
         if (gauntlet_data.snecko_eye_randomize_asterisk == 0 and folder[chip_idx].CODE == CHIP_CODE.Asterisk) then 
         else
@@ -1621,7 +1621,7 @@ function state_logic.update_battle_statistics()
     end
 
     for k, v in pairs(state_logic.activated_buffs) do
-        buff_descriptions[#buff_descriptions + 1] = v:get_brief_description()
+        buff_descriptions[#buff_descriptions + 1] = v:get_brief_description(state_logic.current_battle)
     end
 
 
@@ -1690,7 +1690,7 @@ function state_logic.patch_before_battle_start()
     -- Get spectator chip
 
     if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 then
-        gauntlet_data.spectator_chip =  gauntlet_data.current_folder[gauntlet_data.math.random_spectator_chip(1, GENERIC_DEFS.NUMBER_OF_CHIPS_IN_FOLDER)]
+        gauntlet_data.spectator_chip =  gauntlet_data.current_folder[gauntlet_data.math.random_spectator_chip(1, #gauntlet_data.current_folder)]
         gauntlet_data.spectator_chip.PRINT_NAME = state_logic.get_printable_chip_name(gauntlet_data.spectator_chip)
         gauntlet_data.spectator_chip.ARGB_ICON = state_logic.get_argb_icon(gauntlet_data.spectator_chip)
         --print("Spectator Chip: ")
@@ -3672,7 +3672,8 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
+                --print("Current battle: ", state_logic.current_battle)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_battle)
             end
 
 
@@ -3821,9 +3822,17 @@ function state_logic.main_loop()
                     local dropped_chip_data = CHIP_DATA[state_logic.dropped_chip.ID]
                     local is_dropped_chip_mega = (dropped_chip_data.CHIP_RANKING % 4) == 1
                     local is_dropped_chip_giga = (dropped_chip_data.CHIP_RANKING % 4) == 2
-                    local folder_chip_data = CHIP_DATA[gauntlet_data.current_folder[state_logic.folder_chip_render_index].ID]
-                    local is_folder_chip_mega = (folder_chip_data.CHIP_RANKING % 4) == 1
-                    local is_folder_chip_giga = (folder_chip_data.CHIP_RANKING % 4) == 2
+
+                    local folder_chip_data = nil
+                    local is_folder_chip_mega = false
+                    local is_folder_chip_giga = false
+
+
+                    if gauntlet_data.current_folder[state_logic.folder_chip_render_index] ~= nil then
+                        local folder_chip_data = CHIP_DATA[gauntlet_data.current_folder[state_logic.folder_chip_render_index].ID]
+                        is_folder_chip_mega = (folder_chip_data.CHIP_RANKING % 4) == 1
+                        is_folder_chip_giga = (folder_chip_data.CHIP_RANKING % 4) == 2
+                    end
 
                     local replaces_mega_chip = is_folder_chip_mega and is_dropped_chip_mega
 
@@ -3836,12 +3845,18 @@ function state_logic.main_loop()
                         then
                     
                         -- We do nothing if we can't pick due to Mega/GigaChip limits. We check for replacement of Mega/Giga chips.
-
+                        print("Cannot replace due to mega/giga chip limit!")
                     else        
                         
+                        state_logic.replaced_chip = "Empty Chip"
 
-                        state_logic.replaced_chip = deepcopy(gauntlet_data.current_folder[state_logic.folder_chip_render_index].PRINT_NAME)
-                        gauntlet_data.current_folder[state_logic.folder_chip_render_index] = state_logic.dropped_chip
+                        if gauntlet_data.current_folder[state_logic.folder_chip_render_index] ~= nil then
+                            state_logic.replaced_chip = deepcopy(gauntlet_data.current_folder[state_logic.folder_chip_render_index].PRINT_NAME)
+                            gauntlet_data.current_folder[state_logic.folder_chip_render_index] = state_logic.dropped_chip
+                        else
+                            gauntlet_data.current_folder[#gauntlet_data.current_folder + 1] = state_logic.dropped_chip
+                        end
+
                         gauntlet_data.current_state = gauntlet_data.GAME_STATE.TRANSITION_TO_RUNNING
                         state_logic.should_redraw = 1
 
@@ -3893,7 +3908,8 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, state_logic.folder_chip_render_index, state_logic.dropped_chip, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
+                --print("current_battle: ", state_logic.current_battle)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_battle)
             end
             
             
@@ -4014,7 +4030,7 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_battle)
             end
 
             
@@ -4082,7 +4098,7 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_battle)
             end
 
             
@@ -4201,7 +4217,7 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_battle)
             end
 
             
@@ -4276,7 +4292,7 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_battle)
             end
 
             
@@ -4370,7 +4386,7 @@ function state_logic.main_loop()
             elseif gauntlet_data.folder_view == 1 then
                 gui_rendering.render_folder(gauntlet_data.current_folder, nil, nil, gauntlet_data, MusicLoader.FinishedLoading)
             elseif gauntlet_data.folder_view == 2 then
-                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_round)
+                gui_rendering.render_buffs(state_logic.activated_buffs, MusicLoader.FinishedLoading, state_logic.buff_render_offset, state_logic.current_battle)
             end
             
             --gui.DrawFinish()

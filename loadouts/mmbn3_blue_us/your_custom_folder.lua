@@ -15,7 +15,7 @@ function YOUR_CUSTOM_FOLDER.activate()
     -- Hey! Feel free to replace this with whatever chips you want.
     -- You can find the chip definitions/names in defs/mmbn3_blue_us/chip_id_defs .
     -- Chip codes should be self-explanatory, except for CHIP_CODE.Asterisk for *-Code chips.
-    -- I have no Idea what happens if you try to add more or less than 30 chips, but it'll likely break somewhere, so caution.
+    -- It will break if you try to add more than 30 chips. Less than 30 should be fine, but I haven't tested that too much.
 
     -- If you want to add an additional loadout and not just modify this one, you'll need to do the following:
     -- 1.) Copy a "base" file within the loadouts folder and replace the name in ERROR_CHECKED_SPECIFIC_GAME_WRAPPER.get_module() with your new loadout name
