@@ -682,6 +682,11 @@ function state_logic.on_enter_battle()
     --event.unregisterbyname("on_enter_battle")
 
     if state_logic.battle_enter_lock == 1 then
+        print("FolderBak used!")
+        io_utils.patch_folder_in_battle(gauntlet_data.current_folder, GENERIC_DEFS.FOLDER_START_ADDRESS_RAM, gauntlet_data)
+        --client.pause()
+        -- If this happens, we need to shuffle our folder and re-write the indices, otherwise folders with less than 20 chips will break.
+
         return
     end
 

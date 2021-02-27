@@ -151,13 +151,45 @@ function patch_chip_data(chip)
 end
 
 
-function shuffle(tbl)
+function shuffle(tbl, rng_name_arg)
     size = #tbl
+
+    rng_name = "FOLDER_SHUFFLING"
+
+    if rng_name_arg ~= nil then
+        rng_name = rng_name_arg
+    end
+
+
     for i = size, 1, -1 do
       local rand = gauntlet_data.math.random_named("FOLDER_SHUFFLING", size)
       tbl[i], tbl[rand] = tbl[rand], tbl[i]
     end
     return tbl
+end
+
+function mmbn3_utils.patch_folder_in_battle(folder, folder_address, gauntlet_data)
+
+    local folder_length = #folder
+    local working_address = folder_address
+
+    -- We shuffle with the in-battle rng here
+    local shuffled_folder = shuffle(deepcopy(folder), "IN_BATTLE")
+
+    -- Then we just overwrite the folder according to our shuffled folder, setting the indices correctly so it works with less than 30 chips.
+    for chip_index = 1,folder_length do
+        -- Now we need to patch the indices in RAM such that the chips come in order the first time around
+       bizhawk_io_wrapper.writebyte(defs.SHUFFLED_FOLDER_INDICES_RAM_ADDRESS + (chip_index - 1), chip_index - 1)
+   
+       working_address = write_folder_chip_to_address(working_address, shuffled_folder[chip_index])
+
+   end
+
+   for unused_chip_index = folder_length + 1,defs.NUMBER_OF_CHIPS_IN_FOLDER do
+       -- Write "unused" flags for the chip index.
+       bizhawk_io_wrapper.writebyte(defs.SHUFFLED_FOLDER_INDICES_RAM_ADDRESS + (unused_chip_index - 1), 0xFF)
+   end
+
 end
 
 -- This changes all chips for the given folder_address to the chips contained in "folder".
