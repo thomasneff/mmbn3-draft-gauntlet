@@ -571,6 +571,17 @@ function state_logic.on_battle_end()
     end
 
     input_handler.current_input_state = nil
+    state_logic.do_not_pause = false
+
+    if gauntlet_data.main_player == 1 then
+        local payload = {}
+        payload.SKIP_BATTLE_IF_THIS_ARRIVES = 1
+        -- Enter current menu inputs into network buffer
+        if state_logic.network_handler.is_connected then
+            state_logic.network_handler.produce_send_buffer(json.encode(payload) .. "\n")
+        end
+
+    end
 
     if state_logic.network_handler.is_connected then
         print("Swapping main player: ")
@@ -578,6 +589,7 @@ function state_logic.on_battle_end()
         print("Main player: ", gauntlet_data.main_player)
         gauntlet_data.sub_player_delay_counter = 0
     end
+
 
 
     -- We advance chip generation rng here
@@ -626,13 +638,11 @@ function state_logic.on_battle_end()
     gauntlet_data.hp_patch_required = 1
 
     if state_logic.network_handler.is_connected then
-
         gauntlet_data.networked_music_loaded = 0
 
         print("SET NETWORKED MUSIC LOADED: ", gauntlet_data.networked_music_loaded)
 
         gauntlet_data.networked_music_loaded_sent = false
-
     end
 
 
@@ -1230,19 +1240,19 @@ function state_logic.initialize()
 
     gauntlet_data.statistics_container = {}
 
-    if gauntlet_data.fixed_random_seed == nil and state_logic.network_handler.random_seed == nil then
-        math.randomseed(os.time())
-        gauntlet_data.random_seed = math.random(2147483647)
-    else
-        gauntlet_data.random_seed = gauntlet_data.fixed_random_seed
-    end
-
     if state_logic.network_handler.random_seed ~= nil then
         gauntlet_data.random_seed = state_logic.network_handler.random_seed
     end
 
     if gauntlet_data.prerecorded_inputs ~= nil then
         gauntlet_data.random_seed = gauntlet_data.prerecorded_inputs[1].RANDOM_SEED
+    end
+    
+    if gauntlet_data.fixed_random_seed == nil and state_logic.network_handler.random_seed == nil then
+        math.randomseed(os.time())
+        gauntlet_data.random_seed = math.random(2147483647)
+    elseif gauntlet_data.fixed_random_seed ~= nil then
+        gauntlet_data.random_seed = gauntlet_data.fixed_random_seed
     end
 
     print("Seed: " .. tostring(gauntlet_data.random_seed))
@@ -1271,6 +1281,12 @@ function state_logic.initialize()
     if state_logic.network_handler.random_seed ~= nil then
         state_logic.network_handler.random_seed = math.random(state_logic.network_handler.random_seed)
     end
+
+    if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 then
+        -- Make sure to offset the RNG by one, so that the spectator chips are actually different between players
+        gauntlet_data.math.random_spectator_chip(1, #gauntlet_data.current_folder)
+    end
+
     --MusicLoader.generateRNGValues()
     --savestate.load(state_logic.initial_state)
 
@@ -1695,7 +1711,9 @@ function state_logic.patch_before_battle_start()
     -- Get spectator chip
 
     if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 then
-        gauntlet_data.spectator_chip =  gauntlet_data.current_folder[gauntlet_data.math.random_spectator_chip(1, #gauntlet_data.current_folder)]
+        gauntlet_data.spectator_chip = gauntlet_data.current_folder[gauntlet_data.math.random_spectator_chip(1, #gauntlet_data.current_folder)]
+        -- Call the random_spectator_chip twice to keep the offset between players and have different spec chips.
+        gauntlet_data.math.random_spectator_chip(1, #gauntlet_data.current_folder)
         gauntlet_data.spectator_chip.PRINT_NAME = state_logic.get_printable_chip_name(gauntlet_data.spectator_chip)
         gauntlet_data.spectator_chip.ARGB_ICON = state_logic.get_argb_icon(gauntlet_data.spectator_chip)
         --print("Spectator Chip: ")
@@ -2723,6 +2741,11 @@ end
 
 
 function state_logic.pause_emu()
+
+    if state_logic.do_not_pause == true then
+        return
+    end
+
     client.pause()
     state_logic.emu_paused = true
 end
@@ -2740,7 +2763,7 @@ function state_logic.on_frame_end()
     if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
 
         -- We only run frame-by-frame. We cannot use emu.frameadvance() because this conflicts with our yield main loop... :/
-        if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 then
+        if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 and state_logic.do_not_pause ~= true then
 
             -- Only pause if we do not have at least another frame in the buffer that is correct.
             --print("on_frame_end")
@@ -2780,8 +2803,9 @@ end
 
 function state_logic.main_frame_loop()
 
-    -- This loop runs at the GBA framerate. 
-    --print ("Current state: " .. gauntlet_data.current_state)
+
+    -- This loop runs at the GBA framerate.
+
     if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
 
             
@@ -2991,6 +3015,7 @@ function state_logic.main_frame_loop()
     if MusicLoader.LoadBlock() == 1 then
         state_logic.should_redraw = 1
     end
+
 end
 
 local start_frame = 0
@@ -3364,11 +3389,17 @@ function state_logic.apply_networked_inputs_menu()
 
                 -- If we received something that contains a GBA_FRAME, we need to be careful to make sure that we still apply them correctly.
                 if gauntlet_data.current_input.GBA_FRAME ~= nil then
-                    print("Received a GBA Frame while not yet in-game. Rewinding message consume pointer and ignoring this input for now")
+                    print("Received a GBA Frame while not yet in-game or still in menu. Rewinding message consume pointer and ignoring this input for now")
                     print("Current state: " .. gauntlet_data.current_state)
                     print(gauntlet_data.current_input)
                     print(gauntlet_data.total_gba_frame_count)
-                    state_logic.network_handler.rewind_receive_buffer_consumer_index()
+
+                    if gauntlet_data.current_input.GBA_FRAME ~= 0 then
+                        print("Received a frame from previous battle for some reason, discarding it!")
+                    else
+                        state_logic.network_handler.rewind_receive_buffer_consumer_index()
+                    end
+
                     gauntlet_data.current_input = nil
                     return nil
                 end
@@ -3406,8 +3437,14 @@ function state_logic.apply_networked_inputs_ingame()
                 
                 gauntlet_data.current_input = json.decode(data)
 
-                --print("Received: ")
-                --print(gauntlet_data.current_input)
+                
+                if gauntlet_data.current_input == nil then
+                    print("Received: ")
+                    print(gauntlet_data.current_input)
+                    print(data)
+                    return nil
+                end
+                --
 
                 if gauntlet_data.current_input.SOFT_RESET ~= nil then
                     state_logic.network_reset = true
@@ -3431,6 +3468,14 @@ function state_logic.apply_networked_inputs_ingame()
                     state_logic.unpause_once_ingame = true
                 end
 
+                if gauntlet_data.current_input.SKIP_BATTLE_IF_THIS_ARRIVES then
+                    print("Other player is done with battle - not pausing anymore in case there would be frames missing.")
+                    state_logic.do_not_pause = true
+                    gauntlet_data.current_input = nil
+                    client.unpause()
+                    return nil
+                end
+
                 if gauntlet_data.current_input.MENU_FRAME ~= nil and gauntlet_data.current_input.SOFT_RESET == nil then
                     -- Receiving a menu frame while we're ingame would be weird
 
@@ -3438,6 +3483,7 @@ function state_logic.apply_networked_inputs_ingame()
 
                     print(gauntlet_data.current_input)
                     gauntlet_data.current_input = nil
+
                 end
 
                 --print("Received current data (ingame): ")
@@ -3562,6 +3608,14 @@ function state_logic.main_loop()
             recorded_input_table.MENU_FRAME = gauntlet_data.total_frame_count
             recorded_input_table.CURRENT_STATE = gauntlet_data.current_state
             gauntlet_data.recorded_input_deltas[#gauntlet_data.recorded_input_deltas + 1] = recorded_input_table
+
+            -- Also always send music back if we're not the main player and received inputs
+            if MusicLoader.FinishedLoading == 1 and gauntlet_data.music_loading_started == 1 and gauntlet_data.main_player == 0 then
+                recorded_input_table.MUSIC_LOADED = MusicLoader.FinishedLoading
+                gauntlet_data.networked_music_loaded_sent = true
+                print("Sending MUSIC LOADED: ")
+                print(recorded_input_table)
+            end
 
             -- Enter current menu inputs into network buffer
             if gauntlet_data.main_player == 1 or recorded_input_table.MUSIC_LOADED ~= nil and state_logic.network_handler.is_connected then
@@ -4471,6 +4525,7 @@ function state_logic.main_loop()
 
     else-- Default state, should never happen
         gauntlet_data.current_state = gauntlet_data.GAME_STATE.DEFAULT_WAITING_FOR_EVENTS
+        --print("TEST ABC")
         state_logic.emu_paused = true
         state_logic.unpause_emu()
     end
