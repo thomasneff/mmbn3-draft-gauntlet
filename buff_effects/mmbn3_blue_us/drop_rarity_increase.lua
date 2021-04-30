@@ -38,6 +38,10 @@ function RARITY_INCREASE:activate(current_round)
 
     gauntlet_data.mega_max_hp = gauntlet_data.mega_max_hp - HP_LOSS_VALUES[self.rarity][current_round]
 
+    if gauntlet_data.last_known_current_hp ~= nil and gauntlet_data.last_known_current_hp > gauntlet_data.mega_max_hp then
+        gauntlet_data.last_known_current_hp = gauntlet_data.mega_max_hp
+    end
+
     gauntlet_data.hp_patch_required = 1
 
     -- Adjust cumulative rarity modifiers.

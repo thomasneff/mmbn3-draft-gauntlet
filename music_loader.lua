@@ -296,6 +296,25 @@ function MusicLoader.LoadRandomFile(current_round)
         return
     end
 
+    
+    -- Check if our ROM was patched
+    local memory_size = memory.getmemorydomainsize("ROM")
+    local required_music_memory_size = (GENERIC_DEFS.MUSIC_PATCH_ADDRESS - 0x08000000) + 0x00200000
+
+    --print("Memory size: " .. memory_size)
+    --print("required MUSIC_PATCH_ADDRESS size: " .. required_music_memory_size)
+
+    if memory_size < required_music_memory_size then
+
+        print ("Turning off Music Loader, ROM was not patched to be large enough!")
+
+        GENERIC_DEFS.ENABLE_MUSIC_PATCHING = 0
+        MusicLoader.FinishedLoading = 1
+        return
+    end
+    
+    
+
     --local patch_file = assert(io.open(patch_file_name, "rb"))
 
     MusicLoader.patch_str = patch_file:read("*all")
@@ -393,6 +412,7 @@ function MusicLoader.LoadBlock()
     --MusicLoader.BlockSize = yield_interval
     
     --print("Interval: " .. tostring(info_interval))
+
     
     for i = 1,MusicLoader.BlockSize do
     

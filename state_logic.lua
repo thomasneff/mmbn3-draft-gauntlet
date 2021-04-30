@@ -2762,6 +2762,11 @@ function state_logic.on_frame_end()
 
     if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
 
+        if emu.islagged() then
+            -- If we have a lag frame, we *must* skip the main loop in order to not increment the in-game frame count.
+            return
+        end
+
         -- We only run frame-by-frame. We cannot use emu.frameadvance() because this conflicts with our yield main loop... :/
         if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 and state_logic.do_not_pause ~= true then
 
@@ -2807,6 +2812,11 @@ function state_logic.main_frame_loop()
     -- This loop runs at the GBA framerate.
 
     if gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
+
+        if emu.islagged() then
+            -- If we have a lag frame, we *must* skip the main loop in order to not increment the in-game frame count.
+            return
+        end
 
             
         --if state_logic.network_handler.is_connected and gauntlet_data.main_player == 0 then
@@ -2992,8 +3002,9 @@ function state_logic.main_frame_loop()
             state_logic.enemy_hp_regen()
         end
 
-
-
+    
+        --print("gauntlet_data.total_gba_frame_count ", gauntlet_data.total_gba_frame_count)
+        --print("lag frame? ", emu.islagged())
         state_logic.main_loop_frame_count = state_logic.main_loop_frame_count + 1
 
         -- Fire events for buffs
@@ -3479,9 +3490,9 @@ function state_logic.apply_networked_inputs_ingame()
                 if gauntlet_data.current_input.MENU_FRAME ~= nil and gauntlet_data.current_input.SOFT_RESET == nil then
                     -- Receiving a menu frame while we're ingame would be weird
 
-                    print("Warning: received a MENU FRAME while ingame. This might have frozen the UI / desynced the server and client. Most likely doesn't have any consequences.")
+                    --print("Warning: received a MENU FRAME while ingame. This might have frozen the UI / desynced the server and client. Most likely doesn't have any consequences.")
 
-                    print(gauntlet_data.current_input)
+                    --print(gauntlet_data.current_input)
                     gauntlet_data.current_input = nil
 
                 end
@@ -4477,6 +4488,7 @@ function state_logic.main_loop()
 
     elseif gauntlet_data.current_state == gauntlet_data.GAME_STATE.RUNNING then
 
+
         if gauntlet_data.spectator_chip_sent == false and gauntlet_data.spectator_chip ~= nil and state_logic.network_handler.is_connected == true then
             gui_rendering.render_spectator_chip(gauntlet_data.spectator_chip)
         end
@@ -4487,40 +4499,50 @@ function state_logic.main_loop()
         --       we're not in time freeze (IN_BATTLE_TIMEFREEZE_ADDRESS)
         --       we simply render the currently held chip at mega man's position (with an offset) (IN_BATTLE_MEGA_MAN_POSITION_ADDRESS)
 
+        
+        if emu.islagged() ~= true then
 
-        if gauntlet_data.held_chips ~= nil then
+            if gauntlet_data.held_chips ~= nil then
 
+                    
+                local is_timefreeze = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_TIMEFREEZE_ADDRESS)
+                local is_after_battle = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_AFTER_BATTLE_ADDRESS) 
+
+                --print("Render check: ", gauntlet_data.battle_phase, is_timefreeze, gauntlet_data.current_battle_chip_index, #gauntlet_data.held_chips)
+                if gauntlet_data.battle_phase == 1 and is_after_battle == 0 and is_timefreeze == 0 and gauntlet_data.current_battle_chip_index <= #gauntlet_data.held_chips and #gauntlet_data.held_chips ~= 0 then
                 
-            local is_timefreeze = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_TIMEFREEZE_ADDRESS)
-            local is_after_battle = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_AFTER_BATTLE_ADDRESS) 
+                    if gauntlet_data.held_chips ~= nil and gauntlet_data.current_battle_chip_index ~= nil and gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index] ~= nil then
 
-            --print("Render check: ", gauntlet_data.battle_phase, is_timefreeze, gauntlet_data.current_battle_chip_index, #gauntlet_data.held_chips)
-            if gauntlet_data.battle_phase == 1 and is_after_battle == 0 and is_timefreeze == 0 and gauntlet_data.current_battle_chip_index <= #gauntlet_data.held_chips and #gauntlet_data.held_chips ~= 0 then
-            
-                --print("Held chips: ")
-                --print(gauntlet_data.held_chips)
+                        --print("Held chips: ")
+                        --print(gauntlet_data.held_chips)
 
-                -- Read mega man's x and y positions
-                local mega_x = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_MEGA_MAN_POSITION_ADDRESS[gauntlet_data.number_of_entities]) - 1
-                local mega_y = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_MEGA_MAN_POSITION_ADDRESS[gauntlet_data.number_of_entities] + 1) - 1
+                        -- Read mega man's x and y positions
+                        local mega_x = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_MEGA_MAN_POSITION_ADDRESS[gauntlet_data.number_of_entities]) - 1
+                        local mega_y = io_utils.readbyte(GENERIC_DEFS.IN_BATTLE_MEGA_MAN_POSITION_ADDRESS[gauntlet_data.number_of_entities] + 1) - 1
 
-                --print("mega x", mega_x, "mega y", mega_y)
+                        --print("mega x", mega_x, "mega y", mega_y)
 
-                gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].ARGB_ICON = state_logic.get_argb_icon(gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index])
-                
-                gui_rendering.render_chip_icon_in_battle(gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index], 17 + 40 * mega_x, 28 + 24 * mega_y)
+                        gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].ARGB_ICON = state_logic.get_argb_icon(gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index])
+                        
+                        gui_rendering.render_chip_icon_in_battle(gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index], 17 + 40 * mega_x, 28 + 24 * mega_y)
+
+                    end
+
+                    
+
+                end
 
             end
 
+            -- Run the ingame network input receiver code
+            --
+            
+            gauntlet_data.music_loading_started = 0
+            
+            --print("Running before apply_networked_inputs_ingame")
+        
+            state_logic.apply_networked_inputs_ingame()
         end
-
-        -- Run the ingame network input receiver code
-        --
-        
-        gauntlet_data.music_loading_started = 0
-        
-        --print("Running before apply_networked_inputs_ingame")
-        state_logic.apply_networked_inputs_ingame()
         
 
     else-- Default state, should never happen
@@ -4539,12 +4561,17 @@ function state_logic.main_loop()
 
 
     -- Send network buffer values, if they exist
-    while state_logic.network_handler.consume_send_buffer() do
-    
-    end
 
-    -- Receive network buffer values, if they exist
-    while state_logic.network_handler.produce_receive_buffer() do
+    if emu.islagged() ~= true then
+
+        while state_logic.network_handler.consume_send_buffer() do
+        
+        end
+
+        -- Receive network buffer values, if they exist
+        while state_logic.network_handler.produce_receive_buffer() do
+
+        end
 
     end
 

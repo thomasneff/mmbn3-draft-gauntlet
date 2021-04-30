@@ -1,3 +1,6 @@
+todo: auto-music patching
+ultra rare hunter doesnt reduce HP? -> add the fix from drop_rarity_increase.lua to all scripts that cost/change hp
+
 spec chip is not seeded
 music loaded before other person is even in menu
 sync issue could be solved by directly sending a MENU FRAME when the controls switch and then skipping if we get a menu frame.
