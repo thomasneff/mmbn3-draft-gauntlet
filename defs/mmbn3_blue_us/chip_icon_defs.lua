@@ -1,5 +1,5 @@
 local CHIP_ICON_DEFS = {}
-
+local bmp_exporter = require "bmp_exporter"
 
 -- This assumes the default color palette used by the game.
 -- The palette address for chip icons is at 0x05000340, btw.
@@ -60,6 +60,34 @@ CHIP_ICON_DEFS.BYTES_PER_TILE_LINE = 4
 CHIP_ICON_DEFS.PIXELS_PER_TILE_LINE = 8
 CHIP_ICON_DEFS.WIDTH = 16
 CHIP_ICON_DEFS.HEIGHT = 16
+
+
+function file_exists(name)
+    local f=io.open(name,"r")
+    if f~=nil then io.close(f) return true else return false end
+end
+
+
+function CHIP_ICON_DEFS.generate_image_cache(CHIP_DATA, CHIP_ID)
+
+    for key, value in pairs(CHIP_ID) do
+
+        --local file_name = "Lua/mmbn3_draft_gauntlet/chip_icons/" .. value .. ".bmp"
+        local file_name = "chip_icons/" .. value .. ".bmp"
+
+        if not file_exists(file_name) then
+
+            local chip_address = CHIP_DATA[value].CHIP_ICON_OFFSET
+            local argb_array = CHIP_ICON_DEFS.get_argb_2d_array_for_icon_address(chip_address)
+
+            -- TODO: generate bitmap and store it in the cache.
+            bmp_exporter.export_argb_table_to_bitmap(file_name, argb_array)
+
+        end
+    end
+
+end
+
 
 function CHIP_ICON_DEFS.get_argb_2d_array_for_icon_address(icon_address)
 

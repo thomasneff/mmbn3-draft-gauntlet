@@ -421,6 +421,7 @@ function state_logic.on_chip_use()
         end
     end
 
+    -- TODO: bug when holding a chip for more than 1 phase ?
     gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].ID = 0xFFFF
     gauntlet_data.held_chips[gauntlet_data.current_battle_chip_index].DAMAGE = 0x0000
     --state_logic.update_printable_chip_names_in_folder()
@@ -645,7 +646,6 @@ function state_logic.on_battle_end()
         gauntlet_data.networked_music_loaded_sent = false
     end
 
-
     gauntlet_data.current_state = gauntlet_data.GAME_STATE.LOAD_INITIAL
 end
 
@@ -677,6 +677,7 @@ function state_logic.on_enter_battle()
         print("on_enter_battle")
     end
 
+
     -- Check if this is really the battle start or just a use of FoldrBak
     -- If in the future, somehow, our check with battle_start and battle_end doesn't work, we can use this to check for FoldrBak
     --local r9_val = emu.getregister("R9")
@@ -701,6 +702,19 @@ function state_logic.on_enter_battle()
     end
 
     state_logic.battle_enter_lock = 1
+
+    
+    -- Also write an additional file with another (synced) random number so that the additional music player tool works for draft music.
+    local random_number = gauntlet_data.math.random_music(1, 999999999)
+    
+    local file = state_logic.try_open_file("Lua/mmbn3_draft_gauntlet/gauntlet_draft_music.txt", "w")
+    if file ~= nil then
+        print("Writing random music txt: " .. random_number)
+        file:write(random_number)
+        file:flush()
+        file:close()
+    end
+    
     
     
     gauntlet_data.music_loading_started = 0
@@ -1473,6 +1487,9 @@ function state_logic.initialize()
         state_logic.CHIP_DATA_COPY[key] = deepcopy(state_logic.INITIAL_CHIP_DATA[key])
     end
 
+    CHIP_ICON.generate_image_cache(CHIP_DATA, CHIP_ID)
+    CHIP_PICTURE.generate_image_cache(CHIP_DATA, CHIP_ID)
+
     state_logic.next_round()
 
     BUFF_GENERATOR.initialize()
@@ -1680,6 +1697,21 @@ function state_logic.patch_before_battle_start()
     
     input_handler.current_input_state = nil
     gauntlet_data.total_gba_frame_count = 0
+
+    
+    -- Also write an additional file with another (synced) random number so that the additional music player tool works for draft music.
+    local random_number = 0
+    
+    local file = state_logic.try_open_file("gauntlet_draft_music.txt", "w")
+    if file ~= nil then
+        print("Resetting random music txt: " .. random_number)
+        file:write(random_number)
+        file:flush()
+        file:close()
+    else
+        print("RESET DRAFT MUSIC TXT NIL!")
+    end
+    
 
     -- Patch folder with all new stuff.
     -- state_logic.randomize_folder()

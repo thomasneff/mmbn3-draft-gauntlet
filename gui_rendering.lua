@@ -29,55 +29,69 @@ function drawTextOutline(x_pos, y_pos, string, outline_color, color, background_
 
 
     -- This is a hack to prevent the background/selected box from stopping before the end of the text.
-    local bg_string = "||||||||||||||||||||||||"
+    --local bg_string = "||||||||||||||||||||||||"
 
-    gui.drawText(x_pos, y_pos, bg_string, background_color, background_color, font_size, font_family)
+    --gui.drawText(x_pos, y_pos, bg_string, background_color, background_color, font_size, font_family)
+    gui.drawRectangle(x_pos + 1, y_pos + 1, 60, 10, background_color, background_color)
     -- Draw simple outline
-    gui.drawText(x_pos - 1, y_pos, string, outline_color, "transparent", font_size, font_family)
-    gui.drawText(x_pos + 1, y_pos, string, outline_color, "transparent", font_size, font_family)
-    gui.drawText(x_pos, y_pos - 1, string, outline_color, "transparent", font_size, font_family)
-    gui.drawText(x_pos, y_pos + 1, string, outline_color, "transparent", font_size, font_family)
-    gui.drawText(x_pos - 1, y_pos - 1, string, outline_color, "transparent", font_size, font_family)
-    gui.drawText(x_pos + 1, y_pos + 1, string, outline_color, "transparent", font_size, font_family)
-    gui.drawText(x_pos + 1, y_pos - 1, string, outline_color, "transparent", font_size, font_family)
-    gui.drawText(x_pos - 1, y_pos + 1, string, outline_color, "transparent", font_size, font_family)
+    gui.drawText(x_pos - 1, y_pos, string, outline_color, nil, font_size, font_family)
+    gui.drawText(x_pos + 1, y_pos, string, outline_color, nil, font_size, font_family)
+    gui.drawText(x_pos, y_pos - 1, string, outline_color, nil, font_size, font_family)
+    gui.drawText(x_pos, y_pos + 1, string, outline_color, nil, font_size, font_family)
+    gui.drawText(x_pos - 1, y_pos - 1, string, outline_color, nil, font_size, font_family)
+    gui.drawText(x_pos + 1, y_pos + 1, string, outline_color, nil, font_size, font_family)
+    gui.drawText(x_pos + 1, y_pos - 1, string, outline_color, nil, font_size, font_family)
+    gui.drawText(x_pos - 1, y_pos + 1, string, outline_color, nil, font_size, font_family)
     
-    --gui.drawText(x_pos - 1, y_pos, string, outline_color, "transparent", font_size, font_family)
-    --gui.drawText(x_pos + 1, y_pos, string, outline_color, "transparent", font_size, font_family)
+    --gui.drawText(x_pos - 1, y_pos, string, outline_color, nil, font_size, font_family)
+    --gui.drawText(x_pos + 1, y_pos, string, outline_color, nil, font_size, font_family)
     local x_pos_off = x_pos + 2
     local y_pos_off = y_pos + 2
 
     --gui.pixelText(x_pos_off, y_pos_off, bg_string, background_color, background_color)
 
-    --gui.pixelText(x_pos_off - 1, y_pos_off, string, outline_color, "transparent")
-    --gui.pixelText(x_pos_off + 1, y_pos_off, string, outline_color, "transparent")
-    --gui.pixelText(x_pos_off, y_pos_off - 1, string, outline_color, "transparent")
-    --gui.pixelText(x_pos_off, y_pos_off + 1, string, outline_color, "transparent")
-    --gui.pixelText(x_pos_off - 1, y_pos_off - 1, string, outline_color, "transparent")
-    --gui.pixelText(x_pos_off + 1, y_pos_off + 1, string, outline_color, "transparent")
-    --gui.pixelText(x_pos_off + 1, y_pos_off - 1, string, outline_color, "transparent")
-    --gui.pixelText(x_pos_off - 1, y_pos_off + 1, string, outline_color, "transparent")
+    --gui.pixelText(x_pos_off - 1, y_pos_off, string, outline_color, nil)
+    --gui.pixelText(x_pos_off + 1, y_pos_off, string, outline_color, nil)
+    --gui.pixelText(x_pos_off, y_pos_off - 1, string, outline_color, nil)
+    --gui.pixelText(x_pos_off, y_pos_off + 1, string, outline_color, nil)
+    --gui.pixelText(x_pos_off - 1, y_pos_off - 1, string, outline_color, nil)
+    --gui.pixelText(x_pos_off + 1, y_pos_off + 1, string, outline_color, nil)
+    --gui.pixelText(x_pos_off + 1, y_pos_off - 1, string, outline_color, nil)
+    --gui.pixelText(x_pos_off - 1, y_pos_off + 1, string, outline_color, nil)
 
     -- Draw main text
-    gui.drawText(x_pos, y_pos, string, color, "transparent", font_size, font_family)
-    --gui.pixelText(x_pos_off, y_pos_off, string, color, "transparent")
+    gui.drawText(x_pos, y_pos, string, color, nil, font_size, font_family)
+    --gui.pixelText(x_pos_off, y_pos_off, string, color, nil)
 end
 
 -- We will use this for both icons and chip images with palettes.
 function render_argb_2d_array(argb_2d_array, x_offset, y_offset, width, height)
-
+    --gui.drawImage(chip_image_background_path, x_offset, y_offset)
     for x = 1,width do
 
         for y = 1,height do
 
             --if bit.rshift(argb_2d_array[x][y], 24) >= 0x0 then
-                gui.drawPixel(x + x_offset, y + y_offset, argb_2d_array[x][y])
+            -- TODO: add bmp.lua and do caching of the icons/images, and then pass them onto gui.drawImage() which is much faster.
+            --       we should do the caching/preprocessing directly before the gauntlet starts of all chip ARGB icons and images.
+            gui.drawPixel(x + x_offset, y + y_offset, argb_2d_array[x][y])
+            --print(argb_2d_array)
+            --print(argb_2d_array[1])
+            --gui.MyCustomFunc(argb_2d_array, x + x_offset, y + y_offset)
             --end
 
         end
 
     end
 
+end
+
+function render_chip_icon(chip_id, x_offset, y_offset)
+    gui.drawImage("chip_icons/" .. chip_id .. ".bmp", x_offset, y_offset)
+end
+
+function render_chip_image(chip_id, x_offset, y_offset)
+    gui.drawImage("chip_images/" .. chip_id .. ".bmp", x_offset, y_offset)
 end
 
 function render_argb_2d_array_with_black_border(argb_2d_array, x_offset, y_offset, width, height)
@@ -137,10 +151,11 @@ function render_chip_with_background(chip, x_offset, y_offset, width, height, is
     else
         gui.drawImage(chip_image_background_path, x_offset, y_offset)
     end
-    local offset_between_background_and_chip_x = 7
-    local offset_between_background_and_chip_y = 5
+    local offset_between_background_and_chip_x = 8
+    local offset_between_background_and_chip_y = 6
     if chip_image ~= nil then
-       render_argb_2d_array(chip_image, x_offset + offset_between_background_and_chip_x , y_offset + offset_between_background_and_chip_y, width, height)
+       --render_argb_2d_array(chip_image, x_offset + offset_between_background_and_chip_x , y_offset + offset_between_background_and_chip_y, width, height)
+       render_chip_image(chip.ID, x_offset + offset_between_background_and_chip_x , y_offset + offset_between_background_and_chip_y, width, height)
     end
 
 
@@ -498,7 +513,8 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
                 
            
                 -- Render icon.
-                render_argb_2d_array(folder[chip_counter].ARGB_ICON, x_offset - CHIP_ICON.WIDTH - 2, y_offset, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
+                --render_argb_2d_array(folder[chip_counter].ARGB_ICON, x_offset - CHIP_ICON.WIDTH - 2, y_offset, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
+                render_chip_icon(folder[chip_counter].ID, x_offset - CHIP_ICON.WIDTH - 2, y_offset, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
                 -- If this chip is set as a reg-chip, the background of the icon is set to a different color
 
                 local text_color = "white"
@@ -553,7 +569,8 @@ function gui_rendering.render_folder(folder, selected_chip_index, new_chip, gaun
     --print(new_chip)
     if new_chip ~= nil and new_chip.PRINT_NAME ~= nil and new_chip.PRINT_NAME ~= "" and new_chip.ID ~= -1 then
         -- Render icon.
-        render_argb_2d_array(new_chip.ARGB_ICON, new_chip_offset_x + 30, new_chip_offset_y - offset_per_row - (CHIP_ICON.HEIGHT / 2) - 5, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
+        --render_argb_2d_array(new_chip.ARGB_ICON, new_chip_offset_x + 30, new_chip_offset_y - offset_per_row - (CHIP_ICON.HEIGHT / 2) - 5, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
+        render_chip_icon(new_chip.ID, new_chip_offset_x + 30, new_chip_offset_y - offset_per_row - (CHIP_ICON.HEIGHT / 2) - 5, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
         drawTextOutline(new_chip_offset_x, new_chip_offset_y - offset_per_row * 2,  "Drop: ", "black", "lightgreen", "transparent", 9, "Arial")
         new_chip_offset_y = new_chip_offset_y - 2
         drawTextOutline(new_chip_offset_x, new_chip_offset_y,  new_chip.PRINT_NAME, "black", "white", "transparent", 9, "Arial")
@@ -654,11 +671,13 @@ function gui_rendering.render_spectator_chip(spectator_chip)
     local x_offset = 170
     local y_offset = 143
     render_argb_2d_array_with_black_border(spectator_chip.ARGB_ICON, x_offset - CHIP_ICON.WIDTH - 2, y_offset, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
+    --render_chip_icon(spectator_chip.ID, x_offset - CHIP_ICON.WIDTH - 2, y_offset, CHIP_ICON.WIDTH,  CHIP_ICON.HEIGHT)
     drawTextBG(x_offset, y_offset + CHIP_ICON.HEIGHT / 4 - 1,  spectator_chip.PRINT_NAME, "black", "white", 0x99999999, 10, "Arial")
 end
 
 function gui_rendering.render_chip_icon_in_battle(chip, x, y)
     render_argb_2d_array_with_black_border(chip.ARGB_ICON, x, y, CHIP_ICON.WIDTH, CHIP_ICON.HEIGHT)
+    --render_chip_icon(chip.ID, x, y, CHIP_ICON.WIDTH, CHIP_ICON.HEIGHT)
 end
 
 return gui_rendering

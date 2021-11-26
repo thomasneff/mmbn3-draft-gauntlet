@@ -1,3 +1,4 @@
+local bmp_exporter = require "bmp_exporter"
 local CHIP_PICTURE_DEFS = {}
 local NUM_COLORS_PER_PALETTE = 16
 
@@ -48,6 +49,34 @@ CHIP_PICTURE_DEFS.BYTES_PER_TILE_LINE = 4
 CHIP_PICTURE_DEFS.PIXELS_PER_TILE_LINE = 8
 CHIP_PICTURE_DEFS.WIDTH = 64
 CHIP_PICTURE_DEFS.HEIGHT = 64
+
+function file_exists(name)
+    local f=io.open(name,"r")
+    if f~=nil then io.close(f) return true else return false end
+end
+
+
+function CHIP_PICTURE_DEFS.generate_image_cache(CHIP_DATA, CHIP_ID)
+
+    for key, value in pairs(CHIP_ID) do
+
+        --local file_name = "Lua/mmbn3_draft_gauntlet/chip_images/" .. value .. ".bmp"
+        local file_name = "chip_images/" .. value .. ".bmp"
+
+        if not file_exists(file_name) then
+            local chip_address = CHIP_DATA[value].CHIP_PICTURE_OFFSET
+            local chip_palette_address = CHIP_DATA[value].CHIP_PICTURE_PALETTE_OFFSET
+            local argb_array = CHIP_PICTURE_DEFS.get_argb_2d_array_for_image_address(chip_address, chip_palette_address)
+
+            -- TODO: generate bitmap and store it in the cache.
+            bmp_exporter.export_argb_table_to_bitmap(file_name, argb_array, 64, 56)
+        end
+
+        
+    end
+
+end
+
 
 function CHIP_PICTURE_DEFS.get_argb_2d_array_for_image_address(image_address, palette_address)
 
