@@ -1,3 +1,6 @@
+# Required Bizhawk version (as of 2025-04-07)
+Currently this has been tested to work with Bizhawk 2.6.0. Newer versions seems to break things - I will work on updating it to a more recent version of Bizhawk.
+
 # What is it?
 
 The MMBN3 Gauntlet mod is a modification of Megaman Battle Network 3: Blue that turns the game into a roguelite experience. (Imagine: Slay The Spire meets Battle Network)
