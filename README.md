@@ -22,7 +22,7 @@ Download BizHawk from https://github.com/TASVideos/BizHawk/releases
 
 Download the latest release of the Gauntlet files in the release section ( https://github.com/thomasneff/mmbn3-draft-gauntlet/releases )
 
-Extract all files into the Bizhawk/Lua directory (so that the directory then contains the mmbn3_draft_gauntlet folder). I will refer to the mmbn3_draft_gauntlet folder as the GAUNTLET_FOLDER.
+Extract all files into the Bizhawk directory (so that the directory then contains the Lua/mmbn3_draft_gauntlet folder). I will refer to the mmbn3_draft_gauntlet folder as the GAUNTLET_FOLDER.
 
 Start BizHawk (EmuHawk.exe).
 
