@@ -1,5 +1,6 @@
 # Required Bizhawk version (as of 2025-04-07)
 Currently this has been tested to work with Bizhawk 2.6.0. Newer versions seems to break things - I will work on updating it to a more recent version of Bizhawk.
+Download Bizhawk 2.6.0 from here: https://github.com/TASEmulators/BizHawk/releases/download/2.6/BizHawk-2.6-win-x64.zip
 
 # What is it?
 
